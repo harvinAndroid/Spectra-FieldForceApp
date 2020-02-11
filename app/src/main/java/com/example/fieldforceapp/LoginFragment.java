@@ -3,11 +3,11 @@ package com.example.fieldforceapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +18,11 @@ import android.widget.TextView;
 import com.example.fieldforceapp.Model.LoginRequest;
 import com.google.gson.JsonElement;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
-import static java.util.logging.Level.parse;
 
 
 /**
@@ -37,6 +31,7 @@ import static java.util.logging.Level.parse;
 public class LoginFragment extends Fragment {
 
     private TextView RegText,StatusMess;
+    private TextView textView;
     private EditText UserName, UserPassword;
     private Button LoginBn;
     private String name, salary;
@@ -63,6 +58,11 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        String fontPath = "fonts/Spectra-Regular.ttf";
+        Typeface myTypeFace = Typeface.createFromAsset(getContext().getAssets(), fontPath);
+        textView = view.findViewById(R.id.spectraText);
+        textView.setTypeface(myTypeFace);
+
         RegText = view.findViewById(R.id.register_txt);
         UserName = view.findViewById(R.id.user_name);
         UserPassword = view.findViewById(R.id.user_pass);
