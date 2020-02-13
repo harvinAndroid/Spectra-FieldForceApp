@@ -1,6 +1,5 @@
 package com.example.fieldforceapp;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -25,13 +23,11 @@ public class WelcomeFragment extends Fragment {
     public interface OnLogoutListener
     {
       public void logoutperformed();
-
     }
 
     public WelcomeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,12 +44,8 @@ public class WelcomeFragment extends Fragment {
 
             }
         });
-
-
         return view;
     }
-
-
 
     @Override
     public void onAttach(Context context){
@@ -61,6 +53,4 @@ public class WelcomeFragment extends Fragment {
         Activity activity=(Activity) context;
         logoutListener =(OnLogoutListener) activity;
     }
-
-
 }
