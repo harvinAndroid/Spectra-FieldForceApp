@@ -3,4 +3,42 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
     </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />s
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Base_ToolbarTheme">
+        <!-- Color used for the title of the Toolbar - as long as not overridden -->
+        <item name="android:textColorPrimary">@color/colorBlack</item>
+        <!-- Used to color back button and three dots -->
+        <item name="android:textColorSecondary">@color/colorBlack</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:actionMenuTextColor">@color/colorBlack</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/colorWhite</item>
+    </style>
+    <style name="CustomTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="CustomSubTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="Base_ToolbarStyle">
+        <item name="colorControlNormal">@color/colorBlack</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:theme">@style/Base_ToolbarTheme</item>
+        <item name="titleTextAppearance">@style/CustomTitleTextAppearance</item>
+        <item name="subtitleTextAppearance">@style/CustomSubTitleTextAppearance</item>
+    </style>
 </resources>

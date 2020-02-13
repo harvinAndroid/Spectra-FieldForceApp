@@ -36,7 +36,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="250dp"
         android:text=""
-        android:textColor="#FF0000"
+        android:textColor="@color/colorGray"
         android:textSize="20sp" />
 
     <EditText
@@ -48,7 +48,7 @@
         android:hint="User ID"
         android:backgroundTint="@color/colorWhite"
         android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorWhite" />
+        android:textColorHint="@color/colorGray" />
 
     <EditText
         android:id="@+id/user_pass"
@@ -60,7 +60,7 @@
         android:backgroundTint="@color/colorWhite"
         android:inputType="textPassword"
         android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorWhite" />
+        android:textColorHint="@color/colorGray" />
 
     <Button
         android:id="@+id/login_btn"
