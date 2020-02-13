@@ -22,7 +22,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="55dp"
         android:layout_marginEnd="8dp"
-        android:text="Welcome to field force APP"
+        android:text="Welcome to Field Force APP"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
