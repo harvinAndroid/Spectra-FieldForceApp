@@ -58,8 +58,7 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        String fontPath = "fonts/Spectra-Regular.ttf";
-        Typeface myTypeFace = Typeface.createFromAsset(getContext().getAssets(), fontPath);
+        Typeface myTypeFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/Spectra-Regular.ttf");
         textView = view.findViewById(R.id.spectraText);
         textView.setTypeface(myTypeFace);
 
@@ -67,6 +66,11 @@ public class LoginFragment extends Fragment {
         UserName = view.findViewById(R.id.user_name);
         UserPassword = view.findViewById(R.id.user_pass);
         StatusMess=view.findViewById(R.id.name);
+
+        /*Typeface mytextFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/helveticaneue-font/helveticaneue-light.ttf");
+
+        UserName.setTypeface(mytextFace);
+        UserPassword.setTypeface(mytextFace);*/
 
 
         LoginBn = view.findViewById(R.id.login_btn);
