@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.example.fieldforceapp.Model.AssignmentRequest;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -39,8 +41,9 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private String StatusMess;
     private Button BnLogOut;
     private DrawerLayout drawerLayout;
-    private String couponCodeString;
+    private String status;
     private String message;
+    private JSONObject result;
 
     OnLogoutListener logoutListener;
     public interface OnLogoutListener
@@ -52,11 +55,10 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         // Required empty public constructor
     }
 
-    private void getAssignment(){
-        String result;
+    private JSONObject getAssignment(){
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "assignment";
-        String emailID = "harpreet.kaur@spectra.co";
+        String emailID = "harpreet.kaur@spectra.co";// MainActivity.prefConfig.readName();
 
         AssignmentRequest assignmentRequest =new AssignmentRequest();
         assignmentRequest.setAuthkey(authKey);
@@ -68,19 +70,20 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
-
                 try
                 {
                     if (response.isSuccessful()) {
-                        // parse(String.valueOf(response.body()!=null));
+                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");
+                        if(status.equals("Failure")){
+                            message="No Assignment";
+                        }
+                        else if(status.equals("Success")){
+                            String res = jsonObject.getString("response");
+                            result = new JSONObject(res);
+                        }
                     }
-
-                    JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                    if(couponCodeString.equals("Failure")){
-                        message="Login Failed..Please try again...";
-                    }
-                    else if(couponCodeString.equals("Success")){
-                    }
+                    Log.d("Message", message);
                 }
                 catch (Exception e)
                 {
@@ -93,11 +96,12 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
             }
         });
+        return result;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getAssignment();
+        result= getAssignment();
         view= inflater.inflate(R.layout.fragment_welcome, container, false);
         textView = view.findViewById(R.id.text_name_info);
         textView. setText("Welcome "+MainActivity.prefConfig.readName());
