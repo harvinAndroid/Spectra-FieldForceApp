@@ -24,8 +24,8 @@ import android.widget.TextView;
 import com.example.fieldforceapp.Model.AssignmentRequest;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import retrofit2.Call;
@@ -38,24 +38,25 @@ import retrofit2.Response;
 public class WelcomeFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
     Activity activity;
     private TextView textView;
+    private TextView engName;
     private String StatusMess;
     private Button BnLogOut;
     private DrawerLayout drawerLayout;
     private String status;
     private String message;
-    private JSONObject result;
+    private JSONArray result;
 
     OnLogoutListener logoutListener;
     public interface OnLogoutListener
     {
-      public void logoutperformed();
+      void logoutperformed();
     }
 
     public WelcomeFragment() {
         // Required empty public constructor
     }
 
-    private JSONObject getAssignment(){
+    private JSONArray getAssignment(){
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "assignment";
         String emailID = "harpreet.kaur@spectra.co";// MainActivity.prefConfig.readName();
@@ -79,11 +80,10 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                             message="No Assignment";
                         }
                         else if(status.equals("Success")){
-                            String res = jsonObject.getString("response");
-                            result = new JSONObject(res);
+                            result = jsonObject.getJSONArray("response");
+                            Log.d("API", result.toString());
                         }
                     }
-                    Log.d("Message", message);
                 }
                 catch (Exception e)
                 {
@@ -101,10 +101,13 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        result= getAssignment();
+        JSONArray res = getAssignment();
         view= inflater.inflate(R.layout.fragment_welcome, container, false);
         textView = view.findViewById(R.id.text_name_info);
         textView. setText("Welcome "+MainActivity.prefConfig.readName());
+        engName = view.findViewById(R.id.userNameTV);
+        //Log.d("found", engName.toString());
+        //engName.setText(MainActivity.prefConfig.readName());
         BnLogOut = view.findViewById(R.id.btn_logout);
         BnLogOut.setOnClickListener(new View.OnClickListener(){
             @Override
