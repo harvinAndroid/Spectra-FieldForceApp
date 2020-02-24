@@ -83,7 +83,7 @@ View view;
         String useremail = "harpreet.kaur@spectra.co";
         AssignmentRequest assignmentRequest =new AssignmentRequest();
         assignmentRequest.setAction("assignment");
-        assignmentRequest.setUser_emailID(useremail);
+        assignmentRequest.setUser_email(useremail);
         assignmentRequest.setAuthkey("ac7b51de9d888e1458dd53d8aJAN3ba6f");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 

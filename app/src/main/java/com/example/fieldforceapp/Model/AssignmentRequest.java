@@ -27,7 +27,7 @@ public class AssignmentRequest {
     public String getUser_email ( String emailID ) {
         return emailID;
     }
-    public void setUser_emailID ( String emailID ) {
+    public void setUser_email ( String emailID ) {
         this.emailID = emailID;
     }
 
