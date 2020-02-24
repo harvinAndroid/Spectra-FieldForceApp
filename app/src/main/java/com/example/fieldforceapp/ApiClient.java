@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL="https://ffamwapi.spectra.co/";
+    public static final String BASE_URL="https://ffamwapi.spectra.co";
     private static Retrofit retrofit = null;
     static Retrofit getClient() {
         if (retrofit == null) {

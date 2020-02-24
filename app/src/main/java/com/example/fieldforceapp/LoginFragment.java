@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -118,7 +115,6 @@ public class LoginFragment extends Fragment {
         loginRequest.setAuthkey("ac7b51de9d888e1458dd53d8aJAN3ba6f");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        //  \"Authkey\":\"ac7b51de9d888e1458dd53d8aJAN3ba6f\",\"Action\":\"authentication\
         Call< JsonElement > call =apiService.performUserLogin(loginRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
