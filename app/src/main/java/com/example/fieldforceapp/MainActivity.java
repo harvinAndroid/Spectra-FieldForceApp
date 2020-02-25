@@ -38,11 +38,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
                     .commitNow();*/
              //   return;
             //}
-            if(prefConfig.readLoginStatus()){
+//            if(prefConfig.readLoginStatus()){
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container,new WelcomeFragment()).commit();
-            }else {
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container,new LoginFragment()).commit();
-            }
+//            }else {
+//                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container,new LoginFragment()).commit();
+//            }
         }
     }
 

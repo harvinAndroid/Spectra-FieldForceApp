@@ -93,7 +93,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
             @Override
             public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
-
+                Log.e("RetroError", t.toString());
             }
         });
         return result;
