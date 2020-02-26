@@ -3,6 +3,7 @@ package com.example.fieldforceapp;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,11 +26,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fieldforceapp.Model.AssignmentRequest;
+import com.example.fieldforceapp.Model.Movies;
+import com.example.fieldforceapp.Model.MoviesAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,6 +88,17 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                         status = jsonObject.getString("Status");
                         if(status.equals("Failure")){
                             message="No Assignment";
+                            message = "{\"Status\":\"Success\",\"ErrorCode\":0,\"response\":[{\"assignmentId\":\"1\",\"customerID\":\"9055635\",\"customerName\":\"1 Share Office.Com\",\"customerAddress\":\"12 sant nagar east of kailash 2nd floor above vodafone store,Other,,,,Other,Delhi,Delhi110065\",\"customerCityId\":\"100005\",\"customerMobile\":\"9319196848\",\"customerEmailId\":\"satyveer@outlook.com\",\"customerPrefDate\":\"2020-02-26 00:02:00\",\"case_remarks\":\"Testing\",\"powerLevelINAS\":\"\",\"customerNetworkTech\":\"\",\"slotId\":\"1\",\"pengId\":\"10981\",\"sengId\":\"\",\"sloteBookedDate\":\"0000-00-00 00:00:00\",\"srNumber\":\"SR20000000001\",\"portId\":\"\",\"roasterId\":\"1\",\"srStatus\":null,\"createdOn\":\"2020-02-19 16:02:01\",\"status\":\"1\",\"fromtime\":\"10:00\",\"totime\":\"12:00\",\"engId\":\"3\",\"roasterDate\":\"2020-02-26 00:02:00\",\"roasterFromTime\":null,\"roasterToTime\":null,\"createdBy\":\"Auto Assignment\",\"createdIP\":\"10.158.116.9\",\"modifiedBy\":null,\"modifiedOn\":\"0000-00-00 00:00:00\",\"modifiedIP\":null,\"userId\":\"10981\",\"name\":\"Harpreet Kaur\",\"skills\":\"111260001\",\"type\":\"111260000\",\"Domain\":\"INharpreet.kaur\",\"mobileNo\":\"9876543210\",\"emailId\":\"harpreet.kaur@spectra.co\",\"technology\":\"111260000\",\"reportingManager\":\"INaakriti\",\"cityId\":\"100028\",\"weekOff\":null,\"networkTech\":null},{\"assignmentId\":\"3\",\"customerID\":\"9055635\",\"customerName\":\"1 Share Office.Com\",\"customerAddress\":\"12 sant nagar east of kailash 2nd floor above vodafone store,Other,,,,Other,Delhi,Delhi110065\",\"customerCityId\":\"100005\",\"customerMobile\":\"9319196848\",\"customerEmailId\":\"satyveer@outlook.com\",\"customerPrefDate\":\"2020-02-26 00:02:00\",\"case_remarks\":\"Testing\",\"powerLevelINAS\":\"\",\"customerNetworkTech\":\"\",\"slotId\":\"1\",\"pengId\":\"10981\",\"sengId\":\"\",\"sloteBookedDate\":\"0000-00-00 00:00:00\",\"srNumber\":\"SR20000000002\",\"portId\":\"\",\"roasterId\":\"3\",\"srStatus\":null,\"createdOn\":\"2020-02-19 16:02:01\",\"status\":\"1\",\"fromtime\":\"10:00\",\"totime\":\"12:00\",\"engId\":\"3\",\"roasterDate\":\"2020-02-26 00:02:00\",\"roasterFromTime\":null,\"roasterToTime\":null,\"createdBy\":\"Auto Assignment\",\"createdIP\":\"10.158.116.9\",\"modifiedBy\":null,\"modifiedOn\":\"0000-00-00 00:00:00\",\"modifiedIP\":null,\"userId\":\"10981\",\"name\":\"Harpreet Kaur\",\"skills\":\"111260001\",\"type\":\"111260000\",\"Domain\":\"INharpreet.kaur\",\"mobileNo\":\"9876543210\",\"emailId\":\"harpreet.kaur@spectra.co\",\"technology\":\"111260000\",\"reportingManager\":\"INaakriti\",\"cityId\":\"100028\",\"weekOff\":null,\"networkTech\":null}]}";
+                            try{
+//                                JsonObject object = new JsonObject();
+                                prepareMovieData();
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+//
+//                            engName = view.findViewById(R.id.userNameTV);
+//                            engName.setText(MainActivity.prefConfig.readName());
                         }
                         else if(status.equals("Success")){
                             result = jsonObject.getJSONArray("response");
@@ -98,16 +119,16 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         });
         return result;
     }
-
+    MoviesAdapter mAdapter;
+    private List<Movies> moviesList = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         JSONArray res = getAssignment();
         view= inflater.inflate(R.layout.fragment_welcome, container, false);
         textView = view.findViewById(R.id.text_name_info);
         textView. setText("Welcome "+MainActivity.prefConfig.readName());
-        engName = view.findViewById(R.id.userNameTV);
+
         //Log.d("found", engName.toString());
-        //engName.setText(MainActivity.prefConfig.readName());
         BnLogOut = view.findViewById(R.id.btn_logout);
         BnLogOut.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -116,6 +137,12 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
             }
         });
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        mAdapter = new MoviesAdapter(moviesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
         //navigationDrawerSetup();
         return view;
     }
@@ -173,4 +200,41 @@ View view;
         return true;
     }
   //StatusMess.setText("");
+  private void prepareMovieData() {
+      Movies movie = new Movies("Mad Max: Fury Road", "Action & Adventure", "2015");
+      moviesList.add(movie);
+
+      movie = new Movies("Inside Out", "Animation, Kids & Family", "2015");
+      moviesList.add(movie);
+
+      movie = new Movies("Star Wars: Episode VII - The Force Awakens", "Action", "2015");
+      moviesList.add(movie);
+
+      movie = new Movies("Shaun the Sheep", "Animation", "2015");
+      moviesList.add(movie);
+
+      movie = new Movies("The Martian", "Science Fiction & Fantasy", "2015");
+      moviesList.add(movie);
+
+      movie = new Movies("Mission: Impossible Rogue Nation", "Action", "2015");
+      moviesList.add(movie);
+
+      movie = new Movies("Up", "Animation", "2009");
+      moviesList.add(movie);
+
+      movie = new Movies("Star Trek", "Science Fiction", "2009");
+      moviesList.add(movie);
+
+      movie = new Movies("The LEGO Movie", "Animation", "2014");
+      moviesList.add(movie);
+
+      movie = new Movies("Iron Man", "Action & Adventure", "2008");
+      moviesList.add(movie);
+
+
+      movie = new Movies("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014");
+      moviesList.add(movie);
+
+      mAdapter.notifyDataSetChanged();
+  }
 }

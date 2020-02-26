@@ -57,6 +57,12 @@
             android:layout_marginTop="150dp"
             android:text="Logout" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/btn_logout"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
     </RelativeLayout>
 
     </LinearLayout>
