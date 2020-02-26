@@ -11,12 +11,12 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="Base_ToolbarTheme">
         <!-- Color used for the title of the Toolbar - as long as not overridden -->
-        <item name="android:textColorPrimary">@color/colorBlack</item>
+        <item name="android:textColorPrimary">@color/colorGray</item>
         <!-- Used to color back button and three dots -->
-        <item name="android:textColorSecondary">@color/colorBlack</item>
+        <item name="android:textColorSecondary">@color/colorGray</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:typeface">normal</item>
-        <item name="android:actionMenuTextColor">@color/colorBlack</item>
+        <item name="android:actionMenuTextColor">@color/colorGray</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">

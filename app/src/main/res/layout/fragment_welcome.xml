@@ -17,53 +17,33 @@
             android:id="@+id/toolbar"
             style="@style/Base_ToolbarStyle"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:titleTextColor="@android:color/white"
+            android:layout_height="60dp"
+            android:background="@color/colorBlack"
             app:layout_collapseMode="pin"
-            app:popupTheme="@style/AppTheme" />
+            app:popupTheme="@style/AppTheme">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBlack"
-        tools:context=".WelcomeFragment">s
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today Order"
+                android:textColor="@color/colorWhite"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
-            android:text=""
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
-        <TextView
-            android:id="@+id/text_name_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
-            android:text=""
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
-            android:text="Logout" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_below="@+id/btn_logout"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack"
+            tools:context=".WelcomeFragment">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical" />
+        </RelativeLayout>
 
     </LinearLayout>
 
