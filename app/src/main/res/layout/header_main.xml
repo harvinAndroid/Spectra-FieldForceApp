@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/DrawerHeaderLayout"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:background="#112233"
+    android:layout_height="68dp"
+    android:background="#111"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="5dp"
@@ -12,13 +12,16 @@
     android:paddingBottom="5dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/LoginUserImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginLeft="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ffa" />
+    <TextView
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="@string/menu"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,10 +33,16 @@
             android:id="@+id/userNameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:text="eg_name"
             android:textColor="@color/colorWhite"
             android:textSize="20sp" />
 
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/logout" />
     </RelativeLayout>
 </LinearLayout>

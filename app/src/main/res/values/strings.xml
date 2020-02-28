@@ -1,6 +1,8 @@
 <resources>
     <string name="spectra">Spectra</string>
     <string name="app_name">Spectra-Field Force</string>
+    <string name="menu">Menu</string>
+    <string name="logout">Logout</string>
     <string name="settings_name">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pref_file">com.abc.preference_file</string>

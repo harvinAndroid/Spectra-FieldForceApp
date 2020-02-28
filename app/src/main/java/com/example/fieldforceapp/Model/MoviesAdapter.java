@@ -13,22 +13,22 @@ import java.util.List;
  
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHolder> {
  
-    private List<Movies> moviesList;
+    private List<Order> orderList;
  
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year, genre;
+        public TextView customerName, customerEmail, customerMobile;
  
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            genre = (TextView) view.findViewById(R.id.genre);
-            year = (TextView) view.findViewById(R.id.year);
+            customerName = (TextView) view.findViewById(R.id.customerName);
+            customerEmail = (TextView) view.findViewById(R.id.customerEmail);
+            customerMobile = (TextView) view.findViewById(R.id.customerMobile);
         }
     }
  
  
-    public MoviesAdapter(List<Movies> moviesList) {
-        this.moviesList = moviesList;
+    public MoviesAdapter(List<Order> orderList) {
+        this.orderList = orderList;
     }
  
     @Override
@@ -42,14 +42,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        Movies movie = moviesList.get(position);
-        holder.title.setText(movie.getTitle());
-        holder.genre.setText(movie.getGenre());
-        holder.year.setText(movie.getYear());
+        Order order = orderList.get(position);
+        holder.customerName.setText(order.getCustomerName());
+        holder.customerEmail.setText(order.getCustomerEmailId());
+        holder.customerMobile.setText(order.getCustomerMobile());
     }
  
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        return orderList.size();
     }
 }
