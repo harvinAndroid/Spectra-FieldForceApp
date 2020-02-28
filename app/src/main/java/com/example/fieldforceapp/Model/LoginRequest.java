@@ -2,7 +2,9 @@ package com.example.fieldforceapp.Model;
 
 public class LoginRequest {
 
+
 String Authkey="";
+
 String Action="";
 String user_name="";
 String user_password="";
@@ -15,7 +17,9 @@ String user_password="";
         Authkey = authkey;
     }
 
-    public String getAction () { return Action; }
+    public String getAction () {
+        return Action;
+    }
 
     public void setAction ( String action ) {
         Action = action;
