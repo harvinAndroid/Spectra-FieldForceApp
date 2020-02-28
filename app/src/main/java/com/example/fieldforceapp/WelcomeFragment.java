@@ -69,7 +69,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private void getAssignment() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "assignment";
-        String emailID = "harpreet.kaur@spectra.co";// MainActivity.prefConfig.readName();
+        String emailID = MainActivity.prefConfig.readName();
 
         AssignmentRequest assignmentRequest = new AssignmentRequest();
         assignmentRequest.setAuthkey(authKey);

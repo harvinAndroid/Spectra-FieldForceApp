@@ -14,5 +14,5 @@ public interface ApiInterface {
     @POST ("index.php")
     Call< JsonElement > performUserLogin ( @Body LoginRequest loginRequest );
    // Call<User> performRegistration(@Query("name") String Name, @Query("user_name") String UserName, @Query("user_password") String UserPass);
-   Call< JsonElement > performUserAssignment ( @Body AssignmentRequest assignmentRequest );
+
 }
