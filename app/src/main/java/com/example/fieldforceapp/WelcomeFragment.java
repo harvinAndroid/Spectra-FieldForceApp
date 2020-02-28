@@ -25,7 +25,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fieldforceapp.Model.AssignmentRequest;
-import com.example.fieldforceapp.Model.MoviesAdapter;
+import com.example.fieldforceapp.Model.AssignmentAdapter;
 import com.example.fieldforceapp.Model.Order;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -63,7 +63,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         // Required empty public constructor
     }
 
-    MoviesAdapter mAdapter;
+    AssignmentAdapter assignAdapter;
     private List<Order> orderList = new ArrayList<>();
 
     private void getAssignment() {
@@ -99,7 +99,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                                     }
                                 }
 
-                                mAdapter.notifyDataSetChanged();
+                                assignAdapter.notifyDataSetChanged();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -134,11 +134,11 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
         view = inflater.inflate(R.layout.fragment_welcome, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        mAdapter = new MoviesAdapter(orderList);
+        assignAdapter = new AssignmentAdapter(orderList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(assignAdapter);
         //navigationDrawerSetup();
         return view;
     }
