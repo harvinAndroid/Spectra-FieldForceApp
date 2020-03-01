@@ -65,13 +65,11 @@ public class LoginFragment extends Fragment {
         RegText = view.findViewById(R.id.register_txt);
         UserName = view.findViewById(R.id.user_name);
         UserPassword = view.findViewById(R.id.user_pass);
-        StatusMess=view.findViewById(R.id.name);
+        StatusMess=view.findViewById(R.id.error_text);
 
-        /*Typeface mytextFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/helveticaneue-font/helveticaneue-light.ttf");
-
+        Typeface mytextFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/helveticaneue-font/helveticaneue-light.ttf");
         UserName.setTypeface(mytextFace);
-        UserPassword.setTypeface(mytextFace);*/
-
+        UserPassword.setTypeface(mytextFace);
 
         LoginBn = view.findViewById(R.id.login_btn);
         LoginBn.setOnClickListener(new View.OnClickListener() {

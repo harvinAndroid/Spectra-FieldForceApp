@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,65 +16,88 @@
         android:layout_marginTop="60dp"
         android:text="@string/spectra"
         android:textColor="@color/colorWhite"
-        android:textSize="70sp" />
+        android:textSize="72sp" />
 
     <TextView
+        android:id="@+id/make_life"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/spectraText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="50dp"
         android:text="#MakeLifeBetter"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
-        android:text=""
         android:textColor="@color/colorGray"
-        android:textSize="20sp" />
+        android:textSize="25sp" />
 
-    <EditText
-        android:id="@+id/user_name"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="280dp"
-        android:hint="User ID"
-        android:backgroundTint="@color/colorWhite"
-        android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorGray" />
+    <RelativeLayout
+        android:id="@+id/main_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/make_life"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/round_corner">
 
-    <EditText
-        android:id="@+id/user_pass"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp"
-        android:hint="Password"
-        android:backgroundTint="@color/colorWhite"
-        android:inputType="textPassword"
-        android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorGray" />
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:backgroundTint="@color/colorBlack"
+            android:hint="User Name"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorGray"
+            android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/login_btn"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="420dp"
-        android:text="Login" />
+        <EditText
+            android:id="@+id/user_pass"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/colorBlack"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:drawableRight="@drawable/icon_eye_open"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorGray"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/register_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="500dp"
-        android:text="Reset Password"
-        android:textColor="@color/colorWhite" />
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="190dp"
+            android:layout_height="55dp"
+            android:layout_below="@id/user_pass"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/round_button"
+            android:text="login"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/register_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="Forgot password ?"
+            android:textColor="@color/colorLink"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/register_txt"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text=""
+            android:textColor="@color/colorBlue" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
