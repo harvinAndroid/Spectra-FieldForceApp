@@ -23,4 +23,38 @@
 
      </FrameLayout>
 
+
+
+     <Button
+            android:id="@+id/logTokenButton"
+            android:layout_width="190dp"
+            android:layout_height="55dp"
+
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/round_button"
+            android:text="login"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="27sp" />
+    <TextView
+        android:id="@+id/default_notification_channel_id"
+        android:layout_width="190dp"
+        android:layout_height="55dp"
+         />
+    <TextView
+        android:id="@+id/default_notification_channel_name"
+        android:layout_width="190dp"
+        android:layout_height="55dp"
+        />
+    <TextView
+        android:id="@+id/msg_token_fmt"
+        android:layout_width="190dp"
+        android:layout_height="55dp"
+        />
+    <TextView
+        android:id="@+id/fcm_message"
+        android:layout_width="190dp"
+        android:layout_height="55dp"
+        />
     </RelativeLayout>

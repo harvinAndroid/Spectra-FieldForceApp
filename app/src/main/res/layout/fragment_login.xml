@@ -59,7 +59,7 @@
             android:backgroundTint="@color/colorBlack"
             android:hint="Password"
             android:inputType="textPassword"
-            android:drawableRight="@drawable/icon_eye_open"
+
             android:textColor="@color/colorBlack"
             android:textColorHint="@color/colorGray"
             android:textSize="20sp" />

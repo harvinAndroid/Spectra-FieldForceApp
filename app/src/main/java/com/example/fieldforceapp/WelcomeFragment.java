@@ -60,6 +60,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     }
 
     public WelcomeFragment() {
+        
         // Required empty public constructor
     }
 
