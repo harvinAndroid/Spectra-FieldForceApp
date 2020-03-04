@@ -41,6 +41,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.provider.Settings.Secure;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -109,6 +110,11 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
+
+
+
             }
 
             @Override
