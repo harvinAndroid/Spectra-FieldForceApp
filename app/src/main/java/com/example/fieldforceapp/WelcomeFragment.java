@@ -23,14 +23,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fieldforceapp.Model.AssignmentRequest;
 import com.example.fieldforceapp.Model.AssignmentAdapter;
 import com.example.fieldforceapp.Model.Order;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,7 +45,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import android.provider.Settings.Secure;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +56,8 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private DrawerLayout drawerLayout;
     private String status;
     private JSONArray result;
+    private String TAG;
+    private String Token;
 
     OnLogoutListener logoutListener;
 
@@ -111,9 +116,32 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                     e.printStackTrace();
                 }
 
+/*Notification*/
+
+                FirebaseInstanceId.getInstance().getInstanceId()
+                        .addOnCompleteListener(new OnCompleteListener< InstanceIdResult >() {
+                            @Override
+                            public void onComplete ( @NonNull Task< InstanceIdResult > task ) {
+                                if (!task.isSuccessful()) {
+                                    Log.w(TAG, "getInstanceId failed", task.getException());
+                                    return;
+                                }
+
+                                // Get new Instance ID token
+                                Token = task.getResult().getToken();
+
+                                // Log and toast
+                                String msg = getString(R.string.msg_token_fmt);
+                                Log.d(TAG, "TokenID: "+Token);
+
+                                //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
 
 
+
+                /*Notification*/
 
             }
 
@@ -127,6 +155,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getAssignment();
+
         view = inflater.inflate(R.layout.header_main, container, false);
         engName = view.findViewById(R.id.userNameTV);
         engName.setText(MainActivity.prefConfig.readName());
@@ -204,4 +233,66 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         }
         return true;
     }
+
+
+
+
+    private void SendNotification() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "assignment";
+        String emailID = MainActivity.prefConfig.readName();
+
+        AssignmentRequest assignmentRequest = new AssignmentRequest();
+        assignmentRequest.setAuthkey(authKey);
+        assignmentRequest.setAction(action);
+        assignmentRequest.setemailID(emailID);
+
+        AssignmentInterface apiService = ApiClient.getClient().create(AssignmentInterface.class);
+        Call<JsonElement> call = apiService.performUserAssignment(assignmentRequest);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");
+                        if (status.equals("Failure")) {
+                            Log.d("Failure", "error");
+                        } else if (status.equals("Success")) {
+                            try {
+                                result = jsonObject.getJSONArray("response");
+                                if (result != null) {
+                                    for (int i = 0; i < result.length(); i++) {
+                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
+                                        Gson gson = new Gson();
+                                        Order order = gson.fromJson(jsonData.toString(), Order.class);
+                                        orderList.add(order);
+                                    }
+                                }
+
+                                assignAdapter.notifyDataSetChanged();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
+
 }

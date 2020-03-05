@@ -87,11 +87,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
 
         /*Notification*/
+/*
+      Button subscribeButton = findViewById(R.id.subscribeButton);
+       subscribeButton.setOnClickListener(new View.OnClickListener() {
 
-      //  Button subscribeButton = findViewById(R.id.subscribeButton);
-      //  subscribeButton.setOnClickListener(new View.OnClickListener() {
-
-          /*public void onClick ( View v ) {
+          public void onClick ( View v ) {
                 Log.d(TAG, "Subscribing to weather topic");
                 // [START subscribe_topics]
                 FirebaseMessaging.getInstance().subscribeToTopic("weather")
@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
                         });
                 // [END subscribe_topics]
             }
-        });*/
-
+        });
+*/
         Button logTokenButton = findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
                                 // Log and toast
                                 String msg = getString(R.string.msg_token_fmt);
-                                Log.d(TAG, msg);
+                                Log.d(TAG, "TokenID: "+token);
                                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -166,6 +166,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
         getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container,new LoginFragment()).commit();
 
     }
+
+
     /*Notification*/
 
 
