@@ -3,6 +3,7 @@ package com.example.fieldforceapp;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.session.MediaSession;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.fieldforceapp.Model.AssignmentRequest;
 import com.example.fieldforceapp.Model.AssignmentAdapter;
+import com.example.fieldforceapp.Model.NotificationRequest;
 import com.example.fieldforceapp.Model.Order;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -58,6 +60,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private JSONArray result;
     private String TAG;
     private String Token;
+    private String EmailID;
 
     OnLogoutListener logoutListener;
 
@@ -76,12 +79,45 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private void getAssignment() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "assignment";
-        String emailID = MainActivity.prefConfig.readName();
+        EmailID = MainActivity.prefConfig.readName();
+
+
+        /*Notification*/
+                FirebaseInstanceId.getInstance().getInstanceId()
+                        .addOnCompleteListener(new OnCompleteListener< InstanceIdResult >() {
+                            @Override
+                            public void onComplete ( @NonNull Task< InstanceIdResult > task ) {
+                                if (!task.isSuccessful()) {
+                                    Log.w(TAG, "getInstanceId failed", task.getException());
+                                    return;
+                                }
+                                // Get new Instance ID token
+                                Token = task.getResult().getToken();
+                                // Log and toast
+                                String msg = getString(R.string.msg_token_fmt);
+                              //  Log.d(TAG, "TokenID: "+Token);
+                                /*send Notification*/
+                                SendNotification();
+                                //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                /*Notification*/
+
+
+
+
+
+
+
+
+
+
+
 
         AssignmentRequest assignmentRequest = new AssignmentRequest();
         assignmentRequest.setAuthkey(authKey);
         assignmentRequest.setAction(action);
-        assignmentRequest.setemailID(emailID);
+        assignmentRequest.setemailID(EmailID);
 
         AssignmentInterface apiService = ApiClient.getClient().create(AssignmentInterface.class);
         Call<JsonElement> call = apiService.performUserAssignment(assignmentRequest);
@@ -116,33 +152,6 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                     e.printStackTrace();
                 }
 
-/*Notification*/
-
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener< InstanceIdResult >() {
-                            @Override
-                            public void onComplete ( @NonNull Task< InstanceIdResult > task ) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
-
-                                // Get new Instance ID token
-                                Token = task.getResult().getToken();
-
-                                // Log and toast
-                                String msg = getString(R.string.msg_token_fmt);
-                                Log.d(TAG, "TokenID: "+Token);
-
-                                //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-
-
-
-                /*Notification*/
-
             }
 
             @Override
@@ -157,7 +166,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         getAssignment();
 
         view = inflater.inflate(R.layout.header_main, container, false);
-        engName = view.findViewById(R.id.userNameTV);
+        engName = view.findViewById(R.id.menu_text);
         engName.setText(MainActivity.prefConfig.readName());
         BnLogOut = view.findViewById(R.id.btn_logout);
         BnLogOut.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +176,6 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
             }
         });
-
         view = inflater.inflate(R.layout.fragment_welcome, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         assignAdapter = new AssignmentAdapter(orderList);
@@ -178,16 +186,13 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         //navigationDrawerSetup();
         return view;
     }
-
     View view;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (Activity) context;
         logoutListener = (OnLogoutListener) activity;
     }
-
     private void navigationDrawerSetup() {
 //        mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
         try {
@@ -200,7 +205,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             navigationView.setNavigationItemSelectedListener(this);
             navigationView.setItemIconTintList(null);
             View headerView = navigationView.getHeaderView(0);
-            TextView userNameTV = headerView.findViewById(R.id.userNameTV);
+            TextView userNameTV = headerView.findViewById(R.id.menu_text);
             drawerLayout.setScrimColor(Color.TRANSPARENT);
             Menu nav_menu = navigationView.getMenu();
             if (nav_menu != null) {
@@ -239,16 +244,18 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
     private void SendNotification() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "assignment";
-        String emailID = MainActivity.prefConfig.readName();
+        String action = "notification";
+        //String emailID = MainActivity.prefConfig.readName();
+       // String emailID ="harpreet.kaur@spectra.co";
 
-        AssignmentRequest assignmentRequest = new AssignmentRequest();
-        assignmentRequest.setAuthkey(authKey);
-        assignmentRequest.setAction(action);
-        assignmentRequest.setemailID(emailID);
+        NotificationRequest notificationRequest = new NotificationRequest();
+        notificationRequest.setAuthkey(authKey);
+        notificationRequest.setAction(action);
+        notificationRequest.setEmailID(EmailID);
+        notificationRequest.setToken(Token);
 
-        AssignmentInterface apiService = ApiClient.getClient().create(AssignmentInterface.class);
-        Call<JsonElement> call = apiService.performUserAssignment(assignmentRequest);
+        NotificationInterface apiService = ApiClient.getClient().create(NotificationInterface.class);
+        Call<JsonElement> call = apiService.sendNotification(notificationRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {

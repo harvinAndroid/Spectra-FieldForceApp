@@ -109,34 +109,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
                 // [END subscribe_topics]
             }
         });
-*/
-        Button logTokenButton = findViewById(R.id.logTokenButton);
-        logTokenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick ( View v ) {
-                // Get token
-                // [START retrieve_current_token]
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener< InstanceIdResult >() {
-                            @Override
-                            public void onComplete ( @NonNull Task< InstanceIdResult > task ) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
 
-                                // Get new Instance ID token
-                                String token = task.getResult().getToken();
 
-                                // Log and toast
-                                String msg = getString(R.string.msg_token_fmt);
-                                Log.d(TAG, "TokenID: "+token);
-                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                // [END retrieve_current_token]
-            }
-        });
 
         /*Notification*/
 

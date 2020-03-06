@@ -4,6 +4,7 @@ public class NotificationRequest {
     String Authkey="";
     String Action="";
     String token="";
+    String emailID="";
 
     public String getAuthkey () {
         return Authkey;
@@ -27,5 +28,13 @@ public class NotificationRequest {
 
     public void setToken ( String token ) {
         this.token = token;
+    }
+
+    public String getEmailID () {
+        return emailID;
+    }
+
+    public void setEmailID ( String token ) {
+        this.emailID = emailID;
     }
 }
