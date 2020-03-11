@@ -1,6 +1,6 @@
 package com.example.fieldforceapp;
-//package com.google.firebase.quickstart.fcm.java;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,62 +17,48 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-
-
-
-/**
- * NOTE: There can only be one service in each app that receives FCM messages. If multiple
- * are declared in the Manifest then the first one will be chosen.
- *
- * In order to make this Java sample functional, you must remove the following from the Kotlin messaging
- * service in the AndroidManifest.xml:
- *
- * <intent-filter>
- *   <action android:name="com.google.firebase.MESSAGING_EVENT" />
- * </intent-filter>
- */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    String TAG="Test";
+    private static final int REQUEST_CODE = 1;
+    private static final int NOTIFICATION_ID = 6578;
+
+    public MyFirebaseMessagingService() {
+        super();
+    }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // ...
+        super.onMessageReceived(remoteMessage);
 
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        final String title = remoteMessage.getData().get("title");
+        final String message = remoteMessage.getData().get("body");
 
-        // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+        showNotifications(title, message);
+    }
 
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
+    private void showNotifications(String title, String msg) {
+        Intent i = new Intent(this, MainActivity.class);
 
-            } else {
-                // Handle message within 10 seconds
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE,
+                i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            }
+        Notification notification = new NotificationCompat.Builder(this)
+                .setContentText(msg)
+                .setContentTitle(title)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .build();
 
-        }
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-        }
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(NOTIFICATION_ID, notification);
     }
 
     @Override
-    public void onNewToken(String token) {
-        Log.d(TAG, "Refreshed token: " + token);
-
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
-        //sendRegistrationToServer(token);
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        Log.e("FCMToken", s);
+        getSharedPreferences("_", MODE_PRIVATE).edit().putString("fb", s).apply();
     }
 
-
+    public static String getToken(Context context) {
+        return context.getSharedPreferences("_", MODE_PRIVATE).getString("fb", "empty");
+    }
 }

@@ -1,17 +1,20 @@
 package com.example.fieldforceapp.Model;
 
 public class NotificationRequest {
-    String Authkey="";
+    String AuthKey="";
     String Action="";
-    String token="";
-    String emailID="";
+    String SenderId="";
+    String FCMToken="";
+    String NotiBody="";
+    String NotiTitle="";
+    String NotiIcon="";
 
-    public String getAuthkey () {
-        return Authkey;
+    public String getAuthKey () {
+        return AuthKey;
     }
 
-    public void setAuthkey ( String authkey ) {
-        Authkey = authkey;
+    public void setAuthKey ( String authKey ) {
+        AuthKey = authKey;
     }
 
     public String getAction () {
@@ -22,19 +25,43 @@ public class NotificationRequest {
         Action = action;
     }
 
-    public String getToken () {
-        return token;
+    public String getSenderId () {
+        return SenderId;
     }
 
-    public void setToken ( String token ) {
-        this.token = token;
+    public void setSenderId ( String senderId ) {
+        SenderId = senderId;
     }
 
-    public String getEmailID () {
-        return emailID;
+    public String getFcmToken () {
+        return FCMToken;
     }
 
-    public void setEmailID ( String token ) {
-        this.emailID = emailID;
+    public void setFcmToken ( String fcmToken ) {
+        FCMToken = fcmToken;
+    }
+
+    public String getNotiBody () {
+        return NotiBody;
+    }
+
+    public void setNotiBody ( String notiBody ) {
+        NotiBody = notiBody;
+    }
+
+    public String getNotiTitle () {
+        return NotiTitle;
+    }
+
+    public void setNotiTitle ( String notiTitle ) {
+        this.NotiTitle = notiTitle;
+    }
+
+    public String getNotiIcon () {
+        return NotiIcon;
+    }
+
+    public void setNotiIcon ( String notiIcon ) {
+        this.NotiIcon = notiIcon;
     }
 }

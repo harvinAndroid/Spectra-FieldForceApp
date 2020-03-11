@@ -59,7 +59,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private String status;
     private JSONArray result;
     private String TAG;
-    private String Token;
+    private String fcmToken;
     private String EmailID;
 
     OnLogoutListener logoutListener;
@@ -69,7 +69,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     }
 
     public WelcomeFragment() {
-        
+
         // Required empty public constructor
     }
 
@@ -83,36 +83,25 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
 
         /*Notification*/
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener< InstanceIdResult >() {
-                            @Override
-                            public void onComplete ( @NonNull Task< InstanceIdResult > task ) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
-                                // Get new Instance ID token
-                                Token = task.getResult().getToken();
-                                // Log and toast
-                                String msg = getString(R.string.msg_token_fmt);
-                              //  Log.d(TAG, "TokenID: "+Token);
-                                /*send Notification*/
-                                SendNotification();
-                                //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                /*Notification*/
-
-
-
-
-
-
-
-
-
-
-
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        fcmToken = task.getResult().getToken();
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt);
+                        Log.d("FCMToken", fcmToken);
+                        /*send Notification*/
+                        SendNotification();
+                        //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        /*Notification*/
 
         AssignmentRequest assignmentRequest = new AssignmentRequest();
         assignmentRequest.setAuthkey(authKey);
@@ -186,13 +175,16 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         //navigationDrawerSetup();
         return view;
     }
+
     View view;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (Activity) context;
         logoutListener = (OnLogoutListener) activity;
     }
+
     private void navigationDrawerSetup() {
 //        mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
         try {
@@ -240,19 +232,22 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     }
 
 
-
-
     private void SendNotification() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "notification";
-        //String emailID = MainActivity.prefConfig.readName();
-       // String emailID ="harpreet.kaur@spectra.co";
+        String senderId = "682138145858";
+        String notiBody = "Hello";
+        String notiTitle = "First Notification";
+        String notiIcon = "";
 
         NotificationRequest notificationRequest = new NotificationRequest();
-        notificationRequest.setAuthkey(authKey);
+        notificationRequest.setAuthKey(authKey);
         notificationRequest.setAction(action);
-        notificationRequest.setEmailID(EmailID);
-        notificationRequest.setToken(Token);
+        notificationRequest.setSenderId(senderId);
+        notificationRequest.setFcmToken(fcmToken);
+        notificationRequest.setNotiBody(notiBody);
+        notificationRequest.setNotiTitle(notiTitle);
+        notificationRequest.setNotiIcon(notiIcon);
 
         NotificationInterface apiService = ApiClient.getClient().create(NotificationInterface.class);
         Call<JsonElement> call = apiService.sendNotification(notificationRequest);
@@ -288,9 +283,6 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                 }
 
 
-
-
-
             }
 
             @Override
@@ -299,7 +291,6 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             }
         });
     }
-
 
 
 }
