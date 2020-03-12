@@ -2,10 +2,12 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_marginTop="10dp"
+    android:layout_height="150dp"
     android:layout_marginLeft="15dp"
+    android:layout_marginTop="15dp"
     android:layout_marginRight="10dp"
+    android:padding="1sp"
+    android:paddingLeft="@dimen/cardview_default_radius"
     app:cardCornerRadius="5dp"
     app:cardElevation="8dp">
 
@@ -18,26 +20,78 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/customerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Customer:" />
+
+        <TextView
+            android:id="@+id/customerName"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:textColor="@color/colorBrown"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:layout_marginLeft="70dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerName"
+            android:layout_marginTop="10dp"
+            android:text="Email ID:" />
 
         <TextView
             android:id="@+id/customerEmail"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_below="@id/customerName"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerEmail"
+            android:layout_marginTop="10dp"
+            android:text="Mobile No:" />
 
         <TextView
             android:id="@+id/customerMobile"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:textColor="#112233" />
+            android:layout_below="@id/customerEmail"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerMobile"
+            android:layout_marginTop="10dp"
+            android:text="Address:" />
+
+        <TextView
+            android:id="@+id/customerAddress"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerMobile"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerAddress"
+            android:layout_marginTop="10dp"
+            android:text="SR Number:" />
+
+        <TextView
+            android:id="@+id/srNumber"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerAddress"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

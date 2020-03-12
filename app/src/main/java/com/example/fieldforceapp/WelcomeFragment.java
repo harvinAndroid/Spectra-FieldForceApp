@@ -125,6 +125,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                                 if (result != null) {
                                     for (int i = 0; i < result.length(); i++) {
                                         JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
+                                        Log.d("APIResponse", jsonData.toString());
                                         Gson gson = new Gson();
                                         Order order = gson.fromJson(jsonData.toString(), Order.class);
                                         orderList.add(order);
@@ -154,7 +155,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getAssignment();
 
-        view = inflater.inflate(R.layout.header_main, container, false);
+        View view = inflater.inflate(R.layout.header_main, container, false);
         engName = view.findViewById(R.id.menu_text);
         engName.setText(MainActivity.prefConfig.readName());
         BnLogOut = view.findViewById(R.id.btn_logout);
@@ -178,12 +179,12 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
     View view;
 
-    @Override
+   /* @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (Activity) context;
         logoutListener = (OnLogoutListener) activity;
-    }
+    }*/
 
     private void navigationDrawerSetup() {
 //        mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);

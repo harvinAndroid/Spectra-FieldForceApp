@@ -16,13 +16,15 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     private List<Order> orderList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView customerName, customerEmail, customerMobile;
+        public TextView customerName, customerEmail, customerMobile, customerAddress, srNumber;
 
         public MyViewHolder(View view) {
             super(view);
             customerName = (TextView) view.findViewById(R.id.customerName);
             customerEmail = (TextView) view.findViewById(R.id.customerEmail);
             customerMobile = (TextView) view.findViewById(R.id.customerMobile);
+            customerAddress = (TextView) view.findViewById(R.id.customerAddress);
+            srNumber = (TextView) view.findViewById(R.id.srNumber);
         }
     }
 
@@ -46,6 +48,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.customerName.setText(order.getCustomerName());
         holder.customerEmail.setText(order.getCustomerEmailId());
         holder.customerMobile.setText(order.getCustomerMobile());
+        holder.customerAddress.setText(order.getCustomerAddress());
+        holder.srNumber.setText(order.getSrNumber());
     }
 
     @Override
