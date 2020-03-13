@@ -1,8 +1,4 @@
 package com.example.fieldforceapp;
-//package com.google.firebase.quickstart.fcm.java;
-
-//import android.R;
-
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -36,27 +32,23 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
     public static PrefConfig prefConfig;
     private static final String TAG = "MainActivity";
 
-     public void runtimeEnableAutoInit() {
+    public void runtimeEnableAutoInit() {
         // [START fcm_runtime_enable_auto_init]
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         // [END fcm_runtime_enable_auto_init]
     }
+
     @Override
-    protected void onCreate( Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         /*Notification code start HP*/
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create channel to show notifications.
-
-             String channelId = getString(R.string.default_notification_channel_id);
-           String channelName = getString(R.string.default_notification_channel_name);
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-           /* notificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW));*/
+            NotificationChannel channel = new NotificationChannel("MyNotifications", "MyNotifications", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
         }
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
@@ -121,37 +113,29 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
         getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container,
                 new RegistrationFragment()).addToBackStack(null).commit();
     }
+
     @Override
-    public void performResetpassword(){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container,new ResetpasswordFragment()).addToBackStack(null).commit();
+    public void performResetpassword() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new ResetpasswordFragment()).addToBackStack(null).commit();
 
     }
 
     @Override
     public void performLogin(String name) {
         prefConfig.writeName(name);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container,new WelcomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
     }
 
     @Override
     public void logoutperformed() {
         prefConfig.writeLoginStatus(false);
         prefConfig.writeName("User");
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container,new LoginFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
 
     }
 
 
     /*Notification*/
-
-
-
-
-
-
-
-
-
 
 
 }

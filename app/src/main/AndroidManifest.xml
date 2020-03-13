@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fieldforceapp">
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <!--uses-permission android:name="android.permission.READ_PHONE_STATE"/-->
     <application
@@ -11,10 +12,18 @@
         android:roundIcon="@drawable/ffa"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <meta-data android:name="firebase_messaging_auto_init_enabled"  android:value="false" />
-        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="false" />
-        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
-        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -22,21 +31,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <!--Notification-->
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="com.google.android.gms.measurement.AppMeasurementService"
-            android:enabled="true" android:exported="false"/>
+        <service
+            android:name="com.google.android.gms.measurement.AppMeasurementService"
+            android:enabled="true"
+            android:exported="false" />
 
-        <receiver android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+        <receiver
+            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.measurement.UPLOAD" />
-                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
         <!--Notification-->

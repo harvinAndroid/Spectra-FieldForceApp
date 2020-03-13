@@ -1,18 +1,11 @@
 package com.example.fieldforceapp;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
-import com.google.firebase.iid.FirebaseInstanceId;
-
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -24,31 +17,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public MyFirebaseMessagingService() {
         super();
     }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        final String title = remoteMessage.getData().get("title");
-        final String message = remoteMessage.getData().get("body");
+        String title = remoteMessage.getNotification().getTitle();
+        String message = remoteMessage.getNotification().getBody();
 
         showNotifications(title, message);
     }
 
-    private void showNotifications(String title, String msg) {
+    public void showNotifications(String title, String msg) {
+
         Intent i = new Intent(this, MainActivity.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE,
                 i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification notification = new NotificationCompat.Builder(this)
+        Notification builder = new Notification.Builder(this)
                 .setContentText(msg)
                 .setContentTitle(title)
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .build();
 
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(NOTIFICATION_ID, notification);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID, builder);
     }
 
     @Override
