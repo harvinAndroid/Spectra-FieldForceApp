@@ -6,8 +6,10 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +18,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.fieldforceapp.Model.LoginRequest;
+import com.example.fieldforceapp.Model.NotificationRequest;
+import com.example.fieldforceapp.Model.Order;
+import com.example.fieldforceapp.Model.SavetokenRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 /**
@@ -37,6 +50,9 @@ public class LoginFragment extends Fragment {
     private String name, salary;
     private String couponCodeString,userEmail,userEmailN;
     private String message;
+    private String fcmToken;
+    private String status;
+    private JSONArray result;
 
     OnLoginFormActivityListener loginFormActivityListener;
 
@@ -151,7 +167,7 @@ public class LoginFragment extends Fragment {
                         message="Welcome "+userEmailN;
                         MainActivity.prefConfig.writeLoginStatus(true);
                         loginFormActivityListener.performLogin(userEmailN);
-
+                        getSaveToken();
                     }
 
                    StatusMess.setText(message);
@@ -187,5 +203,115 @@ public class LoginFragment extends Fragment {
         StatusMess.setText("");
 
     }
+    private void getSaveToken(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener< InstanceIdResult >() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        fcmToken = task.getResult().getToken();
+                        // Log and toast
+                       // String msg = getString(R.string.msg_token_fmt);
+                        Log.d("FCMToken", fcmToken);
+                        /*send Notification*/
+
+                            performSaveToken();
+                        //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
+
+    private void performSaveToken() {
+
+        String result;
+
+        //employeeName = findViewById(R.id.name);
+        SavetokenRequest savetokenRequest=new SavetokenRequest();
+        savetokenRequest.setAction("saveDeviceToken");
+        savetokenRequest.setEmail(userEmailN);
+        savetokenRequest.setUser_token(fcmToken);
+        savetokenRequest.setAuthkey("ac7b51de9d888e1458dd53d8aJAN3ba6f");
+
+        SavetokenInterface apiService = ApiClient.getClient().create(SavetokenInterface.class);
+
+        Call< JsonElement > call =apiService.performSaveToken(savetokenRequest);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+
+                try
+                {
+                    //get your response....response.body()
+                    if (response.isSuccessful()) {
+
+                        //  parse(String.valueOf(response.body()!=null));
+                    }
+
+                    //String JsonObj= String.valueOf(response.body());
+
+                    JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+
+
+                    couponCodeString = jsonObject.getString("Status");
+
+                    // Log.d(TAG, "User Email ID: " + userEmailN);
+                    if(couponCodeString.equals("Failure")){
+
+                        message="Login Failed..Please try again...";
+                        // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
+
+                    }else if(couponCodeString.equals("Success")){
+                        userEmail=jsonObject.getString("response");
+                        JSONObject jsonObjectN = new JSONObject(String.valueOf(userEmail));
+                        userEmailN=jsonObjectN.getString("name");
+                        getSaveToken();
+                        message="Welcome "+userEmailN;
+                        MainActivity.prefConfig.writeLoginStatus(true);
+                        loginFormActivityListener.performLogin(userEmailN);
+
+                    }
+
+                    StatusMess.setText(message);
+
+
+                    //  Log.d(TAG, "RetroFit2 :RetroGetLogin: " + message);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                // if(response.body().getResponse().equals("ok")){
+                //   MainActivity.prefConfig.writeLoginStatus(true);
+                // loginFormActivityListener.performLogin(response.body().getName());
+
+                // }
+                //  else if(response.body().getResponse().equals("failled")){
+
+                //    MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
+                // }
+
+
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+
+            }
+        });
+        UserName.setText("");
+        UserPassword.setText("");
+        StatusMess.setText("");
+
+    }
+
+
+
 
 }

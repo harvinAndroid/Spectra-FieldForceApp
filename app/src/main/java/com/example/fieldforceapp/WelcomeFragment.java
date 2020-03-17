@@ -83,7 +83,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
 
         /*Notification*/
-        FirebaseInstanceId.getInstance().getInstanceId()
+        /*FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -97,10 +97,10 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                         String msg = getString(R.string.msg_token_fmt);
                         Log.d("FCMToken", fcmToken);
                         /*send Notification*/
-                        SendNotification();
+                   //     SendNotification();
                         //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    //}
+                //});
         /*Notification*/
 
         AssignmentRequest assignmentRequest = new AssignmentRequest();
@@ -177,7 +177,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         return view;
     }
 
-    View view;
+
 
    /* @Override
     public void onAttach(Context context) {
@@ -188,7 +188,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
     private void navigationDrawerSetup() {
 //        mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
-        try {
+       /* try {
             Toolbar toolbar = view.findViewById(R.id.toolbar);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     activity, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -210,7 +210,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
+        } */
     }
 
     @Override
