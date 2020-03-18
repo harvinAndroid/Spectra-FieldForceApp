@@ -1,14 +1,16 @@
 package com.example.fieldforceapp;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
-import android.media.session.MediaSession;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -16,25 +18,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.fieldforceapp.Model.AssignmentRequest;
 import com.example.fieldforceapp.Model.AssignmentAdapter;
+import com.example.fieldforceapp.Model.AssignmentRequest;
 import com.example.fieldforceapp.Model.NotificationRequest;
 import com.example.fieldforceapp.Model.Order;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -64,8 +52,12 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
     OnLogoutListener logoutListener;
 
+    public void onClick(View view) {
+        logoutListener.logoutperformed();
+    }
+
     public interface OnLogoutListener {
-        void logoutperformed();
+      public void logoutperformed();
     }
 
     public WelcomeFragment() {
@@ -159,13 +151,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         engName = view.findViewById(R.id.menu_text);
         engName.setText(MainActivity.prefConfig.readName());
         BnLogOut = view.findViewById(R.id.btn_logout);
-        BnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logoutListener.logoutperformed();
-
-            }
-        });
+        BnLogOut.setOnClickListener((View.OnClickListener) logoutListener);
         view = inflater.inflate(R.layout.fragment_welcome, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         assignAdapter = new AssignmentAdapter(orderList);

@@ -131,11 +131,5 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
         prefConfig.writeLoginStatus(false);
         prefConfig.writeName("User");
         getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
-
     }
-
-
-    /*Notification*/
-
-
 }
