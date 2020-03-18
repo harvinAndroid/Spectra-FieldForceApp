@@ -62,6 +62,8 @@ public class LoginFragment extends Fragment {
         public void performLogin(String name);
 
         public void performResetpassword();
+
+        void performLogout();
     }
 
     public LoginFragment() {

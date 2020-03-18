@@ -28,9 +28,16 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.OnLoginFormActivityListener, WelcomeFragment.OnLogoutListener {
+import java.util.zip.Inflater;
+
+public class MainActivity extends AppCompatActivity implements LoginFragment.OnLoginFormActivityListener {
     public static PrefConfig prefConfig;
     private static final String TAG = "MainActivity";
+
+    public interface OnLogoutListener
+    {
+        public void logoutperformed();
+    }
 
     public void runtimeEnableAutoInit() {
         // [START fcm_runtime_enable_auto_init]
@@ -40,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         /*Notification code start HP*/
@@ -56,62 +62,21 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
                 Log.d(TAG, "Key: " + key + " Value: " + value);
             }
         }
-        /*Notification code end HP*/
 
         prefConfig = new PrefConfig(this);
 
         if (findViewById(R.id.fregment_container) != null) {
-
-
-           /* if (savedInstanceState == null) {
-                ;
-           /* getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
-                    .commitNow();*/
-            //   return;
-            //}
             if (prefConfig.readLoginStatus()) {
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment()).commit();
             } else {
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
             }
         }
-
-
-        /*Notification*/
-/*
-      Button subscribeButton = findViewById(R.id.subscribeButton);
-       subscribeButton.setOnClickListener(new View.OnClickListener() {
-
-          public void onClick ( View v ) {
-                Log.d(TAG, "Subscribing to weather topic");
-                // [START subscribe_topics]
-                FirebaseMessaging.getInstance().subscribeToTopic("weather")
-                        .addOnCompleteListener(new OnCompleteListener< Void >() {
-                            @Override
-                            public void onComplete ( @NonNull Task< Void > task ) {
-                                String msg = getString(R.string.msg_subscribed);
-                                if (!task.isSuccessful()) {
-                                    msg = getString(R.string.msg_subscribe_failed);
-                                }
-                                Log.d(TAG, msg);
-                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                // [END subscribe_topics]
-            }
-        });
-
-
-
-        /*Notification*/
-
     }
 
     @Override
     public void performRegister() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container,
-                new RegistrationFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new RegistrationFragment()).addToBackStack(null).commit();
     }
 
     @Override
@@ -127,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
     }
 
     @Override
-    public void logoutperformed() {
+    public void performLogout() {
         prefConfig.writeLoginStatus(false);
         prefConfig.writeName("User");
         getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
