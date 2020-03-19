@@ -2,48 +2,25 @@ package com.example.fieldforceapp;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.graphics.Path;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-//import android.widget.Toolbar;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.widget.Button;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-
-import android.view.View;
-import android.widget.TextView;
-
-import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnLoginFormActivityListener {
     public static PrefConfig prefConfig;
     private static final String TAG = "MainActivity";
-
-    public interface OnLogoutListener
-    {
-        public void logoutperformed();
-    }
 
     public void runtimeEnableAutoInit() {
         // [START fcm_runtime_enable_auto_init]
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         // [END fcm_runtime_enable_auto_init]
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

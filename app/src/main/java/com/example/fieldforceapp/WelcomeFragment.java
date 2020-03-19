@@ -1,6 +1,7 @@
 package com.example.fieldforceapp;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
@@ -45,9 +47,16 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private String TAG;
     private String fcmToken;
     private String EmailID;
+    public static PrefConfig prefConfig;
 
     public WelcomeFragment() {
 
+    }
+
+    OnLogoutListener onLogoutListener;
+
+    public interface OnLogoutListener {
+        void performLogout();
     }
 
     AssignmentAdapter assignAdapter;
@@ -113,11 +122,12 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         View view = inflater.inflate(R.layout.header_main, container, false);
         engName = view.findViewById(R.id.menu_text);
         engName.setText(MainActivity.prefConfig.readName());
-        BnLogOut = view.findViewById(R.id.btn_logout);
+        BnLogOut=(Button) view.findViewById(R.id.btn_logout);
         BnLogOut.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
-                Log.d("Clicked", "Success");
+                Log.d("Click", "Ser");
             }
         });
         view = inflater.inflate(R.layout.fragment_welcome, container, false);

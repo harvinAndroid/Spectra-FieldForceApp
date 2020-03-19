@@ -10,10 +10,11 @@ public class Order {
 
     }
 
-    public Order(String customerName, String customerAddress, String customerMobile,
+    public Order(String customerID, String customerName, String customerAddress, String customerMobile,
                  String customerCityName, String customerEmailId, String customerPrefDate,
                  String case_remarks, String srNumber, String portId, String srStatus,
-                 String fromtime) {
+                 String fromTime, String tomTime) {
+        this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerMobile = customerMobile;
@@ -24,7 +25,16 @@ public class Order {
         this.srNumber = srNumber;
         this.portId = portId;
         this.srStatus = srStatus;
-        this.fromtime = fromtime;
+        this.fromtime = fromTime;
+        this.totime = tomTime;
+    }
+
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
     }
 
     public String getCustomerName() {
@@ -113,5 +123,13 @@ public class Order {
 
     public void setFromtime(String fromtime) {
         this.fromtime = fromtime;
+    }
+
+    public String getTotime() {
+        return totime;
+    }
+
+    public void setTotime(String totime) {
+        this.totime = totime;
     }
 }

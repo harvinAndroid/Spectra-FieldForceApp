@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
     android:layout_marginTop="15dp"
     android:layout_marginRight="10dp"
@@ -17,27 +17,45 @@
         android:background="@color/colorWhite"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:textColor="@color/colorBlack">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
-            android:text="Customer:" />
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="Customer ID:" />
+
+        <TextView
+            android:id="@+id/customerId"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="100dp" />
+
+        <TextView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerId"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:text="Customer Name:" />
 
         <TextView
             android:id="@+id/customerName"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="70dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="14dp" />
+            android:layout_below="@id/customerId"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerName"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
             android:text="Email ID:" />
 
         <TextView
@@ -45,14 +63,15 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerName"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerEmail"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
             android:text="Mobile No:" />
 
         <TextView
@@ -60,14 +79,15 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerEmail"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerMobile"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
             android:text="Address:" />
 
         <TextView
@@ -75,14 +95,15 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerMobile"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerAddress"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
             android:text="SR Number:" />
 
         <TextView
@@ -90,8 +111,42 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerAddress"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srNumber"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:text="Slot Time:" />
+
+        <TextView
+            android:id="@+id/slotTime"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srNumber"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/slotTime"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Case Remarks:" />
+
+        <TextView
+            android:id="@+id/caseRemarks"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/slotTime"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
