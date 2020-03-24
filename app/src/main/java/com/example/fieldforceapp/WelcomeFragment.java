@@ -2,17 +2,22 @@ package com.example.fieldforceapp;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -38,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WelcomeFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
-    Activity activity;
+    AppCompatActivity activity;
     private TextView engName;
     private Button BnLogOut;
     private DrawerLayout drawerLayout;
@@ -116,21 +121,48 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     }
 
     @Override
+
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navigationDrawerSetup(view);
+    }
+
+    private void navigationDrawerSetup(View view) {
+//        mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
+        try {
+            Toolbar toolbar = view.findViewById(R.id.toolbar);
+            drawerLayout = view.findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    activity, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawerLayout.setDrawerListener(toggle);
+            drawerLayout.setScrimColor(Color.TRANSPARENT);
+            toggle.syncState();
+            NavigationView navigationView = view.findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            navigationView.setItemIconTintList(null);
+            View rootview = navigationView.getHeaderView(0);
+            engName = rootview.findViewById(R.id.menu_text);
+            engName.setText("Hi "+MainActivity.prefConfig.readName());
+            BnLogOut= rootview.findViewById(R.id.btn_logout);
+            BnLogOut.setOnClickListener(v -> {
+//                onLogoutListener.performLogout();//done yahi search kar raha tha
+
+                MainActivity.prefConfig.writeLoginStatus(false);
+                MainActivity.prefConfig.writeName("User");
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
+            });
+            Menu nav_menu = navigationView.getMenu();
+            if (nav_menu != null) {
+            }
+        } catch (Exception ex) {
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getAssignment();
-
-        View view = inflater.inflate(R.layout.header_main, container, false);
-        engName = view.findViewById(R.id.menu_text);
-        engName.setText(MainActivity.prefConfig.readName());
-        BnLogOut=(Button) view.findViewById(R.id.btn_logout);
-        BnLogOut.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Log.d("Click", "Ser");
-            }
-        });
-        view = inflater.inflate(R.layout.fragment_welcome, container, false);
+        activity = (AppCompatActivity)getActivity();
+        View view = inflater.inflate(R.layout.fragment_welcome, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         assignAdapter = new AssignmentAdapter(orderList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -142,11 +174,9 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.d("Click", "Text");
         drawerLayout.closeDrawer(GravityCompat.START);
         switch (item.getItemId()) {
-            case R.id.nav_att_punch:
-                // TODO: 2/13/2020 your task 1 here
-                return true;
             case R.id.nav_att_history:
                 // TODO: 2/13/2020 your task 2 here
                 return true;
