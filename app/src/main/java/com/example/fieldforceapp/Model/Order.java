@@ -4,7 +4,7 @@ public class Order {
     private String assignmentId, customerID, customerName, customerAddress, customerCityName,
             customerMobile, customerEmailId, customerPrefDate, case_remarks, powerLevelINAS,
             customerNetworkTech, slotId, pengId, sengId, sloteBookedDate, srNumber, portId,
-            roasterId, srStatus, createdOn, status, fromtime, totime;
+            roasterId, srStatus, createdOn, status, startTime, endTime;
 
     public Order() {
 
@@ -13,7 +13,7 @@ public class Order {
     public Order(String customerID, String customerName, String customerAddress, String customerMobile,
                  String customerCityName, String customerEmailId, String customerPrefDate,
                  String case_remarks, String srNumber, String portId, String srStatus,
-                 String fromTime, String tomTime) {
+                 String startTime, String endTime) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -25,8 +25,8 @@ public class Order {
         this.srNumber = srNumber;
         this.portId = portId;
         this.srStatus = srStatus;
-        this.fromtime = fromTime;
-        this.totime = tomTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public String getCustomerID() {
@@ -118,18 +118,18 @@ public class Order {
     }
 
     public String getFromtime() {
-        return fromtime;
+        return startTime;
     }
 
-    public void setFromtime(String fromtime) {
-        this.fromtime = fromtime;
+    public void setFromtime(String startTime) {
+        this.startTime = startTime;
     }
 
     public String getTotime() {
-        return totime;
+        return endTime;
     }
 
-    public void setTotime(String totime) {
-        this.totime = totime;
+    public void setTotime(String startTime) {
+        this.endTime = endTime;
     }
 }
