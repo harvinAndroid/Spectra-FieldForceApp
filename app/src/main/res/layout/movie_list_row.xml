@@ -24,26 +24,26 @@
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="Customer ID:" />
+            android:layout_marginTop="5dp"
+            android:text="Customer ID:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/customerId"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="120dp" />
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerId"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="Customer Name:" />
+            android:layout_marginTop="10dp"
+            android:text="Customer Name:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/customerName"
@@ -58,10 +58,10 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerName"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="Email ID:" />
+            android:layout_marginTop="10dp"
+            android:text="Email ID:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/customerEmail"
@@ -76,10 +76,10 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerEmail"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="Mobile No:" />
+            android:layout_marginTop="10dp"
+            android:text="Mobile No:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/customerMobile"
@@ -94,10 +94,10 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerMobile"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="Address:" />
+            android:layout_marginTop="10dp"
+            android:text="Address:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/customerAddress"
@@ -112,10 +112,10 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerAddress"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="SR Number:" />
+            android:layout_marginTop="10dp"
+            android:text="SR Number:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/srNumber"
@@ -123,17 +123,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/customerAddress"
             android:layout_marginLeft="120dp"
-
             android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srNumber"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="Slot Date Time:" />
+            android:layout_marginTop="10dp"
+            android:text="Slot Date Time:"
+            android:textStyle="bold" />
 
 
         <TextView
@@ -148,11 +147,10 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/slotTime"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="SR Type:" />
-
+            android:layout_marginTop="10dp"
+            android:text="Type:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/srType"
@@ -166,11 +164,10 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srType"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="SR Sub Type:" />
-
+            android:layout_marginTop="10dp"
+            android:text="Sub Type:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/srSubType"
@@ -179,15 +176,15 @@
             android:layout_below="@id/srType"
             android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp" />
+
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srSubType"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="SR Sub Sub Type:" />
-
+            android:layout_marginTop="10dp"
+            android:text="Sub Sub Type:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/srSubSubType"
@@ -196,15 +193,15 @@
             android:layout_below="@id/srSubType"
             android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp" />
+
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srSubSubType"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:textStyle="bold"
-            android:text="Current Status" />
-
+            android:layout_marginTop="10dp"
+            android:text="Current Status"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/srStatus"
@@ -218,11 +215,11 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srStatus"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
-            android:textStyle="bold"
-            android:text="Case Remarks:" />
+            android:text="Case Remarks:"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/caseRemarks"
@@ -231,7 +228,7 @@
             android:layout_below="@id/srStatus"
             android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

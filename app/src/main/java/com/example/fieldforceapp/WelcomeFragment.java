@@ -143,7 +143,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             navigationView.setItemIconTintList(null);
             View rootview = navigationView.getHeaderView(0);
             engName = rootview.findViewById(R.id.menu_text);
-            engName.setText("Hi "+MainActivity.prefConfig.readUserName());
+            engName.setText("Hi, "+MainActivity.prefConfig.readUserName());
             btnHome= rootview.findViewById(R.id.nav_home);
             btnHome.setOnClickListener(v -> {
                 MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
