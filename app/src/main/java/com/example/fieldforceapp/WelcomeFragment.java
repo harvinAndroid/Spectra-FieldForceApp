@@ -45,7 +45,8 @@ import retrofit2.Response;
 public class WelcomeFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     AppCompatActivity activity;
     private TextView engName;
-    private Button BnLogOut;
+    private TextView btnHome;
+    private TextView btnLogout;
     private DrawerLayout drawerLayout;
     private String status;
     private JSONArray result;
@@ -142,11 +143,14 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             navigationView.setItemIconTintList(null);
             View rootview = navigationView.getHeaderView(0);
             engName = rootview.findViewById(R.id.menu_text);
-            engName.setText("Hi "+MainActivity.prefConfig.readName());
-            BnLogOut= rootview.findViewById(R.id.btn_logout);
-            BnLogOut.setOnClickListener(v -> {
-//                onLogoutListener.performLogout();//done yahi search kar raha tha
-
+            engName.setText("Hi "+MainActivity.prefConfig.readUserName());
+            btnHome= rootview.findViewById(R.id.nav_home);
+            btnHome.setOnClickListener(v -> {
+                MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
+            });
+            btnLogout= rootview.findViewById(R.id.nav_logout);
+            btnLogout.setOnClickListener(v -> {
                 MainActivity.prefConfig.writeLoginStatus(false);
                 MainActivity.prefConfig.writeName("User");
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();

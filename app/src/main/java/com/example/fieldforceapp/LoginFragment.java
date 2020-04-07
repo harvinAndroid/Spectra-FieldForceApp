@@ -44,12 +44,12 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
  */
 public class LoginFragment extends Fragment {
 
-    private TextView RegText,StatusMess,ErrorMessage;
+    private TextView RegText, StatusMess, ErrorMessage;
     private TextView textView;
     private EditText UserName, UserPassword;
     private Button LoginBn;
     private String name, salary;
-    private String couponCodeString,userEmail,userEmailN;
+    private String couponCodeString, userEmail, userEmailN, userName;
     private String message;
     private String fcmToken;
     private String status;
@@ -60,7 +60,7 @@ public class LoginFragment extends Fragment {
     public interface OnLoginFormActivityListener {
         public void performRegister();
 
-        public void performLogin(String name);
+        public void performLogin(String email, String name);
 
         public void performResetpassword();
 
@@ -81,12 +81,12 @@ public class LoginFragment extends Fragment {
         textView = view.findViewById(R.id.spectraText);
         textView.setTypeface(myTypeFace);
 
-       RegText = view.findViewById(R.id.register_txt);
-       // RegText = null;
+        RegText = view.findViewById(R.id.register_txt);
+        // RegText = null;
         UserName = view.findViewById(R.id.user_name);
         UserPassword = view.findViewById(R.id.user_pass);
-        StatusMess=view.findViewById(R.id.error_text);
-        ErrorMessage=view.findViewById(R.id.errortxt);
+        StatusMess = view.findViewById(R.id.error_text);
+        ErrorMessage = view.findViewById(R.id.errortxt);
 
         Typeface mytextFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/helveticaneue-font/helveticaneue-light.ttf");
         UserName.setTypeface(mytextFace);
@@ -96,7 +96,7 @@ public class LoginFragment extends Fragment {
         LoginBn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               performLogin();
+                performLogin();
 
             }
         });
@@ -137,7 +137,7 @@ public class LoginFragment extends Fragment {
             ErrorMessage.setText(message);
 
         }*/
-        LoginRequest loginRequest=new LoginRequest();
+        LoginRequest loginRequest = new LoginRequest();
         loginRequest.setAction("authentication");
         loginRequest.setUser_name(username);
         loginRequest.setUser_password(password);
@@ -145,17 +145,16 @@ public class LoginFragment extends Fragment {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         //  \"Authkey\":\"ac7b51de9d888e1458dd53d8aJAN3ba6f\",\"Action\":\"authentication\
-        Call< JsonElement > call =apiService.performUserLogin(loginRequest);
+        Call<JsonElement> call = apiService.performUserLogin(loginRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
 
-                try
-                {
-             //get your response....response.body()
+                try {
+                    //get your response....response.body()
                     if (response.isSuccessful()) {
 
-                      //  parse(String.valueOf(response.body()!=null));
+                        //  parse(String.valueOf(response.body()!=null));
                     }
 
                     //String JsonObj= String.valueOf(response.body());
@@ -165,42 +164,40 @@ public class LoginFragment extends Fragment {
 
                     couponCodeString = jsonObject.getString("Status");
 
-                   // Log.d(TAG, "User Email ID: " + userEmailN);
-                    if(couponCodeString.equals("Failure")){
+                    // Log.d(TAG, "User Email ID: " + userEmailN);
+                    if (couponCodeString.equals("Failure")) {
 
-                        message="Login Failed..Please try again...";
-                       // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
+                        message = "Login Failed..Please try again...";
+                        // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
                         ErrorMessage.setText(message);
-                    }else if(couponCodeString.equals("Success")){
-                        userEmail=jsonObject.getString("response");
+                    } else if (couponCodeString.equals("Success")) {
+                        userEmail = jsonObject.getString("response");
                         JSONObject jsonObjectN = new JSONObject(String.valueOf(userEmail));
-                        userEmailN=jsonObjectN.getString("name");
-
-                        message="Welcome "+userEmailN;
+                        userEmailN = jsonObjectN.getString("name");
+                        userName = jsonObjectN.getString("username");
+                        message = "Welcome " + userName;
                         MainActivity.prefConfig.writeLoginStatus(true);
-                        loginFormActivityListener.performLogin(userEmailN);
+                        loginFormActivityListener.performLogin(userEmailN, userName);
                         getSaveToken();
                     }
 
-                   StatusMess.setText(message);
+                    StatusMess.setText(message);
 
 
-                  //  Log.d(TAG, "RetroFit2 :RetroGetLogin: " + message);
-                }
-                catch (Exception e)
-                {
-                e.printStackTrace();
+                    //  Log.d(TAG, "RetroFit2 :RetroGetLogin: " + message);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-               // if(response.body().getResponse().equals("ok")){
-                 //   MainActivity.prefConfig.writeLoginStatus(true);
-                   // loginFormActivityListener.performLogin(response.body().getName());
+                // if(response.body().getResponse().equals("ok")){
+                //   MainActivity.prefConfig.writeLoginStatus(true);
+                // loginFormActivityListener.performLogin(response.body().getName());
 
-               // }
-              //  else if(response.body().getResponse().equals("failled")){
+                // }
+                //  else if(response.body().getResponse().equals("failled")){
 
                 //    MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
-               // }
+                // }
 
 
             }
@@ -216,9 +213,10 @@ public class LoginFragment extends Fragment {
         ErrorMessage.setText("");
 
     }
-    private void getSaveToken(){
+
+    private void getSaveToken() {
         FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener< InstanceIdResult >() {
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
@@ -228,11 +226,11 @@ public class LoginFragment extends Fragment {
                         // Get new Instance ID token
                         fcmToken = task.getResult().getToken();
                         // Log and toast
-                       // String msg = getString(R.string.msg_token_fmt);
+                        // String msg = getString(R.string.msg_token_fmt);
                         Log.d("FCMToken", fcmToken);
                         /*send Notification*/
 
-                            performSaveToken();
+                        performSaveToken();
                         //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -245,7 +243,7 @@ public class LoginFragment extends Fragment {
         String result;
 
         //employeeName = findViewById(R.id.name);
-        SavetokenRequest savetokenRequest=new SavetokenRequest();
+        SavetokenRequest savetokenRequest = new SavetokenRequest();
         savetokenRequest.setAction("saveDeviceToken");
         savetokenRequest.setEmail(userEmailN);
         savetokenRequest.setUser_token(fcmToken);
@@ -253,13 +251,12 @@ public class LoginFragment extends Fragment {
 
         SavetokenInterface apiService = ApiClient.getClient().create(SavetokenInterface.class);
 
-        Call< JsonElement > call =apiService.performSaveToken(savetokenRequest);
+        Call<JsonElement> call = apiService.performSaveToken(savetokenRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
 
-                try
-                {
+                try {
                     //get your response....response.body()
                     if (response.isSuccessful()) {
 
@@ -274,19 +271,20 @@ public class LoginFragment extends Fragment {
                     couponCodeString = jsonObject.getString("Status");
 
                     // Log.d(TAG, "User Email ID: " + userEmailN);
-                    if(couponCodeString.equals("Failure")){
+                    if (couponCodeString.equals("Failure")) {
 
-                        message="Login Failed..Please try again...";
+                        message = "Login Failed..Please try again...";
                         // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
 
-                    }else if(couponCodeString.equals("Success")){
-                        userEmail=jsonObject.getString("response");
+                    } else if (couponCodeString.equals("Success")) {
+                        userEmail = jsonObject.getString("response");
                         JSONObject jsonObjectN = new JSONObject(String.valueOf(userEmail));
-                        userEmailN=jsonObjectN.getString("name");
+                        userEmailN = jsonObjectN.getString("name");
+                        userName = jsonObjectN.getString("username");
                         getSaveToken();
-                        message="Welcome "+userEmailN;
+                        message = "Welcome " + userEmailN;
                         MainActivity.prefConfig.writeLoginStatus(true);
-                        loginFormActivityListener.performLogin(userEmailN);
+                        loginFormActivityListener.performLogin(userEmailN, userName);
 
                     }
 
@@ -294,9 +292,7 @@ public class LoginFragment extends Fragment {
 
 
                     //  Log.d(TAG, "RetroFit2 :RetroGetLogin: " + message);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -323,8 +319,6 @@ public class LoginFragment extends Fragment {
         StatusMess.setText("");
 
     }
-
-
 
 
 }

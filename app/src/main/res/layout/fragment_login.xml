@@ -47,10 +47,6 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/round_corner">
 
-
-
-
-
         <EditText
             android:id="@+id/user_name"
             android:layout_width="320dp"
@@ -73,7 +69,6 @@
             android:backgroundTint="@color/colorBlack"
             android:hint="Password"
             android:inputType="textPassword"
-
             android:textColor="@color/colorBlack"
             android:textColorHint="@color/colorGray"
             android:textSize="20sp" />
