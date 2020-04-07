@@ -24,25 +24,39 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/spectraText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="#MakeLifeBetter"
         android:textColor="@color/colorGray"
+        android:textSize="25sp" />
+    <TextView
+        android:id="@+id/errortxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text=""
+        android:textColor="@color/colorRed"
+        android:layout_below="@id/make_life"
         android:textSize="25sp" />
 
     <RelativeLayout
         android:id="@+id/main_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/make_life"
-        android:layout_marginTop="60dp"
+        android:layout_below="@id/errortxt"
+        android:layout_marginTop="40dp"
         android:background="@drawable/round_corner">
+
+
+
+
 
         <EditText
             android:id="@+id/user_name"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="50dp"
             android:backgroundTint="@color/colorBlack"
             android:hint="User Name"
             android:textColor="@color/colorBlack"
@@ -84,7 +98,7 @@
             android:layout_below="@id/login_btn"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
-            android:text="Forgot password ?"
+            android:text=""
             android:textColor="@color/colorLink"
             android:textSize="17sp" />
 
@@ -92,9 +106,9 @@
             android:id="@+id/error_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_txt"
+            android:layout_below="@id/login_btn"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:text=""
             android:textColor="@color/colorBlue" />
 

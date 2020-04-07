@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +44,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
  */
 public class LoginFragment extends Fragment {
 
-    private TextView RegText,StatusMess;
+    private TextView RegText,StatusMess,ErrorMessage;
     private TextView textView;
     private EditText UserName, UserPassword;
     private Button LoginBn;
@@ -80,10 +81,12 @@ public class LoginFragment extends Fragment {
         textView = view.findViewById(R.id.spectraText);
         textView.setTypeface(myTypeFace);
 
-        RegText = view.findViewById(R.id.register_txt);
+       RegText = view.findViewById(R.id.register_txt);
+       // RegText = null;
         UserName = view.findViewById(R.id.user_name);
         UserPassword = view.findViewById(R.id.user_pass);
         StatusMess=view.findViewById(R.id.error_text);
+        ErrorMessage=view.findViewById(R.id.errortxt);
 
         Typeface mytextFace = Typeface.createFromAsset(getContext().getAssets(), "fonts/helveticaneue-font/helveticaneue-light.ttf");
         UserName.setTypeface(mytextFace);
@@ -127,6 +130,13 @@ public class LoginFragment extends Fragment {
         String result;
 
         //employeeName = findViewById(R.id.name);
+        /*if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password) ){
+
+            message="Oops! omething went wrong!";
+            // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
+            ErrorMessage.setText(message);
+
+        }*/
         LoginRequest loginRequest=new LoginRequest();
         loginRequest.setAction("authentication");
         loginRequest.setUser_name(username);
@@ -160,7 +170,7 @@ public class LoginFragment extends Fragment {
 
                         message="Login Failed..Please try again...";
                        // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
-
+                        ErrorMessage.setText(message);
                     }else if(couponCodeString.equals("Success")){
                         userEmail=jsonObject.getString("response");
                         JSONObject jsonObjectN = new JSONObject(String.valueOf(userEmail));
@@ -203,6 +213,7 @@ public class LoginFragment extends Fragment {
         UserName.setText("");
         UserPassword.setText("");
         StatusMess.setText("");
+        ErrorMessage.setText("");
 
     }
     private void getSaveToken(){

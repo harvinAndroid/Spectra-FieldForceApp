@@ -6,9 +6,9 @@
     android:layout_marginLeft="15dp"
     android:layout_marginTop="15dp"
     android:layout_marginRight="10dp"
-    android:padding="1sp"
+    android:padding="10dp"
     android:paddingLeft="@dimen/cardview_default_radius"
-    app:cardCornerRadius="5dp"
+    app:cardCornerRadius="10dp"
     app:cardElevation="8dp">
 
     <RelativeLayout
@@ -18,13 +18,15 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
+        android:padding="20dp"
         android:textColor="@color/colorBlack">
 
         <TextView
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
+            android:textStyle="bold"
             android:text="Customer ID:" />
 
         <TextView
@@ -32,14 +34,15 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="100dp" />
+            android:layout_marginLeft="120dp" />
 
         <TextView
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerId"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
+            android:textStyle="bold"
             android:text="Customer Name:" />
 
         <TextView
@@ -47,15 +50,17 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerId"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="120dp"
+
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerName"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
+            android:textStyle="bold"
             android:text="Email ID:" />
 
         <TextView
@@ -63,15 +68,17 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerName"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="120dp"
+
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerEmail"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
+            android:textStyle="bold"
             android:text="Mobile No:" />
 
         <TextView
@@ -79,15 +86,17 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerEmail"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="120dp"
+
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerMobile"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
+            android:textStyle="bold"
             android:text="Address:" />
 
         <TextView
@@ -95,15 +104,17 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerMobile"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="120dp"
+
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerAddress"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
+            android:textStyle="bold"
             android:text="SR Number:" />
 
         <TextView
@@ -111,40 +122,114 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerAddress"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="120dp"
+
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srNumber"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:text="Slot Time:" />
+            android:textStyle="bold"
+            android:text="Slot Date Time:" />
+
 
         <TextView
             android:id="@+id/slotTime"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srNumber"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp" />
 
         <TextView
-            android:layout_width="125dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/slotTime"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:text="SR Type:" />
+
+
+        <TextView
+            android:id="@+id/srType"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/slotTime"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srType"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:text="SR Sub Type:" />
+
+
+        <TextView
+            android:id="@+id/srSubType"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srType"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp" />
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srSubType"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:text="SR Sub Sub Type:" />
+
+
+        <TextView
+            android:id="@+id/srSubSubType"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srSubType"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp" />
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srSubSubType"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:text="Current Status" />
+
+
+        <TextView
+            android:id="@+id/srStatus"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srSubSubType"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srStatus"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
+            android:textStyle="bold"
             android:text="Case Remarks:" />
 
         <TextView
             android:id="@+id/caseRemarks"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/slotTime"
-            android:layout_marginLeft="100dp"
+            android:layout_below="@id/srStatus"
+            android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"/>
 
