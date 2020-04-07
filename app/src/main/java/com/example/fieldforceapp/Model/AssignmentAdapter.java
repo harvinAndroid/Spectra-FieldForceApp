@@ -16,7 +16,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     private List<Order> orderList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView customerId, customerName, customerEmail, customerMobile, customerAddress, srNumber, slotTime, caseRemarks;
+        public TextView customerId, customerName, customerEmail, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
+                srStatus,srType,srSubType,srSubSubType;
 
         public MyViewHolder(View view) {
             super(view);
@@ -28,6 +29,11 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             srNumber = (TextView) view.findViewById(R.id.srNumber);
             slotTime = (TextView) view.findViewById(R.id.slotTime);
             caseRemarks=(TextView) view.findViewById(R.id.caseRemarks);
+            srStatus=(TextView) view.findViewById(R.id.srStatus);
+            srType=(TextView) view.findViewById(R.id.srType);
+            srSubType=(TextView) view.findViewById(R.id.srSubType);
+            srSubSubType=(TextView) view.findViewById(R.id.srSubSubType);
+
         }
     }
 
@@ -54,8 +60,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.customerMobile.setText(order.getCustomerMobile());
         holder.customerAddress.setText(order.getCustomerAddress());
         holder.srNumber.setText(order.getSrNumber());
-        holder.slotTime.setText(order.getFromtime()+ ":" + order.getTotime());
+        holder.slotTime.setText(order.getRoasterDate()+" "+order.getFromtime()+ " - " + order.getTotime());
         holder.caseRemarks.setText(order.getCaseRemarks());
+        holder.srStatus.setText(order.getSrStatus());
+        holder.srType.setText(order.getSrType());
+        holder.srSubType.setText(order.getSrSubType());
+        holder.srSubSubType.setText(order.getSrSubSubType());
     }
 
     @Override

@@ -4,7 +4,7 @@ public class Order {
     private String assignmentId, customerID, customerName, customerAddress, customerCityName,
             customerMobile, customerEmailId, customerPrefDate, case_remarks, powerLevelINAS,
             customerNetworkTech, slotId, pengId, sengId, sloteBookedDate, srNumber, portId,
-            roasterId, srStatus, createdOn, status, startTime, endTime;
+            roasterId, srStatus, createdOn, status, startTime, endTime,srType,srSubType,srSubSubType,roasteDate ;
 
     public Order() {
 
@@ -13,7 +13,7 @@ public class Order {
     public Order(String customerID, String customerName, String customerAddress, String customerMobile,
                  String customerCityName, String customerEmailId, String customerPrefDate,
                  String case_remarks, String srNumber, String portId, String srStatus,
-                 String startTime, String endTime) {
+                 String startTime, String endTime, String srType,String srSubType,String srSubSubType,String roasteDate ) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -27,6 +27,10 @@ public class Order {
         this.srStatus = srStatus;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.srType = srType;
+        this.srSubType = srSubType;
+        this.srSubSubType = srSubSubType;
+        this.roasteDate=roasteDate;
     }
 
     public String getCustomerID() {
@@ -132,4 +136,39 @@ public class Order {
     public void setTotime(String startTime) {
         this.endTime = endTime;
     }
+
+
+    public String getSrType() {
+        return srType;
+    }
+
+    public void setSrType(String srType) {
+        this.srType = srType;
+    }
+
+    public String getSrSubType() {
+        return srSubType;
+    }
+
+    public void setSrSubType(String srSubSubType) {
+        this.srSubType = srSubType;
+    }
+
+    public String getSrSubSubType() {
+        return srSubSubType;
+    }
+
+    public void setSrSubSubType(String srSubSubType) {
+        this.srSubSubType = srSubSubType;
+    }
+
+    public String getRoasterDate() {
+        return roasteDate;
+    }
+
+    public void setRoasterDate(String roasteDate) {
+        this.roasteDate = roasteDate;
+    }
+
+
 }
