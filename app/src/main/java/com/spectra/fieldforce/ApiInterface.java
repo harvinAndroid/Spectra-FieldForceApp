@@ -1,6 +1,6 @@
-package com.spectra.fieldforceapp;
+package com.spectra.fieldforce;
 
-import com.spectra.fieldforceapp.Model.LoginRequest;
+import com.spectra.fieldforce.Model.LoginRequest;
 import com.google.gson.JsonElement;
 
 import retrofit2.Call;

@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp.Model;
+package com.spectra.fieldforce.Model;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.spectra.fieldforceapp.R;
+import com.spectra.fieldforce.R;
 
 import java.util.List;
 

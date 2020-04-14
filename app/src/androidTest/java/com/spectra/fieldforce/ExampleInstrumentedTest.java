@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp;
+package com.spectra.fieldforce;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.spectra.fieldforceapp", appContext.getPackageName());
+        assertEquals("com.spectra.fieldforce", appContext.getPackageName());
     }
 }

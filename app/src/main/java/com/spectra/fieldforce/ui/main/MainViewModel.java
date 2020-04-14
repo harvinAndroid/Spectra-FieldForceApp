@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp.ui.main;
+package com.spectra.fieldforce.ui.main;
 
 import androidx.lifecycle.ViewModel;
 

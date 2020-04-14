@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp.Model;
+package com.spectra.fieldforce.Model;
 
 public class LoginRequest {
     String Authkey = "";

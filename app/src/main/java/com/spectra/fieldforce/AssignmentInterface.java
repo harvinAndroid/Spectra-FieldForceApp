@@ -1,5 +1,5 @@
-package com.spectra.fieldforceapp;
-import com.spectra.fieldforceapp.Model.AssignmentRequest;
+package com.spectra.fieldforce;
+import com.spectra.fieldforce.Model.AssignmentRequest;
 import com.google.gson.JsonElement;
 
 import retrofit2.Call;

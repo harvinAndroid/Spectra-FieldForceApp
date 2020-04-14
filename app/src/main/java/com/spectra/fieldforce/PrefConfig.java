@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp;
+package com.spectra.fieldforce;
 
 import android.content.Context;
 import android.content.SharedPreferences;

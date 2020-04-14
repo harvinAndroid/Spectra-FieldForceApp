@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp;
+package com.spectra.fieldforce;
 
 import org.junit.Test;
 

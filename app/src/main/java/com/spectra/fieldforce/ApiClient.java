@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp;
+package com.spectra.fieldforce;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

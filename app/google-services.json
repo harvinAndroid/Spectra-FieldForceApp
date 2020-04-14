@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "349599090805",
-    "firebase_url": "https://ffa-spectra.firebaseio.com",
-    "project_id": "ffa-spectra",
-    "storage_bucket": "ffa-spectra.appspot.com"
+    "project_number": "814923093255",
+    "firebase_url": "https://spectra-ffa.firebaseio.com",
+    "project_id": "spectra-ffa",
+    "storage_bucket": "spectra-ffa.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:349599090805:android:798273a741c6f52da6d03c",
+        "mobilesdk_app_id": "1:814923093255:android:e654a8c62352ee2fcfa1a2",
         "android_client_info": {
-          "package_name": "com.spectra.fieldforceapp"
+          "package_name": "com.spectra.fieldforce"
         }
       },
       "oauth_client": [
         {
-          "client_id": "349599090805-dvtn1q127kulucc9m625q1jtkdr9rg3k.apps.googleusercontent.com",
+          "client_id": "814923093255-8ej65sv9chqd2lpuri0scql4icf39mpi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCJF3n0OWw0PpQheFlHqxX7NnKN2nyYxp4"
+          "current_key": "AIzaSyBsEbQodo0jb3uJB4Z62MFzjFy_LBzz5vw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "349599090805-dvtn1q127kulucc9m625q1jtkdr9rg3k.apps.googleusercontent.com",
+              "client_id": "814923093255-8ej65sv9chqd2lpuri0scql4icf39mpi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

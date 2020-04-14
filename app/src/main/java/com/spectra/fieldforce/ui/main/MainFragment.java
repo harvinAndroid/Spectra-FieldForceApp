@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp.ui.main;
+package com.spectra.fieldforce.ui.main;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.spectra.fieldforceapp.R;
+import com.spectra.fieldforce.R;
 
 public class MainFragment extends Fragment {
 

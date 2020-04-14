@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp;
+package com.spectra.fieldforce;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.spectra.fieldforceapp.Model.AssignmentAdapter;
-import com.spectra.fieldforceapp.Model.AssignmentRequest;
-import com.spectra.fieldforceapp.Model.Order;
+import com.spectra.fieldforce.Model.AssignmentAdapter;
+import com.spectra.fieldforce.Model.AssignmentRequest;
+import com.spectra.fieldforce.Model.Order;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

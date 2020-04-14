@@ -1,4 +1,4 @@
-package com.spectra.fieldforceapp;
+package com.spectra.fieldforce;
 
 
 import android.app.Activity;
@@ -17,8 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.spectra.fieldforceapp.Model.LoginRequest;
-import com.spectra.fieldforceapp.Model.SavetokenRequest;
+import com.spectra.fieldforce.Model.LoginRequest;
+import com.spectra.fieldforce.Model.SavetokenRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;

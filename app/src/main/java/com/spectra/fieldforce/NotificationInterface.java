@@ -1,5 +1,5 @@
-package com.spectra.fieldforceapp;
-import com.spectra.fieldforceapp.Model.NotificationRequest;
+package com.spectra.fieldforce;
+import com.spectra.fieldforce.Model.NotificationRequest;
 import com.google.gson.JsonElement;
 
 import retrofit2.Call;
