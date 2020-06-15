@@ -2,24 +2,23 @@ package com.spectra.fieldforce.Model;
 
 public class Order {
     private String assignmentId, customerID, customerName, customerAddress, customerCityName,
-            customerMobile, customerEmailId, customerPrefDate, case_remarks, powerLevelINAS,
+            customerMobile,  customerPrefDate, case_remarks, powerLevelINAS, segment,
             customerNetworkTech, slotId, pengId, sengId, sloteBookedDate, srNumber, portId,
-            roasterId, srStatus, createdOn, status, startTime, endTime,srType,srSubType,srSubSubType,roasteDate ;
+            roasterId, slaClock, slaStatus, customerIP, srStatus, createdOn, status, startTime, endTime,srType,srSubType,roasteDate ;
 
     public Order() {
 
     }
 
     public Order(String customerID, String customerName, String customerAddress, String customerMobile,
-                 String customerCityName, String customerEmailId, String customerPrefDate,
-                 String case_remarks, String srNumber, String portId, String srStatus,
-                 String startTime, String endTime, String srType,String srSubType,String srSubSubType,String roasteDate ) {
+                 String customerCityName, String customerPrefDate, String slaClock, String slaStatus, String customerIP,
+                 String case_remarks, String srNumber, String portId, String srStatus, String segment,
+                 String startTime, String endTime, String srType,String srSubType,String roasteDate ) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerMobile = customerMobile;
         this.customerCityName = customerCityName;
-        this.customerEmailId = customerEmailId;
         this.customerPrefDate = customerPrefDate;
         this.case_remarks = case_remarks;
         this.srNumber = srNumber;
@@ -29,8 +28,11 @@ public class Order {
         this.endTime = endTime;
         this.srType = srType;
         this.srSubType = srSubType;
-        this.srSubSubType = srSubSubType;
         this.roasteDate=roasteDate;
+        this.slaClock=slaClock;
+        this.slaStatus=slaStatus;
+        this.customerIP=customerIP;
+        this.segment=segment;
     }
 
     public String getCustomerID() {
@@ -71,14 +73,6 @@ public class Order {
 
     public void setCustomerCityName(String customerCityName) {
         this.customerCityName = customerCityName;
-    }
-
-    public String getCustomerEmailId() {
-        return customerEmailId;
-    }
-
-    public void setCustomerEmailId(String customerMobile) {
-        this.customerEmailId = customerEmailId;
     }
 
     public String getCustomerPrefDate() {
@@ -137,7 +131,6 @@ public class Order {
         this.endTime = endTime;
     }
 
-
     public String getSrType() {
         return srType;
     }
@@ -154,14 +147,6 @@ public class Order {
         this.srSubType = srSubType;
     }
 
-    public String getSrSubSubType() {
-        return srSubSubType;
-    }
-
-    public void setSrSubSubType(String srSubSubType) {
-        this.srSubSubType = srSubSubType;
-    }
-
     public String getRoasterDate() {
         return roasteDate;
     }
@@ -170,5 +155,35 @@ public class Order {
         this.roasteDate = roasteDate;
     }
 
+    public String getSlaClock() {
+        return slaClock;
+    }
 
+    public void setSlaClock(String slaClock) {
+        this.slaClock = slaClock;
+    }
+
+    public String getSlaStatus() {
+        return slaStatus;
+    }
+
+    public void setStatus(String slaStatus) {
+        this.slaStatus = slaStatus;
+    }
+
+    public String getCustomerIP() {
+        return customerIP;
+    }
+
+    public void setCustomerIP(String customerIP) {
+        this.customerIP = customerIP;
+    }
+
+    public String getSegment() {
+        return segment;
+    }
+
+    public void setSegment(String segment) {
+        this.segment = segment;
+    }
 }

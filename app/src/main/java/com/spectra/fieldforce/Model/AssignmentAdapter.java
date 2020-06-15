@@ -16,14 +16,13 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     private List<Order> orderList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView customerId, customerName, customerEmail, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
-                srStatus,srType,srSubType,srSubSubType;
+        public TextView customerId, customerName, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
+                srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment;
 
         public MyViewHolder(View view) {
             super(view);
             customerId=(TextView) view.findViewById(R.id.customerId);
             customerName = (TextView) view.findViewById(R.id.customerName);
-            customerEmail = (TextView) view.findViewById(R.id.customerEmail);
             customerMobile = (TextView) view.findViewById(R.id.customerMobile);
             customerAddress = (TextView) view.findViewById(R.id.customerAddress);
             srNumber = (TextView) view.findViewById(R.id.srNumber);
@@ -32,8 +31,10 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             srStatus=(TextView) view.findViewById(R.id.srStatus);
             srType=(TextView) view.findViewById(R.id.srType);
             srSubType=(TextView) view.findViewById(R.id.srSubType);
-            srSubSubType=(TextView) view.findViewById(R.id.srSubSubType);
-
+            slaClock=(TextView) view.findViewById(R.id.slaClock);
+            slaStatus=(TextView) view.findViewById(R.id.slaStatus);
+            customerIP =(TextView) view.findViewById(R.id.customerIP);
+            segment = (TextView) view.findViewById(R.id.businessSegemnt);
         }
     }
 
@@ -56,7 +57,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         Order order = orderList.get(position);
         holder.customerId.setText(order.getCustomerID());
         holder.customerName.setText(order.getCustomerName());
-        holder.customerEmail.setText(order.getCustomerEmailId());
         holder.customerMobile.setText(order.getCustomerMobile());
         holder.customerAddress.setText(order.getCustomerAddress());
         holder.srNumber.setText(order.getSrNumber());
@@ -65,7 +65,10 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.srStatus.setText(order.getSrStatus());
         holder.srType.setText(order.getSrType());
         holder.srSubType.setText(order.getSrSubType());
-        holder.srSubSubType.setText(order.getSrSubSubType());
+        holder.slaClock.setText(order.getSlaClock());
+        holder.slaStatus.setText(order.getSlaStatus());
+        holder.customerIP.setText(order.getCustomerIP());
+        holder.segment.setText(order.getSegment() == "0" ? "Home": "Business");
     }
 
     @Override
