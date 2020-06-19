@@ -17,7 +17,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView customerId, customerName, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
-                srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment;
+                srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName;
 
         public MyViewHolder(View view) {
             super(view);
@@ -35,6 +35,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             slaStatus=(TextView) view.findViewById(R.id.slaStatus);
             customerIP =(TextView) view.findViewById(R.id.customerIP);
             segment = (TextView) view.findViewById(R.id.businessSegemnt);
+            podName = (TextView) view.findViewById(R.id.podName);
+            devicePort = (TextView) view.findViewById(R.id.devicePort);
         }
     }
 
@@ -68,7 +70,9 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.slaClock.setText(order.getSlaClock());
         holder.slaStatus.setText(order.getSlaStatus());
         holder.customerIP.setText(order.getCustomerIP());
-        holder.segment.setText(order.getSegment() == "0" ? "Home": "Business");
+        holder.segment.setText(order.getSegment());
+        holder.podName.setText(order.getPodName());
+        holder.devicePort.setText(order.getDeviceName() + " : "+ order.getPortId());
     }
 
     @Override

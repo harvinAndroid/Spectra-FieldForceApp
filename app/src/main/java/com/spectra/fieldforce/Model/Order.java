@@ -2,9 +2,10 @@ package com.spectra.fieldforce.Model;
 
 public class Order {
     private String assignmentId, customerID, customerName, customerAddress, customerCityName,
-            customerMobile,  customerPrefDate, case_remarks, powerLevelINAS, segment,
-            customerNetworkTech, slotId, pengId, sengId, sloteBookedDate, srNumber, portId,
-            roasterId, slaClock, slaStatus, customerIP, srStatus, createdOn, status, startTime, endTime,srType,srSubType,roasteDate ;
+            customerMobile,  customerPrefDate, case_remarks, powerLevelINAS, segment, podName,
+            customerNetworkTech, slotId, pengId, sengId, sloteBookedDate, srNumber, portId, deviceName,
+            roasterId, slaClock, slaStatus, customerIP, srStatus, createdOn, status, startTime,
+            endTime, srType, srSubType, roasteDate ;
 
     public Order() {
 
@@ -12,8 +13,8 @@ public class Order {
 
     public Order(String customerID, String customerName, String customerAddress, String customerMobile,
                  String customerCityName, String customerPrefDate, String slaClock, String slaStatus, String customerIP,
-                 String case_remarks, String srNumber, String portId, String srStatus, String segment,
-                 String startTime, String endTime, String srType,String srSubType,String roasteDate ) {
+                 String case_remarks, String srNumber, String portId, String deviceName, String srStatus, String segment,
+                 String podName, String startTime, String endTime, String srType,String srSubType, String roasteDate ) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -22,6 +23,8 @@ public class Order {
         this.customerPrefDate = customerPrefDate;
         this.case_remarks = case_remarks;
         this.srNumber = srNumber;
+        this.podName = podName;
+        this.deviceName = deviceName;
         this.portId = portId;
         this.srStatus = srStatus;
         this.startTime = startTime;
@@ -97,6 +100,22 @@ public class Order {
 
     public void setSrNumber(String srNumber) {
         this.srNumber = srNumber;
+    }
+
+    public String getPodName() {
+        return podName;
+    }
+
+    public void setPodName(String podName) {
+        this.podName = podName;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public String getPortId() {

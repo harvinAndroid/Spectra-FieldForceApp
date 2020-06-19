@@ -187,11 +187,12 @@
             android:layout_below="@id/srSubType"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:text="Current Status"
+            android:layout_marginBottom="5dp"
+            android:text="POD Name:"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/srStatus"
+            android:id="@+id/podName"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srSubType"
@@ -202,10 +203,46 @@
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/srStatus"
+            android:layout_below="@id/podName"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
+            android:text="Device/Port:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/devicePort"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/podName"
+            android:textIsSelectable="true"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/devicePort"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="Current Status"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/srStatus"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/devicePort"
+            android:textIsSelectable="true"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srStatus"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
             android:text="Case Remarks:"
             android:textStyle="bold" />
 
@@ -216,8 +253,7 @@
             android:layout_below="@id/srStatus"
             android:textIsSelectable="true"
             android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="135dp"
@@ -225,7 +261,6 @@
             android:layout_below="@id/caseRemarks"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
             android:text="SLA Clock:"
             android:textStyle="bold" />
 
@@ -236,8 +271,7 @@
             android:layout_below="@id/caseRemarks"
             android:textIsSelectable="true"
             android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="135dp"
@@ -245,7 +279,6 @@
             android:layout_below="@id/slaClock"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
             android:text="SLA Status:"
             android:textStyle="bold" />
 
@@ -256,8 +289,7 @@
             android:layout_below="@id/slaClock"
             android:textIsSelectable="true"
             android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="135dp"
