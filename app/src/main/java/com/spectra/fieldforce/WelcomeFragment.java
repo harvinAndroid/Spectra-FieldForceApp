@@ -1,13 +1,19 @@
 package com.spectra.fieldforce;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -39,6 +46,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.content.Context;
+
+import static android.content.Context.*;
+import static android.content.Context.LOCATION_SERVICE;
+
 public class WelcomeFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     AppCompatActivity activity;
     private TextView engName;
@@ -51,12 +68,20 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private String fcmToken;
     private String EmailID;
     public static PrefConfig prefConfig;
+    public Button statTime;
+    public Button endTime;
+    private Button b;
+    private TextView t;
+    private LocationManager locationManager;
+    private LocationListener listener;
+    OnLogoutListener onLogoutListener;
+
 
     public WelcomeFragment() {
 
     }
 
-    OnLogoutListener onLogoutListener;
+
 
     public interface OnLogoutListener {
         void performLogout();
@@ -118,6 +143,93 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         });
     }
 
+    private void getLatLont(){
+
+        t = (TextView) activity.findViewById(R.id.textViewGSP);
+        b = (Button) activity.findViewById(R.id.startTime);
+        Context myContext = null;
+        locationManager = (LocationManager) myContext.getSystemService(Context.LOCATION_SERVICE);
+        //locationManager=(LocationManager)  getSystemService(LOCATION_SERVICE);
+        listener = new LocationListener() {
+            @Override
+            public void onLocationChanged ( Location location ) {
+                t.append("\n " + location.getLongitude() + " " + location.getLatitude());
+            }
+
+            @Override
+            public void onStatusChanged ( String s, int i, Bundle bundle ) {
+
+            }
+
+            @Override
+            public void onProviderEnabled ( String s ) {
+
+            }
+
+            @Override
+            public void onProviderDisabled ( String s ) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+
+
+        if ((ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
+                        , 10);
+            }
+            return;
+        }
+        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+        b.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint ( "MissingPermission" )
+            @Override
+            public void onClick ( View view ) {
+
+
+                //noinspection MissingPermission
+                locationManager.requestLocationUpdates("gps", 5000, 0, listener);
+            }
+        });
+        return;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,   String[] permissions,   int[] grantResults) {
+        switch (requestCode){
+            case 10:
+               // configure_button();
+
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
+                                , 10);
+                    }
+                    return;
+                }
+                // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+                b.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint ( "MissingPermission" )
+                    @Override
+                    public void onClick ( View view ) {
+
+
+                        //noinspection MissingPermission
+                        locationManager.requestLocationUpdates("gps", 5000, 0, listener);
+                    }
+                });
+
+
+
+
+                break;
+            default:
+                break;
+        }
+    }
+
+
     @Override
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -162,6 +274,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getAssignment();
+
         activity = (AppCompatActivity)getActivity();
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
@@ -170,6 +283,9 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(assignAdapter);
+
+        getLatLont();
+
         return view;
     }
 
