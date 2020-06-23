@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="startTime" type="id" />
+    <item name="endTime" type="id" />
+    <item name="textViewGSP" type="id" />
+</resources>
