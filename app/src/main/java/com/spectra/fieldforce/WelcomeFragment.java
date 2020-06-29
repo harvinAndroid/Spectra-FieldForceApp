@@ -71,15 +71,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private String fcmToken;
     private String EmailID;
     public static PrefConfig prefConfig;
-    private Button btnStartTime;
-    private TextView startTime;
-    private Button btnEndTime;
-    private TextView endTime;
-    private Context myContext;
-    private static final int REQUEST_LOCATION = 1;
-    private LocationManager locationManager;
-    private LocationListener listener;
-    private Location location;
+
     OnLogoutListener onLogoutListener;
 
     public WelcomeFragment() {
@@ -146,93 +138,12 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         });
     }
 
-    private void getLatLong(Context myContext, LayoutInflater inflater, ViewGroup container) {
-        this.myContext = myContext;
-        View view = inflater.inflate(R.layout.movie_list_row, container, false);
-        startTime = (TextView) view.findViewById(R.id.textViewGSP);
-        btnStartTime = (Button) view.findViewById(R.id.startTime);
-        LocationManager locationManager = (LocationManager) myContext.getSystemService(Context.LOCATION_SERVICE);
-        LocationListener listener = new LocationListener() {
-
-            @Override
-            public void onLocationChanged(Location location) {
-                double lat = location.getLatitude();
-                double longi = location.getLongitude();
-                String latitude = String.valueOf(lat);
-                String longitude = String.valueOf(longi);
-                Log.d("Location", location.getLongitude() + " " + location.getLatitude());
-                startTime.setText("\n " + longitude + " " + latitude);
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(i);
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-        };
-
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
-                        , 10);
-            }
-            return;
-        }
-
-        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
-        btnStartTime.setOnClickListener(v -> {
-            startTime.setText("\n " + location.getLongitude() + " " + location.getLatitude());
-        });
-        return;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 10:
-                // configure_button();
-
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
-                                , 10);
-                    }
-                    return;
-                }
-                // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
-                btnStartTime.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public void onClick(View view) {
-                        //noinspection MissingPermission
-                        locationManager.requestLocationUpdates("gps", 5000, 0, listener);
-                    }
-                });
-
-
-                break;
-            default:
-                break;
-        }
-    }
 
 
     @Override
-
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navigationDrawerSetup(view);
+        //navigationDrawerSetup(view);
     }
 
     private void navigationDrawerSetup(View view) {
@@ -275,61 +186,12 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         activity = (AppCompatActivity) getActivity();
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        assignAdapter = new AssignmentAdapter(orderList);
+        assignAdapter = new AssignmentAdapter(activity, orderList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(assignAdapter);
-        myContext = getContext();
-        /*view = inflater.inflate(R.layout.movie_list_row, container, false);
-        startTime = view.findViewById(R.id.textViewGSP);
-        btnStartTime = view.findViewById(R.id.startTime);
-        btnStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                locationManager = (LocationManager) myContext.getSystemService(Context.LOCATION_SERVICE);
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    OnGPS();
-                } else {
-                    getLocation();
-                }
-            }
-        });*/
-        getLatLong(myContext, inflater, container);
         return view;
-    }
-
-    private void OnGPS() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
-            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (locationGPS != null) {
-                double lat = locationGPS.getLatitude();
-                double longi = locationGPS.getLongitude();
-                String latitude = String.valueOf(lat);
-                String longitude = String.valueOf(longi);
-                startTime.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
-            }
-        }
     }
 
     @Override
