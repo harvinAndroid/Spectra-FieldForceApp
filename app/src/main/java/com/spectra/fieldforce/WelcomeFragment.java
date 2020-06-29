@@ -3,6 +3,7 @@ package com.spectra.fieldforce;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -52,6 +54,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.content.Context;
+import android.widget.Toast;
 
 import static android.content.Context.*;
 import static android.content.Context.LOCATION_SERVICE;
@@ -73,8 +76,10 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private Button btnEndTime;
     private TextView endTime;
     private Context myContext;
+    private static final int REQUEST_LOCATION = 1;
     private LocationManager locationManager;
     private LocationListener listener;
+    private Location location;
     OnLogoutListener onLogoutListener;
 
     public WelcomeFragment() {
@@ -141,21 +146,28 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         });
     }
 
-    private void getLatLont(Context myContext, LayoutInflater inflater, ViewGroup container) {
+    private void getLatLong(Context myContext, LayoutInflater inflater, ViewGroup container) {
         this.myContext = myContext;
         View view = inflater.inflate(R.layout.movie_list_row, container, false);
         startTime = (TextView) view.findViewById(R.id.textViewGSP);
         btnStartTime = (Button) view.findViewById(R.id.startTime);
         LocationManager locationManager = (LocationManager) myContext.getSystemService(Context.LOCATION_SERVICE);
-        listener = new LocationListener() {
+        LocationListener listener = new LocationListener() {
+
             @Override
             public void onLocationChanged(Location location) {
-                startTime.append("\n " + location.getLongitude() + " " + location.getLatitude());
+                double lat = location.getLatitude();
+                double longi = location.getLongitude();
+                String latitude = String.valueOf(lat);
+                String longitude = String.valueOf(longi);
+                Log.d("Location", location.getLongitude() + " " + location.getLatitude());
+                startTime.setText("\n " + longitude + " " + latitude);
             }
 
             @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
+            public void onProviderDisabled(String s) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
             }
 
             @Override
@@ -164,28 +176,23 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             }
 
             @Override
-            public void onProviderDisabled(String s) {
-                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(i);
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
             }
         };
 
-
-        if ((ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
                         , 10);
             }
             return;
         }
+
         // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
-        btnStartTime.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onClick(View view) {
-                //noinspection MissingPermission
-                locationManager.requestLocationUpdates("gps", 5000, 0, listener);
-            }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
+        btnStartTime.setOnClickListener(v -> {
+            startTime.setText("\n " + location.getLongitude() + " " + location.getLatitude());
         });
         return;
     }
@@ -265,7 +272,6 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getAssignment();
-
         activity = (AppCompatActivity) getActivity();
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
@@ -274,10 +280,56 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(assignAdapter);
-        myContext =  getContext();
-        getLatLont(myContext, inflater, container);
-
+        myContext = getContext();
+        /*view = inflater.inflate(R.layout.movie_list_row, container, false);
+        startTime = view.findViewById(R.id.textViewGSP);
+        btnStartTime = view.findViewById(R.id.startTime);
+        btnStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationManager = (LocationManager) myContext.getSystemService(Context.LOCATION_SERVICE);
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    OnGPS();
+                } else {
+                    getLocation();
+                }
+            }
+        });*/
+        getLatLong(myContext, inflater, container);
         return view;
+    }
+
+    private void OnGPS() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (locationGPS != null) {
+                double lat = locationGPS.getLatitude();
+                double longi = locationGPS.getLongitude();
+                String latitude = String.valueOf(lat);
+                String longitude = String.valueOf(longi);
+                startTime.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
+            }
+        }
     }
 
     @Override
