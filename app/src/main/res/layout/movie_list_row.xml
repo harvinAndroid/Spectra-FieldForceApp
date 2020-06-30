@@ -88,6 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/customerName"
             android:textIsSelectable="true"
+            android:textColor="@color/colorBlue"
+            android:textStyle="bold"
             android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp" />
 
@@ -311,47 +313,46 @@
             android:layout_marginTop="10dp" />
 
         <Button
-            android:id="@id/startTime"
+            android:id="@+id/btnStartTime"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_below="@id/customerIP"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="10dp"
             android:text="Start"
             android:background="@color/colorBlack"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"></Button>
 
+        <TextView
+            android:id="@+id/startTime"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnStartTime"
+            android:textIsSelectable="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp" />
+
         <Button
-            android:id="@id/endTime"
+            android:id="@+id/btnEndTime"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_below="@id/customerIP"
-            android:layout_alignRight="@id/startTime"
-            android:layout_marginLeft="200dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="-217dp"
+            android:layout_alignRight="@id/btnStartTime"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="-200dp"
             android:background="@color/colorBlack"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
             android:text="End"></Button>
 
         <TextView
-            android:layout_width="135dp"
+            android:id="@+id/endTime"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/startTime"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="GPS Coordinates:"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textViewGSP"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/startTime"
+            android:layout_below="@id/btnEndTime"
+            android:layout_alignRight="@id/startTime"
             android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
+            android:layout_marginRight="-200dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp" />
     </RelativeLayout>
