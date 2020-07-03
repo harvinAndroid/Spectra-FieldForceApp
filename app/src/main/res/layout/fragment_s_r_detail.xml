@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:layout_marginTop="15dp"
-    android:layout_marginRight="10dp"
-    android:padding="10dp"
-    android:paddingLeft="@dimen/cardview_default_radius"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="8dp">
+    android:layout_height="match_parent"
+    tools:context=".SRDetail">
 
+    <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,24 +20,7 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="SR Number:"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/srNumber"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srNumber"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="Customer ID:"
             android:textStyle="bold" />
 
@@ -50,7 +28,24 @@
             android:id="@+id/customerId"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/srNumber"
+            android:textIsSelectable="true"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerId"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="Segment:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/businessSegemnt"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerId"
             android:textIsSelectable="true"
             android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp" />
@@ -58,7 +53,7 @@
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/customerId"
+            android:layout_below="@id/businessSegemnt"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:text="Customer Name:"
@@ -68,7 +63,7 @@
             android:id="@+id/customerName"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/customerId"
+            android:layout_below="@id/businessSegemnt"
             android:textIsSelectable="true"
             android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp" />
@@ -99,53 +94,6 @@
             android:layout_below="@id/customerMobile"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:text="Slot Date Time:"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/slotTime"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerMobile"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
-
-        <Button
-            android:id="@+id/btnView"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/slotTime"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorBlack"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"
-            android:text="View"></Button>
-
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnView"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Segment:"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/businessSegemnt"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnView"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/businessSegemnt"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
             android:text="Address:"
             android:textStyle="bold" />
 
@@ -153,7 +101,7 @@
             android:id="@+id/customerAddress"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/businessSegemnt"
+            android:layout_below="@id/customerMobile"
             android:textIsSelectable="true"
             android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp" />
@@ -162,6 +110,42 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerAddress"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="SR Number:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/srNumber"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerAddress"
+            android:textIsSelectable="true"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srNumber"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="Slot Date Time:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/slotTime"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/srNumber"
+            android:textIsSelectable="true"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/slotTime"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:text="Type:"
@@ -171,7 +155,7 @@
             android:id="@+id/srType"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/customerAddress"
+            android:layout_below="@id/slotTime"
             android:textIsSelectable="true"
             android:layout_marginLeft="120dp"
             android:layout_marginTop="10dp" />
@@ -366,8 +350,6 @@
             android:layout_marginRight="-200dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp" />
-
-
-
     </RelativeLayout>
-</androidx.cardview.widget.CardView>
+
+</FrameLayout>
