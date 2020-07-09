@@ -137,6 +137,7 @@
             android:layout_marginTop="10dp"
             android:background="@color/colorBlack"
             android:text="Acknowledge"
+            android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"></Button>
 
