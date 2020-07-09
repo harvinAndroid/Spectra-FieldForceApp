@@ -23,13 +23,10 @@ public class AssignmentRequest {
     public void setAction ( String action ) {
         Action = action;
     }
-
     public String getUser_email ( String emailID ) {
         return emailID;
     }
     public void setemailID ( String emailID ) {
         this.emailID = emailID;
     }
-
-
 }

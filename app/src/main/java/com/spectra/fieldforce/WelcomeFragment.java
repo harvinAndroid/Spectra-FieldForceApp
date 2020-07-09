@@ -1,29 +1,20 @@
 package com.spectra.fieldforce;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -31,12 +22,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.spectra.fieldforce.Model.AssignmentAdapter;
-import com.spectra.fieldforce.Model.AssignmentRequest;
-import com.spectra.fieldforce.Model.Order;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.Model.AssignmentAdapter;
+import com.spectra.fieldforce.Model.AssignmentRequest;
+import com.spectra.fieldforce.Model.Order;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,17 +38,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.content.Context;
-import android.widget.Toast;
-
-import static android.content.Context.*;
-import static android.content.Context.LOCATION_SERVICE;
 
 public class WelcomeFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     AppCompatActivity activity;

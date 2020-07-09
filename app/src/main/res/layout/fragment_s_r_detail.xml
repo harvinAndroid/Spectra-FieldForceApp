@@ -5,351 +5,472 @@
     android:layout_height="match_parent"
     tools:context=".SRDetail">
 
-    <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:textColor="@color/colorBlack">
+        android:layout_height="match_parent">
+        <!-- TODO: Update blank fragment layout -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/colorBlack">
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:text="Customer ID:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="SR Number:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/customerId"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="5dp" />
+            <TextView
+                android:id="@+id/srNumber"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerId"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Segment:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/srNumber"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Customer ID:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/businessSegemnt"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerId"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/customerId"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/srNumber"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/businessSegemnt"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Customer Name:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerId"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Customer Name:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/customerName"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/businessSegemnt"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/customerName"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerId"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerName"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Mobile No:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerName"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Mobile No:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/customerMobile"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerName"
-            android:textIsSelectable="true"
-            android:textColor="@color/colorBlue"
-            android:textStyle="bold"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/customerMobile"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerName"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorBlue"
+                android:textIsSelectable="true"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerMobile"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Address:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerMobile"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Slot Date Time:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/customerAddress"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerMobile"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/slotTime"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerMobile"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerAddress"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="SR Number:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slotTime"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Address:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/srNumber"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customerAddress"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/customerAddress"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slotTime"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srNumber"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Slot Date Time:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerAddress"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Segment:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/slotTime"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srNumber"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/businessSegemnt"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerAddress"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/slotTime"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Type:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/businessSegemnt"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Type:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/srType"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/slotTime"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/srType"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/businessSegemnt"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srType"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Sub Type:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/srType"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Sub Type:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/srSubType"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srType"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/srSubType"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/srType"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srSubType"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="POD Name:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/srSubType"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="POD Name:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/podName"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srSubType"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/podName"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/srSubType"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/podName"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="Device/Port:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/podName"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="Device/Port:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/devicePort"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/podName"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/devicePort"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/podName"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/devicePort"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Current Status"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/devicePort"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Current Status"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/srStatus"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/devicePort"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/srStatus"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/devicePort"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srStatus"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Case Remarks:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/srStatus"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Case Remarks:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/caseRemarks"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/srStatus"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/caseRemarks"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/srStatus"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/caseRemarks"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="SLA Clock:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/caseRemarks"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="SLA Clock:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/slaClock"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/caseRemarks"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/slaClock"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/caseRemarks"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/slaClock"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="SLA Status:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slaClock"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="SLA Status:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/slaStatus"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/slaClock"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/slaStatus"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slaClock"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/slaStatus"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="Customer IP:"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slaStatus"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="Customer IP:"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/customerIP"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/slaStatus"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/customerIP"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slaStatus"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <Button
-            android:id="@+id/btnStartTime"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/customerIP"
-            android:layout_marginTop="10dp"
-            android:text="Start"
-            android:background="@color/colorBlack"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"></Button>
+            <Button
+                android:id="@+id/btnStartTime"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/customerIP"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorBlack"
+                android:text="Start"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"></Button>
 
-        <TextView
-            android:id="@+id/startTime"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnStartTime"
-            android:textIsSelectable="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp" />
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnStartTime"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="Start Time:"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnEndTime"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/customerIP"
-            android:layout_alignRight="@id/btnStartTime"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="-200dp"
-            android:background="@color/colorBlack"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"
-            android:text="End"></Button>
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnStartTime"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
 
-        <TextView
-            android:id="@+id/endTime"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnEndTime"
-            android:layout_alignRight="@id/startTime"
-            android:textIsSelectable="true"
-            android:layout_marginRight="-200dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp" />
-    </RelativeLayout>
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startTime"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="Start Location:"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/startLocation"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startTime"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
+
+            <Button
+                android:id="@+id/btnEndTime"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/startLocation"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorBlack"
+                android:text="End"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"></Button>
+
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnEndTime"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="End Time:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnEndTime"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
+
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/endTime"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="End Location:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/endLocation"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/endTime"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/endLocation"
+                android:background="@color/colorWhite"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:textColor="@color/colorBlack">
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="RC 1:"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/rc1"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rc1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="RC 2:"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/rc2"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rc1"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rc2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="RC 3:"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/rc3"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rc2"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
 </FrameLayout>
