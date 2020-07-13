@@ -1,6 +1,9 @@
 package com.spectra.fieldforce;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +12,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.common.internal.service.Common;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.spectra.fieldforce.Model.Order;
@@ -53,7 +60,8 @@ public class SRDetail extends Fragment {
             srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName,
             startTime, endTime, startLocation, endLocation;
     public Button btnView, btnStartTime, btnEndTime;
-    public Spinner rc1, rc2, rc3;
+    private EditText DateEdit;
+    public Spinner changeStatus, rc1, rc2, rc3;
     private String status;
     private JSONArray result;
     AppCompatActivity activity;
@@ -63,6 +71,7 @@ public class SRDetail extends Fragment {
     ArrayList<String> rc2Name;
     ArrayList<String> rc3Code;
     ArrayList<String> rc3Name;
+    ArrayList<String> caseStatus;
     private Location location;
 
     public SRDetail() {
@@ -77,6 +86,18 @@ public class SRDetail extends Fragment {
         args.putString("srNumber", param1);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void bindChangeStatus(int isResolve) {
+        caseStatus = new ArrayList<String>();
+        caseStatus.add("Select Status");
+        caseStatus.add("Hold");
+        if (isResolve == 1) {
+            caseStatus.add("Resolved");
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, caseStatus);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        changeStatus.setAdapter(adapter);
     }
 
     private void getRC1() {
@@ -316,27 +337,32 @@ public class SRDetail extends Fragment {
         });
     }
 
-    public void getLatLong(TextView txtLocation) {
-        activity = (AppCompatActivity) getActivity();
+    public boolean getLatLong(TextView txtLocation) {
+        boolean isLoc = true;
         LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                isLoc = false;
                 activity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
                         , 10);
             }
-            return;
         }
-        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (location == null) {
-            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (isLoc == true) {
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location == null) {
+                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+            double longi = location.getLongitude();
+            double lati = location.getLatitude();
+            String message = longi + " " + lati;
+            txtLocation.setText(message);
         }
-        double longi = location.getLongitude();
-        double lati = location.getLatitude();
-        String message = longi + " " + lati;
-        txtLocation.setText(message);
+        return isLoc;
     }
 
     public void call_action(Uri number) {
+        Activity activity = new Activity();
+        activity = getActivity();
         Intent intent = new Intent(Intent.ACTION_DIAL, number);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
@@ -345,6 +371,7 @@ public class SRDetail extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (AppCompatActivity) getActivity();
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
@@ -381,9 +408,36 @@ public class SRDetail extends Fragment {
         startLocation = (TextView) view.findViewById(R.id.startLocation);
         endLocation = (TextView) view.findViewById(R.id.endLocation);
         btnView = (Button) view.findViewById(R.id.btnView);
+        changeStatus = (Spinner) view.findViewById(R.id.changeStatus);
         rc1 = (Spinner) view.findViewById(R.id.rc1);
         rc2 = (Spinner) view.findViewById(R.id.rc2);
         rc3 = (Spinner) view.findViewById(R.id.rc3);
+        DateEdit = (EditText) view.findViewById(R.id.dateTimeText);
+        RelativeLayout resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
+        RelativeLayout holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
+        bindChangeStatus(0);
+        changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String status = changeStatus.getSelectedItem().toString();
+                if (status == "Resolved") {
+                    resolveLayout.setVisibility(View.VISIBLE);
+                    holdLayout.setVisibility(View.GONE);
+                } else if (status == "Hold") {
+                    resolveLayout.setVisibility(View.GONE);
+                    holdLayout.setVisibility(View.VISIBLE);
+                } else {
+                    resolveLayout.setVisibility(View.GONE);
+                    holdLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         getRC1();
         rc1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -414,24 +468,29 @@ public class SRDetail extends Fragment {
         btnStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLatLong(startLocation);
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String formattedDate = df.format(c.getTime());
-                startTime.setText(formattedDate);
-                btnStartTime.setVisibility(View.GONE);
-                btnEndTime.setVisibility(View.VISIBLE);
+                boolean isLoc = getLatLong(startLocation);
+                if (isLoc == true) {
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String formattedDate = df.format(c.getTime());
+                    startTime.setText(formattedDate);
+                    btnStartTime.setVisibility(View.GONE);
+                    btnEndTime.setVisibility(View.VISIBLE);
+                }
             }
         });
         btnEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLatLong(endLocation);
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String formattedDate = df.format(c.getTime());
-                endTime.setText(formattedDate);
-                btnEndTime.setVisibility(View.GONE);
+                boolean isLoc = getLatLong(endLocation);
+                if (isLoc == true) {
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String formattedDate = df.format(c.getTime());
+                    endTime.setText(formattedDate);
+                    btnEndTime.setVisibility(View.GONE);
+                    bindChangeStatus(1);
+                }
             }
         });
         customerMobile.setOnClickListener(new View.OnClickListener() {
@@ -441,6 +500,50 @@ public class SRDetail extends Fragment {
                 call_action(number);
             }
         });
+        DateEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    final TimePickerDialog timePickerDialog = new TimePickerDialog(
+                            activity, mTimeDateSetListener,
+                            mCalendar.get(Calendar.HOUR_OF_DAY),
+                            mCalendar.get(Calendar.MINUTE),
+                            DateFormat.is24HourFormat(getActivity()));
+                    timePickerDialog.show();
+                    final DatePickerDialog fromPickerDialog = new DatePickerDialog(
+                            activity, android.R.style.Theme_Material_Light_Dialog_Alert,
+                            mFromDateSetListener,
+                            mCalendar.get(Calendar.YEAR),
+                            mCalendar.get(Calendar.MONTH),
+                            mCalendar.get(Calendar.DAY_OF_MONTH));
+                    fromPickerDialog.show();
+                } catch (Exception ex) {
+                    // TODO: 13-07-2020 for @satyveer handle message to show user
+                }
+            }
+        });
+        mCalendar = Calendar.getInstance();
+        fromDateString = sendDateFormat.format(mCalendar.getTime());
         return view;
     }
+
+    String fromDateString = "";
+    Calendar mCalendar;
+    //    SimpleDateFormat returnDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+    SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
+        mCalendar.set(Calendar.YEAR, year);
+        mCalendar.set(Calendar.MONTH, monthOfYear);
+        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        fromDateString = sendDateFormat.format(mCalendar.getTime());
+        DateEdit.setText("" + fromDateString);
+    };
+    final TimePickerDialog.OnTimeSetListener mTimeDateSetListener = (view, hourOfDay, minuteOfHour) -> {
+        mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        mCalendar.set(Calendar.MINUTE, minuteOfHour);
+
+        fromDateString = sendDateFormat.format(mCalendar.getTime());
+        DateEdit.setText("" + fromDateString);
+    };
 }

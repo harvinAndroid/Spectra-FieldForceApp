@@ -1,6 +1,8 @@
 package com.spectra.fieldforce.Model;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,13 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.customerAddress.setText(order.getCustomerAddress());
         holder.srNumber.setText(order.getSrNumber());
         holder.slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
+        holder.customerMobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri number = Uri.parse("tel:" + holder.customerMobile.getText().toString());
+                call_action(number);
+            }
+        });
         holder.btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +78,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
                 holder.btnView.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void call_action(Uri number) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, number);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(intent);
     }
 
     @Override

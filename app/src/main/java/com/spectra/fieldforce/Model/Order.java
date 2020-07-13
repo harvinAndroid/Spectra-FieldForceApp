@@ -1,41 +1,40 @@
 package com.spectra.fieldforce.Model;
 
 public class Order {
-    private String assignmentId, customerID, customerName, customerAddress, customerCityName,
-            customerMobile,  customerPrefDate, case_remarks, powerLevelINAS, segment, podName,
-            customerNetworkTech, slotId, pengId, sengId, sloteBookedDate, srNumber, portId, deviceName,
-            roasterId, slaClock, slaStatus, customerIP, srStatus, createdOn, status, startTime,
-            endTime, srType, srSubType, roasteDate ;
+    private String customerID, customerName, customerAddress, customerCityName, customerMobile,
+            customerPrefDate, case_remarks, segment, podName, srNumber, portId, deviceName, slaClock,
+            slaStatus, customerIP, srStatus, startTime, endTime, srType, srSubType, roasteDate;
 
     public Order() {
 
     }
 
-    public Order(String customerID, String customerName, String customerAddress, String customerMobile,
-                 String customerCityName, String customerPrefDate, String slaClock, String slaStatus, String customerIP,
-                 String case_remarks, String srNumber, String portId, String deviceName, String srStatus, String segment,
-                 String podName, String startTime, String endTime, String srType,String srSubType, String roasteDate ) {
+    public Order(String customerID, String customerName, String customerAddress, String customerCityName,
+                 String customerMobile, String customerPrefDate, String case_remarks, String segment,
+                 String podName, String srNumber, String portId, String deviceName, String slaClock,
+                 String slaStatus, String customerIP, String srStatus, String startTime, String endTime,
+                 String srType, String srSubType, String roasteDate) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
-        this.customerMobile = customerMobile;
         this.customerCityName = customerCityName;
+        this.customerMobile = customerMobile;
         this.customerPrefDate = customerPrefDate;
         this.case_remarks = case_remarks;
-        this.srNumber = srNumber;
+        this.segment = segment;
         this.podName = podName;
-        this.deviceName = deviceName;
+        this.srNumber = srNumber;
         this.portId = portId;
+        this.deviceName = deviceName;
+        this.slaClock = slaClock;
+        this.slaStatus = slaStatus;
+        this.customerIP = customerIP;
         this.srStatus = srStatus;
         this.startTime = startTime;
         this.endTime = endTime;
         this.srType = srType;
         this.srSubType = srSubType;
-        this.roasteDate=roasteDate;
-        this.slaClock=slaClock;
-        this.slaStatus=slaStatus;
-        this.customerIP=customerIP;
-        this.segment=segment;
+        this.roasteDate = roasteDate;
     }
 
     public String getCustomerID() {
