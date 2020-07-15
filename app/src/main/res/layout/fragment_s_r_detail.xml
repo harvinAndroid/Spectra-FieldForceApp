@@ -298,7 +298,6 @@
                 android:layout_below="@id/slaStatus"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
                 android:text="Customer IP:"
                 android:textStyle="bold" />
 
@@ -311,11 +310,65 @@
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerIP"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Foni:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/foni"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/customerIP"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
+
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foni"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Repeat:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/repeat"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foni"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
+
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/repeat"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Massoutage:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/massoutage"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/repeat"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
+
             <Button
                 android:id="@+id/btnStartTime"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:layout_below="@id/customerIP"
+                android:layout_below="@id/massoutage"
                 android:layout_marginTop="10dp"
                 android:background="@color/colorBlack"
                 android:text="Start"
@@ -328,7 +381,6 @@
                 android:layout_below="@id/btnStartTime"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
                 android:text="Start Time:"
                 android:textStyle="bold" />
 
@@ -347,7 +399,6 @@
                 android:layout_below="@id/startTime"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
                 android:text="Start Location:"
                 android:textStyle="bold" />
 
@@ -413,6 +464,38 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/endLocation"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="ETR:"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/dateTimeText"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/endLocation"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:focusable="false"
+                android:ems="10"
+                android:inputType="date" />
+
+            <Button
+                android:id="@+id/btnETRSubmit"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/dateTimeText"
+                android:layout_marginTop="10dp"
+                android:textAllCaps="false"
+                android:background="@color/colorBlack"
+                android:text="Update ETR"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"></Button>
+
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnETRSubmit"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
@@ -513,32 +596,14 @@
                 android:textColor="@color/colorBlack"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="135dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:text="ETR:"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/dateTimeText"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="120dp"
-                    android:layout_marginTop="10dp"
-                    android:focusable="false"
-                    android:ems="10"
-                    android:inputType="date" />
-
                 <Button
                     android:id="@+id/btnHoldSubmit"
                     android:layout_width="100dp"
                     android:layout_height="40dp"
-                    android:layout_below="@id/dateTimeText"
                     android:layout_marginTop="10dp"
+                    android:textAllCaps="false"
                     android:background="@color/colorBlack"
-                    android:text="Submit"
+                    android:text="Update ETR"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"></Button>
 

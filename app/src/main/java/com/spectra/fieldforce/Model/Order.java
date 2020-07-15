@@ -3,7 +3,7 @@ package com.spectra.fieldforce.Model;
 public class Order {
     private String customerID, customerName, customerAddress, customerCityName, customerMobile,
             customerPrefDate, case_remarks, segment, podName, srNumber, portId, deviceName, slaClock,
-            slaStatus, customerIP, srStatus, startTime, endTime, srType, srSubType, roasteDate;
+            slaStatus, customerIP, srStatus, startTime, endTime, srType, srSubType, roasteDate, foni, repeat_sr, massoutage;
 
     public Order() {
 
@@ -13,7 +13,7 @@ public class Order {
                  String customerMobile, String customerPrefDate, String case_remarks, String segment,
                  String podName, String srNumber, String portId, String deviceName, String slaClock,
                  String slaStatus, String customerIP, String srStatus, String startTime, String endTime,
-                 String srType, String srSubType, String roasteDate) {
+                 String srType, String srSubType, String roasteDate, String foni, String repeat_sr, String massoutage) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -35,6 +35,9 @@ public class Order {
         this.srType = srType;
         this.srSubType = srSubType;
         this.roasteDate = roasteDate;
+        this.foni = foni;
+        this.repeat_sr = repeat_sr;
+        this.massoutage = massoutage;
     }
 
     public String getCustomerID() {
@@ -203,5 +206,29 @@ public class Order {
 
     public void setSegment(String segment) {
         this.segment = segment;
+    }
+
+    public String getFoni() {
+        return foni;
+    }
+
+    public void setFoni(String foni) {
+        this.foni = foni;
+    }
+
+    public String getRepeat_sr() {
+        return repeat_sr;
+    }
+
+    public void setRepeat_sr(String repeat_sr) {
+        this.repeat_sr = repeat_sr;
+    }
+
+    public String getMassoutage() {
+        return massoutage;
+    }
+
+    public void setMassoutage(String massoutage) {
+        this.massoutage = massoutage;
     }
 }

@@ -58,7 +58,7 @@ public class SRDetail extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public TextView customerId, customerName, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
             srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName,
-            startTime, endTime, startLocation, endLocation;
+            startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage;
     public Button btnView, btnStartTime, btnEndTime;
     private EditText DateEdit;
     public Spinner changeStatus, rc1, rc2, rc3;
@@ -317,6 +317,9 @@ public class SRDetail extends Fragment {
                                     segment.setText(order.getSegment());
                                     podName.setText(order.getPodName());
                                     devicePort.setText(order.getDeviceName() + " : " + order.getPortId());
+                                    foni.setText((order.getFoni()));
+                                    repeat_sr.setText((order.getRepeat_sr()));
+                                    massoutage.setText((order.getMassoutage()));
                                     btnEndTime.setVisibility(View.GONE);
                                 }
                             } catch (Exception e) {
@@ -407,6 +410,9 @@ public class SRDetail extends Fragment {
         endTime = (TextView) view.findViewById(R.id.endTime);
         startLocation = (TextView) view.findViewById(R.id.startLocation);
         endLocation = (TextView) view.findViewById(R.id.endLocation);
+        foni = (TextView) view.findViewById(R.id.foni);
+        repeat_sr = (TextView) view.findViewById(R.id.repeat);
+        massoutage = (TextView) view.findViewById(R.id.massoutage);
         btnView = (Button) view.findViewById(R.id.btnView);
         changeStatus = (Spinner) view.findViewById(R.id.changeStatus);
         rc1 = (Spinner) view.findViewById(R.id.rc1);
