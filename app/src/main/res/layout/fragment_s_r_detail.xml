@@ -465,7 +465,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/endLocation"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:text="ETR:"
                 android:textStyle="bold" />
 
@@ -475,20 +475,20 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/endLocation"
                 android:layout_marginLeft="120dp"
-                android:layout_marginTop="10dp"
-                android:focusable="false"
+                android:layout_marginTop="5dp"
                 android:ems="10"
+                android:focusable="false"
                 android:inputType="date" />
 
             <Button
                 android:id="@+id/btnETRSubmit"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/dateTimeText"
                 android:layout_marginTop="10dp"
-                android:textAllCaps="false"
                 android:background="@color/colorBlack"
                 android:text="Update ETR"
+                android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"></Button>
 
@@ -497,8 +497,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btnETRSubmit"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="15dp"
                 android:text="Change Status:"
                 android:textStyle="bold" />
 
@@ -506,10 +505,10 @@
                 android:id="@+id/changeStatus"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/endLocation"
-                android:textSize="14sp"
+                android:layout_below="@id/btnETRSubmit"
                 android:layout_marginLeft="120dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:textSize="14sp" />
 
             <RelativeLayout
                 android:id="@+id/resolveLayout"
@@ -572,14 +571,31 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp" />
 
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rc3"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="RFO:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/rfo"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rc3"
+                    android:layout_marginLeft="120dp" />
+
                 <Button
                     android:id="@+id/btnResolveSubmit"
-                    android:layout_width="100dp"
+                    android:layout_width="140dp"
                     android:layout_height="40dp"
-                    android:layout_below="@id/rc3"
+                    android:layout_below="@id/rfo"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorBlack"
-                    android:text="Submit"
+                    android:text="Submit on Resolve"
+                    android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"></Button>
 
@@ -594,16 +610,82 @@
                 android:focusable="true"
                 android:orientation="vertical"
                 android:textColor="@color/colorBlack"
+                android:layout_marginTop="10dp"
                 android:visibility="gone">
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Hold Reason:"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/holdReason"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/holdReason"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Contact Name:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/contactName"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/holdReason"
+                    android:layout_marginLeft="120dp" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contactName"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Contact Number:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/contactNumber"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contactName"
+                    android:layout_marginLeft="120dp" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contactNumber"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Contacted:"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/contacted"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/contactNumber"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp" />
 
                 <Button
                     android:id="@+id/btnHoldSubmit"
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:textAllCaps="false"
+                    android:layout_below="@id/contacted"
                     android:background="@color/colorBlack"
-                    android:text="Update ETR"
+                    android:text="Submit on Hold"
+                    android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"></Button>
 

@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
         if (findViewById(R.id.fregment_container) != null) {
             if (prefConfig.readLoginStatus()) {
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(),WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-                //getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment()).commit();
             } else {
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
             }
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         int count = getSupportFragmentManager().getBackStackEntryCount();
         if(count == 1){
             finish();
@@ -72,14 +70,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
     @Override
     public void performResetpassword() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new ResetpasswordFragment()).addToBackStack(null).commit();
-
     }
 
     @Override
     public void performLogin(String email, String name) {
         prefConfig.writeName(email);
         prefConfig.writeUserName(name);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(),WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
     }
 
     @Override

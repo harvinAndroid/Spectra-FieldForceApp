@@ -15,7 +15,7 @@ public class ApiClient {
 
     public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
     private static Retrofit retrofit = null;
-    static Retrofit getClient() {
+    public static Retrofit getClient() {
         if (retrofit == null) {
             synchronized (Retrofit.class) {
                 if (retrofit == null) {

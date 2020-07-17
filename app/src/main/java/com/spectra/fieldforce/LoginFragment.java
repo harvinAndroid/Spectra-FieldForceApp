@@ -44,12 +44,9 @@ public class LoginFragment extends Fragment {
     private TextView textView;
     private EditText UserName, UserPassword;
     private Button LoginBn;
-    private String name, salary;
     private String couponCodeString, userEmail, userEmailN, userName;
     private String message;
     private String fcmToken;
-    private String status;
-    private JSONArray result;
 
     OnLoginFormActivityListener loginFormActivityListener;
 
@@ -60,13 +57,12 @@ public class LoginFragment extends Fragment {
 
         public void performResetpassword();
 
-        void performLogout();
+        public void performLogout();
     }
 
     public LoginFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,22 +89,15 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 performLogin();
-
             }
         });
 
         RegText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //loginFormActivityListener.performRegister();
                 loginFormActivityListener.performResetpassword();
-
             }
-
         });
-        //employeeName = (TextView) view.findViewById(R.id.name);
-        //employeeSalary = (TextView) view.findViewById(R.id.salary);
         return view;
     }
 
@@ -117,22 +106,12 @@ public class LoginFragment extends Fragment {
         super.onAttach(context);
         Activity activity = (Activity) context;
         loginFormActivityListener = (OnLoginFormActivityListener) activity;
-
     }
 
     private void performLogin() {
         String username = UserName.getText().toString();
         String password = UserPassword.getText().toString();
-        String result;
 
-        //employeeName = findViewById(R.id.name);
-        /*if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password) ){
-
-            message="Oops! omething went wrong!";
-            // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
-            ErrorMessage.setText(message);
-
-        }*/
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setAction("authentication");
         loginRequest.setUser_name(username);
@@ -140,62 +119,32 @@ public class LoginFragment extends Fragment {
         loginRequest.setAuthkey("ac7b51de9d888e1458dd53d8aJAN3ba6f");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        //  \"Authkey\":\"ac7b51de9d888e1458dd53d8aJAN3ba6f\",\"Action\":\"authentication\
         Call<JsonElement> call = apiService.performUserLogin(loginRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
-
                 try {
-                    //get your response....response.body()
                     if (response.isSuccessful()) {
-
-                        //  parse(String.valueOf(response.body()!=null));
+                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        couponCodeString = jsonObject.getString("Status");
+                        if (couponCodeString.equals("Failure")) {
+                            message = "Login Failed..Please try again...";
+                            ErrorMessage.setText(message);
+                        } else if (couponCodeString.equals("Success")) {
+                            userEmail = jsonObject.getString("response");
+                            JSONObject jsonObjectN = new JSONObject(String.valueOf(userEmail));
+                            userEmailN = jsonObjectN.getString("name");
+                            userName = jsonObjectN.getString("username");
+                            message = "Welcome " + userName;
+                            MainActivity.prefConfig.writeLoginStatus(true);
+                            loginFormActivityListener.performLogin(userEmailN, userName);
+                            getSaveToken();
+                        }
+                        StatusMess.setText(message);
                     }
-
-                    //String JsonObj= String.valueOf(response.body());
-
-                    JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-
-
-                    couponCodeString = jsonObject.getString("Status");
-
-                    // Log.d(TAG, "User Email ID: " + userEmailN);
-                    if (couponCodeString.equals("Failure")) {
-
-                        message = "Login Failed..Please try again...";
-                        // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
-                        ErrorMessage.setText(message);
-                    } else if (couponCodeString.equals("Success")) {
-                        userEmail = jsonObject.getString("response");
-                        JSONObject jsonObjectN = new JSONObject(String.valueOf(userEmail));
-                        userEmailN = jsonObjectN.getString("name");
-                        userName = jsonObjectN.getString("username");
-                        message = "Welcome " + userName;
-                        MainActivity.prefConfig.writeLoginStatus(true);
-                        loginFormActivityListener.performLogin(userEmailN, userName);
-                        getSaveToken();
-                    }
-
-                    StatusMess.setText(message);
-
-
-                    //  Log.d(TAG, "RetroFit2 :RetroGetLogin: " + message);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                // if(response.body().getResponse().equals("ok")){
-                //   MainActivity.prefConfig.writeLoginStatus(true);
-                // loginFormActivityListener.performLogin(response.body().getName());
-
-                // }
-                //  else if(response.body().getResponse().equals("failled")){
-
-                //    MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
-                // }
-
-
             }
 
             @Override
@@ -207,7 +156,6 @@ public class LoginFragment extends Fragment {
         UserPassword.setText("");
         StatusMess.setText("");
         ErrorMessage.setText("");
-
     }
 
     private void getSaveToken() {
@@ -219,26 +167,14 @@ public class LoginFragment extends Fragment {
                             Log.w(TAG, "getInstanceId failed", task.getException());
                             return;
                         }
-                        // Get new Instance ID token
                         fcmToken = task.getResult().getToken();
-                        // Log and toast
-                        // String msg = getString(R.string.msg_token_fmt);
                         Log.d("FCMToken", fcmToken);
-                        /*send Notification*/
-
                         performSaveToken();
-                        //  Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
     }
 
     private void performSaveToken() {
-
-        String result;
-
-        //employeeName = findViewById(R.id.name);
         SavetokenRequest savetokenRequest = new SavetokenRequest();
         savetokenRequest.setAction("saveDeviceToken");
         savetokenRequest.setEmail(userEmailN);
@@ -246,63 +182,17 @@ public class LoginFragment extends Fragment {
         savetokenRequest.setAuthkey("ac7b51de9d888e1458dd53d8aJAN3ba6f");
 
         SavetokenInterface apiService = ApiClient.getClient().create(SavetokenInterface.class);
-
         Call<JsonElement> call = apiService.performSaveToken(savetokenRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
-
                 try {
-                    //get your response....response.body()
                     if (response.isSuccessful()) {
-
                         //  parse(String.valueOf(response.body()!=null));
                     }
-
-                    //String JsonObj= String.valueOf(response.body());
-
-                    JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-
-
-                    couponCodeString = jsonObject.getString("Status");
-
-                    // Log.d(TAG, "User Email ID: " + userEmailN);
-                    if (couponCodeString.equals("Failure")) {
-
-                        message = "Login Failed..Please try again...";
-                        // MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
-
-                    } else if (couponCodeString.equals("Success")) {
-                        userEmail = jsonObject.getString("response");
-                        JSONObject jsonObjectN = new JSONObject(String.valueOf(userEmail));
-                        userEmailN = jsonObjectN.getString("name");
-                        userName = jsonObjectN.getString("username");
-                        getSaveToken();
-                        message = "Welcome " + userEmailN;
-                        MainActivity.prefConfig.writeLoginStatus(true);
-                        loginFormActivityListener.performLogin(userEmailN, userName);
-
-                    }
-
-                    StatusMess.setText(message);
-
-
-                    //  Log.d(TAG, "RetroFit2 :RetroGetLogin: " + message);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                // if(response.body().getResponse().equals("ok")){
-                //   MainActivity.prefConfig.writeLoginStatus(true);
-                // loginFormActivityListener.performLogin(response.body().getName());
-
-                // }
-                //  else if(response.body().getResponse().equals("failled")){
-
-                //    MainActivity.prefConfig.dispalyToast("Login Failed..Please try again...");
-                // }
-
-
             }
 
             @Override
@@ -310,11 +200,5 @@ public class LoginFragment extends Fragment {
 
             }
         });
-        UserName.setText("");
-        UserPassword.setText("");
-        StatusMess.setText("");
-
     }
-
-
 }

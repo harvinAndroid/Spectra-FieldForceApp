@@ -44,6 +44,30 @@
             android:text="Home"/>
 
         <TextView
+            android:id="@+id/nav_Wifi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:gravity="left|center"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:text="Wifi Analyzer"/>
+
+        <TextView
+            android:id="@+id/nav_Speed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:gravity="left|center"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:text="Speed Test"/>
+
+        <TextView
             android:id="@+id/nav_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,6 +1,8 @@
 package com.spectra.fieldforce;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +45,8 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     AppCompatActivity activity;
     private TextView engName;
     private TextView btnHome;
+    private TextView btnWiFi;
+    private TextView btnSpeed;
     private TextView btnLogout;
     private DrawerLayout drawerLayout;
     private String status;
@@ -118,12 +122,10 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         });
     }
 
-
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //navigationDrawerSetup(view);
+        navigationDrawerSetup(view);
     }
 
     private void navigationDrawerSetup(View view) {
@@ -146,6 +148,20 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             btnHome.setOnClickListener(v -> {
                 MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
+            });
+            btnWiFi = rootview.findViewById(R.id.nav_Wifi);
+            btnWiFi.setOnClickListener(v -> {
+                Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage("com.farproc.wifi.analyzer");
+                if (launchIntent != null) {
+                    startActivity(launchIntent);
+                }
+            });
+            btnSpeed = rootview.findViewById(R.id.nav_Speed);
+            btnSpeed.setOnClickListener(v -> {
+                String url = "http://fiber.spectra.co/";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             });
             btnLogout = rootview.findViewById(R.id.nav_logout);
             btnLogout.setOnClickListener(v -> {

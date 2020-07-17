@@ -1,8 +1,8 @@
 package com.spectra.fieldforce.Model;
 
 public class Order {
-    private String customerID, customerName, customerAddress, customerCityName, customerMobile,
-            customerPrefDate, case_remarks, segment, podName, srNumber, portId, deviceName, slaClock,
+    private String customerID, customerName, customerAddress, customerCityName, customerMobile, slotType,
+            customerPrefDate, case_remarks, segment, podName, srNumber, portId, oltname, slaClock, acknowledge_status,
             slaStatus, customerIP, srStatus, startTime, endTime, srType, srSubType, roasteDate, foni, repeat_sr, massoutage;
 
     public Order() {
@@ -10,8 +10,8 @@ public class Order {
     }
 
     public Order(String customerID, String customerName, String customerAddress, String customerCityName,
-                 String customerMobile, String customerPrefDate, String case_remarks, String segment,
-                 String podName, String srNumber, String portId, String deviceName, String slaClock,
+                 String customerMobile, String slotType, String customerPrefDate, String case_remarks, String segment,
+                 String podName, String srNumber, String portId, String oltname, String slaClock, String acknowledge_status,
                  String slaStatus, String customerIP, String srStatus, String startTime, String endTime,
                  String srType, String srSubType, String roasteDate, String foni, String repeat_sr, String massoutage) {
         this.customerID = customerID;
@@ -21,11 +21,13 @@ public class Order {
         this.customerMobile = customerMobile;
         this.customerPrefDate = customerPrefDate;
         this.case_remarks = case_remarks;
+        this.slotType = slotType;
+        this.acknowledge_status = acknowledge_status;
         this.segment = segment;
         this.podName = podName;
         this.srNumber = srNumber;
         this.portId = portId;
-        this.deviceName = deviceName;
+        this.oltname = oltname;
         this.slaClock = slaClock;
         this.slaStatus = slaStatus;
         this.customerIP = customerIP;
@@ -88,6 +90,22 @@ public class Order {
         this.customerPrefDate = customerPrefDate;
     }
 
+    public String getSlotType() {
+        return slotType;
+    }
+
+    public void setSlotType(String slotType) {
+        this.slotType = slotType;
+    }
+
+    public String getAcknowledge_status() {
+        return acknowledge_status;
+    }
+
+    public void setAcknowledge_status(String acknowledge_status) {
+        this.slotType = acknowledge_status;
+    }
+
     public String getCaseRemarks() {
         return case_remarks;
     }
@@ -113,11 +131,11 @@ public class Order {
     }
 
     public String getDeviceName() {
-        return deviceName;
+        return oltname;
     }
 
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
+    public void setDeviceName(String oltname) {
+        this.oltname = oltname;
     }
 
     public String getPortId() {
