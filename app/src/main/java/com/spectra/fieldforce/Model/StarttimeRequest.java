@@ -3,13 +3,12 @@ package com.spectra.fieldforce.Model;
 public class StarttimeRequest {
     String Authkey = "";
     String Action = "";
-    String srNumber = "";
-    String startLongitude = "";
-    String startLatitude = "";
-    String startAddress = "";
-    String startTime = "";
-    String engEmailId = "";
-
+    String SrNumber = "";
+    String StartLongitude = "";
+    String StartLatitude = "";
+    String StartAddress = "";
+    String StartTime = "";
+    String EngEmailId = "";
 
     public String getAuthkey() {
         return Authkey;
@@ -28,51 +27,51 @@ public class StarttimeRequest {
     }
 
     public String getSrNumber() {
-        return srNumber;
+        return SrNumber;
     }
 
     public void setSrNumber(String srNumber) {
-        this.srNumber = srNumber;
+        this.SrNumber = srNumber;
     }
 
     public String getStartLongitude() {
-        return startLongitude;
+        return StartLongitude;
     }
 
     public void setStartLongitude(String startLongitude) {
-        this.startLongitude = startLongitude;
+        this.StartLongitude = startLongitude;
     }
 
     public String getStartLatitude() {
-        return startLatitude;
+        return StartLatitude;
     }
 
     public void setStartLatitude(String startLatitude) {
-        this.startLatitude = startLatitude;
+        this.StartLatitude = startLatitude;
     }
 
     public String getStartAddress() {
-        return startAddress;
+        return StartAddress;
     }
 
     public void setStartAddress(String startAddress) {
-        this.startAddress = startAddress;
+        this.StartAddress = startAddress;
     }
 
     public String getStartTime() {
-        return startTime;
+        return StartTime;
     }
 
     public void setStartTime(String startTime) {
-        this.startTime = startTime;
+        this.StartTime = startTime;
     }
 
     public String getEngEmailId() {
-        return engEmailId;
+        return EngEmailId;
     }
 
     public void setEngEmailId(String engEmailId) {
-        this.engEmailId = engEmailId;
+        this.EngEmailId = engEmailId;
     }
 
 }

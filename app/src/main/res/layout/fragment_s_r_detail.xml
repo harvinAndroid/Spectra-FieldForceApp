@@ -364,106 +364,10 @@
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
-            <Button
-                android:id="@+id/btnStartTime"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/massoutage"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorBlack"
-                android:text="Start"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"></Button>
-
-            <TextView
-                android:layout_width="135dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btnStartTime"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="Start Time:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/startTime"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btnStartTime"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="10dp"
-                android:textIsSelectable="true" />
-
-            <TextView
-                android:layout_width="135dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/startTime"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="Start Location:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/startLocation"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/startTime"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="10dp"
-                android:textIsSelectable="true" />
-
-            <Button
-                android:id="@+id/btnEndTime"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/startLocation"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorBlack"
-                android:text="End"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"></Button>
-
-            <TextView
-                android:layout_width="135dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btnEndTime"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="End Time:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/endTime"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btnEndTime"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="10dp"
-                android:textIsSelectable="true" />
-
-            <TextView
-                android:layout_width="135dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/endTime"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="End Location:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/endLocation"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/endTime"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="10dp"
-                android:textIsSelectable="true" />
-
-            <TextView
-                android:layout_width="135dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/endLocation"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="15dp"
                 android:text="ETR:"
@@ -473,7 +377,7 @@
                 android:id="@+id/dateTimeText"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/endLocation"
+                android:layout_below="@id/massoutage"
                 android:layout_marginLeft="120dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
@@ -492,10 +396,129 @@
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"></Button>
 
+            <RelativeLayout
+                android:id="@+id/startLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnETRSubmit"
+                android:background="@color/colorWhite"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:textColor="@color/colorBlack"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btnStartTime"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorBlack"
+                    android:text="Start"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"></Button>
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnStartTime"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Start Time:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/startTime"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnStartTime"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/startTime"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Start Location:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/startLocation"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/startTime"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp"
+                    android:textIsSelectable="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/endLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startLayout"
+                android:background="@color/colorWhite"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:textColor="@color/colorBlack"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btnEndTime"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorBlack"
+                    android:text="End"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"></Button>
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnEndTime"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="End Time:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/endTime"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnEndTime"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/endTime"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="End Location:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/endLocation"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/endTime"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp"
+                    android:textIsSelectable="true" />
+
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btnETRSubmit"
+                android:layout_below="@id/endLayout"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="15dp"
                 android:text="Change Status:"
@@ -505,7 +528,7 @@
                 android:id="@+id/changeStatus"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btnETRSubmit"
+                android:layout_below="@id/endLayout"
                 android:layout_marginLeft="120dp"
                 android:layout_marginTop="10dp"
                 android:textSize="14sp" />
@@ -606,11 +629,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/changeStatus"
+                android:layout_marginTop="10dp"
                 android:background="@color/colorWhite"
                 android:focusable="true"
                 android:orientation="vertical"
                 android:textColor="@color/colorBlack"
-                android:layout_marginTop="10dp"
                 android:visibility="gone">
 
                 <TextView
@@ -681,8 +704,8 @@
                     android:id="@+id/btnHoldSubmit"
                     android:layout_width="120dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
                     android:layout_below="@id/contacted"
+                    android:layout_marginTop="10dp"
                     android:background="@color/colorBlack"
                     android:text="Submit on Hold"
                     android:textAllCaps="false"

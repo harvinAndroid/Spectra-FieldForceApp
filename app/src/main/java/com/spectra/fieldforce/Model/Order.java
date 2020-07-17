@@ -1,19 +1,21 @@
 package com.spectra.fieldforce.Model;
 
 public class Order {
-    private String customerID, customerName, customerAddress, customerCityName, customerMobile, slotType,
+    private String customerID, customerName, customerAddress, customerCityName, customerMobile, slotType, engId,
             customerPrefDate, case_remarks, segment, podName, srNumber, portId, oltname, slaClock, acknowledge_status,
-            slaStatus, customerIP, srStatus, startTime, endTime, srType, srSubType, roasteDate, foni, repeat_sr, massoutage;
+            slaStatus, customerIP, srStatus, startTime, endTime, srType, srSubType, roasteDate, foni, repeat_sr,
+            startLatitude, endLatitude, massoutage;
 
     public Order() {
 
     }
 
-    public Order(String customerID, String customerName, String customerAddress, String customerCityName,
+    public Order(String customerID, String customerName, String customerAddress, String customerCityName, String engId,
                  String customerMobile, String slotType, String customerPrefDate, String case_remarks, String segment,
                  String podName, String srNumber, String portId, String oltname, String slaClock, String acknowledge_status,
-                 String slaStatus, String customerIP, String srStatus, String startTime, String endTime,
-                 String srType, String srSubType, String roasteDate, String foni, String repeat_sr, String massoutage) {
+                 String slaStatus, String customerIP, String srStatus, String startTime, String endTime, String startLatitude,
+                 String endLatitude, String srType, String srSubType, String roasteDate, String foni, String repeat_sr,
+                 String massoutage) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -40,6 +42,9 @@ public class Order {
         this.foni = foni;
         this.repeat_sr = repeat_sr;
         this.massoutage = massoutage;
+        this.engId = engId;
+        this.startLatitude = startLatitude;
+        this.endLatitude = endLatitude;
     }
 
     public String getCustomerID() {
@@ -248,5 +253,29 @@ public class Order {
 
     public void setMassoutage(String massoutage) {
         this.massoutage = massoutage;
+    }
+
+    public String getEngId() {
+        return engId;
+    }
+
+    public void setEngId(String engId) {
+        this.engId = engId;
+    }
+
+    public String getStartLatitude() {
+        return startLatitude;
+    }
+
+    public void setStartLatitude(String startLatitude) {
+        this.startLatitude = startLatitude;
+    }
+
+    public String getEndLatitude() {
+        return endLatitude;
+    }
+
+    public void setEndLatitude(String endLatitude) {
+        this.endLatitude = endLatitude;
     }
 }

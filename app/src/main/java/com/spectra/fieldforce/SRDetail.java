@@ -30,12 +30,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.common.internal.service.Common;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.Model.EndtimeRequest;
 import com.spectra.fieldforce.Model.Order;
 import com.spectra.fieldforce.Model.RCRequest;
 import com.spectra.fieldforce.Model.SRRequest;
+import com.spectra.fieldforce.Model.StarttimeRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,6 +65,9 @@ public class SRDetail extends Fragment {
     private EditText DateEdit, rfo;
     private Spinner changeStatus, rc1, rc2, rc3, holdReason, contacted;
     private String status;
+    private String engId;
+    private boolean startFlag;
+    private boolean endFlag;
     private JSONArray result;
     AppCompatActivity activity;
     ArrayList<String> rc1Code;
@@ -391,6 +395,9 @@ public class SRDetail extends Fragment {
                                     repeat_sr.setText((order.getRepeat_sr()));
                                     massoutage.setText((order.getMassoutage()));
                                     btnEndTime.setVisibility(View.GONE);
+                                    engId = order.getEngId();
+                                    startFlag = order.getStartLatitude() != "" ? true : false;
+                                    endFlag = order.getEndLatitude() != "" ? true : false;
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -415,7 +422,6 @@ public class SRDetail extends Fragment {
         String action = "saveActionCode";
         String sr = srNumber.getText().toString();
         String actionCode = holdReason.getSelectedItem().toString();
-        String engId = MainActivity.prefConfig.readUserName();
         String custName = contactName.getText().toString();
         String custNum = contactNumber.getText().toString();
         String isContacted = contacted.getSelectedItem().toString();
@@ -466,7 +472,7 @@ public class SRDetail extends Fragment {
     private void submitOnResolve() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "saveRCdetails";
-        String emailId = MainActivity.prefConfig.readUserName();
+        String emailId = MainActivity.prefConfig.readName();
         String sr = srNumber.getText().toString();
         int itemPosition = rc1.getSelectedItemPosition();
         String rc1Id = rc1Code.get(itemPosition).toString();
@@ -524,7 +530,6 @@ public class SRDetail extends Fragment {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "saveEtrDetail";
         String sr = srNumber.getText().toString();
-        String engId = MainActivity.prefConfig.readUserName();
         String dateTimeText = etr.getText().toString();
 
         SRRequest srRequest = new SRRequest();
@@ -546,6 +551,114 @@ public class SRDetail extends Fragment {
                         if (status.equals("1")) {
                             try {
                                 String result = jsonObject.getString("Response");
+                                Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            String result = jsonObject.getString("Message");
+                            Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+    private void saveStartTime() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "SaveGPSTime";
+        String sr = srNumber.getText().toString();
+        String loc = startLocation.getText().toString();
+        String startLongi = loc.split(" ")[0];
+        String startLati = loc.split(" ")[1];
+        String startAdd = "Empty";
+        String startDate = startTime.getText().toString();
+        String EngEmailId = MainActivity.prefConfig.readName();
+
+        StarttimeRequest startTimeRequest = new StarttimeRequest();
+        startTimeRequest.setAuthkey(authKey);
+        startTimeRequest.setAction(action);
+        startTimeRequest.setSrNumber(sr);
+        startTimeRequest.setStartLongitude(startLongi);
+        startTimeRequest.setStartLatitude(startLati);
+        startTimeRequest.setStartAddress(startAdd);
+        startTimeRequest.setStartTime(startDate);
+        startTimeRequest.setEngEmailId(EngEmailId);
+
+        StarttimeInterface apiService = ApiClient.getClient().create(StarttimeInterface.class);
+        Call<JsonElement> call = apiService.performOrderStarttime(startTimeRequest);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");
+                        if (status.equals("Success")) {
+                            try {
+                                String result = jsonObject.getString("response");
+                                Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            String result = jsonObject.getString("Message");
+                            Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+    private void saveEndTime() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "updateGPSTime";
+        String sr = srNumber.getText().toString();
+        String loc = endLocation.getText().toString();
+        String endLongi = loc.split(" ")[0];
+        String endLati = loc.split(" ")[1];
+        String endAdd = "Empty";
+        String endDate = startTime.getText().toString();
+        String EngEmailId = MainActivity.prefConfig.readName();
+
+        EndtimeRequest endTimeRequest = new EndtimeRequest();
+        endTimeRequest.setAuthkey(authKey);
+        endTimeRequest.setAction(action);
+        endTimeRequest.setSrNumber(sr);
+        endTimeRequest.setEndLongitude(endLongi);
+        endTimeRequest.setEndLatitude(endLati);
+        endTimeRequest.setEndAddress(endAdd);
+        endTimeRequest.setEndTime(endDate);
+        endTimeRequest.setEngEmailId(EngEmailId);
+
+        EndtimeInterface apiService = ApiClient.getClient().create(EndtimeInterface.class);
+        Call<JsonElement> call = apiService.performOrderEndtime(endTimeRequest);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");
+                        if (status.equals("Success")) {
+                            try {
+                                String result = jsonObject.getString("response");
                                 Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -671,8 +784,16 @@ public class SRDetail extends Fragment {
         rc3 = (Spinner) view.findViewById(R.id.rc3);
         DateEdit = (EditText) view.findViewById(R.id.dateTimeText);
         rfo = (EditText) view.findViewById(R.id.rfo);
+        RelativeLayout startLayout = (RelativeLayout) view.findViewById(R.id.startLayout);
+        RelativeLayout endLayout = (RelativeLayout) view.findViewById(R.id.endLayout);
         RelativeLayout resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
         RelativeLayout holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
+        if (startFlag == false) {
+            startLayout.setVisibility(View.VISIBLE);
+        }
+        if (endFlag == false) {
+            endLayout.setVisibility(View.VISIBLE);
+        }
         bindChangeStatus(0);
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -735,6 +856,7 @@ public class SRDetail extends Fragment {
                     startTime.setText(formattedDate);
                     btnStartTime.setVisibility(View.GONE);
                     btnEndTime.setVisibility(View.VISIBLE);
+                    saveStartTime();
                 }
             }
         });
@@ -749,6 +871,7 @@ public class SRDetail extends Fragment {
                     endTime.setText(formattedDate);
                     btnEndTime.setVisibility(View.GONE);
                     bindChangeStatus(1);
+                    saveEndTime();
                 }
             }
         });

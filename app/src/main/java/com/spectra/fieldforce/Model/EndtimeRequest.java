@@ -1,15 +1,14 @@
 package com.spectra.fieldforce.Model;
 
 public class EndtimeRequest {
-
     String Authkey = "";
     String Action = "";
-    String srNumber = "";
-    String endLongitude = "";
-    String endLatitude = "";
-    String endAddress = "";
-    String endTime = "";
-    String engEmailId = "";
+    String SrNumber = "";
+    String EndLongitude = "";
+    String EndLatitude = "";
+    String EndAddress = "";
+    String EndTime = "";
+    String EngEmailId = "";
 
     public String getAuthkey() {
         return Authkey;
@@ -28,54 +27,52 @@ public class EndtimeRequest {
     }
 
     public String getSrNumber() {
-        return srNumber;
+        return SrNumber;
     }
 
     public void setSrNumber(String srNumber) {
-        this.srNumber = srNumber;
+        this.SrNumber = srNumber;
     }
 
     public String getEndLongitude() {
-        return endLongitude;
+        return EndLongitude;
     }
 
     public void setEndLongitude(String endLongitude) {
-        this.endLongitude = endLongitude;
+        this.EndLongitude = endLongitude;
     }
 
     public String getEndLatitude() {
-        return endLatitude;
+        return EndLatitude;
     }
 
     public void setEndLatitude(String endLatitude) {
-        this.endLatitude = endLatitude;
+        this.EndLatitude = endLatitude;
     }
 
     public String getEndAddress() {
-        return endAddress;
+        return EndAddress;
     }
 
     public void setEndAddress(String endAddress) {
-        this.endAddress = endAddress;
+        this.EndAddress = endAddress;
     }
 
     public String getEndTime() {
-        return endTime;
+        return EndTime;
     }
 
     public void setEndTime(String endTime) {
-        this.endTime = endTime;
+        this.EndTime = endTime;
     }
 
     public String getEngEmailId() {
-        return engEmailId;
+        return EngEmailId;
     }
 
     public void setEngEmailId(String engEmailId) {
-        this.engEmailId = engEmailId;
+        this.EngEmailId = engEmailId;
     }
-
-
 
 
 }
