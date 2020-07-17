@@ -47,6 +47,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private TextView btnHome;
     private TextView btnWiFi;
     private TextView btnSpeed;
+    private TextView btnGpon;
     private TextView btnLogout;
     private DrawerLayout drawerLayout;
     private String status;
@@ -151,9 +152,16 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             });
             btnWiFi = rootview.findViewById(R.id.nav_Wifi);
             btnWiFi.setOnClickListener(v -> {
-                Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage("com.farproc.wifi.analyzer");
+                final String appPackageName = "com.farproc.wifi.analyzer";
+                Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage(appPackageName);
                 if (launchIntent != null) {
                     startActivity(launchIntent);
+                } else {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
                 }
             });
             btnSpeed = rootview.findViewById(R.id.nav_Speed);
@@ -162,6 +170,20 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
+            });
+            btnGpon = rootview.findViewById(R.id.nav_gpon);
+            btnGpon.setOnClickListener(v -> {
+                final String appPackageName = "valuelabs.spectra.com";
+                Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage(appPackageName);
+                if (launchIntent != null) {
+                    startActivity(launchIntent);
+                } else {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
+                }
             });
             btnLogout = rootview.findViewById(R.id.nav_logout);
             btnLogout.setOnClickListener(v -> {

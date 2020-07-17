@@ -5,6 +5,7 @@ public class RCRequest {
     String Action = "";
     String RConeId = "";
     String RCtwoId = "";
+    String CanId = "";
 
     public String getAuthkey() {
         return Authkey;
@@ -36,5 +37,13 @@ public class RCRequest {
 
     public void setRC2(String rc2) {
         RCtwoId = rc2;
+    }
+
+    public String getCanId() {
+        return CanId;
+    }
+
+    public void setCanId(String CanId) {
+        CanId = CanId;
     }
 }

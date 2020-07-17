@@ -59,15 +59,15 @@ public class SRDetail extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private TextView customerId, customerName, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
-            srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName, etr,
+            srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName, etr, sessionStatus,
             startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber;
-    private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnResolveSubmit;
+    private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit;
     private EditText DateEdit, rfo;
     private Spinner changeStatus, rc1, rc2, rc3, holdReason, contacted;
     private String status;
     private String engId;
-    private boolean startFlag;
-    private boolean endFlag;
+    private boolean startFlag, endFlag;
+    private RelativeLayout startLayout, endLayout, resolveLayout, holdLayout;
     private JSONArray result;
     AppCompatActivity activity;
     ArrayList<String> rc1Code;
@@ -340,6 +340,60 @@ public class SRDetail extends Fragment {
         });
     }
 
+    private void getUnifySession() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "getCurrentSession";
+        String canId = customerId.getText().toString();
+
+        RCRequest rcRequest = new RCRequest();
+        rcRequest.setAuthkey(authKey);
+        rcRequest.setAction(action);
+        rcRequest.setCanId(canId);
+
+        RCInterface apiService = ApiClient.getClient().create(RCInterface.class);
+        Call<JsonElement> call = apiService.getRCDetail(rcRequest);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("status");
+                        if (status.equals("Failure")) {
+                            Log.d("Failure", "error");
+                        } else if (status.equals("success")) {
+                            try {
+                                result = jsonObject.getJSONArray("response");
+                                if (result != null) {
+                                    String bytesin = "";
+                                    int byteIn = 0;
+                                    for (int i = 0; i < result.length(); i++) {
+                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
+                                        bytesin = jsonData.getString("bytesin");
+                                        byteIn = Integer.parseInt(bytesin);
+                                        if (byteIn > 0) {
+                                            bytesin = "Up & Running";
+                                        }
+                                    }
+                                    sessionStatus.setText(bytesin);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
     private void getAssignment(String srText) {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "getASRBySrNumber";
@@ -394,10 +448,17 @@ public class SRDetail extends Fragment {
                                     foni.setText((order.getFoni()));
                                     repeat_sr.setText((order.getRepeat_sr()));
                                     massoutage.setText((order.getMassoutage()));
-                                    btnEndTime.setVisibility(View.GONE);
                                     engId = order.getEngId();
-                                    startFlag = order.getStartLatitude() != "" ? true : false;
-                                    endFlag = order.getEndLatitude() != "" ? true : false;
+                                    startFlag = order.getStartLatitude().equals("");
+                                    endFlag = order.getEndLatitude().equals("");
+                                    if (!startFlag) {
+                                        startLayout.setVisibility(View.GONE);
+                                    }
+                                    if (!endFlag) {
+                                        endLayout.setVisibility(View.GONE);
+                                    } else {
+                                        bindChangeStatus(1);
+                                    }
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -407,7 +468,6 @@ public class SRDetail extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
@@ -773,9 +833,11 @@ public class SRDetail extends Fragment {
         contactName = (TextView) view.findViewById(R.id.contactName);
         contactNumber = (TextView) view.findViewById(R.id.contactNumber);
         etr = (TextView) view.findViewById(R.id.dateTimeText);
+        sessionStatus = (TextView) view.findViewById(R.id.sessionStatus);
         contacted = (Spinner) view.findViewById(R.id.contacted);
         btnHoldSubmit = (Button) view.findViewById(R.id.btnHoldSubmit);
         btnETRSubmit = (Button) view.findViewById(R.id.btnETRSubmit);
+        btnUnifySession = (Button) view.findViewById(R.id.btnUnifySession);
         btnResolveSubmit = (Button) view.findViewById(R.id.btnResolveSubmit);
         changeStatus = (Spinner) view.findViewById(R.id.changeStatus);
         holdReason = (Spinner) view.findViewById(R.id.holdReason);
@@ -784,16 +846,11 @@ public class SRDetail extends Fragment {
         rc3 = (Spinner) view.findViewById(R.id.rc3);
         DateEdit = (EditText) view.findViewById(R.id.dateTimeText);
         rfo = (EditText) view.findViewById(R.id.rfo);
-        RelativeLayout startLayout = (RelativeLayout) view.findViewById(R.id.startLayout);
-        RelativeLayout endLayout = (RelativeLayout) view.findViewById(R.id.endLayout);
-        RelativeLayout resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
-        RelativeLayout holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
-        if (startFlag == false) {
-            startLayout.setVisibility(View.VISIBLE);
-        }
-        if (endFlag == false) {
-            endLayout.setVisibility(View.VISIBLE);
-        }
+        startLayout = (RelativeLayout) view.findViewById(R.id.startLayout);
+        endLayout = (RelativeLayout) view.findViewById(R.id.endLayout);
+        resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
+        holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
+
         bindChangeStatus(0);
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -855,7 +912,7 @@ public class SRDetail extends Fragment {
                     String formattedDate = df.format(c.getTime());
                     startTime.setText(formattedDate);
                     btnStartTime.setVisibility(View.GONE);
-                    btnEndTime.setVisibility(View.VISIBLE);
+                    endLayout.setVisibility(View.VISIBLE);
                     saveStartTime();
                 }
             }
@@ -870,8 +927,8 @@ public class SRDetail extends Fragment {
                     String formattedDate = df.format(c.getTime());
                     endTime.setText(formattedDate);
                     btnEndTime.setVisibility(View.GONE);
-                    bindChangeStatus(1);
                     saveEndTime();
+                    bindChangeStatus(1);
                 }
             }
         });
