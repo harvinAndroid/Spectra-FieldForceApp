@@ -98,7 +98,9 @@ public class SRDetail extends Fragment {
     private void bindChangeStatus(int isResolve) {
         caseStatus = new ArrayList<String>();
         caseStatus.add("Select Status");
-        caseStatus.add("Hold");
+        if (!srStatus.getText().toString().contains("Hold")) {
+            caseStatus.add("Hold");
+        }
         if (isResolve == 1) {
             caseStatus.add("Resolved");
         }
@@ -363,17 +365,16 @@ public class SRDetail extends Fragment {
                             Log.d("Failure", "error");
                         } else if (status.equals("success")) {
                             try {
-                                result = jsonObject.getJSONArray("response");
-                                if (result != null) {
+                                JSONObject response1 = jsonObject.getJSONObject("response");
+                                if (response1 != null) {
                                     String bytesin = "";
                                     int byteIn = 0;
-                                    for (int i = 0; i < result.length(); i++) {
-                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
-                                        bytesin = jsonData.getString("bytesin");
-                                        byteIn = Integer.parseInt(bytesin);
-                                        if (byteIn > 0) {
-                                            bytesin = "Up & Running";
-                                        }
+                                    bytesin = response1.getString("bytesin");
+                                    byteIn = Integer.parseInt(bytesin);
+                                    if (byteIn > 0) {
+                                        bytesin = "Up & Running";
+                                    } else {
+                                        bytesin = "Not Working";
                                     }
                                     sessionStatus.setText(bytesin);
                                 }
@@ -451,13 +452,15 @@ public class SRDetail extends Fragment {
                                     engId = order.getEngId();
                                     startFlag = order.getStartLatitude().equals("");
                                     endFlag = order.getEndLatitude().equals("");
+
                                     if (!startFlag) {
                                         startLayout.setVisibility(View.GONE);
                                     }
                                     if (!endFlag) {
+                                        bindChangeStatus(1);
                                         endLayout.setVisibility(View.GONE);
                                     } else {
-                                        bindChangeStatus(1);
+                                        bindChangeStatus(0);
                                     }
                                 }
                             } catch (Exception e) {
@@ -851,7 +854,6 @@ public class SRDetail extends Fragment {
         resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
         holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
 
-        bindChangeStatus(0);
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -930,6 +932,12 @@ public class SRDetail extends Fragment {
                     saveEndTime();
                     bindChangeStatus(1);
                 }
+            }
+        });
+        btnUnifySession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getUnifySession();
             }
         });
         btnHoldSubmit.setOnClickListener(new View.OnClickListener() {

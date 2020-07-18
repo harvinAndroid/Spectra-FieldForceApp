@@ -43,7 +43,7 @@ public class RCRequest {
         return CanId;
     }
 
-    public void setCanId(String CanId) {
-        CanId = CanId;
+    public void setCanId(String canId) {
+        this.CanId = canId;
     }
 }
