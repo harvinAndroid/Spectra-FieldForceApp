@@ -91,6 +91,7 @@ public class SRDetail extends Fragment {
         SRDetail fragment = new SRDetail();
         Bundle args = new Bundle();
         args.putString("srNumber", param1);
+        args.putString("slotType", param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -395,11 +396,10 @@ public class SRDetail extends Fragment {
         });
     }
 
-    private void getAssignment(String srText) {
+    private void getAssignment(String srText, String slotType) {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "getASRBySrNumber";
         String taskType = "Assigned";
-        String slotType = "FRE";
 
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(authKey);
@@ -805,7 +805,8 @@ public class SRDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         String srText = getArguments().getString("srNumber");
-        getAssignment(srText);
+        String slotType = getArguments().getString("slotType");
+        getAssignment(srText, slotType);
 
         View view = inflater.inflate(R.layout.fragment_s_r_detail, container, false);
         customerId = (TextView) view.findViewById(R.id.customerId);
