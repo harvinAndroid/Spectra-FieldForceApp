@@ -89,15 +89,15 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (order.getAcknowledge_status().equals("0")) {
+                    updateAcknow(order.getSrNumber(), order.getSlotType());
+                }
                 AppCompatActivity activity1 = (AppCompatActivity) activity;
                 Bundle b = new Bundle();
                 b.putString("srNumber", order.getSrNumber());
                 b.putString("slotType", order.getSlotType());
                 activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetail().newInstance(order.getSrNumber(), order.getSlotType()), SRDetail.class.getSimpleName()).addToBackStack(null
                 ).commit();
-                if (order.getAcknowledge_status().equals("0")) {
-                    updateAcknow(order.getSrNumber(), order.getSlotType());
-                }
             }
         });
     }

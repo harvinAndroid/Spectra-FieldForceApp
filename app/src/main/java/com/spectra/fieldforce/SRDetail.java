@@ -43,9 +43,11 @@ import com.spectra.fieldforce.Model.StarttimeRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -999,7 +1001,6 @@ public class SRDetail extends Fragment {
                 }
                 if (isValid == true) {
                     submitOnResolve();
-                    //activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment(), "MY_FRAGMENT").commit();
                 }
             }
         });
@@ -1010,6 +1011,19 @@ public class SRDetail extends Fragment {
                 if (etr.getText().toString().equals("")) {
                     isValid = false;
                     Toast.makeText(activity, "Please enter ETR", Toast.LENGTH_LONG).show();
+                } else {
+                    String dtStart = etr.getText().toString();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    try {
+                        Date etrDate = format.parse(dtStart);
+                        Date currDate = Calendar.getInstance().getTime();
+                        if (etrDate.compareTo(currDate) < 0) {
+                            isValid = false;
+                            Toast.makeText(activity, "ETR can only be of future", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (isValid == true) {
                     updateETR();
