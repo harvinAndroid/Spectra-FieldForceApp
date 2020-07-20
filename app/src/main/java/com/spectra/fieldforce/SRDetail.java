@@ -29,6 +29,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -63,7 +65,7 @@ public class SRDetail extends Fragment {
             startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber;
     private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit;
     private EditText DateEdit, rfo;
-    private Spinner changeStatus, rc1, rc2, rc3, holdReason, contacted;
+    private Spinner resolveContacted, changeStatus, rc1, rc2, rc3, holdReason, contacted;
     private String status;
     private String engId;
     private boolean startFlag, endFlag;
@@ -118,6 +120,7 @@ public class SRDetail extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, contact);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contacted.setAdapter(adapter);
+        resolveContacted.setAdapter(adapter);
     }
 
     private void getRC1() {
@@ -540,10 +543,11 @@ public class SRDetail extends Fragment {
         int itemPosition = rc1.getSelectedItemPosition();
         String rc1Id = rc1Code.get(itemPosition).toString();
         itemPosition = rc2.getSelectedItemPosition();
-        String rc2Id = rc1Code.get(itemPosition).toString();
+        String rc2Id = rc2Code.get(itemPosition).toString();
         itemPosition = rc3.getSelectedItemPosition();
-        String rc3Id = rc1Code.get(itemPosition).toString();
+        String rc3Id = rc3Code.get(itemPosition).toString();
         String reason = rfo.getText().toString();
+        String isContacted = resolveContacted.getSelectedItem().toString();
 
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(authKey);
@@ -554,6 +558,7 @@ public class SRDetail extends Fragment {
         srRequest.setRCtwoId(rc2Id);
         srRequest.setRCthirdId(rc3Id);
         srRequest.setReasonOf(reason);
+        srRequest.setResolveContacted(isContacted == "Yes" ? "true" : "false");
         srRequest.setSource("FFA App");
 
         SRInterface apiService = ApiClient.getClient().create(SRInterface.class);
@@ -839,6 +844,7 @@ public class SRDetail extends Fragment {
         etr = (TextView) view.findViewById(R.id.dateTimeText);
         sessionStatus = (TextView) view.findViewById(R.id.sessionStatus);
         contacted = (Spinner) view.findViewById(R.id.contacted);
+        resolveContacted = (Spinner) view.findViewById(R.id.resolveContacted);
         btnHoldSubmit = (Button) view.findViewById(R.id.btnHoldSubmit);
         btnETRSubmit = (Button) view.findViewById(R.id.btnETRSubmit);
         btnUnifySession = (Button) view.findViewById(R.id.btnUnifySession);
@@ -871,6 +877,7 @@ public class SRDetail extends Fragment {
                 } else {
                     resolveLayout.setVisibility(View.GONE);
                     holdLayout.setVisibility(View.GONE);
+                    bindContacted();
                 }
             }
 
@@ -971,29 +978,28 @@ public class SRDetail extends Fragment {
             @Override
             public void onClick(View v) {
                 boolean isValid = true;
-                if (endTime.getText().toString().equals("")) {
+                if (endFlag) {
                     isValid = false;
                     Toast.makeText(activity, "Reach before Resolve", Toast.LENGTH_LONG).show();
-                }
-                if (rfo.getText().toString().equals("")) {
+                } else if (rc1.getSelectedItem().toString().equals("Select Resolution Code 1")) {
+                    isValid = false;
+                    Toast.makeText(activity, "Please select Resolution Code 1", Toast.LENGTH_LONG).show();
+                } else if (rc2.getSelectedItem().toString().equals("Select Resolution Code 2")) {
+                    isValid = false;
+                    Toast.makeText(activity, "Please select Resolution Code 2", Toast.LENGTH_LONG).show();
+                } else if (rc3.getSelectedItem().toString().equals("Select Resolution Code 3")) {
+                    isValid = false;
+                    Toast.makeText(activity, "Please select Resolution Code 3", Toast.LENGTH_LONG).show();
+                } else if (resolveContacted.getSelectedItem().toString().equals("Select Status")) {
+                    isValid = false;
+                    Toast.makeText(activity, "Please select Customer contacted or not", Toast.LENGTH_LONG).show();
+                } else if (rfo.getText().toString().equals("")) {
                     isValid = false;
                     Toast.makeText(activity, "Please enter RFO", Toast.LENGTH_LONG).show();
                 }
-                if (rc3.getSelectedItem().toString().equals("Select Resolution Code 3")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select Resolution Code 3", Toast.LENGTH_LONG).show();
-                }
-                if (rc2.getSelectedItem().toString().equals("Select Resolution Code 2")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select Resolution Code 2", Toast.LENGTH_LONG).show();
-                }
-                if (rc1.getSelectedItem().toString().equals("Select Resolution Code 1")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select Resolution Code 1", Toast.LENGTH_LONG).show();
-                }
-
                 if (isValid == true) {
                     submitOnResolve();
+                    //activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment(), "MY_FRAGMENT").commit();
                 }
             }
         });

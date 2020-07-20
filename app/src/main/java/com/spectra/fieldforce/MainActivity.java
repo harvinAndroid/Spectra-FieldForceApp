@@ -1,5 +1,6 @@
 package com.spectra.fieldforce;
 
+import android.app.Fragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
@@ -20,7 +21,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         // [END fcm_runtime_enable_auto_init]
     }
-
 
 
     @Override
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
 
         if (findViewById(R.id.fregment_container) != null) {
             if (prefConfig.readLoginStatus()) {
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(),WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
             } else {
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
             }
@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
     @Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
-        if(count == 1){
+        if (count == 1) {
             finish();
-        }else {
+        } else {
             getSupportFragmentManager().popBackStack();
         }
     }
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
     public void performLogin(String email, String name) {
         prefConfig.writeName(email);
         prefConfig.writeUserName(name);
-        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(),WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
     }
 
     @Override

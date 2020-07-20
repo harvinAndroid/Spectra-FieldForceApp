@@ -17,6 +17,7 @@ public class SRRequest {
     String RCtwoId = "";
     String RCthirdId = "";
     String ReasonOf = "";
+    String ResolveContacted = "";
     String Source = "";
 
     public String getAuthkey() {
@@ -153,5 +154,13 @@ public class SRRequest {
 
     public void setSource(String source) {
         this.Source = source;
+    }
+
+    public String getResolveContacted() {
+        return ResolveContacted;
+    }
+
+    public void setResolveContacted(String resolveContacted) {
+        this.ResolveContacted = resolveContacted;
     }
 }

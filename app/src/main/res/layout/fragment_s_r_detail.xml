@@ -611,13 +611,29 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
                     android:layout_marginLeft="120dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp" />
+                    android:layout_marginTop="10dp" />
 
                 <TextView
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Contacted:"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/resolveContacted"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rc3"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/resolveContacted"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:text="RFO:"
@@ -627,7 +643,7 @@
                     android:id="@+id/rfo"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/rc3"
+                    android:layout_below="@id/resolveContacted"
                     android:layout_marginLeft="120dp" />
 
                 <Button
