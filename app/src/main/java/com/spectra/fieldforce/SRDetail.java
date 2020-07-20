@@ -515,6 +515,7 @@ public class SRDetail extends Fragment {
                             try {
                                 String result = jsonObject.getString("Response");
                                 Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                                activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -574,6 +575,7 @@ public class SRDetail extends Fragment {
                             try {
                                 String result = jsonObject.getString("Response");
                                 Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                                activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
