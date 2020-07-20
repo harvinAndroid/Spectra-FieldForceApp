@@ -29,8 +29,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -447,7 +445,9 @@ public class SRDetail extends Fragment {
                                     srSubType.setText(order.getSrSubType());
                                     slaClock.setText(order.getSlaClock());
                                     slaStatus.setText(order.getSlaStatus());
-                                    customerIP.setText(order.getCustomerIP());
+                                    if (order.getSegment() != "Home") {
+                                        customerIP.setText(order.getCustomerIP());
+                                    }
                                     segment.setText(order.getSegment());
                                     podName.setText(order.getPodName());
                                     devicePort.setText(order.getDeviceName() + " : " + order.getPortId());

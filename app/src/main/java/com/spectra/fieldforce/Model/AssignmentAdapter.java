@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.spectra.fieldforce.ApiClient;
 import com.spectra.fieldforce.R;
@@ -38,7 +37,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     private JSONArray result;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView srNumber, customerId, customerName, customerMobile, slotTime, customerAddress;
+        public TextView srNumber, customerId, customerName, customerMobile, slotTime, srStatus, customerAddress;
         public Button btnView;
 
         public MyViewHolder(View view) {
@@ -49,6 +48,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             customerAddress = (TextView) view.findViewById(R.id.customerAddress);
             srNumber = (TextView) view.findViewById(R.id.srNumber);
             slotTime = (TextView) view.findViewById(R.id.slotTime);
+            srStatus = (TextView) view.findViewById(R.id.srStatus);
             btnView = (Button) view.findViewById(R.id.btnView);
         }
     }
@@ -75,8 +75,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.customerAddress.setText(order.getCustomerAddress());
         holder.srNumber.setText(order.getSrNumber());
         holder.slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
+        holder.srStatus.setText(order.getSrStatus());
         if (order.getAcknowledge_status().equals("1")) {
-            Log.e("Err", "tag n");
             holder.btnView.setText("View");
         }
         holder.customerMobile.setOnClickListener(new View.OnClickListener() {
