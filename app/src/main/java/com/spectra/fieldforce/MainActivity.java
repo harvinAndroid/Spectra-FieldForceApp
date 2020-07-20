@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -58,8 +59,24 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
         if (count == 1) {
             finish();
         } else {
+            getSupportFragmentManager().addOnBackStackChangedListener(getListener());
             getSupportFragmentManager().popBackStack();
         }
+    }
+
+    private FragmentManager.OnBackStackChangedListener getListener() {
+        FragmentManager.OnBackStackChangedListener result = () -> {
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager != null) {
+                int backStackEntryCount = manager.getBackStackEntryCount();
+                if (backStackEntryCount == 0) {
+                    finish();
+                }
+                Fragment fragment = manager.getFragments().get(backStackEntryCount - 1);
+                fragment.onResume();
+            }
+        };
+        return result;
     }
 
     @Override

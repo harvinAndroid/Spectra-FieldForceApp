@@ -973,6 +973,7 @@ public class SRDetail extends Fragment {
 
                 if (isValid == true) {
                     submitOnHold();
+                    //activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
                 }
             }
         });
@@ -1001,7 +1002,7 @@ public class SRDetail extends Fragment {
                 }
                 if (isValid == true) {
                     submitOnResolve();
-                    activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+                    //activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
                 }
             }
         });

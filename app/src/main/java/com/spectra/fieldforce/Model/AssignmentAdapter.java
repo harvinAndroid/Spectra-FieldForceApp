@@ -75,7 +75,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.customerAddress.setText(order.getCustomerAddress());
         holder.srNumber.setText(order.getSrNumber());
         holder.slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
-        holder.srStatus.setText(order.getSrStatus());
+        holder.srStatus.setText(order.getSrStatus().trim());
         if (order.getAcknowledge_status().equals("1")) {
             holder.btnView.setText("View");
         }
