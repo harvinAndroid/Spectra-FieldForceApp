@@ -1001,6 +1001,7 @@ public class SRDetail extends Fragment {
                 }
                 if (isValid == true) {
                     submitOnResolve();
+                    activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
                 }
             }
         });

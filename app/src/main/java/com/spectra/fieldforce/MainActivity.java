@@ -1,6 +1,5 @@
 package com.spectra.fieldforce;
 
-import android.app.Fragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
@@ -9,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
