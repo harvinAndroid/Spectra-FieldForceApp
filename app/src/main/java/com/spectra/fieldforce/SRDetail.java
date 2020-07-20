@@ -100,9 +100,9 @@ public class SRDetail extends Fragment {
     private void bindChangeStatus(int isResolve) {
         ArrayList<String> caseStatus = new ArrayList<String>();
         caseStatus.add("Select Status");
-        if (!srStatus.getText().toString().contains("Hold")) {
+        /*if (!srStatus.getText().toString().contains("Hold")) {
             caseStatus.add("Hold");
-        }
+        }*/
         if (isResolve == 1) {
             caseStatus.add("Resolved");
         }
