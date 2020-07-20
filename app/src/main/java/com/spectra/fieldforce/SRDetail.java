@@ -78,7 +78,6 @@ public class SRDetail extends Fragment {
     ArrayList<String> rc2Name;
     ArrayList<String> rc3Code;
     ArrayList<String> rc3Name;
-    ArrayList<String> caseStatus;
     private Location location;
     private String fromDateString = "";
     private Calendar mCalendar;
@@ -99,7 +98,7 @@ public class SRDetail extends Fragment {
     }
 
     private void bindChangeStatus(int isResolve) {
-        caseStatus = new ArrayList<String>();
+        ArrayList<String> caseStatus = new ArrayList<String>();
         caseStatus.add("Select Status");
         if (!srStatus.getText().toString().contains("Hold")) {
             caseStatus.add("Hold");
@@ -457,7 +456,6 @@ public class SRDetail extends Fragment {
                                     engId = order.getEngId();
                                     startFlag = order.getStartLatitude().equals("");
                                     endFlag = order.getEndLatitude().equals("");
-
                                     if (!startFlag) {
                                         startLayout.setVisibility(View.GONE);
                                     }
@@ -465,7 +463,7 @@ public class SRDetail extends Fragment {
                                         bindChangeStatus(1);
                                         endLayout.setVisibility(View.GONE);
                                     } else {
-                                        bindChangeStatus(0);
+                                        endLayout.setVisibility(View.VISIBLE);
                                     }
                                 }
                             } catch (Exception e) {
@@ -862,7 +860,7 @@ public class SRDetail extends Fragment {
         endLayout = (RelativeLayout) view.findViewById(R.id.endLayout);
         resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
         holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
-
+        bindChangeStatus(0);
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -923,7 +921,7 @@ public class SRDetail extends Fragment {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String formattedDate = df.format(c.getTime());
                     startTime.setText(formattedDate);
-                    btnStartTime.setVisibility(View.GONE);
+                    startLayout.setVisibility(View.GONE);
                     endLayout.setVisibility(View.VISIBLE);
                     saveStartTime();
                 }
@@ -938,7 +936,7 @@ public class SRDetail extends Fragment {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String formattedDate = df.format(c.getTime());
                     endTime.setText(formattedDate);
-                    btnEndTime.setVisibility(View.GONE);
+                    endLayout.setVisibility(View.GONE);
                     saveEndTime();
                     bindChangeStatus(1);
                 }
