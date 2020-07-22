@@ -1,8 +1,11 @@
 package com.spectra.fieldforce.Model;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
@@ -91,8 +95,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             public void onClick(View v) {
                 if (order.getAcknowledge_status().equals("0")) {
                     updateAcknow(order.getSrNumber(), order.getSlotType());
-                }
-                else {
+                } else {
                     AppCompatActivity activity1 = (AppCompatActivity) activity;
                     Bundle b = new Bundle();
                     b.putString("srNumber", order.getSrNumber());
@@ -105,8 +108,13 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     }
 
     public void call_action(Uri number) {
-        Intent intent = new Intent(Intent.ACTION_DIAL, number);
+        Intent intent = new Intent(Intent.ACTION_CALL, number);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                activity.requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 11);
+            }
+        }
         activity.startActivity(intent);
     }
 

@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -41,15 +42,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WelcomeFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
+public class WelcomeFragment extends Fragment {
     AppCompatActivity activity;
-    private TextView engName;
-    private TextView btnHome;
-    private TextView btnWiFi;
-    private TextView btnSpeed;
-    private TextView btnGpon;
-    private TextView btnLogout;
-    private DrawerLayout drawerLayout;
     private String status;
     private JSONArray result;
     private String EmailID;
@@ -64,6 +58,8 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     public interface OnLogoutListener {
         void performLogout();
     }
+
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public void getAssignment() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
@@ -81,6 +77,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
                 try {
+                    swipeRefreshLayout.setRefreshing(false);
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
                         status = jsonObject.getString("Status");
@@ -91,6 +88,9 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                                 result = jsonObject.getJSONArray("response");
                                 if (result != null) {
                                     orderList.clear();
+                                    Toolbar mtoolbar = activity.findViewById(R.id.toolbar);
+                                    TextView txtHeader = mtoolbar.findViewById(R.id.txtHeader);
+                                    txtHeader.setText("Your Assignments");
                                     for (int i = 0; i < result.length(); i++) {
                                         JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
                                         Log.d("APIResponse", jsonData.toString());
@@ -113,90 +113,24 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
 
             @Override
             public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
                 Log.e("RetroError", t.toString());
             }
         });
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navigationDrawerSetup(view);
-    }
-
-    private void navigationDrawerSetup(View view) {
-        try {
-            Toolbar toolbar = view.findViewById(R.id.toolbar);
-            drawerLayout = view.findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    activity, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawerLayout.setDrawerListener(toggle);
-            drawerLayout.setScrimColor(Color.TRANSPARENT);
-            toggle.syncState();
-            NavigationView navigationView = view.findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-            navigationView.setItemIconTintList(null);
-            View rootview = navigationView.getHeaderView(0);
-            engName = rootview.findViewById(R.id.menu_text);
-            engName.setText("Hi, " + MainActivity.prefConfig.readUserName());
-            btnHome = rootview.findViewById(R.id.nav_home);
-            btnHome.setOnClickListener(v -> {
-                MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
-            });
-            btnWiFi = rootview.findViewById(R.id.nav_Wifi);
-            btnWiFi.setOnClickListener(v -> {
-                final String appPackageName = "com.farproc.wifi.analyzer";
-                Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage(appPackageName);
-                if (launchIntent != null) {
-                    startActivity(launchIntent);
-                } else {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                    }
-                }
-            });
-            btnSpeed = rootview.findViewById(R.id.nav_Speed);
-            btnSpeed.setOnClickListener(v -> {
-                String url = "http://fiber.spectra.co/";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            });
-            btnGpon = rootview.findViewById(R.id.nav_gpon);
-            btnGpon.setOnClickListener(v -> {
-                final String appPackageName = "valuelabs.spectra.com";
-                Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage(appPackageName);
-                if (launchIntent != null) {
-                    startActivity(launchIntent);
-                } else {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                    }
-                }
-            });
-            btnLogout = rootview.findViewById(R.id.nav_logout);
-            btnLogout.setOnClickListener(v -> {
-                MainActivity.prefConfig.writeLoginStatus(false);
-                MainActivity.prefConfig.writeName("User");
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
-            });
-            Menu nav_menu = navigationView.getMenu();
-            if (nav_menu != null) {
-            }
-        } catch (Exception ex) {
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getAssignment();
         activity = (AppCompatActivity) getActivity();
+        getAssignment();
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setEnabled(true);
+        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            getAssignment();
+        });
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         assignAdapter = new AssignmentAdapter(activity, orderList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -204,22 +138,5 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(assignAdapter);
         return view;
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.d("Click", "Text");
-        drawerLayout.closeDrawer(GravityCompat.START);
-        switch (item.getItemId()) {
-            case R.id.nav_att_history:
-                // TODO: 2/13/2020 your task 2 here
-                return true;
-            case R.id.nav_logout:
-                // TODO: 2/13/2020 logoout
-                return true;
-            case R.id.nav_inventory:
-                return true;
-        }
-        return true;
     }
 }

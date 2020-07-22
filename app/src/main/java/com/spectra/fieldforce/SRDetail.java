@@ -27,9 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.spectra.fieldforce.Model.EndtimeRequest;
@@ -46,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +65,7 @@ public class SRDetail extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private TextView customerId, customerName, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
             srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName, etr, sessionStatus,
-            startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber;
+            startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber, txtHeader;
     private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit;
     private EditText DateEdit, rfo;
     private Spinner resolveContacted, changeStatus, rc1, rc2, rc3, holdReason, contacted;
@@ -773,10 +776,15 @@ public class SRDetail extends Fragment {
     }
 
     private void call_action(Uri number) {
-        Activity activity = new Activity();
+        Activity activity;
         activity = getActivity();
-        Intent intent = new Intent(Intent.ACTION_DIAL, number);
+        Intent intent = new Intent(Intent.ACTION_CALL, number);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                activity.requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 11);
+            }
+        }
         activity.startActivity(intent);
     }
 
@@ -806,6 +814,9 @@ public class SRDetail extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Toolbar mtoolbar = activity.findViewById(R.id.toolbar);
+        txtHeader = mtoolbar.findViewById(R.id.txtHeader);
+        txtHeader.setText("SR Detail");
         String srText = getArguments().getString("srNumber");
         String slotType = getArguments().getString("slotType");
         getAssignment(srText, slotType);
