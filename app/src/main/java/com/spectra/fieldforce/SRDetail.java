@@ -100,9 +100,9 @@ public class SRDetail extends Fragment {
     private void bindChangeStatus(int isResolve) {
         ArrayList<String> caseStatus = new ArrayList<String>();
         caseStatus.add("Select Status");
-        /*if (!srStatus.getText().toString().contains("Hold")) {
-            caseStatus.add("Hold");
-        }*/
+        //if (!srStatus.getText().toString().contains("Hold")) {
+        caseStatus.add("Hold");
+        //}
         if (isResolve == 1) {
             caseStatus.add("Resolved");
         }
@@ -364,13 +364,13 @@ public class SRDetail extends Fragment {
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
                         status = jsonObject.getString("status");
+                        String bytesin = "";
                         if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
+                            bytesin = "Failure in getting Status";
                         } else if (status.equals("success")) {
                             try {
                                 JSONObject response1 = jsonObject.getJSONObject("response");
                                 if (response1 != null) {
-                                    String bytesin = "";
                                     int byteIn = 0;
                                     bytesin = response1.getString("bytesin");
                                     byteIn = Integer.parseInt(bytesin);
@@ -379,12 +379,13 @@ public class SRDetail extends Fragment {
                                     } else {
                                         bytesin = "Not Working";
                                     }
-                                    sessionStatus.setText(bytesin);
                                 }
                             } catch (Exception e) {
+                                bytesin = "Failure in getting Status";
                                 e.printStackTrace();
                             }
                         }
+                        sessionStatus.setText(bytesin);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -444,7 +445,7 @@ public class SRDetail extends Fragment {
                                     srSubType.setText(order.getSrSubType());
                                     slaClock.setText(order.getSlaClock());
                                     slaStatus.setText(order.getSlaStatus());
-                                    if (order.getSegment() != "Home") {
+                                    if (!order.getSegment().equals("Home")) {
                                         customerIP.setText(order.getCustomerIP());
                                     }
                                     segment.setText(order.getSegment());
@@ -491,13 +492,13 @@ public class SRDetail extends Fragment {
         String custName = contactName.getText().toString();
         String custNum = contactNumber.getText().toString();
         String isContacted = contacted.getSelectedItem().toString();
-
+        String EngEmailId = MainActivity.prefConfig.readName();
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(authKey);
         srRequest.setAction(action);
         srRequest.setSrNumber(sr);
         srRequest.setActionCode(actionCode);
-        srRequest.setEngId(engId);
+        srRequest.setEngId(EngEmailId);
         srRequest.setContactName(custName);
         srRequest.setContactNumber(custNum);
         srRequest.setContacted(isContacted == "Yes" ? "true" : "false");
