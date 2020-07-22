@@ -5,13 +5,14 @@ import android.app.NotificationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnLoginFormActivityListener {
     public static PrefConfig prefConfig;
@@ -59,24 +60,23 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
         if (count == 1) {
             finish();
         } else {
-            getSupportFragmentManager().addOnBackStackChangedListener(getListener());
+            Fragment f = getVisibleFragment();
+            if (f instanceof WelcomeFragment)
+                ((WelcomeFragment) f).getAssignment();
             getSupportFragmentManager().popBackStack();
         }
     }
 
-    private FragmentManager.OnBackStackChangedListener getListener() {
-        FragmentManager.OnBackStackChangedListener result = () -> {
-            FragmentManager manager = getSupportFragmentManager();
-            if (manager != null) {
-                int backStackEntryCount = manager.getBackStackEntryCount();
-                if (backStackEntryCount == 0) {
-                    finish();
-                }
-                Fragment fragment = manager.getFragments().get(backStackEntryCount - 1);
-                fragment.onResume();
+    public Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<androidx.fragment.app.Fragment> fragments = fragmentManager.getFragments();
+        if (fragments != null) {
+            for (androidx.fragment.app.Fragment fragment : fragments) {
+                if (fragment != null && fragment.isVisible())
+                    return fragment;
             }
-        };
-        return result;
+        }
+        return null;
     }
 
     @Override

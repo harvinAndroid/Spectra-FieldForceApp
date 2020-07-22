@@ -52,25 +52,20 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     private DrawerLayout drawerLayout;
     private String status;
     private JSONArray result;
-    private String TAG;
-    private String fcmToken;
     private String EmailID;
-    public static PrefConfig prefConfig;
-
+    private List<Order> orderList;
+    AssignmentAdapter assignAdapter;
     OnLogoutListener onLogoutListener;
 
     public WelcomeFragment() {
-
+        orderList = new ArrayList<>();
     }
 
     public interface OnLogoutListener {
         void performLogout();
     }
 
-    AssignmentAdapter assignAdapter;
-    private List<Order> orderList = new ArrayList<>();
-
-    private void getAssignment() {
+    public void getAssignment() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "assignment";
         EmailID = MainActivity.prefConfig.readName();
@@ -95,6 +90,7 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                             try {
                                 result = jsonObject.getJSONArray("response");
                                 if (result != null) {
+                                    orderList.clear();
                                     for (int i = 0; i < result.length(); i++) {
                                         JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
                                         Log.d("APIResponse", jsonData.toString());
@@ -103,7 +99,6 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
                                         orderList.add(order);
                                     }
                                 }
-
                                 assignAdapter.notifyDataSetChanged();
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -127,6 +122,9 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navigationDrawerSetup(view);
+        if (assignAdapter != null) {
+            assignAdapter.notifyDataSetChanged();
+        }
     }
 
     private void navigationDrawerSetup(View view) {

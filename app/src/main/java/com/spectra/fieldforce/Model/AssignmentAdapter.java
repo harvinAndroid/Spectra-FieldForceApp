@@ -92,12 +92,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
                 if (order.getAcknowledge_status().equals("0")) {
                     updateAcknow(order.getSrNumber(), order.getSlotType());
                 }
-                AppCompatActivity activity1 = (AppCompatActivity) activity;
-                Bundle b = new Bundle();
-                b.putString("srNumber", order.getSrNumber());
-                b.putString("slotType", order.getSlotType());
-                activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetail().newInstance(order.getSrNumber(), order.getSlotType()), SRDetail.class.getSimpleName()).addToBackStack(null
-                ).commit();
+
             }
         });
     }
@@ -131,10 +126,15 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
                         status = jsonObject.getString("Status");
                         if (status.equals("1")) {
                             try {
-                                result = jsonObject.getJSONArray("Response");
-                                JSONObject jsonData = new JSONObject(String.valueOf(result.getString(0)));
+                                JSONObject jsonData = jsonObject.getJSONObject("Response");
                                 String code = jsonData.getString("Message");
                                 Toast.makeText(activity, code, Toast.LENGTH_LONG).show();
+                                AppCompatActivity activity1 = (AppCompatActivity) activity;
+                                Bundle b = new Bundle();
+                                b.putString("srNumber", srText);
+                                b.putString("slotType", slotType);
+                                activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetail().newInstance(srText, slotType), SRDetail.class.getSimpleName()).addToBackStack(null
+                                ).commit();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
