@@ -648,8 +648,8 @@ public class SRDetail extends Fragment {
         String action = "SaveGPSTime";
         String sr = srNumber.getText().toString();
         String loc = startLocation.getText().toString();
-        String startLongi = loc.split(" ")[0];
-        String startLati = loc.split(" ")[1];
+        String startLongi = loc.split(", ")[0];
+        String startLati = loc.split(", ")[1];
         String startAdd = "Empty";
         String startDate = startTime.getText().toString();
         String EngEmailId = MainActivity.prefConfig.readName();
@@ -702,10 +702,10 @@ public class SRDetail extends Fragment {
         String action = "updateGPSTime";
         String sr = srNumber.getText().toString();
         String loc = endLocation.getText().toString();
-        String endLongi = loc.split(" ")[0];
-        String endLati = loc.split(" ")[1];
+        String endLongi = loc.split(", ")[0];
+        String endLati = loc.split(", ")[1];
         String endAdd = "Empty";
-        String endDate = startTime.getText().toString();
+        String endDate = endTime.getText().toString();
         String EngEmailId = MainActivity.prefConfig.readName();
 
         EndtimeRequest endTimeRequest = new EndtimeRequest();
@@ -768,7 +768,7 @@ public class SRDetail extends Fragment {
             }
             double longi = location.getLongitude();
             double lati = location.getLatitude();
-            String message = longi + " " + lati;
+            String message = longi + ", " + lati;
             txtLocation.setText(message);
         }
         return isLoc;
