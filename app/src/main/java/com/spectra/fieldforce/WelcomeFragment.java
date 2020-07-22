@@ -122,13 +122,9 @@ public class WelcomeFragment extends Fragment implements NavigationView.OnNaviga
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navigationDrawerSetup(view);
-        if (assignAdapter != null) {
-            assignAdapter.notifyDataSetChanged();
-        }
     }
 
     private void navigationDrawerSetup(View view) {
-//        mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
         try {
             Toolbar toolbar = view.findViewById(R.id.toolbar);
             drawerLayout = view.findViewById(R.id.drawer_layout);

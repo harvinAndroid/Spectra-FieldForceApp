@@ -100,9 +100,7 @@ public class SRDetail extends Fragment {
     private void bindChangeStatus(int isResolve) {
         ArrayList<String> caseStatus = new ArrayList<String>();
         caseStatus.add("Select Status");
-        //if (!srStatus.getText().toString().contains("Hold")) {
         caseStatus.add("Hold");
-        //}
         if (isResolve == 1) {
             caseStatus.add("Resolved");
         }
@@ -786,10 +784,6 @@ public class SRDetail extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (AppCompatActivity) getActivity();
-        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
