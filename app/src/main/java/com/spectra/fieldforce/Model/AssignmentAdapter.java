@@ -92,7 +92,14 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
                 if (order.getAcknowledge_status().equals("0")) {
                     updateAcknow(order.getSrNumber(), order.getSlotType());
                 }
-
+                else {
+                    AppCompatActivity activity1 = (AppCompatActivity) activity;
+                    Bundle b = new Bundle();
+                    b.putString("srNumber", order.getSrNumber());
+                    b.putString("slotType", order.getSlotType());
+                    activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetail().newInstance(order.getSrNumber(), order.getSlotType()), SRDetail.class.getSimpleName()).addToBackStack(null
+                    ).commit();
+                }
             }
         });
     }
