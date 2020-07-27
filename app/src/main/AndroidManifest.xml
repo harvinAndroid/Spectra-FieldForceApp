@@ -17,6 +17,8 @@
         android:roundIcon="@drawable/ffa"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".LoginActivity" />
+
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -30,14 +32,14 @@
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
 
-        <activity android:name="com.spectra.fieldforce.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--Notification-->
-        <service android:name="com.spectra.fieldforce.MyFirebaseMessagingService">
+        </activity> <!-- Notification -->
+        <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -55,7 +57,6 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
-        <!--Notification-->
     </application>
 
 </manifest>

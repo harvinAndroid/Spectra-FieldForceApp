@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -453,8 +454,17 @@ public class SRDetail extends Fragment {
                                     podName.setText(order.getPodName());
                                     devicePort.setText(order.getDeviceName() + " : " + order.getPortId());
                                     foni.setText((order.getFoni()));
+                                    if (order.getFoni().equals("Yes")) {
+                                        foni.setBackgroundColor(Color.parseColor("#8B0000"));
+                                    }
                                     repeat_sr.setText((order.getRepeat_sr()));
+                                    if (order.getRepeat_sr().equals("Yes")) {
+                                        repeat_sr.setBackgroundColor(Color.parseColor("#8B0000"));
+                                    }
                                     massoutage.setText((order.getMassoutage()));
+                                    if (order.getMassoutage().equals("Yes")) {
+                                        massoutage.setBackgroundColor(Color.parseColor("#8B0000"));
+                                    }
                                     engId = order.getEngId();
                                     startFlag = order.getStartLatitude().equals("");
                                     endFlag = order.getEndLatitude().equals("");

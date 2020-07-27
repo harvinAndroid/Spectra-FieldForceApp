@@ -27,7 +27,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.OnLoginFormActivityListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static PrefConfig prefConfig;
     private static final String TAG = "MainActivity";
     private DrawerLayout drawerLayout;
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
+        prefConfig = new PrefConfig(activity);
         setContentView(R.layout.main_activity);
-        /*Notification code start HP*/
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("MyNotifications", "MyNotifications", NotificationManager.IMPORTANCE_DEFAULT);
@@ -58,14 +58,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
                 Log.d(TAG, "Key: " + key + " Value: " + value);
             }
         }
-
-        prefConfig = new PrefConfig(this);
-        navigationDrawerSetup();
         if (findViewById(R.id.fregment_container) != null) {
             if (prefConfig.readLoginStatus()) {
+                navigationDrawerSetup();
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
             } else {
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
+                //getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
+                startActivity(new Intent(activity, LoginActivity.class));
             }
         }
     }
@@ -95,29 +94,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
         return null;
     }
 
-    @Override
-    public void performRegister() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new RegistrationFragment()).addToBackStack(null).commit();
-    }
-
-    @Override
-    public void performResetpassword() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new ResetpasswordFragment()).addToBackStack(null).commit();
-    }
-
-    @Override
-    public void performLogin(String email, String name) {
-        prefConfig.writeName(email);
-        prefConfig.writeUserName(name);
-        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-    }
-
-    @Override
-    public void performLogout() {
-        prefConfig.writeLoginStatus(false);
-        prefConfig.writeName("User");
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
-    }
 
     private void navigationDrawerSetup() {
         try {
@@ -180,9 +156,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnL
             });
             TextView btnLogout = dView.findViewById(R.id.nav_logout);
             btnLogout.setOnClickListener(v -> {
+                drawerLayout.closeDrawers();
                 MainActivity.prefConfig.writeLoginStatus(false);
                 MainActivity.prefConfig.writeName("User");
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
+                startActivity(new Intent(activity, MainActivity.class));
+                finish();
+//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
             });
             Menu nav_menu = navigationView.getMenu();
             if (nav_menu != null) {

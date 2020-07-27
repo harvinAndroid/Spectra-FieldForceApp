@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBlack"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <TextView
         android:id="@+id/spectraText"
@@ -28,15 +28,16 @@
         android:text="#MakeLifeBetter"
         android:textColor="@color/colorGray"
         android:textSize="25sp" />
+
     <TextView
         android:id="@+id/errortxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/make_life"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text=""
         android:textColor="@color/colorRed"
-        android:layout_below="@id/make_life"
         android:textSize="25sp" />
 
     <RelativeLayout

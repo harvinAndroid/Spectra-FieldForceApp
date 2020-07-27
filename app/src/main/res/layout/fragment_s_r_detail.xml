@@ -628,7 +628,7 @@
                     android:layout_below="@id/rc3"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Contacted:"
+                    android:text="Customer Contacted:"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -734,7 +734,7 @@
                     android:layout_below="@id/contactNumber"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="15dp"
-                    android:text="Contacted:"
+                    android:text="Customer Contacted:"
                     android:textStyle="bold" />
 
                 <Spinner
