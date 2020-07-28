@@ -447,6 +447,15 @@ public class SRDetail extends Fragment {
                                     srSubType.setText(order.getSrSubType());
                                     slaClock.setText(order.getSlaClock());
                                     slaStatus.setText(order.getSlaStatus());
+                                    if (order.getSlaStatus().equals("In Progress")) {
+                                        slaStatus.setTextColor(Color.parseColor("#008000"));
+                                    } else if (order.getSlaStatus().equals("Paused")) {
+                                        slaStatus.setTextColor(Color.parseColor("#8B0000"));
+                                    } else if (order.getSlaStatus().equals("Noncompliant")) {
+                                        slaStatus.setTextColor(Color.parseColor("#8B0000"));
+                                    } else if (order.getSlaStatus().equals("Nearing Noncompliance")) {
+                                        slaStatus.setTextColor(Color.parseColor("#FFA500"));
+                                    }
                                     if (!order.getSegment().equals("Home")) {
                                         customerIP.setText(order.getCustomerIP());
                                     }
@@ -455,14 +464,17 @@ public class SRDetail extends Fragment {
                                     devicePort.setText(order.getDeviceName() + " : " + order.getPortId());
                                     foni.setText((order.getFoni()));
                                     if (order.getFoni().equals("Yes")) {
+                                        foni.setTextColor(Color.parseColor("#FCF6F5FF"));
                                         foni.setBackgroundColor(Color.parseColor("#8B0000"));
                                     }
                                     repeat_sr.setText((order.getRepeat_sr()));
                                     if (order.getRepeat_sr().equals("Yes")) {
+                                        repeat_sr.setTextColor(Color.parseColor("#FCF6F5FF"));
                                         repeat_sr.setBackgroundColor(Color.parseColor("#8B0000"));
                                     }
                                     massoutage.setText((order.getMassoutage()));
                                     if (order.getMassoutage().equals("Yes")) {
+                                        massoutage.setTextColor(Color.parseColor("#FCF6F5FF"));
                                         massoutage.setBackgroundColor(Color.parseColor("#8B0000"));
                                     }
                                     engId = order.getEngId();
@@ -504,6 +516,9 @@ public class SRDetail extends Fragment {
         String custNum = contactNumber.getText().toString();
         String isContacted = contacted.getSelectedItem().toString();
         String EngEmailId = MainActivity.prefConfig.readName();
+        String UpdatedBy = MainActivity.prefConfig.readUserName();
+        String EngId = MainActivity.prefConfig.readName();
+
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(authKey);
         srRequest.setAction(action);
@@ -613,6 +628,7 @@ public class SRDetail extends Fragment {
         String action = "saveEtrDetail";
         String sr = srNumber.getText().toString();
         String dateTimeText = etr.getText().toString();
+        dateTimeText = dateTimeText.contains("AM") ? dateTimeText.replace("AM", "").trim() : dateTimeText.replace("PM", "").trim();
 
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(authKey);
@@ -804,7 +820,7 @@ public class SRDetail extends Fragment {
         activity = (AppCompatActivity) getActivity();
     }
 
-    SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm aaa");
     final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
         mCalendar.set(Calendar.YEAR, year);
         mCalendar.set(Calendar.MONTH, monthOfYear);

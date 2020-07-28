@@ -147,11 +147,29 @@
             android:layout_marginTop="10dp"
             android:textIsSelectable="true" />
 
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerAddress"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="SLA Clock:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/slaClock"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerAddress"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="10dp"
+            android:textIsSelectable="true" />
+
         <Button
             android:id="@+id/btnView"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:layout_below="@id/customerAddress"
+            android:layout_below="@id/slaClock"
             android:layout_marginTop="10dp"
             android:background="@color/colorBlack"
             android:text="Acknowledge"

@@ -41,7 +41,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     private JSONArray result;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView srNumber, customerId, customerName, customerMobile, slotTime, srStatus, customerAddress;
+        public TextView srNumber, customerId, customerName, customerMobile, slotTime, slaClock, srStatus, customerAddress;
         public Button btnView;
 
         public MyViewHolder(View view) {
@@ -53,6 +53,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             srNumber = (TextView) view.findViewById(R.id.srNumber);
             slotTime = (TextView) view.findViewById(R.id.slotTime);
             srStatus = (TextView) view.findViewById(R.id.srStatus);
+            slaClock = (TextView) view.findViewById(R.id.slaClock);
             btnView = (Button) view.findViewById(R.id.btnView);
         }
     }
@@ -80,6 +81,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.srNumber.setText(order.getSrNumber());
         holder.slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
         holder.srStatus.setText(order.getSrStatus());
+        holder.slaClock.setText(order.getSlaClock());
         if (order.getAcknowledge_status().equals("1")) {
             holder.btnView.setText("View");
         }
