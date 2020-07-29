@@ -17,6 +17,8 @@ public class SRRequest {
     String RCtwoId = "";
     String RCthirdId = "";
     String ReasonOf = "";
+    String EmpId = "";
+    String UpdatedBy = "";
     String ResolveContacted = "";
     String Source = "";
 
@@ -162,5 +164,21 @@ public class SRRequest {
 
     public void setResolveContacted(String resolveContacted) {
         this.ResolveContacted = resolveContacted;
+    }
+
+    public String getEmpId() {
+        return EmpId;
+    }
+
+    public void setEmpId(String empId) {
+        this.EmpId = empId;
+    }
+
+    public String getUpdatedBy() {
+        return UpdatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.UpdatedBy = updatedBy;
     }
 }

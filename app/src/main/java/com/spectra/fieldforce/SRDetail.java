@@ -517,7 +517,6 @@ public class SRDetail extends Fragment {
         String isContacted = contacted.getSelectedItem().toString();
         String EngEmailId = MainActivity.prefConfig.readName();
         String UpdatedBy = MainActivity.prefConfig.readUserName();
-        String EngId = MainActivity.prefConfig.readName();
 
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(authKey);
@@ -525,6 +524,8 @@ public class SRDetail extends Fragment {
         srRequest.setSrNumber(sr);
         srRequest.setActionCode(actionCode);
         srRequest.setEngId(EngEmailId);
+        srRequest.setUpdatedBy(UpdatedBy);
+        srRequest.setEmpId(engId);
         srRequest.setContactName(custName);
         srRequest.setContactNumber(custNum);
         srRequest.setContacted(isContacted == "Yes" ? "true" : "false");
