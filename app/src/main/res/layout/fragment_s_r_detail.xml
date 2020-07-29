@@ -572,7 +572,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnUnifySession"
                     android:layout_marginLeft="5dp"
@@ -589,7 +589,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc1"
                     android:layout_marginLeft="5dp"
@@ -606,7 +606,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
                     android:layout_marginLeft="5dp"
@@ -623,7 +623,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
                     android:layout_marginLeft="5dp"
@@ -640,7 +640,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
                     android:layout_marginLeft="5dp"
@@ -682,7 +682,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="15dp"
@@ -697,7 +697,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
                     android:layout_marginLeft="5dp"
@@ -713,7 +713,7 @@
                     android:layout_marginLeft="120dp" />
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
                     android:layout_marginLeft="5dp"
@@ -729,7 +729,7 @@
                     android:layout_marginLeft="120dp" />
 
                 <TextView
-                    android:layout_width="135dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
                     android:layout_marginLeft="5dp"

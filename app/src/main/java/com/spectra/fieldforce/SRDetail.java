@@ -821,7 +821,7 @@ public class SRDetail extends Fragment {
         activity = (AppCompatActivity) getActivity();
     }
 
-    SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm aaa");
+    SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
     final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
         mCalendar.set(Calendar.YEAR, year);
         mCalendar.set(Calendar.MONTH, monthOfYear);
@@ -1081,6 +1081,7 @@ public class SRDetail extends Fragment {
                             mCalendar.get(Calendar.HOUR_OF_DAY),
                             mCalendar.get(Calendar.MINUTE),
                             DateFormat.is24HourFormat(getActivity()));
+
                     timePickerDialog.show();
                     final DatePickerDialog fromPickerDialog = new DatePickerDialog(
                             activity, android.R.style.Theme_Material_Light_Dialog_Alert,
