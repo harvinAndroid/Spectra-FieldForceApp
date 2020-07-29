@@ -533,10 +533,10 @@
 
             <Spinner
                 android:id="@+id/changeStatus"
-                android:layout_width="200dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/endLayout"
-                android:layout_marginLeft="120dp"
+                android:layout_marginLeft="140dp"
                 android:layout_marginTop="10dp"
                 android:textSize="14sp" />
 
@@ -564,7 +564,7 @@
 
                 <TextView
                     android:id="@+id/sessionStatus"
-                    android:layout_width="200dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
@@ -572,7 +572,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnUnifySession"
                     android:layout_marginLeft="5dp"
@@ -582,14 +582,14 @@
 
                 <Spinner
                     android:id="@+id/rc1"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnUnifySession"
-                    android:layout_marginLeft="120dp"
+                    android:layout_marginLeft="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc1"
                     android:layout_marginLeft="5dp"
@@ -599,14 +599,14 @@
 
                 <Spinner
                     android:id="@+id/rc2"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc1"
-                    android:layout_marginLeft="120dp"
+                    android:layout_marginLeft="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
                     android:layout_marginLeft="5dp"
@@ -616,14 +616,14 @@
 
                 <Spinner
                     android:id="@+id/rc3"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
-                    android:layout_marginLeft="120dp"
+                    android:layout_marginLeft="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
                     android:layout_marginLeft="5dp"
@@ -633,14 +633,14 @@
 
                 <Spinner
                     android:id="@+id/resolveContacted"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
-                    android:layout_marginLeft="120dp"
+                    android:layout_marginLeft="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
                     android:layout_marginLeft="5dp"
@@ -650,10 +650,10 @@
 
                 <EditText
                     android:id="@+id/rfo"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
-                    android:layout_marginLeft="120dp" />
+                    android:layout_marginLeft="140dp" />
 
                 <Button
                     android:id="@+id/btnResolveSubmit"
@@ -682,7 +682,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="15dp"
@@ -691,13 +691,13 @@
 
                 <Spinner
                     android:id="@+id/holdReason"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="120dp"
+                    android:layout_marginLeft="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
                     android:layout_marginLeft="5dp"
@@ -707,13 +707,13 @@
 
                 <EditText
                     android:id="@+id/contactName"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
-                    android:layout_marginLeft="120dp" />
+                    android:layout_marginLeft="140dp" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
                     android:layout_marginLeft="5dp"
@@ -723,13 +723,13 @@
 
                 <EditText
                     android:id="@+id/contactNumber"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
-                    android:layout_marginLeft="120dp" />
+                    android:layout_marginLeft="140dp" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
                     android:layout_marginLeft="5dp"
@@ -739,10 +739,10 @@
 
                 <Spinner
                     android:id="@+id/contacted"
-                    android:layout_width="200dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
-                    android:layout_marginLeft="120dp"
+                    android:layout_marginLeft="140dp"
                     android:layout_marginTop="10dp" />
 
                 <Button

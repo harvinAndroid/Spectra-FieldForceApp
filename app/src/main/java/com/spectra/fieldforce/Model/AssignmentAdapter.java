@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,9 @@ import com.spectra.fieldforce.SRInterface;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -81,7 +85,16 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.srNumber.setText(order.getSrNumber());
         holder.slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
         holder.srStatus.setText(order.getSrStatus());
-        holder.slaClock.setText(order.getSlaClock());
+        String s = order.getSlaClock();
+        SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");//HH for hour of the day (0 - 23)
+        Date d = null;
+        try {
+            d = f1.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+        holder.slaClock.setText(f2.format(d)); // "12:18am"
         if (order.getAcknowledge_status().equals("1")) {
             holder.btnView.setText("View");
         }

@@ -446,8 +446,18 @@ public class SRDetail extends Fragment {
                                     srType.setText(order.getSrType());
                                     srSubType.setText(order.getSrSubType());
                                     slaClock.setText(order.getSlaClock());
+                                    String s = order.getSlaClock();
+                                    SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");//HH for hour of the day (0 - 23)
+                                    Date d = null;
+                                    try {
+                                        d = f1.parse(s);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+                                    slaClock.setText(f2.format(d));
                                     slaStatus.setText(order.getSlaStatus());
-                                    if (order.getSlaStatus().equals("In Progress")) {
+                                    if (order.getSlaStatus().equals("In Progress") || order.getSlaStatus().equals("Succeeded")) {
                                         slaStatus.setTextColor(Color.parseColor("#008000"));
                                     } else if (order.getSlaStatus().equals("Paused")) {
                                         slaStatus.setTextColor(Color.parseColor("#8B0000"));
@@ -543,7 +553,7 @@ public class SRDetail extends Fragment {
                             try {
                                 String result = jsonObject.getString("Response");
                                 Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-                                activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).commit();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -603,7 +613,7 @@ public class SRDetail extends Fragment {
                             try {
                                 String result = jsonObject.getString("Response");
                                 Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-                                activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).commit();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
