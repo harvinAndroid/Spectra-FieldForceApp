@@ -517,6 +517,13 @@ public class SRDetail extends Fragment {
         });
     }
 
+    private boolean isValidMobile(String phone) {
+        if (phone.length() == 10) {
+            return android.util.Patterns.PHONE.matcher(phone).matches();
+        } else
+            return false;
+    }
+
     private void submitOnHold() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "saveActionCode";
@@ -997,26 +1004,25 @@ public class SRDetail extends Fragment {
             @Override
             public void onClick(View v) {
                 boolean isValid = true;
-                if (contacted.getSelectedItem().toString().equals("Select Status")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select customer is contacted or not", Toast.LENGTH_LONG).show();
-                }
-                if (contactNumber.getText().toString().equals("")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please enter Contact Number", Toast.LENGTH_LONG).show();
-                }
-                if (contactName.getText().toString().equals("")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please enter Contact Person", Toast.LENGTH_LONG).show();
-                }
                 if (holdReason.getSelectedItem().toString().equals("Select Hold Reason")) {
                     isValid = false;
                     Toast.makeText(activity, "Please select Hold Reason", Toast.LENGTH_LONG).show();
+                } else if (contactName.getText().toString().equals("")) {
+                    isValid = false;
+                    Toast.makeText(activity, "Please enter Contact Person", Toast.LENGTH_LONG).show();
+                } else if (contactNumber.getText().toString().equals("")) {
+                    isValid = false;
+                    Toast.makeText(activity, "Please enter Contact Number", Toast.LENGTH_LONG).show();
+                } else if (!isValidMobile(contactNumber.getText().toString())) {
+                    isValid = false;
+                    Toast.makeText(activity, "Please enter Valid Contact Number", Toast.LENGTH_LONG).show();
+                } else if (contacted.getSelectedItem().toString().equals("Select Status")) {
+                    isValid = false;
+                    Toast.makeText(activity, "Please select customer is contacted or not", Toast.LENGTH_LONG).show();
                 }
 
                 if (isValid == true) {
                     submitOnHold();
-                    //activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
                 }
             }
         });

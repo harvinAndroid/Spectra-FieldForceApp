@@ -42,7 +42,7 @@
                 android:layout_below="@id/srNumber"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Customer ID:"
+                android:text="CAN ID:"
                 android:textStyle="bold" />
 
             <TextView
@@ -262,7 +262,7 @@
                 android:layout_below="@id/caseRemarks"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:text="SLA Clock:"
+                android:text="SLA Time:"
                 android:textStyle="bold" />
 
             <TextView
@@ -316,7 +316,7 @@
                 android:layout_below="@id/customerIP"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Foni:"
+                android:text="FONI:"
                 android:textStyle="bold" />
 
             <TextView
@@ -685,7 +685,7 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:text="Hold Reason:"
                     android:textStyle="bold" />
 
@@ -710,6 +710,7 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
+                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="140dp" />
 
                 <TextView
@@ -717,7 +718,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:text="Contact Number:"
                     android:textStyle="bold" />
 
@@ -726,14 +727,15 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
+                    android:layout_marginTop="0dp"
                     android:layout_marginLeft="140dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:text="Customer Contacted:"
                     android:textStyle="bold" />
 

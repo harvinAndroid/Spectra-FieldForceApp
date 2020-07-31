@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -92,13 +93,14 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         prefConfig.writeName(email);
         prefConfig.writeUserName(name);
         getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+        Log.d("Point", "1");
     }
 
     @Override
     public void performLogout() {
         prefConfig.writeLoginStatus(false);
         prefConfig.writeName("User");
-        getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
     }
 
     private void performLogin() {
@@ -130,9 +132,12 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                             userEmailN = jsonObjectN.getString("name");
                             userName = jsonObjectN.getString("username");
                             message = "Welcome " + userName;
+                            Log.d("Point", "1");
                             MainActivity.prefConfig.writeLoginStatus(true);
                             performLogin(userEmailN, userName);
+                            Log.d("Point", "3");
                             getSaveToken();
+                            Log.d("Point", "4");
                         }
                         StatusMess.setText(message);
                     }

@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         activity = this;
         prefConfig = new PrefConfig(activity);
+        //setContentView(R.layout.fragment_login);
         setContentView(R.layout.main_activity);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
