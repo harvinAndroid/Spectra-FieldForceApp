@@ -761,8 +761,8 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/progress"/>
-
         </RelativeLayout>
     </ScrollView>
+
+    <include layout="@layout/progress" />
 </FrameLayout>

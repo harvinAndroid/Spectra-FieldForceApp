@@ -569,7 +569,6 @@ public class SRDetail extends Fragment {
                 outAnimation.setDuration(200);
                 progressOverlay.setAnimation(outAnimation);
                 progressOverlay.setVisibility(View.GONE);
-                btnHoldSubmit.setEnabled(true);
                 try {
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
@@ -584,10 +583,12 @@ public class SRDetail extends Fragment {
                             }
                         } else {
                             String result = jsonObject.getString("Message");
+                            btnHoldSubmit.setEnabled(true);
                             Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
                         }
                     }
                 } catch (Exception e) {
+                    btnHoldSubmit.setEnabled(true);
                     e.printStackTrace();
                 }
             }
@@ -595,6 +596,7 @@ public class SRDetail extends Fragment {
             @Override
             public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
                 progressOverlay.setVisibility(View.GONE);
+                btnHoldSubmit.setEnabled(true);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -640,7 +642,6 @@ public class SRDetail extends Fragment {
                 outAnimation.setDuration(200);
                 progressOverlay.setAnimation(outAnimation);
                 progressOverlay.setVisibility(View.GONE);
-                btnResolveSubmit.setEnabled(true);
                 try {
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
@@ -659,12 +660,14 @@ public class SRDetail extends Fragment {
                         }
                     }
                 } catch (Exception e) {
+                    btnResolveSubmit.setEnabled(true);
                     e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                btnResolveSubmit.setEnabled(true);
                 Log.e("RetroError", t.toString());
             }
         });
