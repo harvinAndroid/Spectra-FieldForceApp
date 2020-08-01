@@ -2,7 +2,9 @@ package com.spectra.fieldforce;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -23,6 +25,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
@@ -31,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static PrefConfig prefConfig;
     private static final String TAG = "MainActivity";
     private DrawerLayout drawerLayout;
+    private static final int REQ_CODE_VERSION_UPDATE = 530;
+    private AppUpdateManager appUpdateManager;
+    private InstallStateUpdatedListener installStateUpdatedListener;
 
     public void runtimeEnableAutoInit() {
         // [START fcm_runtime_enable_auto_init]
@@ -44,9 +59,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
-        prefConfig = new PrefConfig(activity);
         //setContentView(R.layout.fragment_login);
         setContentView(R.layout.main_activity);
+        checkForAppUpdate();
+        prefConfig = new PrefConfig(activity);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("MyNotifications", "MyNotifications", NotificationManager.IMPORTANCE_DEFAULT);
@@ -68,6 +84,105 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(activity, LoginActivity.class));
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkNewAppVersionState();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, final int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        switch (requestCode) {
+            case REQ_CODE_VERSION_UPDATE:
+                if (resultCode != RESULT_OK) {
+                    Log.d(TAG, "Update flow failed! Result code: " + resultCode);
+                    unregisterInstallStateUpdListener();
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterInstallStateUpdListener();
+        super.onDestroy();
+    }
+
+    private void checkForAppUpdate() {
+        appUpdateManager = AppUpdateManagerFactory.create(activity);
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        installStateUpdatedListener = new InstallStateUpdatedListener() {
+            @Override
+            public void onStateUpdate(InstallState installState) {
+                if (installState.installStatus() == InstallStatus.DOWNLOADED)
+                    popupSnackbarForCompleteUpdateAndUnregister();
+            }
+        };
+
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                startAppUpdateImmediate(appUpdateInfo);
+            }
+        });
+    }
+
+    private void startAppUpdateImmediate(AppUpdateInfo appUpdateInfo) {
+        try {
+            appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    MainActivity.REQ_CODE_VERSION_UPDATE);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void popupSnackbarForCompleteUpdateAndUnregister() {
+        Snackbar snackbar =
+                Snackbar.make(drawerLayout, getString(R.string.update_downloaded), Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(R.string.restart, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                appUpdateManager.completeUpdate();
+            }
+        });
+        snackbar.setActionTextColor(Color.YELLOW);
+        snackbar.show();
+        unregisterInstallStateUpdListener();
+    }
+
+    private void checkNewAppVersionState() {
+        appUpdateManager
+                .getAppUpdateInfo()
+                .addOnSuccessListener(
+                        appUpdateInfo -> {
+                            //FLEXIBLE:
+                            // If the update is downloaded but not installed,
+                            // notify the user to complete the update.
+                            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                                popupSnackbarForCompleteUpdateAndUnregister();
+                            }
+
+                            //IMMEDIATE:
+                            if (appUpdateInfo.updateAvailability()
+                                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                                // If an in-app update is already running, resume the update.
+                                startAppUpdateImmediate(appUpdateInfo);
+                            }
+                        });
+
+    }
+
+    /**
+     * Needed only for FLEXIBLE update
+     */
+    private void unregisterInstallStateUpdListener() {
+        if (appUpdateManager != null && installStateUpdatedListener != null)
+            appUpdateManager.unregisterListener(installStateUpdatedListener);
     }
 
     @Override
@@ -95,6 +210,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return null;
     }
 
+    private void checkUpdate() {
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        Log.d(TAG, "Checking for updates");
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                Log.d(TAG, "Update available");
+                try {
+                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.IMMEDIATE, this, 300);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d(TAG, "No Update available");
+            }
+        });
+    }
 
     private void navigationDrawerSetup() {
         try {
