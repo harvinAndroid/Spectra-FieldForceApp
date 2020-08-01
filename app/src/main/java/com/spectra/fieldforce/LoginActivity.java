@@ -1,6 +1,7 @@
 package com.spectra.fieldforce;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         activity = this;
         prefConfig = new PrefConfig(activity);
         setContentView(R.layout.fragment_login);
+
         Typeface myTypeFace = Typeface.createFromAsset(activity.getAssets(), "fonts/Spectra-Regular.ttf");
         textView = findViewById(R.id.spectraText);
         textView.setTypeface(myTypeFace);
@@ -89,11 +91,22 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
     }
 
     @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            finish();
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+    }
+    @Override
     public void performLogin(String email, String name) {
         prefConfig.writeName(email);
         prefConfig.writeUserName(name);
-        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
         Log.d("Point", "1");
+        finish();
+        startActivity(new Intent(activity, MainActivity.class));
     }
 
     @Override

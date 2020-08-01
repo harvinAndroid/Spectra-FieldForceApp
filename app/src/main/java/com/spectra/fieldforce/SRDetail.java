@@ -18,10 +18,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,6 +75,7 @@ public class SRDetail extends Fragment {
     private Spinner resolveContacted, changeStatus, rc1, rc2, rc3, holdReason, contacted;
     private String status;
     private String engId;
+    private FrameLayout progressOverlay;
     private boolean startFlag, endFlag;
     private RelativeLayout startLayout, endLayout, resolveLayout, holdLayout;
     private JSONArray result;
@@ -85,6 +89,9 @@ public class SRDetail extends Fragment {
     private Location location;
     private String fromDateString = "";
     private Calendar mCalendar;
+    AlphaAnimation inAnimation;
+    AlphaAnimation outAnimation;
+
 
     public SRDetail() {
         // Required empty public constructor
@@ -548,10 +555,21 @@ public class SRDetail extends Fragment {
         srRequest.setContacted(isContacted == "Yes" ? "true" : "false");
 
         SRInterface apiService = ApiClient.getClient().create(SRInterface.class);
+
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        progressOverlay.setAnimation(inAnimation);
+        progressOverlay.setVisibility(View.VISIBLE);
+        btnHoldSubmit.setEnabled(false);
         Call<JsonElement> call = apiService.getSRDetail(srRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                outAnimation = new AlphaAnimation(1f, 0f);
+                outAnimation.setDuration(200);
+                progressOverlay.setAnimation(outAnimation);
+                progressOverlay.setVisibility(View.GONE);
+                btnHoldSubmit.setEnabled(true);
                 try {
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
@@ -576,6 +594,7 @@ public class SRDetail extends Fragment {
 
             @Override
             public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -608,10 +627,20 @@ public class SRDetail extends Fragment {
         srRequest.setSource("FFA App");
 
         SRInterface apiService = ApiClient.getClient().create(SRInterface.class);
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        progressOverlay.setAnimation(inAnimation);
+        progressOverlay.setVisibility(View.VISIBLE);
+        btnResolveSubmit.setEnabled(false);
         Call<JsonElement> call = apiService.getSRDetail(srRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                outAnimation = new AlphaAnimation(1f, 0f);
+                outAnimation.setDuration(200);
+                progressOverlay.setAnimation(outAnimation);
+                progressOverlay.setVisibility(View.GONE);
+                btnResolveSubmit.setEnabled(true);
                 try {
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
@@ -912,6 +941,7 @@ public class SRDetail extends Fragment {
         endLayout = (RelativeLayout) view.findViewById(R.id.endLayout);
         resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
         holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
+        progressOverlay = (FrameLayout) view.findViewById(R.id.progress_overlay);
         bindChangeStatus(0);
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

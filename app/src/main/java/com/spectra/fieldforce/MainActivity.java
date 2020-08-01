@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
-        //setContentView(R.layout.fragment_login);
         setContentView(R.layout.main_activity);
         checkForAppUpdate();
         prefConfig = new PrefConfig(activity);
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navigationDrawerSetup();
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
             } else {
-                //getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
+                finish();
                 startActivity(new Intent(activity, LoginActivity.class));
             }
         }
