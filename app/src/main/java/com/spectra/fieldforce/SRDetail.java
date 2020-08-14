@@ -1,8 +1,10 @@
 package com.spectra.fieldforce;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,22 +26,33 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.gms.common.api.Api;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.EndtimeRequest;
 import com.spectra.fieldforce.Model.Order;
+import com.spectra.fieldforce.Model.QuestionListRequest;
+import com.spectra.fieldforce.Model.QuestionListResponse;
+import com.spectra.fieldforce.Model.QuestionareList;
 import com.spectra.fieldforce.Model.RCRequest;
 import com.spectra.fieldforce.Model.SRRequest;
 import com.spectra.fieldforce.Model.StarttimeRequest;
@@ -69,8 +82,8 @@ public class SRDetail extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private TextView customerId, customerName, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
             srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName, etr, sessionStatus,
-            startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber, txtHeader;
-    private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit;
+            startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber, txtHeader,action_code;
+    private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit,btnNoc,btnMgrt;
     private EditText DateEdit, rfo;
     private Spinner resolveContacted, changeStatus, rc1, rc2, rc3, holdReason, contacted;
     private String status;
@@ -79,6 +92,7 @@ public class SRDetail extends Fragment {
     private boolean startFlag, endFlag;
     private RelativeLayout startLayout, endLayout, resolveLayout, holdLayout;
     private JSONArray result;
+    private RecyclerView question_recyler_view;
     AppCompatActivity activity;
     ArrayList<String> rc1Code;
     ArrayList<String> rc1Name;
@@ -91,7 +105,12 @@ public class SRDetail extends Fragment {
     private Calendar mCalendar;
     AlphaAnimation inAnimation;
     AlphaAnimation outAnimation;
-
+    private ArrayList<QuestionListResponse.Data> questionList;
+    private ArrayList<String> itemlist = new ArrayList<>();
+    private String Sr;
+    BottomSheetBehavior sheetBehavior;
+    ConstraintLayout layoutBottomSheet;
+    //private OnItemClickListener myClickListener;
 
     public SRDetail() {
         // Required empty public constructor
@@ -120,6 +139,8 @@ public class SRDetail extends Fragment {
         changeStatus.setAdapter(adapter);
     }
 
+
+
     private void bindContacted() {
         ArrayList<String> contact = new ArrayList<String>();
         contact.add("Select Status");
@@ -139,7 +160,7 @@ public class SRDetail extends Fragment {
         rcRequest.setAuthkey(authKey);
         rcRequest.setAction(action);
 
-        RCInterface apiService = ApiClient.getClient().create(RCInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getRCDetail(rcRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -197,7 +218,7 @@ public class SRDetail extends Fragment {
         rcRequest.setAction(action);
         rcRequest.setRC1(RConeId);
 
-        RCInterface apiService = ApiClient.getClient().create(RCInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getRCDetail(rcRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -255,7 +276,7 @@ public class SRDetail extends Fragment {
         rcRequest.setAction(action);
         rcRequest.setRC2(RCtwoId);
 
-        RCInterface apiService = ApiClient.getClient().create(RCInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getRCDetail(rcRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -311,7 +332,7 @@ public class SRDetail extends Fragment {
         rcRequest.setAuthkey(authKey);
         rcRequest.setAction(action);
 
-        RCInterface apiService = ApiClient.getClient().create(RCInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getRCDetail(rcRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -364,7 +385,7 @@ public class SRDetail extends Fragment {
         rcRequest.setAction(action);
         rcRequest.setCanId(canId);
 
-        RCInterface apiService = ApiClient.getClient().create(RCInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getRCDetail(rcRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -420,7 +441,7 @@ public class SRDetail extends Fragment {
         srRequest.setSlotType(slotType);
         srRequest.setSrNumber(srText);
 
-        SRInterface apiService = ApiClient.getClient().create(SRInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getSRDetail(srRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -453,6 +474,7 @@ public class SRDetail extends Fragment {
                                     srType.setText(order.getSrType());
                                     srSubType.setText(order.getSrSubType());
                                     slaClock.setText(order.getSlaClock());
+                                    action_code.setText(order.getActionCode());
                                     String s = order.getSlaClock();
                                     SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");//HH for hour of the day (0 - 23)
                                     Date d = null;
@@ -524,6 +546,62 @@ public class SRDetail extends Fragment {
         });
     }
 
+    private void getQuestionList() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "getAllQuestioner";
+
+        QuestionListRequest questionListRequest = new QuestionListRequest();
+        questionListRequest.setAuthkey(authKey);
+        questionListRequest.setAction(action);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<QuestionListResponse> call = apiService.getQuestionList(questionListRequest);
+        call.enqueue(new Callback<QuestionListResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<QuestionListResponse> call, Response<QuestionListResponse> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        status=response.body().getStatus();
+                     /*   JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");*/
+                        if (status.equals("Failure")) {
+                            Log.d("Failure", "error");
+                        } else if (status.equals("Success")) {
+                            try {
+                                questionList = response.body().getData();
+                               // questionList = new ArrayList<>();
+                                if (response != null) {
+                                    QuestionAnswerAdapter adapter = new QuestionAnswerAdapter(getContext(),questionList,myClickListener);
+                                    //question_recyler_view.setVisibility(View.VISIBLE);
+                                    question_recyler_view.setHasFixedSize(true);
+                                    question_recyler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    question_recyler_view.setAdapter(adapter);
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<QuestionListResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+    private OnItemClickListener myClickListener = (tag,questionid) -> {
+        tag.get(0);
+       // questionid.get(0);
+        itemlist.add(tag.get(0));
+        };
+
+
     private boolean isValidMobile(String phone) {
         if (phone.length() == 10) {
             return android.util.Patterns.PHONE.matcher(phone).matches();
@@ -531,9 +609,63 @@ public class SRDetail extends Fragment {
             return false;
     }
 
+
+
+
+    private void submitQuestionare() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "saveQuestionerdetails";
+
+        QuestionareList questionListRequest = new QuestionareList();
+        questionListRequest.setAuthkey(authKey);
+        questionListRequest.setAction(action);
+        questionListRequest.setAction(itemlist.get(0));
+        questionListRequest.setAction(itemlist.get(1));
+        questionListRequest.setAction(itemlist.get(2));
+        questionListRequest.setAction(itemlist.get(3));
+        questionListRequest.setAction(itemlist.get(4));
+        questionListRequest.setAction(itemlist.get(5));
+        questionListRequest.setAction(Sr);
+        questionListRequest.setAction(MainActivity.prefConfig.readName());
+        questionListRequest.setAction("App");
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonResponse> call = apiService.sendQuestionare(questionListRequest);
+        call.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<CommonResponse> call, Response<CommonResponse> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        status=response.body().getStatus();
+                     /*   JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");*/
+                        if (status.equals("Failure")) {
+                            Log.d("Failure", "error");
+                        } else if (status.equals("Success")) {
+                            try {
+
+                                Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<CommonResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
     private void submitOnHold() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "saveActionCode";
+        Sr = srNumber.getText().toString();
         String sr = srNumber.getText().toString();
         String actionCode = holdReason.getSelectedItem().toString();
         String custName = contactName.getText().toString();
@@ -554,7 +686,7 @@ public class SRDetail extends Fragment {
         srRequest.setContactNumber(custNum);
         srRequest.setContacted(isContacted == "Yes" ? "true" : "false");
 
-        SRInterface apiService = ApiClient.getClient().create(SRInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -628,7 +760,7 @@ public class SRDetail extends Fragment {
         srRequest.setResolveContacted(isContacted == "Yes" ? "true" : "false");
         srRequest.setSource("FFA App");
 
-        SRInterface apiService = ApiClient.getClient().create(SRInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         progressOverlay.setAnimation(inAnimation);
@@ -687,7 +819,7 @@ public class SRDetail extends Fragment {
         srRequest.setEngId(engId);
         srRequest.setETR(dateTimeText);
 
-        SRInterface apiService = ApiClient.getClient().create(SRInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getSRDetail(srRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -725,6 +857,10 @@ public class SRDetail extends Fragment {
         String action = "SaveGPSTime";
         String sr = srNumber.getText().toString();
         String loc = startLocation.getText().toString();
+        //////////////////////////////////////////////////
+       /* String startLongi = "14.676578";
+        String startLati = "68.97666";*/
+        /////////////////////////////////////////////////
         String startLongi = loc.split(", ")[0];
         String startLati = loc.split(", ")[1];
         String startAdd = "Empty";
@@ -741,7 +877,7 @@ public class SRDetail extends Fragment {
         startTimeRequest.setStartTime(startDate);
         startTimeRequest.setEngEmailId(EngEmailId);
 
-        StarttimeInterface apiService = ApiClient.getClient().create(StarttimeInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.performOrderStarttime(startTimeRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
@@ -779,6 +915,10 @@ public class SRDetail extends Fragment {
         String action = "updateGPSTime";
         String sr = srNumber.getText().toString();
         String loc = endLocation.getText().toString();
+        //////////////////////////////////////////////////
+      /*  String endLongi = "14.676578";
+        String endLati = "68.97666";*/
+        /////////////////////////////////////////////////
         String endLongi = loc.split(", ")[0];
         String endLati = loc.split(", ")[1];
         String endAdd = "Empty";
@@ -839,14 +979,18 @@ public class SRDetail extends Fragment {
             }
         }
         if (isLoc == true) {
-            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (location == null) {
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            try {
+                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location == null) {
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+                double longi = location.getLongitude();
+                double lati = location.getLatitude();
+                String message = longi + ", " + lati;
+                txtLocation.setText(message);
+            }catch (Exception ex){
+                ex.getMessage();
             }
-            double longi = location.getLongitude();
-            double lati = location.getLatitude();
-            String message = longi + ", " + lati;
-            txtLocation.setText(message);
         }
         return isLoc;
     }
@@ -858,7 +1002,8 @@ public class SRDetail extends Fragment {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                activity.requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 11);
+                activity.requestPermissions(new String[]{
+                        Manifest.permission.CALL_PHONE}, 11);
             }
         }
         activity.startActivity(intent);
@@ -868,6 +1013,7 @@ public class SRDetail extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (AppCompatActivity) getActivity();
+
     }
 
     SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
@@ -898,6 +1044,8 @@ public class SRDetail extends Fragment {
         getAssignment(srText, slotType);
 
         View view = inflater.inflate(R.layout.fragment_s_r_detail, container, false);
+        layoutBottomSheet = view.findViewById(R.id.bottomSheet);
+        sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         customerId = (TextView) view.findViewById(R.id.customerId);
         customerName = (TextView) view.findViewById(R.id.customerName);
         customerMobile = (TextView) view.findViewById(R.id.customerMobile);
@@ -945,7 +1093,14 @@ public class SRDetail extends Fragment {
         resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
         holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
         progressOverlay = (FrameLayout) view.findViewById(R.id.progress_overlay);
+        question_recyler_view =(RecyclerView)view.findViewById(R.id.question_recyler_view);
+        btnMgrt = view.findViewById(R.id.btnMgrt);
+        btnNoc = view.findViewById(R.id.btnNoc);
+        action_code = view.findViewById(R.id.action_code);
+
         bindChangeStatus(0);
+        BottomSheet();
+      //  WebViewNoc();
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -954,6 +1109,7 @@ public class SRDetail extends Fragment {
                     resolveLayout.setVisibility(View.VISIBLE);
                     holdLayout.setVisibility(View.GONE);
                     getRC1();
+                    getQuestionList();
                 } else if (status == "Hold") {
                     resolveLayout.setVisibility(View.GONE);
                     holdLayout.setVisibility(View.VISIBLE);
@@ -1056,13 +1212,18 @@ public class SRDetail extends Fragment {
 
                 if (isValid == true) {
                     submitOnHold();
+
                 }
             }
         });
         btnResolveSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isValid = true;
+                Intent i = new Intent(activity,Activity_Resolve.class);
+                i.putExtra("CustomerId",customerId.getText().toString());
+                i.putExtra("SrNumber",srNumber.getText().toString());
+                startActivity(i);
+               /* boolean isValid = true;
                 if (endFlag) {
                     isValid = false;
                     Toast.makeText(activity, "Reach before Resolve", Toast.LENGTH_LONG).show();
@@ -1084,8 +1245,9 @@ public class SRDetail extends Fragment {
                 }
                 if (isValid == true) {
                     submitOnResolve();
+                    submitQuestionare();
                     //activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-                }
+                }*/
             }
         });
         btnETRSubmit.setOnClickListener(new View.OnClickListener() {
@@ -1114,38 +1276,57 @@ public class SRDetail extends Fragment {
                 }
             }
         });
-        customerMobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri number = Uri.parse("tel:" + customerMobile.getText().toString());
-                call_action(number);
-            }
+        customerMobile.setOnClickListener(v -> {
+            Uri number = Uri.parse("tel:" + customerMobile.getText().toString());
+            call_action(number);
         });
-        DateEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    final TimePickerDialog timePickerDialog = new TimePickerDialog(
-                            activity, mTimeDateSetListener,
-                            mCalendar.get(Calendar.HOUR_OF_DAY),
-                            mCalendar.get(Calendar.MINUTE),
-                            DateFormat.is24HourFormat(getActivity()));
+        DateEdit.setOnClickListener(v -> {
+            try {
+                final TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        activity, mTimeDateSetListener,
+                        mCalendar.get(Calendar.HOUR_OF_DAY),
+                        mCalendar.get(Calendar.MINUTE),
+                        DateFormat.is24HourFormat(getActivity()));
 
-                    timePickerDialog.show();
-                    final DatePickerDialog fromPickerDialog = new DatePickerDialog(
-                            activity, android.R.style.Theme_Material_Light_Dialog_Alert,
-                            mFromDateSetListener,
-                            mCalendar.get(Calendar.YEAR),
-                            mCalendar.get(Calendar.MONTH),
-                            mCalendar.get(Calendar.DAY_OF_MONTH));
-                    fromPickerDialog.show();
-                } catch (Exception ex) {
-                    // TODO: 13-07-2020 for @satyveer handle message to show user
-                }
+                timePickerDialog.show();
+                final DatePickerDialog fromPickerDialog = new DatePickerDialog(
+                        activity, android.R.style.Theme_Material_Light_Dialog_Alert,
+                        mFromDateSetListener,
+                        mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH));
+                fromPickerDialog.show();
+            } catch (Exception ex) {
+                // TODO: 13-07-2020 for @satyveer handle message to show user
             }
         });
         mCalendar = Calendar.getInstance();
         fromDateString = sendDateFormat.format(mCalendar.getTime());
         return view;
     }
+
+
+
+    private void WebViewNoc(){
+        Intent i = new Intent(getActivity(),ActWebView.class);
+        startActivity(i);
+        Objects.requireNonNull(getActivity()).finish();
+
+   /*     FragmentWebView myFragment = new FragmentWebView();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, myFragment).addToBackStack(null).commit();
+ */   }
+
+
+    private void BottomSheet(){
+        btnMgrt.setOnClickListener(v -> {
+            FragmentMrtg bottomSheetFragment = new FragmentMrtg();
+            bottomSheetFragment.show(activity.getSupportFragmentManager(), bottomSheetFragment.getTag());
+        });
+
+        btnNoc.setOnClickListener(v -> WebViewNoc());
+    }
+
+
 }
+
+

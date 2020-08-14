@@ -17,6 +17,41 @@
     <string name="fcm_message" />
     <string name="update_downloaded">App has been updated</string>
     <string name="restart">Close and run FFA App again</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="na">NA</string>
+    <string name="your_assignments">Your Assignments</string>
+    <string name="acknowledge">Acknowledge</string>
+    <string name="slot_date_time">Slot Date Time:</string>
+    <string name="current_status">Current Status</string>
+    <string name="address">Address:</string>
+    <string name="cancel">CANCEL</string>
+    <string name="accountstatus">Account Status</string>
+    <string name="barringflag">Barring Flag</string>
+    <string name="fup_flag">FUP Flag</string>
+    <string name="home">Home</string>
+    <string name="wifi_analyzer">Wifi Analyzer</string>
+    <string name="speed_test">Speed Test</string>
+    <string name="gpon">Gpon</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="login">login</string>
+    <string name="makelifebetter">#MakeLifeBetter</string>
+    <string name="noc">NOC</string>
+    <string name="mrtg">MRTG</string>
+    <string name="update_etr">Update ETR</string>
+    <string name="get_unify_session">Get Unify Session</string>
+    <string name="rc_1">RC 1:</string>
+    <string name="rc_2">RC 2:</string>
+    <string name="rc_3">RC 3:</string>
+    <string name="customer_contacted">Customer Contacted:</string>
+    <string name="rfo">RFO:</string>
+    <string name="speed_on_wifi">speed_on_wifi</string>
+    <string name="other_in_ml">Other In ML</string>
+    <string name="speed_on_lan">Speed on Lan</string>
+    <string name="router_position">Router Position</string>
+    <string name="submit_on_resolve">Submit on Resolve</string>
+    <string name="mrtg_details">MRTG Details</string>
 
 
 </resources>

@@ -1,21 +1,47 @@
 package com.spectra.fieldforce.Model;
 
 public class Order {
-    private String customerID, customerName, customerAddress, customerCityName, customerMobile, slotType, engId,
-            customerPrefDate, case_remarks, segment, podName, srNumber, portId, oltname, slaClock, acknowledge_status,
-            slaStatus, customerIP, srStatus, startTime, endTime, srType, srSubType, roasteDate, foni, repeat_sr,
-            startLatitude, endLatitude, massoutage;
+    private String customerID;
+    private String customerName;
+    private String customerAddress;
+    private String customerCityName;
+    private String customerMobile;
+    private String slotType;
+    private String engId;
+    private String customerPrefDate;
+    private String case_remarks;
+    private String segment;
+    private String podName;
+    private String srNumber;
+    private String portId;
+    private String oltname;
+    private String slaClock;
+    private String acknowledge_status;
+    private String slaStatus;
+    private String customerIP;
+    private String srStatus;
+    private String startTime;
+    private String endTime;
+    private String srType;
+    private String srSubType;
+    private String roasteDate;
+    private String foni;
+    private String repeat_sr;
+    private String startLatitude;
+    private String endLatitude;
+    private String massoutage;
 
-    public Order() {
 
-    }
+    private String actionCode;
+
+
 
     public Order(String customerID, String customerName, String customerAddress, String customerCityName, String engId,
                  String customerMobile, String slotType, String customerPrefDate, String case_remarks, String segment,
                  String podName, String srNumber, String portId, String oltname, String slaClock, String acknowledge_status,
                  String slaStatus, String customerIP, String srStatus, String startTime, String endTime, String startLatitude,
                  String endLatitude, String srType, String srSubType, String roasteDate, String foni, String repeat_sr,
-                 String massoutage) {
+                 String massoutage,String actionCode) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -45,6 +71,7 @@ public class Order {
         this.engId = engId;
         this.startLatitude = startLatitude;
         this.endLatitude = endLatitude;
+        this.actionCode = actionCode;
     }
 
     public String getCustomerID() {
@@ -278,4 +305,12 @@ public class Order {
     public void setEndLatitude(String endLatitude) {
         this.endLatitude = endLatitude;
     }
+    public String getActionCode() {
+        return actionCode;
+    }
+
+    public void setActionCode(String actionCode) {
+        this.actionCode = actionCode;
+    }
+
 }

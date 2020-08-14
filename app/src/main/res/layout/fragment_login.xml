@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,6 +16,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:text="@string/spectra"
+        android:layout_marginLeft="@dimen/_10ssp"
+        android:layout_marginRight="@dimen/_10ssp"
         android:textColor="@color/colorWhite"
         android:textSize="72sp" />
 
@@ -25,7 +28,7 @@
         android:layout_below="@id/spectraText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="#MakeLifeBetter"
+        android:text="@string/makelifebetter"
         android:textColor="@color/colorGray"
         android:textSize="25sp" />
 
@@ -43,8 +46,9 @@
     <RelativeLayout
         android:id="@+id/main_screen"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/errortxt"
+        android:layout_margin="30dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/round_corner">
 
@@ -55,7 +59,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/colorBlack"
-            android:hint="User Name"
+            android:hint="@string/user_name"
             android:textColor="@color/colorBlack"
             android:textColorHint="@color/colorGray"
             android:textSize="20sp" />
@@ -68,24 +72,25 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/colorBlack"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="@color/colorBlack"
             android:textColorHint="@color/colorGray"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            tools:targetApi="lollipop" />
 
         <Button
             android:id="@+id/login_btn"
             android:layout_width="190dp"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/_40ssp"
             android:layout_below="@id/user_pass"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:background="@drawable/round_button"
-            android:text="login"
-            android:textAllCaps="false"
+            android:text="@string/login"
+            android:textAllCaps="true"
             android:textColor="@color/colorWhite"
-            android:textSize="27sp" />
+            android:textSize="@dimen/_14ssp" />
 
         <TextView
             android:id="@+id/register_txt"
@@ -105,7 +110,7 @@
             android:layout_below="@id/login_btn"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text=""
+            android:layout_marginBottom="10dp"
             android:textColor="@color/colorBlue" />
 
     </RelativeLayout>

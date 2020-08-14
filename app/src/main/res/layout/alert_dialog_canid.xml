@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/bottomSheet"
+    android:background="@android:color/white"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<TextView
+    android:id="@+id/heading"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_40ssp"
+    android:text="@string/mrtg_details"
+    android:background="@android:color/black"
+    android:textColor="@android:color/white"
+    android:textSize="@dimen/_16ssp"
+    android:gravity="center"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    />
+
+    <TextView
+        android:id="@+id/textview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_14ssp"
+        android:text="@string/accountstatus"
+        android:layout_marginStart="@dimen/_5ssp"
+        android:padding="@dimen/_5ssp"
+        android:layout_marginLeft="@dimen/_5ssp"
+        android:textColor="@color/ColorLightGray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heading"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/textview2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accountstatus"
+        android:textSize="@dimen/_14ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:layout_marginRight="@dimen/_15ssp"
+        android:padding="@dimen/_5ssp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heading"
+        app:layout_constraintLeft_toRightOf="@id/textview1"
+        />
+
+    <TextView
+        android:id="@+id/textview3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/ColorLightGray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/address"
+        android:padding="@dimen/_5ssp"
+        app:layout_constraintTop_toBottomOf="@+id/textview1"
+        />
+    <TextView
+        android:id="@+id/textview4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/barringflag"
+        android:padding="@dimen/_5ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:layout_marginRight="@dimen/_15ssp"
+        app:layout_constraintLeft_toRightOf="@id/textview3"
+        app:layout_constraintTop_toBottomOf="@+id/textview1"
+        />
+    <TextView
+        android:id="@+id/textview5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_14ssp"
+        android:text="@string/menu"
+        android:paddingBottom="@dimen/_10ssp"
+        android:textColor="@color/ColorLightGray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview3"
+        />
+
+    <TextView
+        android:id="@+id/textview6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/colorBlack"
+        android:text="@string/fup_flag"
+        android:paddingStart="@dimen/_5ssp"
+        android:paddingLeft="@dimen/_5ssp"
+        android:paddingBottom="@dimen/_10ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:layout_marginRight="@dimen/_15ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview3"
+        app:layout_constraintLeft_toRightOf="@id/textview3"
+        tools:ignore="RtlSymmetry" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

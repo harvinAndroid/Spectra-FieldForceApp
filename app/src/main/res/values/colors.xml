@@ -8,4 +8,7 @@
     <color name="colorSkyBlue">#70CFCA</color>
     <color name="colorLink">#8AABD4</color>
     <color name="colorRed">#ba0001</color>
+    <color name="colorButton">#f46f6a</color>
+    <color name="ColorLightGray">#505050</color>
+    <color name="ColorPurple">#5f8ab5</color>
 </resources>

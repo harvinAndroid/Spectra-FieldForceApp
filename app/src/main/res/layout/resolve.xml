@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="@dimen/_10ssp"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/resolveLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:textColor="@color/colorBlack"
+       >
+
+        <Button
+            android:id="@+id/btnUnifySession"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorBlack"
+            android:text="@string/get_unify_session"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sessionStatus"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/btnUnifySession"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnUnifySession"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/rc_1"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/rc1"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnUnifySession"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rc1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/rc_2"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/rc2"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rc1"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rc2"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/rc_3"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/rc3"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rc2"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rc3"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/customer_contacted"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/resolveContacted"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rc3"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/resolveContacted"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/rfo"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/rfo"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/resolveContacted"
+            android:layout_marginLeft="140dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/question_recyler_view"
+            android:layout_width="match_parent"
+            android:layout_below="@id/rfo"
+            android:nestedScrollingEnabled="false"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/speed_on_wifi"
+            android:layout_below="@id/question_recyler_view"
+            android:layout_width="match_parent"
+            android:hint="@string/speed_on_wifi"
+            android:layout_marginTop="@dimen/_5ssp"
+            android:textColor="@android:color/black"
+            android:layout_height="@dimen/_30ssp"/>
+
+        <EditText
+            android:id="@+id/other_in_ml"
+            android:layout_below="@id/speed_on_wifi"
+            android:layout_width="match_parent"
+            android:hint="@string/other_in_ml"
+            android:textColor="@android:color/black"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/speed_on_lan"
+            android:layout_below="@id/other_in_ml"
+            android:layout_width="match_parent"
+            android:hint="@string/speed_on_lan"
+            android:textColor="@android:color/black"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/router_position"
+            android:layout_below="@id/speed_on_lan"
+            android:layout_width="match_parent"
+            android:hint="@string/router_position"
+            android:textColor="@android:color/black"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnResolveSubmit"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/router_position"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorBlack"
+            android:text="@string/submit_on_resolve"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

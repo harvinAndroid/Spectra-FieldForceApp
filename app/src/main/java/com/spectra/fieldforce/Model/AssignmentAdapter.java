@@ -1,13 +1,13 @@
 package com.spectra.fieldforce.Model;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +18,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
 import com.spectra.fieldforce.ApiClient;
+import com.spectra.fieldforce.ApiInterface;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.SRDetail;
-import com.spectra.fieldforce.SRInterface;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,6 +44,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     private Activity activity;
     private String status;
     private JSONArray result;
+    String s="";
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView srNumber, customerId, customerName, customerMobile, slotTime, slaClock, srStatus, customerAddress;
@@ -59,6 +61,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             srStatus = (TextView) view.findViewById(R.id.srStatus);
             slaClock = (TextView) view.findViewById(R.id.slaClock);
             btnView = (Button) view.findViewById(R.id.btnView);
+
         }
     }
 
@@ -75,6 +78,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         return new MyViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final Order order = orderList.get(position);
@@ -85,7 +89,13 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.srNumber.setText(order.getSrNumber());
         holder.slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
         holder.srStatus.setText(order.getSrStatus());
-        String s = order.getSlaClock();
+        try{
+             s = order.getSlaClock();
+        }catch (Exception ex){
+            ex.getMessage();
+        }
+
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");//HH for hour of the day (0 - 23)
         Date d = null;
         try {
@@ -93,33 +103,30 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
         holder.slaClock.setText(f2.format(d)); // "12:18am"
+
         if (order.getAcknowledge_status().equals("1")) {
             holder.btnView.setText("View");
         }
-        holder.customerMobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri number = Uri.parse("tel:" + holder.customerMobile.getText().toString());
-                call_action(number);
+        holder.customerMobile.setOnClickListener(v -> {
+            Uri number = Uri.parse("tel:" + holder.customerMobile.getText().toString());
+            call_action(number);
+        });
+        holder.btnView.setOnClickListener(v -> {
+            if (order.getAcknowledge_status().equals("0")) {
+                updateAcknow(order.getSrNumber(), order.getSlotType());
+            } else {
+                AppCompatActivity activity1 = (AppCompatActivity) activity;
+                Bundle b = new Bundle();
+                b.putString("srNumber", order.getSrNumber());
+                b.putString("slotType", order.getSlotType());
+                activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetail().newInstance(order.getSrNumber(), order.getSlotType()), SRDetail.class.getSimpleName()).addToBackStack(null
+                ).commit();
             }
         });
-        holder.btnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (order.getAcknowledge_status().equals("0")) {
-                    updateAcknow(order.getSrNumber(), order.getSlotType());
-                } else {
-                    AppCompatActivity activity1 = (AppCompatActivity) activity;
-                    Bundle b = new Bundle();
-                    b.putString("srNumber", order.getSrNumber());
-                    b.putString("slotType", order.getSlotType());
-                    activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetail().newInstance(order.getSrNumber(), order.getSlotType()), SRDetail.class.getSimpleName()).addToBackStack(null
-                    ).commit();
-                }
-            }
-        });
+
     }
 
     public void call_action(Uri number) {
@@ -145,7 +152,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         srRequest.setSrNumber(srText);
         srRequest.setActionCode(actionCode);
 
-        SRInterface apiService = ApiClient.getClient().create(SRInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getSRDetail(srRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override

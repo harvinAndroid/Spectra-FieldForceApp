@@ -34,9 +34,9 @@
                     android:id="@+id/txtHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your Assignments"
+                    android:text="@string/your_assignments"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/_18ssp"
                     android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
         </LinearLayout>
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorWhite"
+        android:background="@color/colorBlack"
         app:headerLayout="@layout/header_main"
         app:itemTextColor="@color/colorBrown"
         app:menu="@menu/menu_main">
@@ -66,7 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/_10ssp"
+            android:layout_marginStart="@dimen/_10ssp"
             android:layout_marginBottom="10dp"
             android:textColor="@color/colorBrown" />
 

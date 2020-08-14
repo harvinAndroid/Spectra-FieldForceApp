@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SRDetail">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SRDetail"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- TODO: Update blank fragment layout -->
+
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,6 +23,7 @@
             android:padding="20dp"
             android:scrollbars="vertical"
             android:textColor="@color/colorBlack">
+
 
             <TextView
                 android:layout_width="135dp"
@@ -369,6 +374,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/massoutage"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Action Code:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/action_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/massoutage"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:textIsSelectable="true" />
+
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/action_code"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="15dp"
                 android:text="ETR:"
                 android:textStyle="bold" />
@@ -377,24 +400,72 @@
                 android:id="@+id/dateTimeText"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/massoutage"
+                android:layout_below="@id/action_code"
                 android:layout_marginLeft="120dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:focusable="false"
                 android:inputType="date" />
 
+
+
             <Button
                 android:id="@+id/btnETRSubmit"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30ssp"
                 android:layout_below="@id/dateTimeText"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorBlack"
-                android:text="Update ETR"
+                android:background="@drawable/button_black"
+                android:text="@string/update_etr"
+                android:textAllCaps="false"
+               android:paddingStart="@dimen/_15ssp"
+                android:paddingLeft="@dimen/_15ssp"
+                android:paddingEnd="@dimen/_15ssp"
+                android:paddingRight="@dimen/_15ssp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnNoc"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30ssp"
+                android:layout_below="@id/dateTimeText"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/_15ssp"
+                android:layout_marginLeft="@dimen/_15ssp"
+                android:layout_toEndOf="@+id/btnETRSubmit"
+                android:layout_toRightOf="@+id/btnETRSubmit"
+                android:background="@drawable/button_purple"
+                android:text="@string/noc"
+                android:paddingStart="@dimen/_15ssp"
+                android:paddingLeft="@dimen/_15ssp"
+                android:paddingEnd="@dimen/_15ssp"
+                android:paddingRight="@dimen/_15ssp"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
-                android:textStyle="bold"></Button>
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnMgrt"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30ssp"
+                android:layout_below="@id/dateTimeText"
+                android:layout_toRightOf="@+id/btnNoc"
+                android:layout_toEndOf="@+id/btnNoc"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/_15ssp"
+                android:layout_marginLeft="@dimen/_15ssp"
+                android:background="@drawable/button_background"
+                android:text="@string/mrtg"
+                android:paddingStart="@dimen/_15ssp"
+                android:paddingLeft="@dimen/_15ssp"
+                android:paddingEnd="@dimen/_15ssp"
+                android:paddingRight="@dimen/_15ssp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"/>
+
+
 
             <RelativeLayout
                 android:id="@+id/startLayout"
@@ -414,7 +485,7 @@
                     android:background="@color/colorBlack"
                     android:text="Start"
                     android:textColor="@color/colorWhite"
-                    android:textStyle="bold"></Button>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="135dp"
@@ -476,7 +547,7 @@
                     android:background="@color/colorBlack"
                     android:text="End"
                     android:textColor="@color/colorWhite"
-                    android:textStyle="bold"></Button>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="135dp"
@@ -551,7 +622,21 @@
                 android:textColor="@color/colorBlack"
                 android:visibility="gone">
 
+
                 <Button
+                    android:id="@+id/btnnext"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorBlack"
+                    android:text="NEXT"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
+
+
+                <Button
+                    android:visibility="gone"
                     android:id="@+id/btnUnifySession"
                     android:layout_width="120dp"
                     android:layout_height="40dp"
@@ -560,9 +645,10 @@
                     android:text="Get Unify Session"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
-                    android:textStyle="bold"></Button>
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/sessionStatus"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
@@ -572,6 +658,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnUnifySession"
@@ -581,6 +668,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
+                    android:visibility="gone"
                     android:id="@+id/rc1"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
@@ -589,6 +677,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc1"
@@ -598,6 +687,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
+                    android:visibility="gone"
                     android:id="@+id/rc2"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
@@ -606,6 +696,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
@@ -615,6 +706,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
+                    android:visibility="gone"
                     android:id="@+id/rc3"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
@@ -623,6 +715,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
@@ -632,6 +725,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
+                    android:visibility="gone"
                     android:id="@+id/resolveContacted"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
@@ -640,6 +734,7 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
@@ -649,23 +744,31 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:visibility="gone"
                     android:id="@+id/rfo"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
                     android:layout_marginLeft="140dp" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/question_recyler_view"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_below="@id/rfo"
+                    android:layout_height="wrap_content"/>
+
                 <Button
                     android:id="@+id/btnResolveSubmit"
                     android:layout_width="140dp"
                     android:layout_height="40dp"
-                    android:layout_below="@id/rfo"
+                    android:layout_below="@id/question_recyler_view"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorBlack"
-                    android:text="Submit on Resolve"
+                    android:text="NEXT"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
-                    android:textStyle="bold"></Button>
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -731,6 +834,7 @@
                     android:layout_marginTop="0dp" />
 
                 <TextView
+                    android:id="@+id/tv_contact"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
@@ -747,6 +851,8 @@
                     android:layout_marginLeft="140dp"
                     android:layout_marginTop="10dp" />
 
+
+
                 <Button
                     android:id="@+id/btnHoldSubmit"
                     android:layout_width="120dp"
@@ -757,12 +863,16 @@
                     android:text="Submit on Hold"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
-                    android:textStyle="bold"></Button>
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
         </RelativeLayout>
     </ScrollView>
 
+    <include
+        layout="@layout/alert_dialog_canid"
+        />
+
     <include layout="@layout/progress" />
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

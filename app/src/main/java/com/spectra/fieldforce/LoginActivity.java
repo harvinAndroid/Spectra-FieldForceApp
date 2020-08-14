@@ -65,19 +65,9 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         UserPassword.setTypeface(mytextFace);
 
         LoginBn = findViewById(R.id.login_btn);
-        LoginBn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performLogin();
-            }
-        });
+        LoginBn.setOnClickListener(view -> performLogin());
 
-        RegText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performResetpassword();
-            }
-        });
+        RegText.setOnClickListener(view -> performResetpassword());
     }
 
     @Override
@@ -191,9 +181,9 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         savetokenRequest.setAction("saveDeviceToken");
         savetokenRequest.setEmail(userEmailN);
         savetokenRequest.setUser_token(fcmToken);
-        savetokenRequest.setAuthkey("ac7b51de9d888e1458dd53d8aJAN3ba6f");
+        savetokenRequest.setAuthkey(Constants.AUTH_KEY);
 
-        SavetokenInterface apiService = ApiClient.getClient().create(SavetokenInterface.class);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.performSaveToken(savetokenRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override

@@ -295,6 +295,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
             });
+            TextView image = dView.findViewById(R.id.image);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(MainActivity.this,Activity_Resolve.class);
+                    startActivity(i);
+                }
+            });
             Menu nav_menu = navigationView.getMenu();
             if (nav_menu != null) {
             }
