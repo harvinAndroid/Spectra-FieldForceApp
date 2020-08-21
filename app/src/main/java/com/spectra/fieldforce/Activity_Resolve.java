@@ -42,6 +42,8 @@ import com.spectra.fieldforce.Model.QuestionareList;
 import com.spectra.fieldforce.Model.RCRequest;
 import com.spectra.fieldforce.Model.SRRequest;
 import com.spectra.fieldforce.utils.FileCompressor;
+import com.spectra.fieldforce.utils.FileUtils;
+import com.spectra.fieldforce.utils.PermissionUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -225,7 +227,10 @@ public class Activity_Resolve extends AppCompatActivity {
         });
         btnUnifySession.setOnClickListener(v -> getUnifySession());
 
-        speed_on_wifi.setOnClickListener(v -> selectImage());
+        speed_on_wifi.setOnClickListener(v -> {
+            if (PermissionUtils.checkWritePermission(Activity_Resolve.this))
+                FileUtils.showFileChooser(Activity_Resolve.this);
+        });
        /* speed_on_lan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,10 +244,12 @@ public class Activity_Resolve extends AppCompatActivity {
     private void getQuestionList() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "getAllQuestioner";
+        String type ="FRE";
 
         QuestionListRequest questionListRequest = new QuestionListRequest();
         questionListRequest.setAuthkey(authKey);
         questionListRequest.setAction(action);
+        questionListRequest.setType(type);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<QuestionListResponse> call = apiService.getQuestionList(questionListRequest);
@@ -251,22 +258,19 @@ public class Activity_Resolve extends AppCompatActivity {
             public void onResponse(retrofit2.Call<QuestionListResponse> call, Response<QuestionListResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                        status=response.body().getStatus();
-                     /*   JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");*/
+                        if (response.body() != null) {
+                            status=response.body().getStatus();
+                        }
                         if (status.equals("Failure")) {
                             Log.d("Failure", "error");
                         } else if (status.equals("Success")) {
                             try {
-                                questionList = response.body().getData();
-                                // questionList = new ArrayList<>();
-                                if (response != null) {
-                                    QuestionAnswerAdapter adapter = new QuestionAnswerAdapter(Activity_Resolve.this,questionList,myClickListener);
-                                    //question_recyler_view.setVisibility(View.VISIBLE);
+                                if (response.body() != null) {
+                                    questionList = response.body().getData();
+                                    QuestionAnswerAdapter adapter = new QuestionAnswerAdapter(Activity_Resolve.this, questionList, myClickListener);
                                     question_recyler_view.setHasFixedSize(true);
                                     question_recyler_view.setLayoutManager(new LinearLayoutManager(Activity_Resolve.this));
                                     question_recyler_view.setAdapter(adapter);
-
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -516,19 +520,16 @@ public class Activity_Resolve extends AppCompatActivity {
             public void onResponse(retrofit2.Call<CommonResponse> call, Response<CommonResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                        status=response.body().getStatus();
-                     /*   JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");*/
+                        Toast.makeText(Activity_Resolve.this,"Questionare Submitted sucessfully",Toast.LENGTH_LONG).show();
+
+                      /*  status=response.body().getStatus();
+                     *//*   JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");*//*
                         if (status.equals("Failure")) {
                             Log.d("Failure", "error");
                         } else if (status.equals("Success")) {
-                            try {
-
                                 Toast.makeText(Activity_Resolve.this,response.message(),Toast.LENGTH_LONG).show();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        }*/
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -578,7 +579,12 @@ public class Activity_Resolve extends AppCompatActivity {
         srRequest.setRCtwoId(rc2Id);
         srRequest.setRCthirdId(rc3Id);
         srRequest.setReasonOf(reason);
-        srRequest.setResolveContacted(isContacted == "Yes" ? "true" : "false");
+        if(isContacted.equals("Yes")){
+            srRequest.setContacted("True");
+        }else if(isContacted.equals("No")){
+            srRequest.setContacted("False");
+        }
+       // srRequest.setResolveContacted(isContacted == "Yes" ? "true" : "false");
         srRequest.setSource("FFA App");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);

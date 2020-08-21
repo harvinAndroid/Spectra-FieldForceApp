@@ -1,18 +1,9 @@
 package com.spectra.fieldforce.Model;
 
-public class QuestionListRequest {
-    private String Authkey;
-    private String Action;
-
-    public String getType() {
-        return Type;
-    }
-
-    public void setType(String type) {
-        Type = type;
-    }
-
-    private String Type;
+public class ChangeBinRequest {
+    String Authkey;
+    String Action;
+    String SrNumber;
 
     public String getAuthkey() {
         return Authkey;
@@ -28,5 +19,13 @@ public class QuestionListRequest {
 
     public void setAction(String action) {
         Action = action;
+    }
+
+    public String getSrNumber() {
+        return SrNumber;
+    }
+
+    public void setSrNumber(String srNumber) {
+        SrNumber = srNumber;
     }
 }

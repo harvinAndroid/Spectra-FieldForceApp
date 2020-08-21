@@ -1,41 +1,35 @@
 package com.spectra.fieldforce;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
+import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.JsonObject;
 import com.spectra.fieldforce.Model.CanIdRequest;
 import com.spectra.fieldforce.Model.CanIdResponse;
 import com.spectra.fieldforce.Model.MRTG;
 import com.spectra.fieldforce.Model.MrtgRequest;
+import java.util.Objects;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FragmentMrtg extends BottomSheetDialogFragment {
-    TextView textview1,textview2,textview3,textview4,textview5,textview6;
+    TextView textview1,textview2,textview3,textview4,textview5,textview6,textview7,textview9;
+    PhotoView imageView;
 
 
     @Nullable
@@ -59,6 +53,13 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
         textview4=view.findViewById(R.id.textview4);
         textview5=view.findViewById(R.id.textview5);
         textview6=view.findViewById(R.id.textview6);
+        textview7=view.findViewById(R.id.textview7);
+        textview9=view.findViewById(R.id.textview9);
+        imageView = view.findViewById(R.id.imageView);
+        String segment= Objects.requireNonNull(getArguments()).getString("segment");
+        if (segment != null && segment.equals("Home")) {
+            imageView.setVisibility(View.GONE);
+        }
         getNoc();
         getMRTG();
     }
@@ -80,12 +81,11 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
             public void onResponse(retrofit2.Call<CanIdResponse> call, Response<CanIdResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        String account=  response.body().getResponse().get(0).getAccountStatus();
-                        String barring = String.valueOf(response.body().getResponse().get(0).getBarringFlag());
-                        String flup = String.valueOf(response.body().getResponse().get(0).getFUPFlag());
-                        textview1.setText(account);
-                        textview3.setText(barring);
-                        textview5.setText(flup);
+                        textview1.setText(response.body().getResponse().get(0).getAccountStatus());
+                        textview3.setText(String.valueOf(response.body().getResponse().get(0).getBarringFlag()));
+                        textview5.setText( String.valueOf(response.body().getResponse().get(0).getFUPFlag()));
+                        textview7.setText(response.body().getResponse().get(0).getProductSegment());
+                        textview9.setText(response.body().getResponse().get(0).getProduct());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -104,7 +104,7 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
     public void getMRTG() {
         String authKey = "AdgT68HnjkehEqlkd4";
         String action = "getMRTGbycanid";
-        String canID="199624";
+        String canID="9060885";
         String dateType="1";
         MrtgRequest mrtgRequest = new MrtgRequest();
         mrtgRequest.setAuthkey(authKey);
@@ -120,15 +120,18 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         String img =  response.body().getResponse();
-                        //byte[] decodedString = response.body().getResponse().toByteArray();
-                        //Toast.makeText(getActivity(),img,Toast.LENGTH_LONG).show();
                         Log.e("image", img);
-                      /*  final byte[] decodedBytes = Base64.decode(img, Base64.DEFAULT);
-                       // Glide.with(Activity_Resolve.this).load(decodedBytes).fitCenter().into(image);*/
-                       /* Glide.with(Activity_Resolve.this)
-                                .load(Base64.decode(img, Base64.DEFAULT))
-                                .into(image);*/
-
+                        final byte[] decodedBytes = Base64.decode(img, Base64.DEFAULT);
+                        Glide.with(Objects.requireNonNull(getContext())).load(decodedBytes).into(imageView);
+                        imageView.setOnClickListener(view -> {
+                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                            View mView = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
+                            PhotoView photoView = mView.findViewById(R.id.imageView);
+                            Glide.with(Objects.requireNonNull(getActivity())).load(decodedBytes).into(photoView);
+                            mBuilder.setView(mView);
+                            AlertDialog mDialog = mBuilder.create();
+                            mDialog.show();
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

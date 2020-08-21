@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,36 +25,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.common.api.Api;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.Model.ChangeBinRequest;
+import com.spectra.fieldforce.Model.ChnageBinResponse;
 import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.EndtimeRequest;
 import com.spectra.fieldforce.Model.Order;
-import com.spectra.fieldforce.Model.QuestionListRequest;
 import com.spectra.fieldforce.Model.QuestionListResponse;
-import com.spectra.fieldforce.Model.QuestionareList;
 import com.spectra.fieldforce.Model.RCRequest;
 import com.spectra.fieldforce.Model.SRRequest;
+import com.spectra.fieldforce.Model.SendChangeBinRequest;
 import com.spectra.fieldforce.Model.StarttimeRequest;
+import com.spectra.fieldforce.utils.SrDetailsList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -78,38 +72,37 @@ import retrofit2.Response;
  */
 public class SRDetail extends Fragment {
 
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private TextView customerId, customerName, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
             srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName, etr, sessionStatus,
-            startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber, txtHeader,action_code;
-    private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit,btnNoc,btnMgrt;
+            startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber, txtHeader;
+    private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit,btnNoc,btnMgrt,
+            btnSubmitChnageBin,btnSrDetails;
     private EditText DateEdit, rfo;
-    private Spinner resolveContacted, changeStatus, rc1, rc2, rc3, holdReason, contacted;
-    private String status;
-    private String engId;
+    private Spinner resolveContacted, changeStatus, rc1, rc2, rc3, holdReason, contacted,sp_change_bin;
+    private String status,action_code,str_segment;
+    private String engId,str_etr,str_contact_name,str_contact_num;
     private FrameLayout progressOverlay;
     private boolean startFlag, endFlag;
     private RelativeLayout startLayout, endLayout, resolveLayout, holdLayout;
     private JSONArray result;
-    private RecyclerView question_recyler_view;
+    String loc="0.00,0.00";
+    String startLongi="0.00";
+    String startLati="0.00";
     AppCompatActivity activity;
-    ArrayList<String> rc1Code;
-    ArrayList<String> rc1Name;
-    ArrayList<String> rc2Code;
-    ArrayList<String> rc2Name;
-    ArrayList<String> rc3Code;
-    ArrayList<String> rc3Name;
     private Location location;
     private String fromDateString = "";
     private Calendar mCalendar;
     AlphaAnimation inAnimation;
     AlphaAnimation outAnimation;
-    private ArrayList<QuestionListResponse.Data> questionList;
-    private ArrayList<String> itemlist = new ArrayList<>();
-    private String Sr;
     BottomSheetBehavior sheetBehavior;
     ConstraintLayout layoutBottomSheet;
+    private ArrayList<ChnageBinResponse.Response> changeBinList;
+     private ArrayList<ChnageBinResponse.Response> BinId;
+    String Sr,str_bbinId;
+    private ArrayList<String> changeBinName;
     //private OnItemClickListener myClickListener;
 
     public SRDetail() {
@@ -152,49 +145,49 @@ public class SRDetail extends Fragment {
         resolveContacted.setAdapter(adapter);
     }
 
-    private void getRC1() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getRCone";
 
-        RCRequest rcRequest = new RCRequest();
-        rcRequest.setAuthkey(authKey);
-        rcRequest.setAction(action);
+    private void GetChangeBin() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "getBinmovementSR";
+
+        ChangeBinRequest changeBinRequest = new ChangeBinRequest();
+        changeBinRequest.setAuthkey(authKey);
+        changeBinRequest.setAction(action);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JsonElement> call = apiService.getRCDetail(rcRequest);
-        call.enqueue(new Callback<JsonElement>() {
+        Call<ChnageBinResponse> call = apiService.getChnageBinDetails(changeBinRequest);
+        call.enqueue(new Callback<ChnageBinResponse>() {
             @Override
-            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+            public void onResponse(retrofit2.Call<ChnageBinResponse> call, Response<ChnageBinResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");
-                        if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
-                        } else if (status.equals("Success")) {
-                            try {
-                                result = jsonObject.getJSONArray("data");
-                                if (result != null) {
-                                    rc1Code = new ArrayList<String>();
-                                    rc1Name = new ArrayList<String>();
-                                    rc1Code.add("0");
-                                    rc1Name.add("Select Resolution Code 1");
-                                    for (int i = 0; i < result.length(); i++) {
-                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
-                                        Log.d("RC1Response", jsonData.toString());
-                                        String code = jsonData.getString("rc_oneId");
-                                        String name = jsonData.getString("rootCauseOne");
-                                        rc1Code.add(code);
-                                        rc1Name.add(name);
-                                    }
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, rc1Name);
-                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                    rc1.setAdapter(adapter);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                        changeBinList = new ArrayList<>();
+                        if (response.body() != null) {
+                            changeBinList.addAll(response.body().getResponse());
                         }
+                        changeBinName = new ArrayList<>();
+                        changeBinName.add("Change Bin");
+                        for (ChnageBinResponse.Response i : changeBinList)
+                            changeBinName.add(i.getTeamName());
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, changeBinName);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        sp_change_bin.setAdapter(adapter);
+                        sp_change_bin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                                String text = sp_change_bin.getSelectedItem().toString();
+                               str_bbinId= changeBinList.get(position).getBinId();
+                                Log.e("binid",  changeBinList.get(position).getBinId());
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parentView) {
+
+                            }
+
+                        });
+
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -202,57 +195,38 @@ public class SRDetail extends Fragment {
             }
 
             @Override
-            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+            public void onFailure(retrofit2.Call<ChnageBinResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });
     }
 
-    private void getRC2(String rc1Code) {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getRCtwo";
-        String RConeId = rc1Code;
 
-        RCRequest rcRequest = new RCRequest();
-        rcRequest.setAuthkey(authKey);
-        rcRequest.setAction(action);
-        rcRequest.setRC1(RConeId);
+    private void SendBinDetails() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "saveBinmovementSR";
+
+
+        SendChangeBinRequest sendChangeBinRequest = new SendChangeBinRequest();
+        sendChangeBinRequest.setAuthkey(authKey);
+        sendChangeBinRequest.setAction(action);
+        sendChangeBinRequest.setSrNumber(Sr);
+        sendChangeBinRequest.setBinId(str_bbinId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JsonElement> call = apiService.getRCDetail(rcRequest);
-        call.enqueue(new Callback<JsonElement>() {
+        Call<CommonResponse> call = apiService.sendBinDetails(sendChangeBinRequest);
+        call.enqueue(new Callback<CommonResponse>() {
             @Override
-            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+            public void onResponse(retrofit2.Call<CommonResponse> call, Response<CommonResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");
-                        rc2Code = new ArrayList<String>();
-                        rc2Name = new ArrayList<String>();
-                        rc2Code.add("0");
-                        rc2Name.add("Select Resolution Code 2");
-                        if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
-                        } else if (status.equals("Success")) {
-                            try {
-                                result = jsonObject.getJSONArray("data");
-                                if (result != null) {
-                                    for (int i = 0; i < result.length(); i++) {
-                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
-                                        Log.d("RC2Response", jsonData.toString());
-                                        String code = jsonData.getString("rc_twoId");
-                                        String name = jsonData.getString("rootCauseTwo");
-                                        rc2Code.add(code);
-                                        rc2Name.add(name);
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, rc2Name);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        rc2.setAdapter(adapter);
+                    String status=response.body().getStatus();
+                    if(status.equals("1")){
+                        Toast.makeText(getActivity(),"Change Bin Submitted Sucessfully",Toast.LENGTH_LONG).show();
+                    }
+                        else {
+                        Toast.makeText(getActivity(),"Something went wrong...",Toast.LENGTH_LONG).show();
+                    }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -260,65 +234,7 @@ public class SRDetail extends Fragment {
             }
 
             @Override
-            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }
-
-    private void getRC3(String rc2Code) {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getRCthree";
-        String RCtwoId = rc2Code;
-
-        RCRequest rcRequest = new RCRequest();
-        rcRequest.setAuthkey(authKey);
-        rcRequest.setAction(action);
-        rcRequest.setRC2(RCtwoId);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JsonElement> call = apiService.getRCDetail(rcRequest);
-        call.enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");
-                        rc3Code = new ArrayList<String>();
-                        rc3Name = new ArrayList<String>();
-                        rc3Code.add("0");
-                        rc3Name.add("Select Resolution Code 3");
-                        if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
-                        } else if (status.equals("Success")) {
-                            try {
-                                result = jsonObject.getJSONArray("data");
-                                if (result != null) {
-                                    for (int i = 0; i < result.length(); i++) {
-                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
-                                        Log.d("RC3Response", jsonData.toString());
-                                        String code = jsonData.getString("rc_thirdId");
-                                        String name = jsonData.getString("rootCauseThree");
-                                        rc3Code.add(code);
-                                        rc3Name.add(name);
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, rc3Name);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        rc3.setAdapter(adapter);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+            public void onFailure(retrofit2.Call<CommonResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });
@@ -347,75 +263,32 @@ public class SRDetail extends Fragment {
                             try {
                                 result = jsonObject.getJSONArray("Response");
                                 if (result != null) {
+
                                     ArrayList<String> action = new ArrayList<String>();
-                                    action.add("Select Hold Reason");
-                                    for (int i = 0; i < result.length(); i++) {
-                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
-                                        String code = jsonData.getString("actionCode");
-                                        action.add(code);
+                                    if(action_code==null){
+                                        action.add("Select Hold Reason");
+                                        for (int i = 0; i < result.length(); i++) {
+                                            JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
+                                            String code = jsonData.getString("actionCode");
+                                            action.add(code);
+                                        }
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, action);
+                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        holdReason.setAdapter(adapter);
+                                    }else{
+                                        action.add(action_code);
+                                        contactName.setText(str_contact_name);
+                                        contactNumber.setText(str_contact_num);
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, action);
+                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        holdReason.setAdapter(adapter);
+                                        holdReason.setSelection(Integer.parseInt(action_code));
                                     }
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, action);
-                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                    holdReason.setAdapter(adapter);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }
-
-    private void getUnifySession() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getCurrentSession";
-        String canId = customerId.getText().toString();
-
-        RCRequest rcRequest = new RCRequest();
-        rcRequest.setAuthkey(authKey);
-        rcRequest.setAction(action);
-        rcRequest.setCanId(canId);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JsonElement> call = apiService.getRCDetail(rcRequest);
-        call.enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("status");
-                        String bytesin = "";
-                        if (status.equals("Failure")) {
-                            bytesin = "Failure in getting Status";
-                        } else if (status.equals("success")) {
-                            try {
-                                JSONObject response1 = jsonObject.getJSONObject("response");
-                                if (response1 != null) {
-                                    int byteIn = 0;
-                                    bytesin = response1.getString("bytesin");
-                                    byteIn = Integer.parseInt(bytesin);
-                                    if (byteIn > 0) {
-                                        bytesin = "Up & Running";
-                                    } else {
-                                        bytesin = "Not Working";
-                                    }
-                                }
-                            } catch (Exception e) {
-                                bytesin = "Failure in getting Status";
-                                e.printStackTrace();
-                            }
-                        }
-                        sessionStatus.setText(bytesin);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -444,6 +317,7 @@ public class SRDetail extends Fragment {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getSRDetail(srRequest);
         call.enqueue(new Callback<JsonElement>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
                 try {
@@ -474,7 +348,14 @@ public class SRDetail extends Fragment {
                                     srType.setText(order.getSrType());
                                     srSubType.setText(order.getSrSubType());
                                     slaClock.setText(order.getSlaClock());
-                                    action_code.setText(order.getActionCode());
+                                    action_code=order.getActionCode();
+                                   // contactName.setText(order.getCustomer_contacted());
+                                    str_etr = order.getEtr();
+                                    str_contact_name=order.getCustomerName();
+                                    str_contact_num = order.getCustomerMobile();
+                                    str_segment = order.getSegment();
+                                    Sr = order.getSrNumber();
+
                                     String s = order.getSlaClock();
                                     SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");//HH for hour of the day (0 - 23)
                                     Date d = null;
@@ -497,6 +378,9 @@ public class SRDetail extends Fragment {
                                     }
                                     if (!order.getSegment().equals("Home")) {
                                         customerIP.setText(order.getCustomerIP());
+                                    }
+                                    if(!order.getSegment().equals("Business")){
+                                        btnNoc.setVisibility(View.GONE);
                                     }
                                     segment.setText(order.getSegment());
                                     podName.setText(order.getPodName());
@@ -546,60 +430,7 @@ public class SRDetail extends Fragment {
         });
     }
 
-    private void getQuestionList() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getAllQuestioner";
 
-        QuestionListRequest questionListRequest = new QuestionListRequest();
-        questionListRequest.setAuthkey(authKey);
-        questionListRequest.setAction(action);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<QuestionListResponse> call = apiService.getQuestionList(questionListRequest);
-        call.enqueue(new Callback<QuestionListResponse>() {
-            @Override
-            public void onResponse(retrofit2.Call<QuestionListResponse> call, Response<QuestionListResponse> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        status=response.body().getStatus();
-                     /*   JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");*/
-                        if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
-                        } else if (status.equals("Success")) {
-                            try {
-                                questionList = response.body().getData();
-                               // questionList = new ArrayList<>();
-                                if (response != null) {
-                                    QuestionAnswerAdapter adapter = new QuestionAnswerAdapter(getContext(),questionList,myClickListener);
-                                    //question_recyler_view.setVisibility(View.VISIBLE);
-                                    question_recyler_view.setHasFixedSize(true);
-                                    question_recyler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                    question_recyler_view.setAdapter(adapter);
-
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<QuestionListResponse> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }
-
-    private OnItemClickListener myClickListener = (tag,questionid) -> {
-        tag.get(0);
-       // questionid.get(0);
-        itemlist.add(tag.get(0));
-        };
 
 
     private boolean isValidMobile(String phone) {
@@ -607,58 +438,6 @@ public class SRDetail extends Fragment {
             return android.util.Patterns.PHONE.matcher(phone).matches();
         } else
             return false;
-    }
-
-
-
-
-    private void submitQuestionare() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "saveQuestionerdetails";
-
-        QuestionareList questionListRequest = new QuestionareList();
-        questionListRequest.setAuthkey(authKey);
-        questionListRequest.setAction(action);
-        questionListRequest.setAction(itemlist.get(0));
-        questionListRequest.setAction(itemlist.get(1));
-        questionListRequest.setAction(itemlist.get(2));
-        questionListRequest.setAction(itemlist.get(3));
-        questionListRequest.setAction(itemlist.get(4));
-        questionListRequest.setAction(itemlist.get(5));
-        questionListRequest.setAction(Sr);
-        questionListRequest.setAction(MainActivity.prefConfig.readName());
-        questionListRequest.setAction("App");
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.sendQuestionare(questionListRequest);
-        call.enqueue(new Callback<CommonResponse>() {
-            @Override
-            public void onResponse(retrofit2.Call<CommonResponse> call, Response<CommonResponse> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        status=response.body().getStatus();
-                     /*   JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");*/
-                        if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
-                        } else if (status.equals("Success")) {
-                            try {
-
-                                Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<CommonResponse> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
     }
 
 
@@ -684,7 +463,12 @@ public class SRDetail extends Fragment {
         srRequest.setEmpId(engId);
         srRequest.setContactName(custName);
         srRequest.setContactNumber(custNum);
-        srRequest.setContacted(isContacted == "Yes" ? "true" : "false");
+        if(isContacted.equals("Yes")){
+            srRequest.setContacted("True");
+        }else if(isContacted.equals("No")){
+            srRequest.setContacted("False");
+        }
+      //  srRequest.setContacted(isContacted == "Yes" ? "true" : "false");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
@@ -734,76 +518,6 @@ public class SRDetail extends Fragment {
         });
     }
 
-    private void submitOnResolve() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "saveRCdetails";
-        String emailId = MainActivity.prefConfig.readName();
-        String sr = srNumber.getText().toString();
-        int itemPosition = rc1.getSelectedItemPosition();
-        String rc1Id = rc1Code.get(itemPosition).toString();
-        itemPosition = rc2.getSelectedItemPosition();
-        String rc2Id = rc2Code.get(itemPosition).toString();
-        itemPosition = rc3.getSelectedItemPosition();
-        String rc3Id = rc3Code.get(itemPosition).toString();
-        String reason = rfo.getText().toString();
-        String isContacted = resolveContacted.getSelectedItem().toString();
-
-        SRRequest srRequest = new SRRequest();
-        srRequest.setAuthkey(authKey);
-        srRequest.setAction(action);
-        srRequest.setEmailId(emailId);
-        srRequest.setSrNumber(sr);
-        srRequest.setRConeId(rc1Id);
-        srRequest.setRCtwoId(rc2Id);
-        srRequest.setRCthirdId(rc3Id);
-        srRequest.setReasonOf(reason);
-        srRequest.setResolveContacted(isContacted == "Yes" ? "true" : "false");
-        srRequest.setSource("FFA App");
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        progressOverlay.setAnimation(inAnimation);
-        progressOverlay.setVisibility(View.VISIBLE);
-        btnResolveSubmit.setEnabled(false);
-        Call<JsonElement> call = apiService.getSRDetail(srRequest);
-        call.enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
-                outAnimation = new AlphaAnimation(1f, 0f);
-                outAnimation.setDuration(200);
-                progressOverlay.setAnimation(outAnimation);
-                progressOverlay.setVisibility(View.GONE);
-                try {
-                    if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");
-                        if (status.equals("1")) {
-                            try {
-                                String result = jsonObject.getString("Response");
-                                Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).commit();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            String result = jsonObject.getString("Message");
-                            Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                } catch (Exception e) {
-                    btnResolveSubmit.setEnabled(true);
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
-                btnResolveSubmit.setEnabled(true);
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }
 
     private void updateETR() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
@@ -853,119 +567,119 @@ public class SRDetail extends Fragment {
     }
 
     private void saveStartTime() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "SaveGPSTime";
-        String sr = srNumber.getText().toString();
-        String loc = startLocation.getText().toString();
-        //////////////////////////////////////////////////
-       /* String startLongi = "14.676578";
-        String startLati = "68.97666";*/
-        /////////////////////////////////////////////////
-        String startLongi = loc.split(", ")[0];
-        String startLati = loc.split(", ")[1];
-        String startAdd = "Empty";
-        String startDate = startTime.getText().toString();
-        String EngEmailId = MainActivity.prefConfig.readName();
+        try {
+            String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+            String action = "SaveGPSTime";
+            String sr = srNumber.getText().toString();
+            loc = startLocation.getText().toString();
+            startLongi = loc.split(", ")[0];
+            startLati = loc.split(", ")[1];
+            String startAdd = "Empty";
+            String startDate = startTime.getText().toString();
+            String EngEmailId = MainActivity.prefConfig.readName();
 
-        StarttimeRequest startTimeRequest = new StarttimeRequest();
-        startTimeRequest.setAuthkey(authKey);
-        startTimeRequest.setAction(action);
-        startTimeRequest.setSrNumber(sr);
-        startTimeRequest.setStartLongitude(startLongi);
-        startTimeRequest.setStartLatitude(startLati);
-        startTimeRequest.setStartAddress(startAdd);
-        startTimeRequest.setStartTime(startDate);
-        startTimeRequest.setEngEmailId(EngEmailId);
+            StarttimeRequest startTimeRequest = new StarttimeRequest();
+            startTimeRequest.setAuthkey(authKey);
+            startTimeRequest.setAction(action);
+            startTimeRequest.setSrNumber(sr);
+            startTimeRequest.setStartLongitude(startLongi);
+            startTimeRequest.setStartLatitude(startLati);
+            startTimeRequest.setStartAddress(startAdd);
+            startTimeRequest.setStartTime(startDate);
+            startTimeRequest.setEngEmailId(EngEmailId);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JsonElement> call = apiService.performOrderStarttime(startTimeRequest);
-        call.enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");
-                        if (status.equals("Success")) {
-                            try {
-                                String result = jsonObject.getString("response");
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<JsonElement> call = apiService.performOrderStarttime(startTimeRequest);
+            call.enqueue(new Callback<JsonElement>() {
+                @Override
+                public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                            status = jsonObject.getString("Status");
+                            if (status.equals("Success")) {
+                                try {
+                                    String result = jsonObject.getString("response");
+                                    Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                String result = jsonObject.getString("Message");
                                 Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
-                        } else {
-                            String result = jsonObject.getString("Message");
-                            Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
+                @Override
+                public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                    Log.e("RetroError", t.toString());
+                }
+            });
+        }catch (Exception ex){
+            ex.getMessage();
+        }
     }
 
     private void saveEndTime() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "updateGPSTime";
-        String sr = srNumber.getText().toString();
-        String loc = endLocation.getText().toString();
-        //////////////////////////////////////////////////
-      /*  String endLongi = "14.676578";
-        String endLati = "68.97666";*/
-        /////////////////////////////////////////////////
-        String endLongi = loc.split(", ")[0];
-        String endLati = loc.split(", ")[1];
-        String endAdd = "Empty";
-        String endDate = endTime.getText().toString();
-        String EngEmailId = MainActivity.prefConfig.readName();
+        try {
+            String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+            String action = "updateGPSTime";
+            String sr = srNumber.getText().toString();
+            loc = endLocation.getText().toString();
+            String endLongi = loc.split(", ")[0];
+            String endLati = loc.split(", ")[1];
+            String endAdd = "Empty";
+            String endDate = endTime.getText().toString();
+            String EngEmailId = MainActivity.prefConfig.readName();
 
-        EndtimeRequest endTimeRequest = new EndtimeRequest();
-        endTimeRequest.setAuthkey(authKey);
-        endTimeRequest.setAction(action);
-        endTimeRequest.setSrNumber(sr);
-        endTimeRequest.setEndLongitude(endLongi);
-        endTimeRequest.setEndLatitude(endLati);
-        endTimeRequest.setEndAddress(endAdd);
-        endTimeRequest.setEndTime(endDate);
-        endTimeRequest.setEngEmailId(EngEmailId);
+            EndtimeRequest endTimeRequest = new EndtimeRequest();
+            endTimeRequest.setAuthkey(authKey);
+            endTimeRequest.setAction(action);
+            endTimeRequest.setSrNumber(sr);
+            endTimeRequest.setEndLongitude(endLongi);
+            endTimeRequest.setEndLatitude(endLati);
+            endTimeRequest.setEndAddress(endAdd);
+            endTimeRequest.setEndTime(endDate);
+            endTimeRequest.setEngEmailId(EngEmailId);
 
-        EndtimeInterface apiService = ApiClient.getClient().create(EndtimeInterface.class);
-        Call<JsonElement> call = apiService.performOrderEndtime(endTimeRequest);
-        call.enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");
-                        if (status.equals("Success")) {
-                            try {
-                                String result = jsonObject.getString("response");
+            EndtimeInterface apiService = ApiClient.getClient().create(EndtimeInterface.class);
+            Call<JsonElement> call = apiService.performOrderEndtime(endTimeRequest);
+            call.enqueue(new Callback<JsonElement>() {
+                @Override
+                public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                            status = jsonObject.getString("Status");
+                            if (status.equals("Success")) {
+                                try {
+                                    String result = jsonObject.getString("response");
+                                    Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                String result = jsonObject.getString("Message");
                                 Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
-                        } else {
-                            String result = jsonObject.getString("Message");
-                            Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
+                @Override
+                public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                    Log.e("RetroError", t.toString());
+                }
+            });
+        }catch (Exception ex){
+            ex.getMessage();
+        }
     }
 
     private boolean getLatLong(TextView txtLocation) {
@@ -1093,13 +807,16 @@ public class SRDetail extends Fragment {
         resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
         holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
         progressOverlay = (FrameLayout) view.findViewById(R.id.progress_overlay);
-        question_recyler_view =(RecyclerView)view.findViewById(R.id.question_recyler_view);
         btnMgrt = view.findViewById(R.id.btnMgrt);
         btnNoc = view.findViewById(R.id.btnNoc);
-        action_code = view.findViewById(R.id.action_code);
+        sp_change_bin =view.findViewById(R.id.sp_change_bin);
+        btnSubmitChnageBin = view.findViewById(R.id.btnSubmitChnageBin);
+        btnSrDetails = view.findViewById(R.id.btnSrDetails);
+
 
         bindChangeStatus(0);
         BottomSheet();
+        GetChangeBin();
       //  WebViewNoc();
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1108,8 +825,7 @@ public class SRDetail extends Fragment {
                 if (status == "Resolved") {
                     resolveLayout.setVisibility(View.VISIBLE);
                     holdLayout.setVisibility(View.GONE);
-                    getRC1();
-                    getQuestionList();
+                  //  getRC1();
                 } else if (status == "Hold") {
                     resolveLayout.setVisibility(View.GONE);
                     holdLayout.setVisibility(View.VISIBLE);
@@ -1127,32 +843,7 @@ public class SRDetail extends Fragment {
 
             }
         });
-        rc1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int itemPosition = rc1.getSelectedItemPosition();
-                String rc1Id = rc1Code.get(itemPosition).toString();
-                getRC2(rc1Id);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        rc2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int itemPosition = rc2.getSelectedItemPosition();
-                String rc2Id = rc2Code.get(itemPosition).toString();
-                getRC3(rc2Id);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         btnStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1183,12 +874,7 @@ public class SRDetail extends Fragment {
                 }
             }
         });
-        btnUnifySession.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUnifySession();
-            }
-        });
+
         btnHoldSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1212,8 +898,14 @@ public class SRDetail extends Fragment {
 
                 if (isValid == true) {
                     submitOnHold();
-
                 }
+            }
+        });
+
+        btnSubmitChnageBin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendBinDetails();
             }
         });
         btnResolveSubmit.setOnClickListener(new View.OnClickListener() {
@@ -1223,31 +915,6 @@ public class SRDetail extends Fragment {
                 i.putExtra("CustomerId",customerId.getText().toString());
                 i.putExtra("SrNumber",srNumber.getText().toString());
                 startActivity(i);
-               /* boolean isValid = true;
-                if (endFlag) {
-                    isValid = false;
-                    Toast.makeText(activity, "Reach before Resolve", Toast.LENGTH_LONG).show();
-                } else if (rc1.getSelectedItem().toString().equals("Select Resolution Code 1")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select Resolution Code 1", Toast.LENGTH_LONG).show();
-                } else if (rc2.getSelectedItem().toString().equals("Select Resolution Code 2")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select Resolution Code 2", Toast.LENGTH_LONG).show();
-                } else if (rc3.getSelectedItem().toString().equals("Select Resolution Code 3")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select Resolution Code 3", Toast.LENGTH_LONG).show();
-                } else if (resolveContacted.getSelectedItem().toString().equals("Select Status")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select Customer contacted or not", Toast.LENGTH_LONG).show();
-                } else if (rfo.getText().toString().equals("")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please enter RFO", Toast.LENGTH_LONG).show();
-                }
-                if (isValid == true) {
-                    submitOnResolve();
-                    submitQuestionare();
-                    //activity.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-                }*/
             }
         });
         btnETRSubmit.setOnClickListener(new View.OnClickListener() {
@@ -1308,25 +975,33 @@ public class SRDetail extends Fragment {
 
 
     private void WebViewNoc(){
-        Intent i = new Intent(getActivity(),ActWebView.class);
-        startActivity(i);
-        Objects.requireNonNull(getActivity()).finish();
-
-   /*     FragmentWebView myFragment = new FragmentWebView();
+        ActWebView myFragment = new ActWebView();
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, myFragment).addToBackStack(null).commit();
- */   }
+    }
+
+
 
 
     private void BottomSheet(){
         btnMgrt.setOnClickListener(v -> {
+            Bundle bundle=new Bundle();
+            bundle.putString("segment", str_segment);
             FragmentMrtg bottomSheetFragment = new FragmentMrtg();
+            bottomSheetFragment.setArguments(bundle);
             bottomSheetFragment.show(activity.getSupportFragmentManager(), bottomSheetFragment.getTag());
         });
 
         btnNoc.setOnClickListener(v -> WebViewNoc());
+        btnSrDetails.setOnClickListener(v -> {
+            Bundle bundle=new Bundle();
+            bundle.putString("SrNumber", Sr);
+            FragmentTransaction t = this.getFragmentManager().beginTransaction();
+            Fragment mFrag = new SrDetailsList();
+            mFrag.setArguments(bundle);
+            t.replace(R.id.fregment_container, mFrag);
+            t.commit();
+        });
     }
-
-
 }
 
 

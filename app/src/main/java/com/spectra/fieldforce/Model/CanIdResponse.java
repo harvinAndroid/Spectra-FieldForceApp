@@ -61,6 +61,25 @@ public class CanIdResponse {
 
         private Boolean BarringFlag;
         private Boolean FUPFlag;
+
+        public String getProductSegment() {
+            return ProductSegment;
+        }
+
+        public void setProductSegment(String productSegment) {
+            ProductSegment = productSegment;
+        }
+
+        public String getProduct() {
+            return Product;
+        }
+
+        public void setProduct(String product) {
+            Product = product;
+        }
+
+        private String ProductSegment;
+        private String Product;
         private IvrNotification[] ivrNotification;
         public IvrNotification[] getIvrNotification ()
         {

@@ -1,5 +1,6 @@
 package com.spectra.fieldforce;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -66,6 +67,7 @@ public class WelcomeFragment extends Fragment {
         AssignmentInterface apiService = ApiClient.getClient().create(AssignmentInterface.class);
         Call<JsonElement> call = apiService.performUserAssignment(assignmentRequest);
         call.enqueue(new Callback<JsonElement>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
                 try {
@@ -78,18 +80,16 @@ public class WelcomeFragment extends Fragment {
                         } else if (status.equals("Success")) {
                             try {
                                 result = jsonObject.getJSONArray("response");
-                                if (result != null) {
-                                    orderList.clear();
-                                    Toolbar mtoolbar = activity.findViewById(R.id.toolbar);
-                                    TextView txtHeader = mtoolbar.findViewById(R.id.txtHeader);
-                                    txtHeader.setText("Your Assignments");
-                                    for (int i = 0; i < result.length(); i++) {
-                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
-                                        Log.d("APIResponse", jsonData.toString());
-                                        Gson gson = new Gson();
-                                        Order order = gson.fromJson(jsonData.toString(), Order.class);
-                                        orderList.add(order);
-                                    }
+                                orderList.clear();
+                                Toolbar mtoolbar = activity.findViewById(R.id.toolbar);
+                                TextView txtHeader = mtoolbar.findViewById(R.id.txtHeader);
+                                txtHeader.setText("Your Assignments");
+                                for (int i = 0; i < result.length(); i++) {
+                                    JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
+                                    Log.d("APIResponse", jsonData.toString());
+                                    Gson gson = new Gson();
+                                    Order order = gson.fromJson(jsonData.toString(), Order.class);
+                                    orderList.add(order);
                                 }
                                 assignAdapter.notifyDataSetChanged();
                             } catch (Exception e) {

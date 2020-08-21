@@ -30,18 +30,32 @@ public class Order {
     private String startLatitude;
     private String endLatitude;
     private String massoutage;
-
-
     private String actionCode;
+    private String customer_contacted;
+    private String etr;
 
+    public String getCustomer_contacted() {
+        return customer_contacted;
+    }
 
+    public void setCustomer_contacted(String customer_contacted) {
+        this.customer_contacted = customer_contacted;
+    }
+
+    public String getEtr() {
+        return etr;
+    }
+
+    public void setEtr(String etr) {
+        this.etr = etr;
+    }
 
     public Order(String customerID, String customerName, String customerAddress, String customerCityName, String engId,
                  String customerMobile, String slotType, String customerPrefDate, String case_remarks, String segment,
                  String podName, String srNumber, String portId, String oltname, String slaClock, String acknowledge_status,
                  String slaStatus, String customerIP, String srStatus, String startTime, String endTime, String startLatitude,
                  String endLatitude, String srType, String srSubType, String roasteDate, String foni, String repeat_sr,
-                 String massoutage,String actionCode) {
+                 String massoutage, String actionCode) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;

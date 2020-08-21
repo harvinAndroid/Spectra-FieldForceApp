@@ -103,9 +103,14 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
-        holder.slaClock.setText(f2.format(d)); // "12:18am"
+        try {
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+
+            holder.slaClock.setText(f2.format(d)); // "12:18am"
+        }catch (Exception ex){
+            ex.getMessage();
+        }
 
         if (order.getAcknowledge_status().equals("1")) {
             holder.btnView.setText("View");

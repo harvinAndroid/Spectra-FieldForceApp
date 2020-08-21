@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/bottomSheet"
@@ -28,49 +29,47 @@
         android:id="@+id/textview1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_14ssp"
-        android:text="@string/accountstatus"
-        android:layout_marginStart="@dimen/_5ssp"
-        android:padding="@dimen/_5ssp"
-        android:layout_marginLeft="@dimen/_5ssp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@color/ColorLightGray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/heading"
         app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/accountstatus"
+        android:padding="@dimen/_5ssp"
+        app:layout_constraintTop_toBottomOf="@+id/heading"
         />
-
     <TextView
         android:id="@+id/textview2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/accountstatus"
-        android:textSize="@dimen/_14ssp"
-        android:layout_marginEnd="@dimen/_15ssp"
-        android:layout_marginRight="@dimen/_15ssp"
-        android:padding="@dimen/_5ssp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/accountstatus"
+        android:padding="@dimen/_5ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:layout_marginRight="@dimen/_15ssp"
+        app:layout_constraintLeft_toRightOf="@id/textview3"
         app:layout_constraintTop_toBottomOf="@+id/heading"
-        app:layout_constraintLeft_toRightOf="@id/textview1"
         />
 
     <TextView
         android:id="@+id/textview3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_14ssp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@color/ColorLightGray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/address"
         android:padding="@dimen/_5ssp"
-        app:layout_constraintTop_toBottomOf="@+id/textview1"
+        app:layout_constraintTop_toBottomOf="@+id/textview2"
         />
     <TextView
         android:id="@+id/textview4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_14ssp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,15 +78,15 @@
         android:layout_marginEnd="@dimen/_15ssp"
         android:layout_marginRight="@dimen/_15ssp"
         app:layout_constraintLeft_toRightOf="@id/textview3"
-        app:layout_constraintTop_toBottomOf="@+id/textview1"
+        app:layout_constraintTop_toBottomOf="@+id/textview2"
         />
     <TextView
         android:id="@+id/textview5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_14ssp"
+        android:textSize="@dimen/_12ssp"
         android:text="@string/menu"
-        android:paddingBottom="@dimen/_10ssp"
+        android:paddingBottom="@dimen/_5ssp"
         android:textColor="@color/ColorLightGray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,12 +97,12 @@
         android:id="@+id/textview6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_14ssp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@color/colorBlack"
         android:text="@string/fup_flag"
         android:paddingStart="@dimen/_5ssp"
         android:paddingLeft="@dimen/_5ssp"
-        android:paddingBottom="@dimen/_10ssp"
+        android:paddingBottom="@dimen/_5ssp"
         android:layout_marginEnd="@dimen/_15ssp"
         android:layout_marginRight="@dimen/_15ssp"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,6 +110,90 @@
         app:layout_constraintTop_toBottomOf="@+id/textview3"
         app:layout_constraintLeft_toRightOf="@id/textview3"
         tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/textview7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_12ssp"
+        android:text="@string/menu"
+        android:paddingBottom="@dimen/_5ssp"
+        android:textColor="@color/ColorLightGray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview5"
+        />
+
+    <TextView
+        android:id="@+id/textview8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/colorBlack"
+        android:text="@string/product_segment"
+        android:paddingStart="@dimen/_5ssp"
+        android:paddingLeft="@dimen/_5ssp"
+        android:paddingBottom="@dimen/_5ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:layout_marginRight="@dimen/_15ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview5"
+        app:layout_constraintLeft_toRightOf="@id/textview5"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/textview9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_12ssp"
+        android:text="@string/menu"
+        android:paddingBottom="@dimen/_5ssp"
+        android:textColor="@color/ColorLightGray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview8"
+        />
+
+    <TextView
+        android:id="@+id/textview10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/colorBlack"
+        android:text="@string/product"
+        android:paddingStart="@dimen/_5ssp"
+        android:paddingLeft="@dimen/_5ssp"
+        android:paddingBottom="@dimen/_5ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:layout_marginRight="@dimen/_15ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview8"
+        app:layout_constraintLeft_toRightOf="@id/textview8"
+        tools:ignore="RtlSymmetry" />
+
+
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview10"/>
+
+    <!--<androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitXY"
+
+        app:layout_constraintTop_toBottomOf="@+id/textview6"
+        />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

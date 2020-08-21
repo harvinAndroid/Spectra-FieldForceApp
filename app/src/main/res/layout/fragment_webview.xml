@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Toolbar
+   <!-- <Toolbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40ssp"
         android:background="@android:color/black"
@@ -37,7 +37,7 @@
 
 
 
-    </Toolbar>
+    </Toolbar>-->
 
 
     <WebView

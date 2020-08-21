@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorWhite"
             android:clickable="true"
             android:focusable="true"
@@ -29,8 +29,9 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="SR Number:"
+                android:text="@string/sr_number"
                 android:textStyle="bold" />
 
             <TextView
@@ -38,6 +39,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -46,8 +48,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srNumber"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="CAN ID:"
+                android:text="@string/can_id"
                 android:textStyle="bold" />
 
             <TextView
@@ -56,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srNumber"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -64,8 +68,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerId"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Customer Name:"
+                android:text="@string/customer_name"
                 android:textStyle="bold" />
 
             <TextView
@@ -74,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerId"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -82,8 +88,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerName"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Mobile No:"
+                android:text="@string/mobile_no"
                 android:textStyle="bold" />
 
             <TextView
@@ -92,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerName"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlue"
                 android:textIsSelectable="true"
@@ -102,8 +110,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerMobile"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Slot Date Time:"
+                android:text="@string/slot_date_time"
                 android:textStyle="bold" />
 
             <TextView
@@ -112,6 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerMobile"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -120,8 +130,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slotTime"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Address:"
+                android:text="@string/address"
                 android:textStyle="bold" />
 
             <TextView
@@ -130,6 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slotTime"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -138,8 +150,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerAddress"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Segment:"
+                android:text="@string/segment"
                 android:textStyle="bold" />
 
             <TextView
@@ -148,6 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerAddress"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -156,8 +170,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/businessSegemnt"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Type:"
+                android:text="@string/type"
                 android:textStyle="bold" />
 
             <TextView
@@ -166,6 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/businessSegemnt"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -174,8 +190,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srType"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Sub Type:"
+                android:text="@string/sub_type"
                 android:textStyle="bold" />
 
             <TextView
@@ -184,6 +201,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srType"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -192,9 +210,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srSubType"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="POD Name:"
+                android:text="@string/pod_name"
                 android:textStyle="bold" />
 
             <TextView
@@ -203,6 +222,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srSubType"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -211,9 +231,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/podName"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="Device/Port:"
+                android:text="@string/device_port"
                 android:textStyle="bold" />
 
             <TextView
@@ -222,6 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/podName"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -230,8 +252,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/devicePort"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Current Status"
+                android:text="@string/current_status"
                 android:textStyle="bold" />
 
             <TextView
@@ -240,6 +263,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/devicePort"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -248,8 +272,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srStatus"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Case Remarks:"
+                android:text="@string/case_remarks"
                 android:textStyle="bold" />
 
             <TextView
@@ -258,6 +283,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srStatus"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -266,8 +292,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/caseRemarks"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="SLA Time:"
+                android:text="@string/sla_time"
                 android:textStyle="bold" />
 
             <TextView
@@ -276,6 +303,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/caseRemarks"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -284,8 +312,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slaClock"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="SLA Status:"
+                android:text="@string/sla_status"
                 android:textStyle="bold" />
 
             <TextView
@@ -294,6 +323,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slaClock"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -302,8 +332,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slaStatus"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Customer IP:"
+                android:text="@string/customer_ip"
                 android:textStyle="bold" />
 
             <TextView
@@ -312,6 +343,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slaStatus"
                 android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -320,8 +352,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerIP"
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
-                android:text="FONI:"
+                android:text="@string/foni"
                 android:textStyle="bold" />
 
             <TextView
@@ -339,7 +372,7 @@
                 android:layout_below="@id/foni"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Repeat:"
+                android:text="@string/repeat"
                 android:textStyle="bold" />
 
             <TextView
@@ -357,7 +390,7 @@
                 android:layout_below="@id/repeat"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:text="Massoutage:"
+                android:text="@string/massoutage"
                 android:textStyle="bold" />
 
             <TextView
@@ -369,38 +402,22 @@
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
-            <TextView
-                android:layout_width="135dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/massoutage"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="Action Code:"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/action_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/massoutage"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="10dp"
-                android:textIsSelectable="true" />
 
             <TextView
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/action_code"
+                android:layout_below="@id/massoutage"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="15dp"
-                android:text="ETR:"
+                android:text="@string/etr"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/dateTimeText"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/action_code"
+                android:layout_below="@id/massoutage"
                 android:layout_marginLeft="120dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
@@ -418,7 +435,7 @@
                 android:background="@drawable/button_black"
                 android:text="@string/update_etr"
                 android:textAllCaps="false"
-               android:paddingStart="@dimen/_15ssp"
+                android:paddingStart="@dimen/_15ssp"
                 android:paddingLeft="@dimen/_15ssp"
                 android:paddingEnd="@dimen/_15ssp"
                 android:paddingRight="@dimen/_15ssp"
@@ -482,10 +499,11 @@
                     android:layout_width="100dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@color/colorBlack"
-                    android:text="Start"
+                    android:background="@drawable/button_purple"
+                    android:text="@string/start"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
+               <!-- -->
 
                 <TextView
                     android:layout_width="135dp"
@@ -493,7 +511,7 @@
                     android:layout_below="@id/btnStartTime"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Start Time:"
+                    android:text="@string/start_time"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -502,6 +520,7 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnStartTime"
+                    android:layout_marginStart="120dp"
                     android:layout_marginLeft="120dp"
                     android:layout_marginTop="10dp"
                     android:textIsSelectable="true"
@@ -513,7 +532,7 @@
                     android:layout_below="@id/startTime"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Start Location:"
+                    android:text="@string/start_location"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -523,6 +542,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/startTime"
                     android:layout_marginLeft="120dp"
+                    android:layout_marginStart="120dp"
                     android:layout_marginTop="10dp"
                     android:textIsSelectable="true"
                     android:visibility="gone" />
@@ -545,7 +565,7 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorBlack"
-                    android:text="End"
+                    android:text="@string/end"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
 
@@ -556,7 +576,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"
-                    android:text="End Time:"
+                    android:text="@string/end_time"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -566,6 +586,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnEndTime"
                     android:layout_marginLeft="120dp"
+                    android:layout_marginStart="120dp"
                     android:layout_marginTop="10dp"
                     android:textIsSelectable="true"
                     android:visibility="gone" />
@@ -577,7 +598,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"
-                    android:text="End Location:"
+                    android:text="@string/end_location"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -587,11 +608,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/endTime"
                     android:layout_marginLeft="120dp"
+                    android:layout_marginStart="120dp"
                     android:layout_marginTop="10dp"
                     android:textIsSelectable="true"
                     android:visibility="gone" />
 
             </RelativeLayout>
+
 
             <TextView
                 android:layout_width="135dp"
@@ -599,17 +622,83 @@
                 android:layout_below="@id/endLayout"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="15dp"
-                android:text="Change Status:"
+                android:text="@string/change_bin"
                 android:textStyle="bold" />
+
+
+            <Spinner
+                android:id="@+id/sp_change_bin"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/endLayout"
+                android:layout_marginLeft="140dp"
+                android:layout_marginStart="140dp"
+                android:layout_marginTop="10dp"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnSrDetails"
+
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30ssp"
+                android:layout_below="@id/sp_change_bin"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_black"
+                android:text="@string/sr_details"
+                android:textAllCaps="true"
+                android:paddingStart="@dimen/_20ssp"
+                android:paddingLeft="@dimen/_20ssp"
+                android:paddingEnd="@dimen/_20ssp"
+                android:paddingRight="@dimen/_20ssp"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginLeft="@dimen/_10ssp"
+                android:layout_marginRight="@dimen/_40ssp"
+                android:layout_marginEnd="@dimen/_40ssp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnSubmitChnageBin"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30ssp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="150dp"
+                android:layout_marginStart="150dp"
+                android:background="@drawable/button_purple"
+                android:text="@string/change_Bin"
+                android:paddingStart="@dimen/_20ssp"
+                android:paddingLeft="@dimen/_20ssp"
+                android:paddingEnd="@dimen/_20ssp"
+                android:paddingRight="@dimen/_20ssp"
+                android:layout_below="@id/sp_change_bin"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+
+
+
+            <TextView
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnSubmitChnageBin"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/change_status"
+                android:textStyle="bold" />
+
 
             <Spinner
                 android:id="@+id/changeStatus"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/endLayout"
+                android:layout_below="@id/btnSubmitChnageBin"
                 android:layout_marginLeft="140dp"
+                android:layout_marginStart="140dp"
                 android:layout_marginTop="10dp"
                 android:textSize="14sp" />
+
+
+
+
 
             <RelativeLayout
                 android:id="@+id/resolveLayout"
@@ -629,7 +718,7 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorBlack"
-                    android:text="NEXT"
+                    android:text="@string/next"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
@@ -642,7 +731,7 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorBlack"
-                    android:text="Get Unify Session"
+                    android:text="@string/get_unify_session"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
@@ -664,7 +753,7 @@
                     android:layout_below="@id/btnUnifySession"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="RC 1:"
+                    android:text="@string/rc_1"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -674,6 +763,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnUnifySession"
                     android:layout_marginLeft="140dp"
+                    android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
@@ -682,8 +772,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc1"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="RC 2:"
+                    android:text="@string/rc_2"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -701,8 +792,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="RC 3:"
+                    android:text="@string/rc_3"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -712,6 +804,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
                     android:layout_marginLeft="140dp"
+                    android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
@@ -720,8 +813,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Customer Contacted:"
+                    android:text="@string/customer_contacted"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -731,6 +825,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
                     android:layout_marginLeft="140dp"
+                    android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
@@ -739,8 +834,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="RFO:"
+                    android:text="@string/rfo"
                     android:textStyle="bold" />
 
                 <EditText
@@ -749,7 +845,9 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
-                    android:layout_marginLeft="140dp" />
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginStart="140dp"
+                    />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/question_recyler_view"
@@ -765,13 +863,12 @@
                     android:layout_below="@id/question_recyler_view"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorBlack"
-                    android:text="NEXT"
+                    android:text="@string/next"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />
 
             </RelativeLayout>
-
             <RelativeLayout
                 android:id="@+id/holdLayout"
                 android:layout_width="match_parent"
@@ -788,8 +885,9 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Hold Reason:"
+                    android:text="@string/hold_reason"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -797,15 +895,18 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="140dp"
+                    android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
+
 
                 <TextView
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"
-                    android:text="Contact Name:"
+                    android:text="@string/contact_name"
                     android:textStyle="bold" />
 
                 <EditText
@@ -814,15 +915,20 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
                     android:layout_marginLeft="140dp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginStart="140dp"
+                    android:layout_marginTop="5dp"
+                    android:inputType="text"
+                    android:maxLength="25"
+                    android:maxEms="25"/>
 
                 <TextView
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Contact Number:"
+                    android:text="@string/contact_number"
                     android:textStyle="bold" />
 
                 <EditText
@@ -831,7 +937,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
                     android:layout_marginLeft="140dp"
-                    android:layout_marginTop="0dp" />
+                    android:layout_marginStart="140dp"
+                    android:inputType="number"
+                    android:maxEms="10"
+                    android:maxLength="10"
+                    />
 
                 <TextView
                     android:id="@+id/tv_contact"
@@ -839,8 +949,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Customer Contacted:"
+                    android:text="@string/customer_contacted"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -849,6 +960,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
                     android:layout_marginLeft="140dp"
+                    android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
 
@@ -860,7 +972,7 @@
                     android:layout_below="@id/contacted"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorBlack"
-                    android:text="Submit on Hold"
+                    android:text="@string/submit_on_hold"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />

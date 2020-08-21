@@ -161,15 +161,22 @@
             android:textColor="@android:color/black"
             android:layout_height="wrap_content"/>
 
+
+
         <Button
             android:id="@+id/btnResolveSubmit"
-            android:layout_width="140dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@id/router_position"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorBlack"
+            android:layout_marginTop="@dimen/_20ssp"
+            android:background="@drawable/button_purple"
             android:text="@string/submit_on_resolve"
+            android:layout_marginStart="@dimen/_50ssp"
+            android:layout_marginRight="@dimen/_50ssp"
+            android:layout_marginLeft="@dimen/_50ssp"
+            android:layout_marginEnd="@dimen/_50ssp"
             android:textAllCaps="false"
+            android:gravity="center"
             android:textColor="@color/colorWhite"
             android:textStyle="bold" />
 

@@ -2,6 +2,8 @@ package com.spectra.fieldforce;
 
 import com.spectra.fieldforce.Model.CanIdRequest;
 import com.spectra.fieldforce.Model.CanIdResponse;
+import com.spectra.fieldforce.Model.ChangeBinRequest;
+import com.spectra.fieldforce.Model.ChnageBinResponse;
 import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.LoginRequest;
 import com.google.gson.JsonElement;
@@ -14,6 +16,9 @@ import com.spectra.fieldforce.Model.QuestionareList;
 import com.spectra.fieldforce.Model.RCRequest;
 import com.spectra.fieldforce.Model.SRRequest;
 import com.spectra.fieldforce.Model.SavetokenRequest;
+import com.spectra.fieldforce.Model.SendChangeBinRequest;
+import com.spectra.fieldforce.Model.SrDeatilsList;
+import com.spectra.fieldforce.Model.SrDetailsListResponse;
 import com.spectra.fieldforce.Model.StarttimeRequest;
 
 import okhttp3.ResponseBody;
@@ -54,4 +59,13 @@ public interface ApiInterface {
 
     @POST("index.php")
     Call<MRTG> getMrtgRequest (@Body MrtgRequest mrtgRequest );
+
+    @POST("index.php")
+    Call<ChnageBinResponse> getChnageBinDetails (@Body ChangeBinRequest changeBinRequest );
+
+    @POST("index.php")
+    Call<CommonResponse> sendBinDetails (@Body SendChangeBinRequest sendChangeBinRequest );
+
+    @POST ("index.php")
+    Call<SrDetailsListResponse> getSrDetailsList (@Body ChangeBinRequest changeBinRequest );
 }
