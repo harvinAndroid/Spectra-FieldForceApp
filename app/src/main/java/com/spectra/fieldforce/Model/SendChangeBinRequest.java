@@ -4,6 +4,7 @@ public class SendChangeBinRequest {
     String Authkey;
     String Action;
     String SrNumber;
+    String BinId;
 
     public String getBinId() {
         return BinId;
@@ -12,8 +13,6 @@ public class SendChangeBinRequest {
     public void setBinId(String binId) {
         BinId = binId;
     }
-
-    String BinId;
 
     public String getAuthkey() {
         return Authkey;

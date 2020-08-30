@@ -30,6 +30,7 @@ import retrofit2.Response;
 public class FragmentMrtg extends BottomSheetDialogFragment {
     TextView textview1,textview2,textview3,textview4,textview5,textview6,textview7,textview9;
     PhotoView imageView;
+    String canId;
 
 
     @Nullable
@@ -57,6 +58,9 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
         textview9=view.findViewById(R.id.textview9);
         imageView = view.findViewById(R.id.imageView);
         String segment= Objects.requireNonNull(getArguments()).getString("segment");
+        canId= Objects.requireNonNull(getArguments()).getString("CustomerId");
+
+
         if (segment != null && segment.equals("Home")) {
             imageView.setVisibility(View.GONE);
         }
@@ -68,11 +72,10 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
     public void getNoc() {
         String authKey = "AdgT68HnjkehEqlkd4";
         String action = "getAccountData";
-        String canID="199624";
         CanIdRequest canIdRequest = new CanIdRequest();
         canIdRequest.setAuthkey(authKey);
         canIdRequest.setAction(action);
-        canIdRequest.setCanId(canID);
+        canIdRequest.setCanId(canId);
 
         ApiInterface apiService = ApiClientRetrofit.getClient().create(ApiInterface.class);
         Call<CanIdResponse> call = apiService.getCanIdDetails(canIdRequest);

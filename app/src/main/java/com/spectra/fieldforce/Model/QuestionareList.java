@@ -13,6 +13,17 @@ public class QuestionareList {
     private String EmailId;
     private String Source;
 
+    public String getSrType() {
+        return SrType;
+    }
+
+    public void setSrType(String srType) {
+        SrType = srType;
+    }
+
+    private String SrType;
+
+
     public String getAuthkey() {
         return Authkey;
     }

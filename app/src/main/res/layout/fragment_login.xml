@@ -19,7 +19,7 @@
         android:layout_marginLeft="@dimen/_10ssp"
         android:layout_marginRight="@dimen/_10ssp"
         android:textColor="@color/colorWhite"
-        android:textSize="72sp" />
+        android:textSize="@dimen/_50ssp" />
 
     <TextView
         android:id="@+id/make_life"

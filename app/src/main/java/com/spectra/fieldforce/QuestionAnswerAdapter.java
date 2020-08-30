@@ -64,7 +64,7 @@ public class QuestionAnswerAdapter extends RecyclerView.Adapter<QuestionAnswerAd
                 tag = new ArrayList<>();
                 switch (ans) {
                     case "NA":
-                        tag.add(ans);
+                        tag.add("-1");
                         break;
                     case "NO":
                         tag.add("0");

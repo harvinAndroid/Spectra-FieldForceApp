@@ -154,25 +154,22 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
 
             }
         });
-        UserName.setText("");
-        UserPassword.setText("");
+         // UserName.setText("");
+        //UserPassword.setText("");
         StatusMess.setText("");
         ErrorMessage.setText("");
     }
 
     private void getSaveToken() {
         FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        fcmToken = task.getResult().getToken();
-                        Log.d("FCMToken", fcmToken);
-                        performSaveToken();
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "getInstanceId failed", task.getException());
+                        return;
                     }
+                    fcmToken = task.getResult().getToken();
+                    Log.d("FCMToken", fcmToken);
+                    performSaveToken();
                 });
     }
 

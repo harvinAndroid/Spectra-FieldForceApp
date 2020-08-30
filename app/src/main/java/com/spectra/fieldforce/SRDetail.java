@@ -40,6 +40,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.spectra.fieldforce.Model.ChangeBinRequest;
+import com.spectra.fieldforce.Model.ChangeBinResponse;
 import com.spectra.fieldforce.Model.ChnageBinResponse;
 import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.EndtimeRequest;
@@ -70,7 +71,7 @@ import retrofit2.Response;
  * Use the {@link SRDetail#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SRDetail extends Fragment {
+public class SRDetail extends Fragment{
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -81,8 +82,8 @@ public class SRDetail extends Fragment {
     private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit,btnNoc,btnMgrt,
             btnSubmitChnageBin,btnSrDetails;
     private EditText DateEdit, rfo;
-    private Spinner resolveContacted, changeStatus, rc1, rc2, rc3, holdReason, contacted,sp_change_bin;
-    private String status,action_code,str_segment;
+    private Spinner resolveContacted, changeStatus, rc1, holdReason, contacted,sp_change_bin;
+    private String status,action_code,str_segment,bin_name,str_CanId;
     private String engId,str_etr,str_contact_name,str_contact_num;
     private FrameLayout progressOverlay;
     private boolean startFlag, endFlag;
@@ -99,9 +100,11 @@ public class SRDetail extends Fragment {
     AlphaAnimation outAnimation;
     BottomSheetBehavior sheetBehavior;
     ConstraintLayout layoutBottomSheet;
-    private ArrayList<ChnageBinResponse.Response> changeBinList;
-     private ArrayList<ChnageBinResponse.Response> BinId;
-    String Sr,str_bbinId;
+    String Sr;
+     String str_bbinId,strSlotType;
+    ArrayList<String> rc1Name;
+    ArrayList<String> rc1Code;
+
     private ArrayList<String> changeBinName;
     //private OnItemClickListener myClickListener;
 
@@ -127,12 +130,10 @@ public class SRDetail extends Fragment {
         if (isResolve == 1) {
             caseStatus.add("Resolved");
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, caseStatus);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, caseStatus);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         changeStatus.setAdapter(adapter);
     }
-
-
 
     private void bindContacted() {
         ArrayList<String> contact = new ArrayList<String>();
@@ -155,6 +156,73 @@ public class SRDetail extends Fragment {
         changeBinRequest.setAction(action);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<JsonElement> call = apiService.getChnageBinDetails(changeBinRequest);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");
+                            try {
+                                result = jsonObject.getJSONArray("Response");
+                                if (result != null) {
+                                    rc1Code = new ArrayList<String>();
+                                    rc1Name = new ArrayList<String>();
+                                    rc1Code.add("0");
+                                    rc1Name.add("Select Change Bin");
+                                    for (int i = 0; i < result.length(); i++) {
+                                        JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
+                                        Log.d("RC1Response", jsonData.toString());
+                                        String name = jsonData.getString("teamName");
+                                        String code = jsonData.getString("binId");
+                                        rc1Code.add(code);
+                                        rc1Name.add(name);
+                                    }
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, rc1Name);
+                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    sp_change_bin.setAdapter(adapter);
+                                }
+
+                                sp_change_bin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                        int itemPosition = adapterView.getSelectedItemPosition();
+                                        str_bbinId = rc1Code.get(itemPosition);
+                                        Log.e("code", str_bbinId);
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+                                        //rc1Code.add("0");
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                      //  }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+   /* private void GetChangeBin() {
+        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
+        String action = "getBinmovementSR";
+
+        ChangeBinRequest changeBinRequest = new ChangeBinRequest();
+        changeBinRequest.setAuthkey(authKey);
+        changeBinRequest.setAction(action);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ChnageBinResponse> call = apiService.getChnageBinDetails(changeBinRequest);
         call.enqueue(new Callback<ChnageBinResponse>() {
             @Override
@@ -167,17 +235,20 @@ public class SRDetail extends Fragment {
                         }
                         changeBinName = new ArrayList<>();
                         changeBinName.add("Change Bin");
+
                         for (ChnageBinResponse.Response i : changeBinList)
-                            changeBinName.add(i.getTeamName());
+                        changeBinName.add(i.getTeamName());
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, changeBinName);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         sp_change_bin.setAdapter(adapter);
                         sp_change_bin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                                String text = sp_change_bin.getSelectedItem().toString();
-                               str_bbinId= changeBinList.get(position).getBinId();
-                                Log.e("binid",  changeBinList.get(position).getBinId());
+                              //  String text = sp_change_bin.getSelectedItem().toString();
+                                int itemPosition = parentView.getSelectedItemPosition();
+                                str_bbinId = changeBinList.get(position).getBinId();
+                                Log.e("code", str_bbinId);
+
                             }
 
                             @Override
@@ -199,14 +270,12 @@ public class SRDetail extends Fragment {
                 Log.e("RetroError", t.toString());
             }
         });
-    }
+    }*/
 
 
     private void SendBinDetails() {
         String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "saveBinmovementSR";
-
-
         SendChangeBinRequest sendChangeBinRequest = new SendChangeBinRequest();
         sendChangeBinRequest.setAuthkey(authKey);
         sendChangeBinRequest.setAction(action);
@@ -214,15 +283,19 @@ public class SRDetail extends Fragment {
         sendChangeBinRequest.setBinId(str_bbinId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.sendBinDetails(sendChangeBinRequest);
-        call.enqueue(new Callback<CommonResponse>() {
+        Call<ChangeBinResponse> call = apiService.sendBinDetails(sendChangeBinRequest);
+        call.enqueue(new Callback<ChangeBinResponse>() {
             @Override
-            public void onResponse(retrofit2.Call<CommonResponse> call, Response<CommonResponse> response) {
+            public void onResponse(retrofit2.Call<ChangeBinResponse> call, Response<ChangeBinResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                    String status=response.body().getStatus();
+
+                    String status= String.valueOf(response.body().getStatus());
                     if(status.equals("1")){
                         Toast.makeText(getActivity(),"Change Bin Submitted Sucessfully",Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(getActivity(),MainActivity.class);
+                        startActivity(i);
+                        getActivity().finish();
                     }
                         else {
                         Toast.makeText(getActivity(),"Something went wrong...",Toast.LENGTH_LONG).show();
@@ -234,7 +307,7 @@ public class SRDetail extends Fragment {
             }
 
             @Override
-            public void onFailure(retrofit2.Call<CommonResponse> call, Throwable t) {
+            public void onFailure(retrofit2.Call<ChangeBinResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });
@@ -263,7 +336,6 @@ public class SRDetail extends Fragment {
                             try {
                                 result = jsonObject.getJSONArray("Response");
                                 if (result != null) {
-
                                     ArrayList<String> action = new ArrayList<String>();
                                     if(action_code==null){
                                         action.add("Select Hold Reason");
@@ -337,34 +409,36 @@ public class SRDetail extends Fragment {
                                         Gson gson = new Gson();
                                         order = gson.fromJson(jsonData.toString(), Order.class);
                                     }
-                                    customerId.setText(order.getCustomerID());
-                                    customerName.setText(order.getCustomerName());
-                                    customerMobile.setText(order.getCustomerMobile());
-                                    customerAddress.setText(order.getCustomerAddress());
-                                    srNumber.setText(srText);
-                                    slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
-                                    caseRemarks.setText(order.getCaseRemarks());
-                                    srStatus.setText(order.getSrStatus());
-                                    srType.setText(order.getSrType());
-                                    srSubType.setText(order.getSrSubType());
-                                    slaClock.setText(order.getSlaClock());
-                                    action_code=order.getActionCode();
-                                   // contactName.setText(order.getCustomer_contacted());
-                                    str_etr = order.getEtr();
-                                    str_contact_name=order.getCustomerName();
-                                    str_contact_num = order.getCustomerMobile();
-                                    str_segment = order.getSegment();
-                                    Sr = order.getSrNumber();
+                                    if (order != null) {
+                                        customerId.setText(order.getCustomerID());
+                                        customerName.setText(order.getCustomerName());
+                                        customerMobile.setText(order.getCustomerMobile());
+                                        customerAddress.setText(order.getCustomerAddress());
+                                        srNumber.setText(srText);
+                                        slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
+                                        caseRemarks.setText(order.getCaseRemarks());
+                                        srStatus.setText(order.getSrStatus());
+                                        srType.setText(order.getSrType());
+                                        srSubType.setText(order.getSrSubType());
+                                        slaClock.setText(order.getSlaClock());
+                                        action_code = order.getActionCode();
+                                        // contactName.setText(order.getCustomer_contacted());
+                                        str_etr = order.getEtr();
+                                        str_contact_name = order.getCustomerName();
+                                        str_contact_num = order.getCustomerMobile();
+                                        str_segment = order.getSegment();
+                                        Sr = order.getSrNumber();
+                                    }
 
                                     String s = order.getSlaClock();
-                                    SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");//HH for hour of the day (0 - 23)
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");//HH for hour of the day (0 - 23)
                                     Date d = null;
                                     try {
                                         d = f1.parse(s);
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
-                                    SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
                                     slaClock.setText(f2.format(d));
                                     slaStatus.setText(order.getSlaStatus());
                                     if (order.getSlaStatus().equals("In Progress") || order.getSlaStatus().equals("Succeeded")) {
@@ -431,8 +505,6 @@ public class SRDetail extends Fragment {
     }
 
 
-
-
     private boolean isValidMobile(String phone) {
         if (phone.length() == 10) {
             return android.util.Patterns.PHONE.matcher(phone).matches();
@@ -468,7 +540,6 @@ public class SRDetail extends Fragment {
         }else if(isContacted.equals("No")){
             srRequest.setContacted("False");
         }
-      //  srRequest.setContacted(isContacted == "Yes" ? "true" : "false");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
@@ -731,18 +802,18 @@ public class SRDetail extends Fragment {
     }
 
     SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+    @SuppressLint("SetTextI18n")
     final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
         mCalendar.set(Calendar.YEAR, year);
         mCalendar.set(Calendar.MONTH, monthOfYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
         fromDateString = sendDateFormat.format(mCalendar.getTime());
         DateEdit.setText("" + fromDateString);
     };
+    @SuppressLint("SetTextI18n")
     final TimePickerDialog.OnTimeSetListener mTimeDateSetListener = (view, hourOfDay, minuteOfHour) -> {
         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         mCalendar.set(Calendar.MINUTE, minuteOfHour);
-
         fromDateString = sendDateFormat.format(mCalendar.getTime());
         DateEdit.setText("" + fromDateString);
     };
@@ -754,8 +825,8 @@ public class SRDetail extends Fragment {
         txtHeader = mtoolbar.findViewById(R.id.txtHeader);
         txtHeader.setText("SR Detail");
         String srText = getArguments().getString("srNumber");
-        String slotType = getArguments().getString("slotType");
-        getAssignment(srText, slotType);
+        strSlotType = getArguments().getString("slotType");
+        getAssignment(srText, strSlotType);
 
         View view = inflater.inflate(R.layout.fragment_s_r_detail, container, false);
         layoutBottomSheet = view.findViewById(R.id.bottomSheet);
@@ -798,8 +869,8 @@ public class SRDetail extends Fragment {
         changeStatus = (Spinner) view.findViewById(R.id.changeStatus);
         holdReason = (Spinner) view.findViewById(R.id.holdReason);
         rc1 = (Spinner) view.findViewById(R.id.rc1);
-        rc2 = (Spinner) view.findViewById(R.id.rc2);
-        rc3 = (Spinner) view.findViewById(R.id.rc3);
+     /*   rc2 = (Spinner) view.findViewById(R.id.rc2);
+        rc3 = (Spinner) view.findViewById(R.id.rc3);*/
         DateEdit = (EditText) view.findViewById(R.id.dateTimeText);
         rfo = (EditText) view.findViewById(R.id.rfo);
         startLayout = (RelativeLayout) view.findViewById(R.id.startLayout);
@@ -812,11 +883,10 @@ public class SRDetail extends Fragment {
         sp_change_bin =view.findViewById(R.id.sp_change_bin);
         btnSubmitChnageBin = view.findViewById(R.id.btnSubmitChnageBin);
         btnSrDetails = view.findViewById(R.id.btnSrDetails);
-
-
+       // str_bbinId=0;
         bindChangeStatus(0);
-        BottomSheet();
         GetChangeBin();
+        BottomSheet();
       //  WebViewNoc();
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -826,7 +896,7 @@ public class SRDetail extends Fragment {
                     resolveLayout.setVisibility(View.VISIBLE);
                     holdLayout.setVisibility(View.GONE);
                   //  getRC1();
-                } else if (status == "Hold") {
+                } else if (status.equals("Hold")) {
                     resolveLayout.setVisibility(View.GONE);
                     holdLayout.setVisibility(View.VISIBLE);
                     getActionCode();
@@ -844,103 +914,93 @@ public class SRDetail extends Fragment {
             }
         });
 
-        btnStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isLoc = getLatLong(startLocation);
-                if (isLoc == true) {
-                    Calendar c = Calendar.getInstance();
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String formattedDate = df.format(c.getTime());
-                    startTime.setText(formattedDate);
-                    startLayout.setVisibility(View.GONE);
-                    endLayout.setVisibility(View.VISIBLE);
-                    saveStartTime();
-                }
+        btnStartTime.setOnClickListener(v -> {
+            boolean isLoc = getLatLong(startLocation);
+            if (isLoc == true) {
+                Calendar c = Calendar.getInstance();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String formattedDate = df.format(c.getTime());
+                startTime.setText(formattedDate);
+                startLayout.setVisibility(View.GONE);
+                endLayout.setVisibility(View.VISIBLE);
+                saveStartTime();
             }
         });
-        btnEndTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isLoc = getLatLong(endLocation);
-                if (isLoc == true) {
-                    Calendar c = Calendar.getInstance();
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String formattedDate = df.format(c.getTime());
-                    endTime.setText(formattedDate);
-                    endLayout.setVisibility(View.GONE);
-                    saveEndTime();
-                    bindChangeStatus(1);
-                }
+        btnEndTime.setOnClickListener(v -> {
+            boolean isLoc = getLatLong(endLocation);
+            if (isLoc == true) {
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String formattedDate = df.format(c.getTime());
+                endTime.setText(formattedDate);
+                endLayout.setVisibility(View.GONE);
+                saveEndTime();
+                bindChangeStatus(1);
             }
         });
 
-        btnHoldSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isValid = true;
-                if (holdReason.getSelectedItem().toString().equals("Select Hold Reason")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select Hold Reason", Toast.LENGTH_LONG).show();
-                } else if (contactName.getText().toString().equals("")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please enter Contact Person", Toast.LENGTH_LONG).show();
-                } else if (contactNumber.getText().toString().equals("")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please enter Contact Number", Toast.LENGTH_LONG).show();
-                } else if (!isValidMobile(contactNumber.getText().toString())) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please enter Valid Contact Number", Toast.LENGTH_LONG).show();
-                } else if (contacted.getSelectedItem().toString().equals("Select Status")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please select customer is contacted or not", Toast.LENGTH_LONG).show();
-                }
+        btnHoldSubmit.setOnClickListener(v -> {
+            boolean isValid = true;
+            if (holdReason.getSelectedItem().toString().equals("Select Hold Reason")) {
+                isValid = false;
+                Toast.makeText(activity, "Please select Hold Reason", Toast.LENGTH_LONG).show();
+            } else if (contactName.getText().toString().equals("")) {
+                isValid = false;
+                Toast.makeText(activity, "Please enter Contact Person", Toast.LENGTH_LONG).show();
+            } else if (contactNumber.getText().toString().equals("")) {
+                isValid = false;
+                Toast.makeText(activity, "Please enter Contact Number", Toast.LENGTH_LONG).show();
+            } else if (!isValidMobile(contactNumber.getText().toString())) {
+                isValid = false;
+                Toast.makeText(activity, "Please enter Valid Contact Number", Toast.LENGTH_LONG).show();
+            } else if (contacted.getSelectedItem().toString().equals("Select Status")) {
+                isValid = false;
+                Toast.makeText(activity, "Please select customer is contacted or not", Toast.LENGTH_LONG).show();
+            }
 
-                if (isValid == true) {
-                    submitOnHold();
-                }
+            if (isValid == true) {
+                submitOnHold();
             }
         });
 
-        btnSubmitChnageBin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendBinDetails();
-            }
-        });
-        btnResolveSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(activity,Activity_Resolve.class);
-                i.putExtra("CustomerId",customerId.getText().toString());
-                i.putExtra("SrNumber",srNumber.getText().toString());
-                startActivity(i);
-            }
-        });
-        btnETRSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isValid = true;
-                if (etr.getText().toString().equals("")) {
-                    isValid = false;
-                    Toast.makeText(activity, "Please enter ETR", Toast.LENGTH_LONG).show();
-                } else {
-                    String dtStart = etr.getText().toString();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    try {
-                        Date etrDate = format.parse(dtStart);
-                        Date currDate = Calendar.getInstance().getTime();
-                        if (etrDate.compareTo(currDate) < 0) {
-                            isValid = false;
-                            Toast.makeText(activity, "ETR can only be of future", Toast.LENGTH_LONG).show();
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+        btnSubmitChnageBin.setOnClickListener(v -> {
+                    if(str_bbinId.equals("0")){
+                        Toast.makeText(getActivity(),"Please select the change bin",Toast.LENGTH_LONG).show();
+                    }else{
+                        SendBinDetails();
                     }
+               //  SendBinDetails();
                 }
-                if (isValid == true) {
-                    updateETR();
+        );
+
+        btnResolveSubmit.setOnClickListener(v -> {
+            Intent i = new Intent(activity,Activity_Resolve.class);
+            i.putExtra("CustomerId",customerId.getText().toString());
+            i.putExtra("SrNumber",srNumber.getText().toString());
+            i.putExtra("SlotType",strSlotType);
+            startActivity(i);
+        });
+        btnETRSubmit.setOnClickListener(v -> {
+            boolean isValid = true;
+            if (etr.getText().toString().equals("")) {
+                isValid = false;
+                Toast.makeText(activity, "Please enter ETR", Toast.LENGTH_LONG).show();
+            } else {
+                String dtStart = etr.getText().toString();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                try {
+                    Date etrDate = format.parse(dtStart);
+                    Date currDate = Calendar.getInstance().getTime();
+                    if (etrDate.compareTo(currDate) < 0) {
+                        isValid = false;
+                        Toast.makeText(activity, "ETR can only be of future", Toast.LENGTH_LONG).show();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+            }
+            if (isValid == true) {
+                updateETR();
             }
         });
         customerMobile.setOnClickListener(v -> {
@@ -964,7 +1024,7 @@ public class SRDetail extends Fragment {
                         mCalendar.get(Calendar.DAY_OF_MONTH));
                 fromPickerDialog.show();
             } catch (Exception ex) {
-                // TODO: 13-07-2020 for @satyveer handle message to show user
+
             }
         });
         mCalendar = Calendar.getInstance();
@@ -986,6 +1046,7 @@ public class SRDetail extends Fragment {
         btnMgrt.setOnClickListener(v -> {
             Bundle bundle=new Bundle();
             bundle.putString("segment", str_segment);
+            bundle.putString("CustomerId",customerId.getText().toString());
             FragmentMrtg bottomSheetFragment = new FragmentMrtg();
             bottomSheetFragment.setArguments(bundle);
             bottomSheetFragment.show(activity.getSupportFragmentManager(), bottomSheetFragment.getTag());
@@ -1001,6 +1062,7 @@ public class SRDetail extends Fragment {
             t.replace(R.id.fregment_container, mFrag);
             t.commit();
         });
+
     }
 }
 

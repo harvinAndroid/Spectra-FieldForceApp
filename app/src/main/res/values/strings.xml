@@ -43,11 +43,11 @@
     <string name="rc_3">RC 3:</string>
     <string name="customer_contacted">Customer Contacted:</string>
     <string name="rfo">RFO:</string>-->
-    <string name="speed_on_wifi">speed_on_wifi</string>
+    <string name="speed_on_wifi">Speed on Wifi</string>
     <string name="other_in_ml">Other In ML</string>
     <string name="speed_on_lan">Speed on Lan</string>
     <string name="router_position">Router Position</string>
-    <string name="submit_on_resolve">Submit on Resolve</string>
+    <string name="submit_on_resolve">Submit Resolve</string>
     <string name="mrtg_details">MRTG Details</string>
     <string name="please_wait">Please wait......</string>
     <string name="change_Bin">Change Bin</string>
@@ -97,6 +97,9 @@
     <string name="contact_number">Contact Number:</string>
     <string name="customer_contacted">Customer Contacted:</string>
     <string name="submit_on_hold">Submit on Hold</string>
-
+    <string name="valid_formats">Files with .pdf , .docx , .doc , .jpeg , .jpg, .png are accepted</string>
+    <string name="upload_files_message">Only 1 file are allowed.</string>
+    <string name="some_thing_wrong">Some thing wrong has occurred,please try again.</string>
+    <string name="upload_artifacts">Upload Artifacts</string>
 
 </resources>

@@ -32,7 +32,7 @@ public class ApiClient {
                             .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                             .writeTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS).build();
                     retrofit = new Retrofit.Builder()
-                            .baseUrl(Constants.BASE_URL)
+                            .baseUrl(Constants.PROD_BASE_URL)
                             .client(okHttpClient)
                             .addCallAdapterFactory(rxAdapter)
                             .addConverterFactory(GsonConverterFactory.create(gson))

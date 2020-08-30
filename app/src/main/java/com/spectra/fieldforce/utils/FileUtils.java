@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ContentResolver;
@@ -27,10 +28,9 @@ import java.util.Date;
 
 public class FileUtils {
 
-    public static final int NO_STORAGE_ERROR = -1;
+
     public static final int CANNOT_STAT_ERROR = -2;
     public static int FILE_REQUEST_CODE = 1050;
-    public static int IMAGE_REQUEST_CODE = 2050;
     public static int DOWNLOAD_FILE = 2;
 
 
@@ -41,7 +41,7 @@ public class FileUtils {
      * @return an image file with .jpg extension or video file with .mp4 extension
      */
     public static File makeMediaFile(Context context, boolean photo) {
-        String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + (photo ? ".jpg" : ".mp4");
+        @SuppressLint("SimpleDateFormat") String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + (photo ? ".jpg" : ".mp4");
 
         String path = createDirectory(context).getAbsolutePath();
 
@@ -172,7 +172,7 @@ public class FileUtils {
      *
      * @param context
      */
-    public static void showFileChooser(Context context) {
+    public static void showFileChooser(Context context,Integer requestcode) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -181,7 +181,7 @@ public class FileUtils {
         try {
             ((BaseActivity) context).startActivityForResult(
                     Intent.createChooser(intent, "Select a File to Upload"),
-                    FILE_REQUEST_CODE);
+                    requestcode);
         } catch (android.content.ActivityNotFoundException ex) {
             ((BaseActivity) context).displayToast(R.string.please_wait);
         }
@@ -258,10 +258,9 @@ public class FileUtils {
      * @param context
      */
     public static void openFile(String filename, Activity context) {
+
         File file = new File(filename);
-
         String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(".JPG");
-
         Intent intent = new Intent();
         intent.setAction(android.content.Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file), mime);
