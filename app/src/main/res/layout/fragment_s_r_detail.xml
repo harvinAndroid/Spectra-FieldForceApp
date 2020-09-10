@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SRDetail"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
@@ -429,35 +428,35 @@
             <Button
                 android:id="@+id/btnETRSubmit"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30ssp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_below="@id/dateTimeText"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_black"
                 android:text="@string/update_etr"
                 android:textAllCaps="false"
-                android:paddingStart="@dimen/_15ssp"
-                android:paddingLeft="@dimen/_15ssp"
-                android:paddingEnd="@dimen/_15ssp"
-                android:paddingRight="@dimen/_15ssp"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/btnNoc"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30ssp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_below="@id/dateTimeText"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="@dimen/_15ssp"
-                android:layout_marginLeft="@dimen/_15ssp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_toEndOf="@+id/btnETRSubmit"
                 android:layout_toRightOf="@+id/btnETRSubmit"
                 android:background="@drawable/button_purple"
                 android:text="@string/noc"
-                android:paddingStart="@dimen/_15ssp"
-                android:paddingLeft="@dimen/_15ssp"
-                android:paddingEnd="@dimen/_15ssp"
-                android:paddingRight="@dimen/_15ssp"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"/>
@@ -465,19 +464,19 @@
             <Button
                 android:id="@+id/btnMgrt"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30ssp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_below="@id/dateTimeText"
                 android:layout_toRightOf="@+id/btnNoc"
                 android:layout_toEndOf="@+id/btnNoc"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="@dimen/_15ssp"
-                android:layout_marginLeft="@dimen/_15ssp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
                 android:background="@drawable/button_background"
                 android:text="@string/mrtg"
-                android:paddingStart="@dimen/_15ssp"
-                android:paddingLeft="@dimen/_15ssp"
-                android:paddingEnd="@dimen/_15ssp"
-                android:paddingRight="@dimen/_15ssp"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"/>
@@ -639,36 +638,36 @@
             <Button
                 android:id="@+id/btnSrDetails"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30ssp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_below="@id/sp_change_bin"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_black"
                 android:text="@string/sr_details"
                 android:textAllCaps="true"
-                android:paddingStart="@dimen/_20ssp"
-                android:paddingLeft="@dimen/_20ssp"
-                android:paddingEnd="@dimen/_20ssp"
-                android:paddingRight="@dimen/_20ssp"
-                android:layout_marginStart="@dimen/_10ssp"
-                android:layout_marginLeft="@dimen/_10ssp"
-                android:layout_marginRight="@dimen/_40ssp"
-                android:layout_marginEnd="@dimen/_40ssp"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_40sdp"
+                android:layout_marginEnd="@dimen/_40sdp"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/btnSubmitChnageBin"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30ssp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="150dp"
                 android:layout_marginStart="150dp"
                 android:background="@drawable/button_purple"
                 android:text="@string/change_Bin"
-                android:paddingStart="@dimen/_20ssp"
-                android:paddingLeft="@dimen/_20ssp"
-                android:paddingEnd="@dimen/_20ssp"
-                android:paddingRight="@dimen/_20ssp"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:paddingRight="@dimen/_20sdp"
                 android:layout_below="@id/sp_change_bin"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
@@ -982,8 +981,7 @@
     </ScrollView>
 
     <include
-        layout="@layout/alert_dialog_canid"
-        />
+        layout="@layout/alert_dialog_canid" />
 
     <include layout="@layout/progress" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

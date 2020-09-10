@@ -11,4 +11,8 @@
     <color name="colorButton">#f46f6a</color>
     <color name="ColorLightGray">#505050</color>
     <color name="ColorPurple">#5f8ab5</color>
+    <color name="transparent">#00000000</color>
+    <color name="colorPrimary">#183451</color>
+    <color name="color_light_blue">#c0d4e7</color>
+    <color name="colorPrimaryDark">#293A48</color>
 </resources>

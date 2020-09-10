@@ -44,20 +44,20 @@
             android:gravity="start|center"
             android:drawableLeft="@drawable/houses"
             android:drawableStart="@drawable/houses"
-            android:drawablePadding="@dimen/_20ssp"
+            android:drawablePadding="@dimen/_20sdp"
             android:text="@string/home"
             android:textColor="@color/colorWhite"
             android:textSize="18sp" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_10ssp"
-            android:layout_marginStart="@dimen/_20ssp"
-            android:layout_marginLeft="@dimen/_20ssp"
-            android:layout_marginEnd="@dimen/_5ssp"
-            android:layout_marginRight="@dimen/_5ssp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:background="@color/ColorLightGray"
-            android:layout_height="@dimen/_1ssp"/>
+            android:layout_height="@dimen/_1sdp"/>
 
         <TextView
             android:id="@+id/nav_Wifi"
@@ -68,7 +68,7 @@
             android:layout_marginStart="20dp"
             android:drawableStart="@drawable/wifi"
             android:drawableLeft="@drawable/wifi"
-            android:drawablePadding="@dimen/_20ssp"
+            android:drawablePadding="@dimen/_20sdp"
             android:layout_marginTop="30dp"
             android:gravity="start|center"
             android:text="@string/wifi_analyzer"
@@ -76,13 +76,13 @@
             android:textSize="18sp" />
         <View
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_10ssp"
-            android:layout_marginStart="@dimen/_20ssp"
-            android:layout_marginLeft="@dimen/_20ssp"
-            android:layout_marginEnd="@dimen/_5ssp"
-            android:layout_marginRight="@dimen/_5ssp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:background="@color/ColorLightGray"
-            android:layout_height="@dimen/_1ssp"/>
+            android:layout_height="@dimen/_1sdp"/>
 
         <TextView
             android:id="@+id/nav_Speed"
@@ -94,20 +94,20 @@
             android:layout_marginTop="30dp"
             android:drawableStart="@drawable/speed"
             android:drawableLeft="@drawable/speed"
-            android:drawablePadding="@dimen/_20ssp"
+            android:drawablePadding="@dimen/_20sdp"
             android:gravity="start|center"
             android:text="@string/speed_test"
             android:textColor="@color/colorWhite"
             android:textSize="18sp" />
         <View
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_10ssp"
-            android:layout_marginStart="@dimen/_20ssp"
-            android:layout_marginLeft="@dimen/_20ssp"
-            android:layout_marginEnd="@dimen/_5ssp"
-            android:layout_marginRight="@dimen/_5ssp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:background="@color/ColorLightGray"
-            android:layout_height="@dimen/_1ssp"/>
+            android:layout_height="@dimen/_1sdp"/>
 
         <TextView
             android:id="@+id/nav_gpon"
@@ -119,20 +119,20 @@
             android:layout_marginTop="30dp"
             android:drawableStart="@drawable/dashboard"
             android:drawableLeft="@drawable/dashboard"
-            android:drawablePadding="@dimen/_20ssp"
+            android:drawablePadding="@dimen/_20sdp"
             android:gravity="start|center"
             android:text="@string/gpon"
             android:textColor="@color/colorWhite"
             android:textSize="18sp" />
         <View
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_10ssp"
-            android:layout_marginStart="@dimen/_20ssp"
-            android:layout_marginLeft="@dimen/_20ssp"
-            android:layout_marginEnd="@dimen/_5ssp"
-            android:layout_marginRight="@dimen/_5ssp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:background="@color/ColorLightGray"
-            android:layout_height="@dimen/_1ssp"/>
+            android:layout_height="@dimen/_1sdp"/>
 
         <TextView
             android:id="@+id/nav_logout"
@@ -144,7 +144,7 @@
             android:layout_marginTop="30dp"
             android:drawableStart="@drawable/logout_nav"
             android:drawableLeft="@drawable/logout_nav"
-            android:drawablePadding="@dimen/_20ssp"
+            android:drawablePadding="@dimen/_20sdp"
             android:gravity="start|center"
             android:text="@string/logout"
             android:textColor="@color/colorWhite"

@@ -41,4 +41,25 @@
         <item name="titleTextAppearance">@style/CustomTitleTextAppearance</item>
         <item name="subtitleTextAppearance">@style/CustomSubTitleTextAppearance</item>
     </style>
+
+    <style name="AppearanceText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:colorControlNormal">@color/colorWhite</item>
+        <item name="android:colorControlHighlight">@color/colorWhite</item>
+        <item name="android:colorControlActivated">@color/colorWhite</item>
+    </style>
+
+    <style name="ButtonStyle" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/button_purple</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/_15sdp</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="SelectMediaDialogTheme">
+        <item name="android:windowEnterAnimation">@anim/shift_up</item>
+        <item name="android:windowExitAnimation">@anim/shift_right</item>
+    </style>
+
 </resources>

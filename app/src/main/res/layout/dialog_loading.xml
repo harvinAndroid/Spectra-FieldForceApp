@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingStart="@dimen/_15sdp"
+    android:id="@+id/dialog_loading"
+    android:paddingLeft="@dimen/_150sdp"
+    android:paddingEnd="@dimen/_25sdp"
+    android:paddingRight="@dimen/_25sdp">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/image_loader"
+        android:background="@drawable/gif_loader"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_70sdp" />
+
+    <TextView
+        android:id="@+id/tv_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/loading"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_18sdp"
+        android:textStyle="bold"
+        tools:ignore="RtlSymmetry" />
+
+</LinearLayout>

@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-   <!-- <Toolbar
+    <Toolbar
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40ssp"
+        android:layout_height="@dimen/_40sdp"
         android:background="@android:color/black"
-       >
+        android:visibility="gone"
+        tools:targetApi="lollipop">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,17 +20,18 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/backpressed"
-                android:layout_width="@dimen/_30ssp"
-                android:layout_marginEnd="@dimen/_30ssp"
-                android:layout_marginRight="@dimen/_30ssp"
-                android:background="@drawable/left_arrow"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:background="@drawable/back_arrow"
                 android:layout_height="wrap_content"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:text="@string/noc"
-                android:textSize="@dimen/_14ssp"
+                android:textSize="@dimen/_14sdp"
                 android:textAllCaps="true"
                 />
 
@@ -37,7 +39,7 @@
 
 
 
-    </Toolbar>-->
+    </Toolbar>
 
 
     <WebView

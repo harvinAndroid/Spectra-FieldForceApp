@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/your_assignments"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_18ssp"
+                    android:textSize="@dimen/_18sdp"
                     android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
         </LinearLayout>
@@ -66,8 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="@dimen/_10ssp"
-            android:layout_marginStart="@dimen/_10ssp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginBottom="10dp"
             android:textColor="@color/colorBrown" />
 

@@ -18,14 +18,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
-import com.spectra.fieldforce.ApiClient;
-import com.spectra.fieldforce.ApiInterface;
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.SRDetail;
+import com.spectra.fieldforce.api.ApiClient;
+import com.spectra.fieldforce.api.ApiInterface;
+import com.spectra.fieldforce.fragment.SRDetailFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -127,7 +126,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
                 Bundle b = new Bundle();
                 b.putString("srNumber", order.getSrNumber());
                 b.putString("slotType", order.getSlotType());
-                activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetail().newInstance(order.getSrNumber(), order.getSlotType()), SRDetail.class.getSimpleName()).addToBackStack(null
+                activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetailFragment().newInstance(order.getSrNumber(), order.getSlotType()), SRDetailFragment.class.getSimpleName()).addToBackStack(null
                 ).commit();
             }
         });
@@ -175,7 +174,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
                                 Bundle b = new Bundle();
                                 b.putString("srNumber", srText);
                                 b.putString("slotType", slotType);
-                                activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetail().newInstance(srText, slotType), SRDetail.class.getSimpleName()).addToBackStack(null
+                                activity1.getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new SRDetailFragment().newInstance(srText, slotType), SRDetailFragment.class.getSimpleName()).addToBackStack(null
                                 ).commit();
                             } catch (Exception e) {
                                 e.printStackTrace();

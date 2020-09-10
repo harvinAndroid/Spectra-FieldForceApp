@@ -5,6 +5,16 @@ import java.util.ArrayList;
 public class QuestionListResponse {
     private String Status;
 
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    private String count;
+
     private ArrayList<Data> data;
 
     private String ErrorCode;

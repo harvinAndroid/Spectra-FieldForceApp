@@ -2,7 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_margin="@dimen/_10ssp"
+    android:layout_margin="@dimen/_10sdp"
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
@@ -142,9 +142,9 @@
             android:layout_below="@+id/question_recyler_view"
             android:layout_width="match_parent"
             android:text="Upload Artifacts"
-            android:layout_marginTop="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:singleLine="true"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_16sdp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:layout_height="wrap_content"/>
@@ -154,14 +154,14 @@
             android:layout_below="@+id/title"
             android:layout_width="match_parent"
             android:hint="@string/speed_on_wifi"
-            android:layout_marginTop="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:singleLine="true"
             android:textColor="@android:color/black"
             android:layout_height="wrap_content"/>
         <View
             android:id="@+id/view1"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1ssp"
+            android:layout_height="@dimen/_1sdp"
             android:background="@android:color/black"
             android:layout_below="@+id/speed_on_wifi"
 
@@ -173,13 +173,13 @@
             android:layout_width="match_parent"
             android:hint="@string/other_in_ml"
             android:singleLine="true"
-            android:layout_marginTop="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:textColor="@android:color/black"
             android:layout_height="wrap_content"/>
         <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1ssp"
+            android:layout_height="@dimen/_1sdp"
             android:background="@android:color/black"
             android:layout_below="@+id/other_in_ml"
 
@@ -192,14 +192,14 @@
             android:layout_width="match_parent"
             android:hint="@string/speed_on_lan"
             android:singleLine="true"
-            android:layout_marginTop="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:textColor="@android:color/black"
             android:layout_height="wrap_content"/>
 
         <View
             android:id="@+id/view3"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1ssp"
+            android:layout_height="@dimen/_1sdp"
             android:background="@android:color/black"
             android:layout_below="@+id/speed_on_lan"
             />
@@ -210,52 +210,62 @@
             android:layout_width="match_parent"
             android:hint="@string/router_position"
             android:singleLine="true"
-            android:layout_marginTop="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:textColor="@android:color/black"
             android:layout_height="wrap_content"/>
         <View
             android:id="@+id/view4"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1ssp"
+            android:layout_height="@dimen/_1sdp"
             android:background="@android:color/black"
             android:layout_below="@+id/router_position"
 
             />
 
+        <ImageView
+            android:id="@+id/image"
+            android:contentDescription="@null"
+            android:layout_below="@+id/view4"
+            android:background="@color/ColorPurple"
+            android:layout_width="match_parent"
+            android:textColor="@android:color/black"
+            android:visibility="gone"
+            android:layout_height="@dimen/_50sdp"/>
+
         <Button
             android:id="@+id/btnUploadArtifacts"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30ssp"
-            android:layout_below="@id/view4"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_below="@id/image"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_black"
             android:text="@string/upload_artifacts"
             android:textAllCaps="true"
-            android:paddingStart="@dimen/_10ssp"
-            android:paddingLeft="@dimen/_10ssp"
-            android:paddingEnd="@dimen/_20ssp"
-            android:paddingRight="@dimen/_10ssp"
-            android:layout_marginStart="@dimen/_10ssp"
-            android:layout_marginLeft="@dimen/_10ssp"
-            android:layout_marginRight="@dimen/_40ssp"
-            android:layout_marginEnd="@dimen/_40ssp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_40sdp"
             android:textColor="@color/colorWhite"
             />
 
         <Button
             android:id="@+id/btnResolveSubmit"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30ssp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="180dp"
             android:layout_marginStart="180dp"
             android:background="@drawable/button_purple"
             android:text="@string/submit_on_resolve"
-            android:paddingStart="@dimen/_10ssp"
-            android:paddingLeft="@dimen/_10ssp"
-            android:paddingEnd="@dimen/_10ssp"
-            android:paddingRight="@dimen/_10ssp"
-            android:layout_below="@id/view4"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:layout_below="@id/image"
             android:textColor="@color/colorWhite"
              />
 
@@ -281,5 +291,7 @@
 
     </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/progress" />
 
 </FrameLayout>

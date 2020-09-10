@@ -7,6 +7,16 @@ public class RCRequest {
     String RCtwoId = "";
     String CanId = "";
 
+    public String getSubsubType() {
+        return SubsubType;
+    }
+
+    public void setSubsubType(String subsubType) {
+        SubsubType = subsubType;
+    }
+
+    String SubsubType;
+
     public String getAuthkey() {
         return Authkey;
     }

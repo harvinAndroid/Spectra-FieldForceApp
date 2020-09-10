@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/ColorPurple"
-    android:padding="@dimen/_10ssp"
+    android:padding="@dimen/_10sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!--<androidx.cardview.widget.CardView
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="@string/title"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_12sdp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/Description"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_12sdp"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.Model;
 
 public class QuestionareList {
+
     private String Authkey;
     private String Action;
     private String QuesId_1;

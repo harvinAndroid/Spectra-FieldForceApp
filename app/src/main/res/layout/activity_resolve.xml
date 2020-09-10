@@ -11,7 +11,7 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="@dimen/_30ssp"
+        android:layout_margin="@dimen/_30sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,9 +21,9 @@
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40ssp"
+        android:layout_height="@dimen/_40sdp"
         app:layout_constraintTop_toBottomOf="@+id/image"
-        android:layout_margin="@dimen/_30ssp"
+        android:layout_margin="@dimen/_30sdp"
         android:text="Choose"
         android:background="@drawable/round_button"
         android:textColor="@android:color/white"
@@ -31,9 +31,9 @@
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40ssp"
+        android:layout_height="@dimen/_40sdp"
         app:layout_constraintTop_toBottomOf="@+id/button"
-        android:layout_margin="@dimen/_30ssp"
+        android:layout_margin="@dimen/_30sdp"
         android:text="Choose"
         android:textColor="@android:color/white"
         />

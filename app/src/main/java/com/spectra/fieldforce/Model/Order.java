@@ -33,6 +33,15 @@ public class Order {
     private String actionCode;
     private String customer_contacted;
     private String etr;
+    private String srSubSubType;
+
+    public String getSrSubSubType() {
+        return srSubSubType;
+    }
+
+    public void setSrSubSubType(String srSubSubType) {
+        this.srSubSubType = srSubSubType;
+    }
 
     public String getCustomer_contacted() {
         return customer_contacted;

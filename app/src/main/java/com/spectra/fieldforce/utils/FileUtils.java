@@ -1,25 +1,18 @@
 package com.spectra.fieldforce.utils;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
-import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import com.spectra.fieldforce.BaseActivity;
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.BaseActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -185,20 +178,6 @@ public class FileUtils {
         } catch (android.content.ActivityNotFoundException ex) {
             ((BaseActivity) context).displayToast(R.string.please_wait);
         }
-
-       /* Intent intent = new Intent(context, FilePickerActivity.class);
-        intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
-                .setCheckPermission(true)
-                .setShowImages(true)
-                .setShowVideos(false)
-                .setShowFiles(true)
-                .setShowAudios(false)
-                .setSuffixes("jpg","jpeg","pdf","doc","docx","png")
-                .enableImageCapture(true)
-                .setMaxSelection(1).setPortraitSpanCount(2)
-                .setSkipZeroSizeFiles(true)
-                .build());
-        ((BaseActivity) context).startActivityForResult(intent, FILE_REQUEST_CODE);*/
     }
 
     public static String getMimeType(Context context, Uri uri) {
@@ -229,42 +208,6 @@ public class FileUtils {
             return true;
         }
         return false;
-    }
-
-
-    public static void downloadFile(String url, Activity context) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, DOWNLOAD_FILE);
-            return;
-        }
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        request.setAllowedOverRoaming(false);
-        request.setVisibleInDownloadsUi(true);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Mentyor/" + System.currentTimeMillis() + url.substring(url.lastIndexOf(".", url.length() - 1)));
-
-        String path = Environment.DIRECTORY_DOWNLOADS+"/Mentyor/" + System.currentTimeMillis() + url.substring(url.lastIndexOf(".", url.length() - 1));
-        long refid = downloadManager != null ? downloadManager.enqueue(request) : 0;
-//        Log.d("log", "File: " + System.currentTimeMillis() + url.substring(url.lastIndexOf(".", url.length() - 1)));  "Your file will be downloaded shortly in the Downloads folder."
-        Toast.makeText(context,path , Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Used to open the file sent to server.
-     *
-     * @param filename
-     * @param context
-     */
-    public static void openFile(String filename, Activity context) {
-
-        File file = new File(filename);
-        String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(".JPG");
-        Intent intent = new Intent();
-        intent.setAction(android.content.Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), mime);
-        context.startActivityForResult(intent, 10);
     }
 
 }
