@@ -21,10 +21,10 @@
 
         <Button
             android:id="@+id/btnUnifySession"
-            android:layout_width="120dp"
+            android:layout_width="@dimen/_120sdp"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorBlack"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/button_black"
             android:text="@string/get_unify_session"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
@@ -34,16 +34,16 @@
             android:id="@+id/sessionStatus"
             android:layout_width="135dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="20dp"
-            android:layout_toRightOf="@id/btnUnifySession"
+            android:layout_toEndOf="@id/btnUnifySession"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnUnifySession"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:text="@string/rc_1"
             android:textStyle="bold" />
@@ -53,14 +53,14 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnUnifySession"
-            android:layout_marginLeft="140dp"
+            android:layout_marginStart="140dp"
             android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/rc1"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:text="@string/rc_2"
             android:textStyle="bold" />
@@ -70,14 +70,14 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/rc1"
-            android:layout_marginLeft="140dp"
+            android:layout_marginStart="140dp"
             android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/rc2"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:text="@string/rc_3"
             android:textStyle="bold" />
@@ -87,14 +87,14 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/rc2"
-            android:layout_marginLeft="140dp"
+            android:layout_marginStart="140dp"
             android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/rc3"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:text="@string/customer_contacted"
             android:textStyle="bold" />
@@ -104,14 +104,14 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/rc3"
-            android:layout_marginLeft="140dp"
+            android:layout_marginStart="140dp"
             android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/resolveContacted"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:text="@string/rfo"
             android:textStyle="bold" />
@@ -121,7 +121,7 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/resolveContacted"
-            android:layout_marginLeft="140dp" />
+            android:layout_marginStart="140dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/question_recyler_view"
@@ -141,7 +141,7 @@
             android:id="@+id/title"
             android:layout_below="@+id/question_recyler_view"
             android:layout_width="match_parent"
-            android:text="Upload Artifacts"
+            android:text="@string/upload_artifacts"
             android:layout_marginTop="@dimen/_20sdp"
             android:singleLine="true"
             android:textSize="@dimen/_16sdp"
@@ -222,22 +222,14 @@
 
             />
 
-        <ImageView
-            android:id="@+id/image"
-            android:contentDescription="@null"
-            android:layout_below="@+id/view4"
-            android:background="@color/ColorPurple"
-            android:layout_width="match_parent"
-            android:textColor="@android:color/black"
-            android:visibility="gone"
-            android:layout_height="@dimen/_50sdp"/>
+
 
         <Button
             android:id="@+id/btnUploadArtifacts"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_30sdp"
-            android:layout_below="@id/image"
-            android:layout_marginTop="10dp"
+            android:layout_below="@id/view4"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/button_black"
             android:text="@string/upload_artifacts"
             android:textAllCaps="true"
@@ -246,8 +238,6 @@
             android:paddingEnd="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_40sdp"
             android:layout_marginEnd="@dimen/_40sdp"
             android:textColor="@color/colorWhite"
             />
@@ -256,16 +246,15 @@
             android:id="@+id/btnResolveSubmit"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="180dp"
-            android:layout_marginStart="180dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_160sdp"
             android:background="@drawable/button_purple"
             android:text="@string/submit_on_resolve"
             android:paddingStart="@dimen/_10sdp"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
-            android:layout_below="@id/image"
+            android:layout_below="@id/view4"
             android:textColor="@color/colorWhite"
              />
 

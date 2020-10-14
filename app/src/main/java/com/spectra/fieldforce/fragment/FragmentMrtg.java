@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -31,9 +32,10 @@ import retrofit2.Response;
 
 
 public class FragmentMrtg extends BottomSheetDialogFragment {
-    TextView textview1,textview2,textview3,textview4,textview5,textview6,textview7,textview9;
-    PhotoView imageView;
-    String canId;
+    private TextView textview1,textview2,textview3,textview4,textview5,textview6,textview7,textview9;
+    private PhotoView imageView;
+    private String canId;
+
 
 
     @Nullable
@@ -44,24 +46,20 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         textview1=view.findViewById(R.id.textview1);
-        textview2=view.findViewById(R.id.textview2);
+      //  textview2=view.findViewById(R.id.textview2);
         textview3=view.findViewById(R.id.textview3);
-        textview4=view.findViewById(R.id.textview4);
+      //  textview4=view.findViewById(R.id.textview4);
         textview5=view.findViewById(R.id.textview5);
-        textview6=view.findViewById(R.id.textview6);
+       // textview6=view.findViewById(R.id.textview6);
         textview7=view.findViewById(R.id.textview7);
         textview9=view.findViewById(R.id.textview9);
         imageView = view.findViewById(R.id.imageView);
-        String segment= Objects.requireNonNull(getArguments()).getString("segment");
-        canId= Objects.requireNonNull(getArguments()).getString("CustomerId");
+        String segment= requireArguments().getString("segment");
+        canId= requireArguments().getString("CustomerId");
 
         if (segment != null && segment.equals("Home")) {
             imageView.setVisibility(View.GONE);
@@ -126,12 +124,12 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
                         String img =  response.body().getResponse();
                         Log.e("image", img);
                         final byte[] decodedBytes = Base64.decode(img, Base64.DEFAULT);
-                        Glide.with(Objects.requireNonNull(getContext())).load(decodedBytes).into(imageView);
+                        Glide.with(requireContext()).load(decodedBytes).into(imageView);
                         imageView.setOnClickListener(view -> {
-                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                            View mView = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
+                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(requireContext());
+                            View mView = requireActivity().getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
                             PhotoView photoView = mView.findViewById(R.id.imageView);
-                            Glide.with(Objects.requireNonNull(getActivity())).load(decodedBytes).into(photoView);
+                            Glide.with(requireActivity()).load(decodedBytes).into(photoView);
                             mBuilder.setView(mView);
                             AlertDialog mDialog = mBuilder.create();
                             mDialog.show();

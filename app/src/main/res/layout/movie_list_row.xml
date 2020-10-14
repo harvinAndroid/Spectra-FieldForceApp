@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:layout_marginStart="15dp"
-    android:layout_marginTop="15dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginEnd="10dp"
-    android:padding="10dp"
-    android:paddingLeft="@dimen/cardview_default_radius"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="8dp">
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:padding="@dimen/_5sdp"
+    android:paddingStart="@dimen/cardview_default_radius"
+    android:paddingEnd="@dimen/cardview_default_radius"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardElevation="@dimen/_8sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,22 +21,21 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="@dimen/_10sdp"
         android:textColor="@color/colorBlack">
 
         <TextView
-            android:layout_width="135dp"
+            android:layout_width="@dimen/_135sdp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="SR Number:"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/sr_number"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/srNumber"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
             android:layout_marginStart="120dp"
             android:text="@string/app_name"
             android:layout_marginTop="10dp"
@@ -45,9 +45,9 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srNumber"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="10dp"
-            android:text="SLA Time:"
+            android:text="@string/sla_time"
             android:textStyle="bold" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srNumber"
-            android:layout_marginLeft="120dp"
+            android:layout_marginStart="120dp"
             android:layout_marginTop="10dp"
             android:textIsSelectable="true" />
 
@@ -63,9 +63,9 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/slaClock"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
-            android:text="CAN ID:"
+            android:text="@string/can_id"
             android:textStyle="bold" />
 
         <TextView
@@ -73,7 +73,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/slaClock"
-            android:layout_marginLeft="120dp"
+            android:layout_marginStart="120dp"
             android:layout_marginTop="10dp"
             android:textIsSelectable="true" />
 
@@ -81,9 +81,9 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerId"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
-            android:text="Customer Name:"
+            android:text="@string/customer_name"
             android:textStyle="bold" />
 
         <TextView
@@ -91,7 +91,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerId"
-            android:layout_marginLeft="120dp"
+            android:layout_marginStart="120dp"
             android:layout_marginTop="10dp"
             android:textIsSelectable="true" />
 
@@ -99,9 +99,9 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerName"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
-            android:text="Mobile No:"
+            android:text="@string/mobile_no"
             android:textStyle="bold" />
 
         <TextView
@@ -109,7 +109,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerName"
-            android:layout_marginLeft="120dp"
+            android:layout_marginStart="120dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/colorBlue"
             android:textIsSelectable="true"
@@ -119,7 +119,7 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerMobile"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:text="@string/slot_date_time"
             android:textStyle="bold" />
@@ -129,7 +129,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/customerMobile"
-            android:layout_marginLeft="120dp"
+            android:layout_marginStart="120dp"
             android:layout_marginTop="10dp"
             android:textIsSelectable="true" />
 
@@ -137,7 +137,7 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/slotTime"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:text="@string/current_status"
             android:textStyle="bold" />
@@ -147,7 +147,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/slotTime"
-            android:layout_marginLeft="120dp"
+            android:layout_marginStart="120dp"
             android:layout_marginTop="10dp"
             android:textIsSelectable="true" />
 
@@ -155,7 +155,7 @@
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srStatus"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:text="@string/address"
             android:textStyle="bold" />
@@ -165,7 +165,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/srStatus"
-            android:layout_marginLeft="120dp"
+            android:layout_marginStart="120dp"
             android:layout_marginTop="10dp"
             android:textIsSelectable="true" />
 

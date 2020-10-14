@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- TODO: Update blank fragment layout -->
@@ -19,7 +20,6 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
-            android:padding="20dp"
             android:scrollbars="vertical"
             android:textColor="@color/colorBlack">
 
@@ -27,7 +27,6 @@
             <TextView
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/sr_number"
@@ -35,9 +34,8 @@
 
             <TextView
                 android:id="@+id/srNumber"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -46,7 +44,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srNumber"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/can_id"
@@ -54,10 +51,9 @@
 
             <TextView
                 android:id="@+id/customerId"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srNumber"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -66,7 +62,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerId"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/customer_name"
@@ -74,10 +69,9 @@
 
             <TextView
                 android:id="@+id/customerName"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerId"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -86,7 +80,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerName"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/mobile_no"
@@ -94,10 +87,9 @@
 
             <TextView
                 android:id="@+id/customerMobile"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerName"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlue"
@@ -108,7 +100,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerMobile"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/slot_date_time"
@@ -116,10 +107,9 @@
 
             <TextView
                 android:id="@+id/slotTime"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerMobile"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -128,7 +118,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slotTime"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/address"
@@ -136,10 +125,9 @@
 
             <TextView
                 android:id="@+id/customerAddress"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slotTime"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -148,7 +136,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerAddress"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/segment"
@@ -156,10 +143,9 @@
 
             <TextView
                 android:id="@+id/businessSegemnt"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerAddress"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -168,7 +154,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/businessSegemnt"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/type"
@@ -176,10 +161,9 @@
 
             <TextView
                 android:id="@+id/srType"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/businessSegemnt"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -188,7 +172,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srType"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/sub_type"
@@ -196,10 +179,9 @@
 
             <TextView
                 android:id="@+id/srSubType"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srType"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -208,7 +190,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srSubType"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
@@ -217,10 +198,9 @@
 
             <TextView
                 android:id="@+id/podName"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srSubType"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -229,7 +209,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/podName"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
@@ -238,10 +217,9 @@
 
             <TextView
                 android:id="@+id/devicePort"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/podName"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -250,7 +228,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/devicePort"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/current_status"
@@ -258,10 +235,9 @@
 
             <TextView
                 android:id="@+id/srStatus"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/devicePort"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -270,7 +246,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srStatus"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/case_remarks"
@@ -278,10 +253,9 @@
 
             <TextView
                 android:id="@+id/caseRemarks"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/srStatus"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -290,7 +264,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/caseRemarks"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/sla_time"
@@ -298,10 +271,9 @@
 
             <TextView
                 android:id="@+id/slaClock"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/caseRemarks"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -310,7 +282,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slaClock"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/sla_status"
@@ -318,10 +289,9 @@
 
             <TextView
                 android:id="@+id/slaStatus"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slaClock"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -330,7 +300,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slaStatus"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/customer_ip"
@@ -338,10 +307,9 @@
 
             <TextView
                 android:id="@+id/customerIP"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/slaStatus"
-                android:layout_marginLeft="120dp"
                 android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
@@ -350,7 +318,6 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerIP"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/foni"
@@ -361,7 +328,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/customerIP"
-                android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -369,7 +336,7 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/foni"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/repeat"
                 android:textStyle="bold" />
@@ -379,7 +346,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/foni"
-                android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -387,7 +354,7 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/repeat"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/massoutage"
                 android:textStyle="bold" />
@@ -397,7 +364,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/repeat"
-                android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="10dp"
                 android:textIsSelectable="true" />
 
@@ -407,17 +374,17 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/massoutage"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="15dp"
                 android:text="@string/etr"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/dateTimeText"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/massoutage"
-                android:layout_marginLeft="120dp"
+                android:layout_marginStart="120dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:focusable="false"
@@ -440,48 +407,6 @@
                 android:paddingRight="@dimen/_15sdp"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/btnNoc"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_below="@id/dateTimeText"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_toEndOf="@+id/btnETRSubmit"
-                android:layout_toRightOf="@+id/btnETRSubmit"
-                android:background="@drawable/button_purple"
-                android:text="@string/noc"
-                android:paddingStart="@dimen/_15sdp"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingEnd="@dimen/_15sdp"
-                android:paddingRight="@dimen/_15sdp"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/btnMgrt"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_below="@id/dateTimeText"
-                android:layout_toRightOf="@+id/btnNoc"
-                android:layout_toEndOf="@+id/btnNoc"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:background="@drawable/button_background"
-                android:text="@string/mrtg"
-                android:paddingStart="@dimen/_15sdp"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingEnd="@dimen/_15sdp"
-                android:paddingRight="@dimen/_15sdp"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"/>
-
-
 
             <RelativeLayout
                 android:id="@+id/startLayout"
@@ -508,7 +433,7 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnStartTime"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/start_time"
                     android:textStyle="bold"
@@ -520,7 +445,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnStartTime"
                     android:layout_marginStart="120dp"
-                    android:layout_marginLeft="120dp"
                     android:layout_marginTop="10dp"
                     android:textIsSelectable="true"
                     android:visibility="gone" />
@@ -529,7 +453,7 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/startTime"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/start_location"
                     android:textStyle="bold"
@@ -540,7 +464,6 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/startTime"
-                    android:layout_marginLeft="120dp"
                     android:layout_marginStart="120dp"
                     android:layout_marginTop="10dp"
                     android:textIsSelectable="true"
@@ -572,7 +495,7 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnEndTime"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"
                     android:text="@string/end_time"
@@ -584,7 +507,6 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnEndTime"
-                    android:layout_marginLeft="120dp"
                     android:layout_marginStart="120dp"
                     android:layout_marginTop="10dp"
                     android:textIsSelectable="true"
@@ -594,7 +516,7 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/endTime"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"
                     android:text="@string/end_location"
@@ -606,7 +528,6 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/endTime"
-                    android:layout_marginLeft="120dp"
                     android:layout_marginStart="120dp"
                     android:layout_marginTop="10dp"
                     android:textIsSelectable="true"
@@ -619,7 +540,7 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/endLayout"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="15dp"
                 android:text="@string/change_bin"
                 android:textStyle="bold" />
@@ -630,37 +551,15 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/endLayout"
-                android:layout_marginLeft="140dp"
                 android:layout_marginStart="140dp"
                 android:layout_marginTop="10dp"
                 android:textSize="14sp" />
-
-            <Button
-                android:id="@+id/btnSrDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_below="@id/sp_change_bin"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_black"
-                android:text="@string/sr_details"
-                android:textAllCaps="true"
-                android:paddingStart="@dimen/_20sdp"
-                android:paddingLeft="@dimen/_20sdp"
-                android:paddingEnd="@dimen/_20sdp"
-                android:paddingRight="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_40sdp"
-                android:layout_marginEnd="@dimen/_40sdp"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/btnSubmitChnageBin"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="150dp"
                 android:layout_marginStart="150dp"
                 android:background="@drawable/button_purple"
                 android:text="@string/change_Bin"
@@ -678,7 +577,7 @@
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btnSubmitChnageBin"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="15dp"
                 android:text="@string/change_status"
                 android:textStyle="bold" />
@@ -689,20 +588,86 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btnSubmitChnageBin"
-                android:layout_marginLeft="140dp"
                 android:layout_marginStart="140dp"
                 android:layout_marginTop="10dp"
                 android:textSize="14sp" />
 
+        <RelativeLayout
+            android:id="@+id/unholdlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/changeStatus"
+            android:background="@color/colorWhite"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:textColor="@color/colorBlack"
+            android:visibility="gone">
 
 
+            <Button
+                android:id="@+id/btnUnhold"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_black"
+                android:text="@string/unhold"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/additemLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/changeStatus"
+                android:background="@color/colorWhite"
+                android:focusable="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:textColor="@color/colorBlack"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:layout_width="@dimen/_140sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Do you want to Add Material Consumption.?"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spntemConsumption"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="@dimen/_140sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
+
+               <!-- <Button
+                    android:id="@+id/btnitemConsumption"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="@dimen/_100sdp"
+                    android:layout_below="@+id/spntemConsumption"
+                    android:background="@drawable/button_black"
+                    android:text="@string/item_consumption"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"/>-->
+
+            </RelativeLayout>
 
 
             <RelativeLayout
                 android:id="@+id/resolveLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/changeStatus"
+                android:layout_below="@id/additemLayout"
                 android:background="@color/colorWhite"
                 android:focusable="true"
                 android:orientation="vertical"
@@ -739,9 +704,9 @@
                     android:id="@+id/sessionStatus"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_toRightOf="@id/btnUnifySession"
+                    android:layout_toEndOf="@id/btnUnifySession"
                     android:textStyle="bold" />
 
                 <TextView
@@ -749,7 +714,7 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnUnifySession"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/rc_1"
                     android:textStyle="bold" />
@@ -760,7 +725,6 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btnUnifySession"
-                    android:layout_marginLeft="140dp"
                     android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
@@ -769,7 +733,6 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc1"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/rc_2"
@@ -781,7 +744,7 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc1"
-                    android:layout_marginLeft="140dp"
+                    android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
                 <TextView
@@ -789,7 +752,6 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/rc_3"
@@ -801,7 +763,6 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc2"
-                    android:layout_marginLeft="140dp"
                     android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
@@ -810,7 +771,6 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/customer_contacted"
@@ -822,7 +782,6 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rc3"
-                    android:layout_marginLeft="140dp"
                     android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
@@ -831,7 +790,6 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/rfo"
@@ -843,7 +801,6 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/resolveContacted"
-                    android:layout_marginLeft="140dp"
                     android:layout_marginStart="140dp"
                     />
 
@@ -882,7 +839,6 @@
                 <TextView
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/hold_reason"
@@ -892,7 +848,6 @@
                     android:id="@+id/holdReason"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="140dp"
                     android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
@@ -901,7 +856,6 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"
                     android:text="@string/contact_name"
@@ -912,7 +866,6 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
-                    android:layout_marginLeft="140dp"
                     android:layout_marginStart="140dp"
                     android:layout_marginTop="5dp"
                     android:inputType="text"
@@ -923,7 +876,6 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/contact_number"
@@ -934,7 +886,6 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
-                    android:layout_marginLeft="140dp"
                     android:layout_marginStart="140dp"
                     android:inputType="number"
                     android:maxEms="10"
@@ -946,7 +897,6 @@
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/customer_contacted"
@@ -957,7 +907,6 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
-                    android:layout_marginLeft="140dp"
                     android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
@@ -977,9 +926,40 @@
 
             </RelativeLayout>
 
-        </RelativeLayout>
-    </ScrollView>
 
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_item_consumption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/add"
+        app:backgroundTint="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="bottom"
+        app:elevation="6dp"
+        android:visibility="gone"
+        android:foregroundGravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:layout_marginStart="@dimen/_250sdp"
+        app:pressedTranslationZ="12dp"/>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_nav_menu"
+        android:layout_gravity="bottom"
+        app:labelVisibilityMode="labeled"
+        app:itemBackground="@color/colorButton"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white" />
     <include
         layout="@layout/alert_dialog_canid" />
 

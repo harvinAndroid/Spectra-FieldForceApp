@@ -5,6 +5,7 @@ public class MrtgRequest {
     private String canID;
     private String dateType;
     private String Authkey;
+    
 
     public String getAction() {
         return Action;

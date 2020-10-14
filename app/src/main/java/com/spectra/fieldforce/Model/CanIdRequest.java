@@ -8,6 +8,16 @@ public class CanIdRequest {
 
     private String canID;
 
+    public String getSrNumber() {
+        return SrNumber;
+    }
+
+    public void setSrNumber(String srNumber) {
+        SrNumber = srNumber;
+    }
+
+    private String SrNumber;
+
     public String getAuthkey () {
         return Authkey;
     }

@@ -51,7 +51,7 @@ public class SrDetailsListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerview);
 
-       str_SrNumber = Objects.requireNonNull(getArguments()).getString("SrNumber");
+       str_SrNumber = requireArguments().getString("SrNumber");
         getSrDetailsList();
     }
 

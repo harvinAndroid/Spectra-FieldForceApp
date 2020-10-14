@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_sr_details"
+        android:icon="@drawable/sr_details"
+        android:title="@string/sr_details"
+        />
+    <item
+        android:id="@+id/action_noc"
+        android:icon="@drawable/noc"
+        android:title="@string/noc"
+        />
+    <item
+        android:id="@+id/action_add_item_consumption"
+        android:icon="@drawable/edit"
+        android:title="@string/edit_material"
+         />
+
+    <item
+        android:id="@+id/action_mrtg"
+        android:icon="@drawable/mrtg"
+        android:title="@string/mrtg"
+         />
+</menu>

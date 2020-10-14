@@ -1,4 +1,4 @@
-package com.spectra.fieldforce.Model;
+package com.spectra.fieldforce.adapter;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -21,6 +21,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.Model.Order;
+import com.spectra.fieldforce.Model.SRRequest;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
@@ -160,7 +162,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         Call<JsonElement> call = apiService.getSRDetail(srRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
-            public void onResponse(retrofit2.Call<JsonElement> call, Response<JsonElement> response) {
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 try {
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
@@ -187,7 +189,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             }
 
             @Override
-            public void onFailure(retrofit2.Call<JsonElement> call, Throwable t) {
+            public void onFailure(Call<JsonElement> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });

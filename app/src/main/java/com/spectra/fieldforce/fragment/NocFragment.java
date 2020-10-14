@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.spectra.fieldforce.R;
@@ -19,6 +21,7 @@ import java.util.Objects;
 public class NocFragment extends Fragment {
     private WebView webView;
     private ImageView backpressed;
+    private TextView txtHeader;
 
     @Nullable
     @Override
@@ -31,6 +34,9 @@ public class NocFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toolbar mtoolbar = getActivity().findViewById(R.id.toolbar);
+        txtHeader = mtoolbar.findViewById(R.id.txtHeader);
+        txtHeader.setText("NOC");
         webView = view.findViewById(R.id.webView);
         backpressed = view.findViewById(R.id.backpressed);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -40,7 +46,7 @@ public class NocFragment extends Fragment {
 
     private void init(){
         SRDetailFragment myFragment = new SRDetailFragment();
-        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, myFragment).addToBackStack(null).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, myFragment).addToBackStack(null).commit();
         getActivity().finish();
     }
 

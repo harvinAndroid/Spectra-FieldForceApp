@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -30,19 +31,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.Model.CanIdRequest;
 import com.spectra.fieldforce.Model.ChangeBinRequest;
 import com.spectra.fieldforce.Model.ChangeBinResponse;
+import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.EndtimeRequest;
+import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumption;
+import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionDetails;
+import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionRequest;
 import com.spectra.fieldforce.Model.Order;
 import com.spectra.fieldforce.Model.RCRequest;
 import com.spectra.fieldforce.Model.SRRequest;
@@ -51,10 +61,13 @@ import com.spectra.fieldforce.Model.StarttimeRequest;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.activity.MainActivity;
+import com.spectra.fieldforce.adapter.ItemConsumptionDetailAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
+import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -69,12 +82,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.spectra.fieldforce.utils.AppConstants.EMPTY;
+import static com.spectra.fieldforce.utils.AppConstants.FALSE;
+import static com.spectra.fieldforce.utils.AppConstants.HOLD;
+import static com.spectra.fieldforce.utils.AppConstants.NO;
+import static com.spectra.fieldforce.utils.AppConstants.RESOLVE;
+import static com.spectra.fieldforce.utils.AppConstants.SELECT_STATUS;
+import static com.spectra.fieldforce.utils.AppConstants.TRUE;
+import static com.spectra.fieldforce.utils.AppConstants.UNHOLD;
+import static com.spectra.fieldforce.utils.AppConstants.YES;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SRDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SRDetailFragment extends Fragment{
+public class SRDetailFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener{
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -82,17 +105,18 @@ public class SRDetailFragment extends Fragment{
     private TextView customerId, customerName, customerMobile, customerAddress, srNumber, slotTime, caseRemarks,
             srStatus, srType, srSubType, slaClock, slaStatus, customerIP, segment, devicePort, podName, etr, sessionStatus,
             startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber, txtHeader;
-    private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit,btnNoc,btnMgrt,
-            btnSubmitChnageBin,btnSrDetails;
+    private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit,
+            btnSubmitChnageBin,btnUnhold,btnitemConsumption;
     private EditText DateEdit, rfo;
-    private Spinner resolveContacted, changeStatus, rc1, holdReason, contacted,sp_change_bin;
-    private String status,action_code,str_segment,bin_name,str_CanId;
+    private FloatingActionButton fab_item_consumption;
+    private Spinner resolveContacted, changeStatus, rc1, holdReason, contacted,sp_change_bin,spntemConsumption;
+    private String status,action_code,str_segment,bin_name,str_CanId,strAssignmentStatus;
     private String engId,str_etr,str_contact_name,str_contact_num;
     private FrameLayout progressOverlay;
     private boolean startFlag, endFlag;
-    private RelativeLayout startLayout, endLayout, resolveLayout, holdLayout;
+    private RelativeLayout startLayout, endLayout, resolveLayout, holdLayout,unholdlayout,additemLayout;
     private JSONArray result;
-    private String loc="",startLongi="",startLati="";
+    private String loc="",startLongi="",startLati="",str_material;
     private AppCompatActivity activity;
     private Location location;
     private String fromDateString = "";
@@ -101,11 +125,11 @@ public class SRDetailFragment extends Fragment{
     private AlphaAnimation outAnimation;
     private BottomSheetBehavior sheetBehavior;
     private  ConstraintLayout layoutBottomSheet;
-    private String Sr,StrSubSubType;
+    private String SrNum,StrSubSubType;
     private String str_bbinId,strSlotType;
     private ArrayList<String> rc1Name;
     private ArrayList<String> rc1Code;
-
+    private ArrayList<String> addMater;
     private ArrayList<String> changeBinName;
     //private OnItemClickListener myClickListener;
 
@@ -132,14 +156,14 @@ public class SRDetailFragment extends Fragment{
         txtHeader = mtoolbar.findViewById(R.id.txtHeader);
         txtHeader.setText("SR Detail");
         try {
-            Sr = Objects.requireNonNull(getArguments()).getString("srNumber");
+            SrNum = requireArguments().getString("srNumber");
             strSlotType = getArguments().getString("slotType");
-            getAssignment(Sr, strSlotType);
+            getAssignment(SrNum, strSlotType);
         }catch (Exception ex){
             ex.getMessage();
         }
-
         View view = inflater.inflate(R.layout.fragment_s_r_detail, container, false);
+
         layoutBottomSheet = view.findViewById(R.id.bottomSheet);
         sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         customerId = (TextView) view.findViewById(R.id.customerId);
@@ -187,31 +211,49 @@ public class SRDetailFragment extends Fragment{
         resolveLayout = (RelativeLayout) view.findViewById(R.id.resolveLayout);
         holdLayout = (RelativeLayout) view.findViewById(R.id.holdLayout);
         progressOverlay = (FrameLayout) view.findViewById(R.id.progress_overlay);
-        btnMgrt = view.findViewById(R.id.btnMgrt);
-        btnNoc = view.findViewById(R.id.btnNoc);
+        unholdlayout = (RelativeLayout) view.findViewById(R.id.unholdlayout);
+        btnUnhold = (Button)view.findViewById(R.id.btnUnhold);
+        additemLayout =(RelativeLayout)view.findViewById(R.id.additemLayout);
+       // btnitemConsumption = (Button)view.findViewById(R.id.btnitemConsumption);
+        spntemConsumption = (Spinner)view.findViewById(R.id.spntemConsumption);
         sp_change_bin =view.findViewById(R.id.sp_change_bin);
         btnSubmitChnageBin = view.findViewById(R.id.btnSubmitChnageBin);
-        btnSrDetails = view.findViewById(R.id.btnSrDetails);
-        bindChangeStatus(0);
+        fab_item_consumption = view.findViewById(R.id.fab_item_consumption);
+     //   btnSrDetails = view.findViewById(R.id.btnSrDetails);
+        BottomNavigationView bottom_navigation = view.findViewById(R.id.bottom_navigation);
+        bottom_navigation.setOnNavigationItemSelectedListener(this);
+       /* bindChangeStatus(0);*/
         GetChangeBin();
-        // BottomSheet();
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String status = changeStatus.getSelectedItem().toString();
-                if (status == "Resolved") {
-                    resolveLayout.setVisibility(View.VISIBLE);
-                    holdLayout.setVisibility(View.GONE);
-                    //  getRC1();
-                } else if (status.equals("Hold")) {
-                    resolveLayout.setVisibility(View.GONE);
-                    holdLayout.setVisibility(View.VISIBLE);
-                    getActionCode();
-                    bindContacted();
-                } else {
-                    resolveLayout.setVisibility(View.GONE);
-                    holdLayout.setVisibility(View.GONE);
-                    bindContacted();
+                switch (status) {
+                    case RESOLVE:
+                        checkStatus();
+                       // addMaterial();
+                       /* resolveLayout.setVisibility(View.VISIBLE);*/
+                        holdLayout.setVisibility(View.GONE);
+                        unholdlayout.setVisibility(View.GONE);
+                        break;
+                    case HOLD:
+                        resolveLayout.setVisibility(View.GONE);
+                        unholdlayout.setVisibility(View.GONE);
+                        holdLayout.setVisibility(View.VISIBLE);
+                        getActionCode();
+                        bindContacted();
+                        break;
+                    case UNHOLD:
+                        unholdlayout.setVisibility(View.VISIBLE);
+                        resolveLayout.setVisibility(View.GONE);
+                        holdLayout.setVisibility(View.GONE);
+                        break;
+                    default:
+                        resolveLayout.setVisibility(View.GONE);
+                        holdLayout.setVisibility(View.GONE);
+                        unholdlayout.setVisibility(View.GONE);
+                        bindContacted();
+                        break;
                 }
             }
 
@@ -246,6 +288,8 @@ public class SRDetailFragment extends Fragment{
             }
         });
 
+     fab_item_consumption.setOnClickListener(v -> AddMaterial());
+
         btnHoldSubmit.setOnClickListener(v -> {
             boolean isValid = true;
             if (holdReason.getSelectedItem().toString().equals("Select Hold Reason")) {
@@ -272,11 +316,10 @@ public class SRDetailFragment extends Fragment{
 
         btnSubmitChnageBin.setOnClickListener(v -> {
                     if(str_bbinId.equals("0")){
-                        Toast.makeText(getActivity(),"Please select the change bin",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),"Please select the Change bin",Toast.LENGTH_LONG).show();
                     }else{
                         SendBinDetails();
                     }
-                    //  SendBinDetails();
                 }
         );
 
@@ -315,25 +358,11 @@ public class SRDetailFragment extends Fragment{
             Uri number = Uri.parse("tel:" + customerMobile.getText().toString());
             call_action(number);
         });
-        btnMgrt.setOnClickListener(v -> {
-            Bundle bundle=new Bundle();
-            bundle.putString("segment", str_segment);
-            bundle.putString("CustomerId",customerId.getText().toString());
-            FragmentMrtg bottomSheetFragment = new FragmentMrtg();
-            bottomSheetFragment.setArguments(bundle);
-            bottomSheetFragment.show(activity.getSupportFragmentManager(), bottomSheetFragment.getTag());
-        });
+        btnUnhold.setOnClickListener(v ->
+                ChangeUnholdStatus());
 
-        btnNoc.setOnClickListener(v -> WebViewNoc());
-        btnSrDetails.setOnClickListener(v -> {
-            Bundle bundle=new Bundle();
-            bundle.putString("SrNumber", Sr);
-            FragmentTransaction t = Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-            Fragment mFrag = new SrDetailsListFragment();
-            mFrag.setArguments(bundle);
-            t.replace(R.id.fregment_container, mFrag);
-            t.commit();
-        });
+
+
         DateEdit.setOnClickListener(v -> {
             try {
                 final TimePickerDialog timePickerDialog = new TimePickerDialog(
@@ -361,22 +390,39 @@ public class SRDetailFragment extends Fragment{
 
     private void bindChangeStatus(int isResolve) {
         ArrayList<String> caseStatus = new ArrayList<String>();
-        caseStatus.add("Select Status");
-        caseStatus.add("Hold");
-        if (isResolve == 1) {
-            caseStatus.add("Resolved");
+        caseStatus.add(SELECT_STATUS);
+
+        if(strAssignmentStatus.equals(HOLD)){
+            caseStatus.add(UNHOLD);
+        }else{
+            caseStatus.add(HOLD);
+            if (isResolve == 1 ) {
+                caseStatus.add(RESOLVE);
+            }
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, caseStatus);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, caseStatus);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         changeStatus.setAdapter(adapter);
     }
 
+
+    private void addMaterial(){
+        addMater = new ArrayList<String>();
+        addMater.add("Select Option");
+        addMater.add("Yes");
+        addMater.add("No");
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,addMater);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spntemConsumption.setAdapter(adapter1);
+    }
+
     private void bindContacted() {
         ArrayList<String> contact = new ArrayList<String>();
-        contact.add("Select Status");
-        contact.add("Yes");
-        contact.add("No");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, contact);
+        contact.add(SELECT_STATUS);
+        contact.add(YES);
+        contact.add(NO);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, contact);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contacted.setAdapter(adapter);
         resolveContacted.setAdapter(adapter);
@@ -386,7 +432,6 @@ public class SRDetailFragment extends Fragment{
     private void GetChangeBin() {
       //  String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "getBinmovementSR";
-
         ChangeBinRequest changeBinRequest = new ChangeBinRequest();
         changeBinRequest.setAuthkey(Constants.AUTH_KEY);
         changeBinRequest.setAction(action);
@@ -406,7 +451,7 @@ public class SRDetailFragment extends Fragment{
                                     rc1Code = new ArrayList<String>();
                                     rc1Name = new ArrayList<String>();
                                     rc1Code.add("0");
-                                    rc1Name.add("Select Change Bin");
+                                    rc1Name.add("Select Bin");
                                     for (int i = 0; i < result.length(); i++) {
                                         JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
                                         Log.d("RC1Response", jsonData.toString());
@@ -415,7 +460,7 @@ public class SRDetailFragment extends Fragment{
                                         rc1Code.add(code);
                                         rc1Name.add(name);
                                     }
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, rc1Name);
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, rc1Name);
                                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     sp_change_bin.setAdapter(adapter);
                                 }
@@ -450,88 +495,28 @@ public class SRDetailFragment extends Fragment{
         });
     }
 
-   /* private void GetChangeBin() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getBinmovementSR";
-
-        ChangeBinRequest changeBinRequest = new ChangeBinRequest();
-        changeBinRequest.setAuthkey(authKey);
-        changeBinRequest.setAction(action);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ChnageBinResponse> call = apiService.getChnageBinDetails(changeBinRequest);
-        call.enqueue(new Callback<ChnageBinResponse>() {
-            @Override
-            public void onResponse(retrofit2.Call<ChnageBinResponse> call, Response<ChnageBinResponse> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        changeBinList = new ArrayList<>();
-                        if (response.body() != null) {
-                            changeBinList.addAll(response.body().getResponse());
-                        }
-                        changeBinName = new ArrayList<>();
-                        changeBinName.add("Change Bin");
-
-                        for (ChnageBinResponse.Response i : changeBinList)
-                        changeBinName.add(i.getTeamName());
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, changeBinName);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        sp_change_bin.setAdapter(adapter);
-                        sp_change_bin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                              //  String text = sp_change_bin.getSelectedItem().toString();
-                                int itemPosition = parentView.getSelectedItemPosition();
-                                str_bbinId = changeBinList.get(position).getBinId();
-                                Log.e("code", str_bbinId);
-
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parentView) {
-
-                            }
-
-                        });
-
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<ChnageBinResponse> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }*/
-
 
     private void SendBinDetails() {
-       // String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
         String action = "saveBinmovementSR";
         SendChangeBinRequest sendChangeBinRequest = new SendChangeBinRequest();
         sendChangeBinRequest.setAuthkey(Constants.AUTH_KEY);
         sendChangeBinRequest.setAction(action);
-        sendChangeBinRequest.setSrNumber(Sr);
+        sendChangeBinRequest.setSrNumber(SrNum);
         sendChangeBinRequest.setBinId(str_bbinId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ChangeBinResponse> call = apiService.sendBinDetails(sendChangeBinRequest);
         call.enqueue(new Callback<ChangeBinResponse>() {
             @Override
-            public void onResponse(Call<ChangeBinResponse> call, Response<ChangeBinResponse> response) {
+            public void onResponse(Call<ChangeBinResponse> call, @NotNull Response<ChangeBinResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-
                     String status= String.valueOf(Objects.requireNonNull(response.body()).getStatus());
                     if(status.equals("1")){
                         Toast.makeText(getActivity(),"Change Bin Submitted Sucessfully",Toast.LENGTH_LONG).show();
                         Intent i = new Intent(getActivity(),MainActivity.class);
                         startActivity(i);
-                        Objects.requireNonNull(getActivity()).finish();
+                        requireActivity().finish();
                     } else {
                         Toast.makeText(getActivity(),"Something went wrong...",Toast.LENGTH_LONG).show();
                     }
@@ -579,14 +564,14 @@ public class SRDetailFragment extends Fragment{
                                             String code = jsonData.getString("actionCode");
                                             action.add(code);
                                         }
-                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, action);
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
                                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         holdReason.setAdapter(adapter);
                                     }else{
                                         action.add(action_code);
                                         contactName.setText(str_contact_name);
                                         contactNumber.setText(str_contact_num);
-                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, action);
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
                                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         holdReason.setAdapter(adapter);
                                         holdReason.setSelection(Integer.parseInt(action_code));
@@ -662,9 +647,10 @@ public class SRDetailFragment extends Fragment{
                                         str_contact_name = order.getCustomerName();
                                         str_contact_num = order.getCustomerMobile();
                                         str_segment = order.getSegment();
-                                        Sr = order.getSrNumber();
-                                        StrSubSubType = order.getSrSubSubType();
-
+                                        SrNum = order.getSrNumber();
+                                        StrSubSubType = order.getSrSubSubTypeID();
+                                        strAssignmentStatus = order.getSrStatus();
+                                        bindChangeStatus(0);
                                     }
 
                                     String s = Objects.requireNonNull(order).getSlaClock();
@@ -694,9 +680,9 @@ public class SRDetailFragment extends Fragment{
                                     if (!order.getSegment().equals("Home")) {
                                         customerIP.setText(order.getCustomerIP());
                                     }
-                                    if(!order.getSegment().equals("Business")){
+                                   /* if(!order.getSegment().equals("Business")){
                                         btnNoc.setVisibility(View.GONE);
-                                    }
+                                    }*/
                                     segment.setText(order.getSegment());
                                     podName.setText(order.getPodName());
                                     devicePort.setText(order.getDeviceName() + " : " + order.getPortId());
@@ -716,8 +702,14 @@ public class SRDetailFragment extends Fragment{
                                         massoutage.setBackgroundColor(Color.parseColor("#8B0000"));
                                     }
                                     engId = order.getEngId();
-                                    startFlag = order.getStartLatitude().equals("");
-                                    endFlag = order.getEndLatitude().equals("");
+                                    if(!startFlag){
+                                        startFlag = order.getStartLatitude().equals("");
+                                    }
+                                    if(! endFlag){
+                                        endFlag = order.getEndLatitude().equals("");
+                                    }
+
+
                                     if (!startFlag) {
                                         startLayout.setVisibility(View.GONE);
                                     }
@@ -755,35 +747,24 @@ public class SRDetailFragment extends Fragment{
 
 
     private void submitOnHold() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "saveActionCode";
-        Sr = srNumber.getText().toString();
-        String sr = srNumber.getText().toString();
-        String actionCode = holdReason.getSelectedItem().toString();
-        String custName = contactName.getText().toString();
-        String custNum = contactNumber.getText().toString();
         String isContacted = contacted.getSelectedItem().toString();
-        String EngEmailId = MainActivity.prefConfig.readName();
-        String UpdatedBy = MainActivity.prefConfig.readUserName();
-
         SRRequest srRequest = new SRRequest();
-        srRequest.setAuthkey(authKey);
-        srRequest.setAction(action);
-        srRequest.setSrNumber(sr);
-        srRequest.setActionCode(actionCode);
-        srRequest.setEngId(EngEmailId);
-        srRequest.setUpdatedBy(UpdatedBy);
+        srRequest.setAuthkey(Constants.AUTH_KEY);
+        srRequest.setAction(Constants.SAVE_ACTION_CODE);
+        srRequest.setSrNumber(srNumber.getText().toString());
+        srRequest.setActionCode(holdReason.getSelectedItem().toString());
+        srRequest.setEngId(MainActivity.prefConfig.readName());
+        srRequest.setUpdatedBy(MainActivity.prefConfig.readUserName());
         srRequest.setEmpId(engId);
-        srRequest.setContactName(custName);
-        srRequest.setContactNumber(custNum);
-        if(isContacted.equals("Yes")){
-            srRequest.setContacted("True");
-        }else if(isContacted.equals("No")){
-            srRequest.setContacted("False");
+        srRequest.setContactName(contactName.getText().toString());
+        srRequest.setContactNumber(contactNumber.getText().toString());
+        if(isContacted.equals(YES)){
+            srRequest.setContacted(TRUE);
+        }else if(isContacted.equals(NO)){
+            srRequest.setContacted(FALSE);
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         progressOverlay.setAnimation(inAnimation);
@@ -826,6 +807,33 @@ public class SRDetailFragment extends Fragment{
                 progressOverlay.setVisibility(View.GONE);
                 btnHoldSubmit.setEnabled(true);
                 Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
+    private void ChangeUnholdStatus() {
+        CanIdRequest changeunholdStatus = new CanIdRequest();
+        changeunholdStatus.setAuthkey(Constants.AUTH_KEY);
+        changeunholdStatus.setAction(Constants.GET_SR_INPROGESS);
+        changeunholdStatus.setSrNumber(SrNum);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonResponse> call = apiService.setUnholdStatus(changeunholdStatus);
+        call.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CommonResponse> call, @NonNull Response<CommonResponse> response) {
+                if (response.body() != null && response.body().getStatus().equals("1")) {
+                    Intent i = new Intent(getActivity(),MainActivity.class);
+                    Toast.makeText(getActivity(), response.body().getResponse(),Toast.LENGTH_LONG).show();
+                    startActivity(i);
+                    requireActivity().finish();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CommonResponse> call, @NonNull Throwable t) {
+                //  handleVisOfNetworkAndProgress(View.GONE, View.GONE);
             }
         });
     }
@@ -880,25 +888,16 @@ public class SRDetailFragment extends Fragment{
 
     private void saveStartTime() {
         try {
-            String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-            String action = "SaveGPSTime";
-            String sr = srNumber.getText().toString();
             loc = startLocation.getText().toString();
-            startLongi = loc.split(", ")[0];
-            startLati = loc.split(", ")[1];
-            String startAdd = "Empty";
-            String startDate = startTime.getText().toString();
-            String EngEmailId = MainActivity.prefConfig.readName();
-
             StarttimeRequest startTimeRequest = new StarttimeRequest();
-            startTimeRequest.setAuthkey(authKey);
-            startTimeRequest.setAction(action);
-            startTimeRequest.setSrNumber(sr);
-            startTimeRequest.setStartLongitude(startLongi);
-            startTimeRequest.setStartLatitude(startLati);
-            startTimeRequest.setStartAddress(startAdd);
-            startTimeRequest.setStartTime(startDate);
-            startTimeRequest.setEngEmailId(EngEmailId);
+            startTimeRequest.setAuthkey(Constants.AUTH_KEY);
+            startTimeRequest.setAction(Constants.SAVE_GPS_TIME);
+            startTimeRequest.setSrNumber(srNumber.getText().toString());
+            startTimeRequest.setStartLongitude(loc.split(", ")[0]);
+            startTimeRequest.setStartLatitude(loc.split(", ")[1]);
+            startTimeRequest.setStartAddress(EMPTY);
+            startTimeRequest.setStartTime(startTime.getText().toString());
+            startTimeRequest.setEngEmailId( MainActivity.prefConfig.readName());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<JsonElement> call = apiService.performOrderStarttime(startTimeRequest);
@@ -938,25 +937,16 @@ public class SRDetailFragment extends Fragment{
 
     private void saveEndTime() {
         try {
-            String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-            String action = "updateGPSTime";
-            String sr = srNumber.getText().toString();
             loc = endLocation.getText().toString();
-            String endLongi = loc.split(", ")[0];
-            String endLati = loc.split(", ")[1];
-            String endAdd = "Empty";
-            String endDate = endTime.getText().toString();
-            String EngEmailId = MainActivity.prefConfig.readName();
-
             EndtimeRequest endTimeRequest = new EndtimeRequest();
-            endTimeRequest.setAuthkey(authKey);
-            endTimeRequest.setAction(action);
-            endTimeRequest.setSrNumber(sr);
-            endTimeRequest.setEndLongitude(endLongi);
-            endTimeRequest.setEndLatitude(endLati);
-            endTimeRequest.setEndAddress(endAdd);
-            endTimeRequest.setEndTime(endDate);
-            endTimeRequest.setEngEmailId(EngEmailId);
+            endTimeRequest.setAuthkey(Constants.AUTH_KEY);
+            endTimeRequest.setAction(Constants.UPDATE_GPS_TIME);
+            endTimeRequest.setSrNumber(srNumber.getText().toString());
+            endTimeRequest.setEndLongitude(loc.split(", ")[0]);
+            endTimeRequest.setEndLatitude(loc.split(", ")[1]);
+            endTimeRequest.setEndAddress(EMPTY);
+            endTimeRequest.setEndTime(endTime.getText().toString());
+            endTimeRequest.setEngEmailId(MainActivity.prefConfig.readName());
 
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -1043,6 +1033,7 @@ public class SRDetailFragment extends Fragment{
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
     @SuppressLint("SetTextI18n")
     final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
@@ -1066,31 +1057,240 @@ public class SRDetailFragment extends Fragment{
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, myFragment).addToBackStack(null).commit();
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_sr_details:
+                Bundle bundle=new Bundle();
+                bundle.putString("SrNumber", SrNum);
+                @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t = Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+                Fragment mFrag = new SrDetailsListFragment();
+                mFrag.setArguments(bundle);
+                t.replace(R.id.fregment_container, mFrag);
+                t.commit();
+                break;
+
+            case R.id.action_noc:
+                if(str_segment.equals("Home")) {
+                    Toast.makeText(activity,"No NOC In case of Home",Toast.LENGTH_LONG).show();
+                }else{
+                    WebViewNoc();
+                    }
+                break;
+
+            case R.id.action_add_item_consumption:
+               editMaterial();
+                break;
+            case R.id.action_mrtg:
+                    Bundle bundle1=new Bundle();
+                    bundle1.putString("segment", str_segment);
+                    bundle1.putString("CustomerId",customerId.getText().toString());
+                    FragmentMrtg bottomSheetFragment = new FragmentMrtg();
+                    bottomSheetFragment.setArguments(bundle1);
+                    bottomSheetFragment.show(activity.getSupportFragmentManager(), bottomSheetFragment.getTag());
+                break;
+        }
+
+        return true;
+    }
 
 
+    private void editMaterial(){
+        Bundle bundle_consumption =new Bundle();
+        bundle_consumption.putString("SrNumber", SrNum);
+        bundle_consumption.putString("CustomerId", customerId.getText().toString());
+        bundle_consumption.putString("SlotType",strSlotType);
+        bundle_consumption.putString("SubSubType",StrSubSubType);
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t11= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        ItemConsumptionDetailsFragment itemConsumptionFragment1 = new ItemConsumptionDetailsFragment();
+        itemConsumptionFragment1.setArguments(bundle_consumption);
+        t11.replace(R.id.fregment_container, itemConsumptionFragment1);
+        t11.commit();
+    }
+    private void checkStatus() {
+        ChangeBinRequest checkStatus = new ChangeBinRequest();
+        checkStatus.setAction(Constants.GET_MATERIAL_CONSUMPTION_FLAG);
+        checkStatus.setAuthkey(Constants.AUTH_KEY);
+        checkStatus.setSrNumber(SrNum);
 
-    private void BottomSheet(){
-        btnMgrt.setOnClickListener(v -> {
-            Bundle bundle=new Bundle();
-            bundle.putString("segment", str_segment);
-            bundle.putString("CustomerId",customerId.getText().toString());
-            FragmentMrtg bottomSheetFragment = new FragmentMrtg();
-            bottomSheetFragment.setArguments(bundle);
-            bottomSheetFragment.show(activity.getSupportFragmentManager(), bottomSheetFragment.getTag());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonResponse> call = apiService.getStatus(checkStatus);
+        call.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CommonResponse> call, @NonNull Response<CommonResponse> response) {
+                String status = Objects.requireNonNull(response.body()).getStatus();
+                if (status.equals("1")) {
+                    String res = response.body().getResponse();
+                    if (res != null) {
+                        additemLayout.setVisibility(View.VISIBLE);
+                        if (response.body().getResponse().equals("0")) {
+                            addMater = new ArrayList<String>();
+                            addMater.add("No");
+                            addMater.add("Select Option");
+                            addMater.add("Yes");
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, addMater);
+                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spntemConsumption.setAdapter(adapter1);
+                            spntemConsumption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    str_material = parent.getItemAtPosition(position).toString();
+                                    if (str_material.equals("Select Option")) {
+                                        fab_item_consumption.setVisibility(View.GONE);
+                                        resolveLayout.setVisibility(View.GONE);
+                                        Toast.makeText(activity, "Please Choose the option", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        saveStatus(str_material);
+                                    }
+                                }
+
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        } else if (response.body().getResponse().equals("1")) {
+                            addMater = new ArrayList<String>();
+                            addMater.add("Yes");
+                            addMater.add("No");
+                            addMater.add("Select Option");
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, addMater);
+                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spntemConsumption.setAdapter(adapter1);
+                            fab_item_consumption.setVisibility(View.VISIBLE);
+                            spntemConsumption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    str_material = parent.getItemAtPosition(position).toString();
+                                    if (str_material.equals("Select Option")) {
+                                        fab_item_consumption.setVisibility(View.GONE);
+                                        resolveLayout.setVisibility(View.GONE);
+                                        Toast.makeText(activity, "Please Choose the option", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        saveStatus(str_material);
+                                    }
+                                }
+
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        } else {
+                            addMater = new ArrayList<String>();
+                            addMater.add("Yes");
+                            addMater.add("No");
+                            addMater.add("Select Option");
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, addMater);
+                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spntemConsumption.setAdapter(adapter1);
+                            spntemConsumption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    str_material = parent.getItemAtPosition(position).toString();
+                                    if (str_material.equals("Select Option")) {
+                                        fab_item_consumption.setVisibility(View.GONE);
+                                        resolveLayout.setVisibility(View.GONE);
+                                        Toast.makeText(activity, "Please Choose the option", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        saveStatus(str_material);
+                                    }
+                                }
+
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        }
+
+                    } else {
+                        additemLayout.setVisibility(View.VISIBLE);
+                        addMater = new ArrayList<String>();
+                        addMater.add("Select Option");
+                        addMater.add("Yes");
+                        addMater.add("No");
+                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, addMater);
+                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spntemConsumption.setAdapter(adapter1);
+                        spntemConsumption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                str_material = parent.getItemAtPosition(position).toString();
+                                if (str_material.equals("Select Option")) {
+                                    fab_item_consumption.setVisibility(View.GONE);
+                                    resolveLayout.setVisibility(View.GONE);
+                                    Toast.makeText(activity, "Please Choose the option", Toast.LENGTH_LONG).show();
+                                } else {
+                                    saveStatus(str_material);
+                                }
+                            }
+
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    }
+
+            }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CommonResponse> call, @NonNull Throwable t) {
+                //  handleVisOfNetworkAndProgress(View.GONE, View.GONE);
+            }
         });
+    }
 
-        btnNoc.setOnClickListener(v -> WebViewNoc());
-        btnSrDetails.setOnClickListener(v -> {
-            Bundle bundle=new Bundle();
-            bundle.putString("SrNumber", Sr);
-            FragmentTransaction t = Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-            Fragment mFrag = new SrDetailsListFragment();
-            mFrag.setArguments(bundle);
-            t.replace(R.id.fregment_container, mFrag);
-            t.commit();
+
+
+    private void saveStatus(String str_material) {
+        String status_local;
+        ChangeBinRequest checkStatus = new ChangeBinRequest();
+        checkStatus.setAction(Constants.SAVE_MATERIAL_CONSUMPTION_FLAG);
+        checkStatus.setAuthkey(Constants.AUTH_KEY);
+        checkStatus.setSrNumber(SrNum);
+        if(str_material.equals("Yes")){
+            status_local="22";
+            checkStatus.setStatus("yes");
+            fab_item_consumption.setVisibility(View.VISIBLE);
+            resolveLayout.setVisibility(View.GONE);
+        }else{
+            status_local = "25";
+            checkStatus.setStatus("no");
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonResponse> call = apiService.saveStatus(checkStatus);
+        call.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CommonResponse> call, @NonNull Response<CommonResponse> response) {
+                String status = Objects.requireNonNull(response.body()).getStatus();
+                if (status.equals("1")&& status_local.equals("22")) {
+
+                  // AddMaterial();
+                }else{
+                    fab_item_consumption.setVisibility(View.GONE);
+                    resolveLayout.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CommonResponse> call, @NonNull Throwable t) {
+                //  handleVisOfNetworkAndProgress(View.GONE, View.GONE);
+            }
         });
 
     }
+
+    private void AddMaterial(){
+        Bundle bundle_consumption =new Bundle();
+        bundle_consumption.putString("SrNumber", SrNum);
+        bundle_consumption.putString("CustomerId", customerId.getText().toString());
+        bundle_consumption.putString("SlotType",strSlotType);
+        bundle_consumption.putString("SubSubType",StrSubSubType);
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        ItemConsumptionFragment itemConsumptionFragment = new ItemConsumptionFragment();
+        itemConsumptionFragment.setArguments(bundle_consumption);
+        t1.replace(R.id.fregment_container, itemConsumptionFragment);
+        t1.commit();
+    }
+
 }
 
 

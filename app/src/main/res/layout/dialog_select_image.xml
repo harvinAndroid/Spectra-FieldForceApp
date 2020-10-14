@@ -1,4 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_180sdp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_white_background"
+    android:orientation="vertical"
+    android:padding="@dimen/_5sdp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/from_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:elevation="@dimen/_5sdp"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:text="@string/camera"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_17sdp"
+            android:textStyle="bold"
+            app:cornerRadius="@dimen/_10sdp"
+            app:icon="@drawable/ic_camera_white"
+            app:iconSize="@dimen/_30sdp"
+            app:rippleColor="@color/colorWhite" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/from_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:elevation="@dimen/_5sdp"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:text="@string/gallery"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_17sdp"
+            android:textStyle="bold"
+            app:cornerRadius="@dimen/_10sdp"
+            app:icon="@drawable/ic_gallery_white"
+            app:iconSize="@dimen/_30sdp"
+            app:rippleColor="@color/colorWhite" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/video_from_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:elevation="@dimen/_5sdp"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_17sdp"
+            android:textStyle="bold"
+            app:cornerRadius="@dimen/_10sdp" />
+
+    </LinearLayout>
+
+</LinearLayout>-->
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,16 +91,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/_40sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:elevation="@dimen/_5sdp"
             android:gravity="center"
-            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_20sdp"
             android:drawableStart="@drawable/ic_camera_white"
             android:padding="@dimen/_5sdp"
             android:paddingStart="@dimen/_10sdp"
@@ -40,11 +116,13 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/from_camera"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:elevation="@dimen/_5sdp"
             android:gravity="center"
             android:padding="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_5sdp"
             android:text="@string/gallery"

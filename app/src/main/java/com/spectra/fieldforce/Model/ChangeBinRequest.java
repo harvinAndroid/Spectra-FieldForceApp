@@ -1,9 +1,19 @@
 package com.spectra.fieldforce.Model;
 
 public class ChangeBinRequest {
-    String Authkey;
-    String Action;
-    String SrNumber;
+    private String Authkey;
+    private String Action;
+    private String SrNumber;
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
+    private String Status;
 
     public String getAuthkey() {
         return Authkey;

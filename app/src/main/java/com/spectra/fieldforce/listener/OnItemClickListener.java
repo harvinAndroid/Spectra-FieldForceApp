@@ -5,5 +5,5 @@ import com.spectra.fieldforce.Model.SaveQuestionareList.Answer;
 import java.util.ArrayList;
 
 public interface OnItemClickListener {
-    void myOnClick(Answer answer);
+    void myOnClick( int pos ,Answer answer);
 }

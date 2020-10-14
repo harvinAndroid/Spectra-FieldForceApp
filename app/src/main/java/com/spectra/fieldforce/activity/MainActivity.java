@@ -1,5 +1,6 @@
 package com.spectra.fieldforce.activity;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -40,6 +41,8 @@ import com.spectra.fieldforce.fragment.WelcomeFragment;
 import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -98,13 +101,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        switch (requestCode) {
-            case REQ_CODE_VERSION_UPDATE:
-                if (resultCode != RESULT_OK) {
-                    Log.d(TAG, "Update flow failed! Result code: " + resultCode);
-                    unregisterInstallStateUpdListener();
-                }
-                break;
+        if (requestCode == REQ_CODE_VERSION_UPDATE) {
+            if (resultCode != RESULT_OK) {
+                Log.d(TAG, "Update flow failed! Result code: " + resultCode);
+                unregisterInstallStateUpdListener();
+            }
         }
     }
 
@@ -117,12 +118,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void checkForAppUpdate() {
         appUpdateManager = AppUpdateManagerFactory.create(activity);
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-        installStateUpdatedListener = new InstallStateUpdatedListener() {
-            @Override
-            public void onStateUpdate(InstallState installState) {
-                if (installState.installStatus() == InstallStatus.DOWNLOADED)
-                    popupSnackbarForCompleteUpdateAndUnregister();
-            }
+        installStateUpdatedListener = installState -> {
+            if (installState.installStatus() == InstallStatus.DOWNLOADED)
+                popupSnackbarForCompleteUpdateAndUnregister();
         };
 
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
@@ -147,12 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void popupSnackbarForCompleteUpdateAndUnregister() {
         Snackbar snackbar =
                 Snackbar.make(drawerLayout, getString(R.string.update_downloaded), Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(R.string.restart, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                appUpdateManager.completeUpdate();
-            }
-        });
+        snackbar.setAction(R.string.restart, view -> appUpdateManager.completeUpdate());
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
         unregisterInstallStateUpdListener();
@@ -204,11 +197,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Fragment getVisibleFragment() {
         FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
         List<Fragment> fragments = fragmentManager.getFragments();
-        if (fragments != null) {
-            for (Fragment fragment : fragments) {
-                if (fragment != null && fragment.isVisible())
-                    return fragment;
-            }
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.isVisible())
+                return fragment;
         }
         return null;
     }
@@ -231,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void navigationDrawerSetup() {
         try {
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -307,9 +299,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
             Menu nav_menu = navigationView.getMenu();
-            if (nav_menu != null) {
-            }
         } catch (Exception ex) {
+            ex.getMessage();
         }
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,6 +12,7 @@
         android:layout_height="@dimen/_40sdp"
         android:background="@android:color/black"
         android:id="@+id/toolbar"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +27,6 @@
                 android:id="@+id/backpressed"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_marginEnd="@dimen/_30sdp"
-                android:layout_marginRight="@dimen/_30sdp"
                 android:background="@drawable/back_arrow"
                 android:layout_height="wrap_content"/>
 
@@ -41,6 +42,11 @@
         </LinearLayout>
     </Toolbar>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,11 +60,56 @@
         app:layout_constraintEnd_toEndOf="parent"
         >
 
+        <LinearLayout
+            android:id="@+id/linear_eight"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Consumption Type"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
     <LinearLayout
         android:id="@+id/linear_one"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_weight="1">
@@ -83,8 +134,7 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:backgroundTint="@color/color_light_blue"
                 android:drawableEnd="@drawable/ic_expand_down"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
+                android:focusableInTouchMode="true"
                 android:hint="@string/consumption_type"
                 android:imeOptions="actionNext"
                 android:inputType="text"
@@ -116,7 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_item"
@@ -129,7 +179,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/item"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
                     android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
@@ -158,7 +207,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_subitem"
@@ -171,7 +220,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/sub_item"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
                     android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
@@ -245,7 +293,7 @@
                     android:backgroundTint="@color/color_light_blue"
                     android:hint="@string/quantity"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
@@ -290,7 +338,7 @@
             android:id="@+id/linear_seven"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_weight="1">
@@ -316,6 +364,118 @@
                     android:textSize="@dimen/_12sdp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_nrgp_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nrgp_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/nrgpitem"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_nrgp_sub_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nrgp_sub_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/nrgp_subitem"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nrgp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/nrgp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nrgp_serialnum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/nrgp_serialnumber"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -327,6 +487,7 @@
             android:layout_marginLeft="@dimen/_50sdp"
             android:layout_marginRight="@dimen/_50sdp"
             android:layout_marginEnd="@dimen/_50sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
             android:elevation="@dimen/_5sdp"
             android:text="@string/add"
             android:textAllCaps="false"
@@ -337,5 +498,20 @@
 
     </LinearLayout>
 
-
+    </androidx.core.widget.NestedScrollView>
+  <!--  <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/edit"
+        app:backgroundTint="@color/colorButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:foregroundGravity="right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="6dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        app:pressedTranslationZ="12dp"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
+

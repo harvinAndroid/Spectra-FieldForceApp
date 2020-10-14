@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonElement;
 import com.spectra.fieldforce.Model.LoginRequest;
@@ -17,11 +20,9 @@ import com.spectra.fieldforce.Model.SavetokenRequest;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
-import com.spectra.fieldforce.fragment.LoginFragment;
 import com.spectra.fieldforce.fragment.RegistrationFragment;
 import com.spectra.fieldforce.fragment.ResetpasswordFragment;
 import com.spectra.fieldforce.listener.OnLoginFormActivityListener;
-import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
 
@@ -36,20 +37,20 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class LoginActivity extends AppCompatActivity implements OnLoginFormActivityListener {
     public static PrefConfig prefConfig;
-    private TextView RegText, StatusMess, ErrorMessage;
-    private TextView textView;
+    private TextView RegText, StatusMess, ErrorMessage,textView;
     private EditText UserName, UserPassword;
     private Button LoginBn;
-    private String couponCodeString, userEmail, userEmailN, userName;
-    private String message;
-    private String fcmToken;
-    AppCompatActivity activity;
+    private String couponCodeString, userEmail, userEmailN, userName,message,fcmToken;
+    private AppCompatActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
         prefConfig = new PrefConfig(activity);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_login);
 
         Typeface myTypeFace = Typeface.createFromAsset(activity.getAssets(), "fonts/Spectra-Regular.ttf");
@@ -106,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
     public void performLogout() {
         prefConfig.writeLoginStatus(false);
         prefConfig.writeName(Constants.User);
-        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
+       // getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
     }
 
     private void performLogin() {
@@ -145,7 +146,6 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                             getSaveToken();
                             Log.d("Point", "4");
                         }
-                        StatusMess.setText(message);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -159,7 +159,6 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         });
          // UserName.setText("");
         //UserPassword.setText("");
-        StatusMess.setText("");
         ErrorMessage.setText("");
     }
 

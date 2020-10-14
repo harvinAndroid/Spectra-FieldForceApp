@@ -35,6 +35,16 @@ public class Order {
     private String etr;
     private String srSubSubType;
 
+    public String getSrSubSubTypeID() {
+        return srSubSubTypeID;
+    }
+
+    public void setSrSubSubTypeID(String srSubSubTypeID) {
+        this.srSubSubTypeID = srSubSubTypeID;
+    }
+
+    private String srSubSubTypeID;
+
     public String getSrSubSubType() {
         return srSubSubType;
     }

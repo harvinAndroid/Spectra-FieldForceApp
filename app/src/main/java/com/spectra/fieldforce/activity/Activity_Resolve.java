@@ -1,11 +1,14 @@
 package com.spectra.fieldforce.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -29,8 +32,8 @@ import androidx.core.content.FileProvider;
 import androidx.multidex.BuildConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.gson.JsonElement;
 
+import com.google.gson.JsonElement;
 import com.spectra.fieldforce.Model.ArtifactRequest;
 import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.QuestionList.QuestionListRequest;
@@ -43,7 +46,6 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.adapter.QuestionAnswerAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
-import com.spectra.fieldforce.listener.OnItemClickListener;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.FilePath;
 import com.spectra.fieldforce.utils.FileUtils;
@@ -56,31 +58,45 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.spectra.fieldforce.utils.AppConstants.FALSE;
+import static com.spectra.fieldforce.utils.AppConstants.NO;
 import static com.spectra.fieldforce.utils.AppConstants.PERMISSION_REQUEST_CODE_READ_WRITE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_FOUR;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_ONE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_THREE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_TWO;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_FOUR;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_ONE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_THREE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_TWO;
+import static com.spectra.fieldforce.utils.AppConstants.SELECT_STATUS;
+import static com.spectra.fieldforce.utils.AppConstants.TRUE;
+import static com.spectra.fieldforce.utils.AppConstants.YES;
 
-public class Activity_Resolve extends BaseActivity implements View.OnClickListener {
-    Button btnResolveSubmit, btnUnifySession,btnUploadArtifacts;
-    TextView sessionStatus;
-    ImageView img;
-    EditText rfo;
-    TextView  speed_on_wifi, other_in_ml, speed_on_lan, router_position;
-    Spinner rc1, rc2, rc3, resolveContacted;
-    RecyclerView question_recyler_view;
-    ArrayList<String> rc1Code;
-    ArrayList<String> rc1Name;
-    ArrayList<String> rc2Code;
-    ArrayList<String> rc2Name;
-    ArrayList<String> rc3Code;
-    ArrayList<String> rc3Name;
+public class Activity_Resolve extends BaseActivity implements View.OnClickListener ,QuestionAnswerAdapter.Test{
+    private Button btnResolveSubmit, btnUnifySession,btnUploadArtifacts;
+    private TextView sessionStatus;
+    private ImageView img;
+    private EditText rfo;
+    private TextView  speed_on_wifi, other_in_ml, speed_on_lan, router_position;
+    private Spinner rc1, rc2, rc3, resolveContacted;
+    private RecyclerView question_recyler_view;
+    private ArrayList<String> rc1Code;
+    private ArrayList<String> rc1Name;
+    private ArrayList<String> rc2Code;
+    private ArrayList<String> rc2Name;
+    private ArrayList<String> rc3Code;
+    private ArrayList<String> rc3Name;
     private FrameLayout progressOverlay;
     private ArrayList<QuestionAnswerList.Response> questionareResponse;
     private List<ArrayList<String>> itemlist = new ArrayList<ArrayList<String>>();
@@ -91,18 +107,21 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
     private boolean startFlag, endFlag;
-    private  ArrayList<Answer> item;
-    String filepath,filepath1,filepath2,filepath3,str_ext1="",str_ext2="",str_ext3="",str_ext4="",strSlotType;
+   // private  ArrayList<Answer> item;
+    private String filepath,filepath1,filepath2,filepath3,str_ext1="",str_ext2="",str_ext3="",str_ext4="",strSlotType;
     private Uri uri,uri1,uri2,uri3;
-    private Bitmap bitmap1,bitmap2,bitmap3,bitmap4;
+    private Bitmap bitmap1,bitmap2,bitmap3,bitmap4,bitmap5,bitmap6,bitmap7,bitmap8;
     private ArrayList<String> itemlist1 = new ArrayList<>();
     private String StrSubSubType;
      private int IntCount;
-     ImageView image;
+     private ImageView image;
     private Uri cameraFileUri;
     private String selectedMediaPath;
     private BaseActivity baseActivity;
-    File mPhotoFile;
+    HashMap<Integer,Answer> questionmap = new HashMap<Integer,Answer>();
+    private String currentImagePath,currentImagePath1,currentImagePath2,currentImagePath3= null;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +133,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             strSlotType=extras.getString("SlotType");
             StrSubSubType = extras.getString("SubSubType");
         }
-        item = new  ArrayList<Answer>();
+        //item = new  ArrayList<Answer>();
         baseActivity = ((BaseActivity) this);
         init();
        //getSaveQuestionList();
@@ -155,9 +174,9 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
     private void bindContacted() {
         ArrayList<String> contact = new ArrayList<String>();
-        contact.add("Select Status");
-        contact.add("Yes");
-        contact.add("No");
+        contact.add(SELECT_STATUS);
+        contact.add(YES);
+        contact.add(NO);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, contact);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         resolveContacted.setAdapter(adapter);
@@ -265,7 +284,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == 101) {
+            if (requestCode == REQUEST_CODE_ONE) {
                 try {
                     uri = data.getData();
                     filepath = FilePath.getPath(Activity_Resolve.this, uri);
@@ -291,7 +310,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                     EX.getStackTrace();
                 }
             }else
-                if (requestCode == 102) {
+                if (requestCode == REQUEST_CODE_TWO) {
                     try {
                         uri1 = data.getData();
                         filepath1 = FilePath.getPath(Activity_Resolve.this, uri1);
@@ -318,9 +337,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                     } catch (Exception EX) {
                         EX.getStackTrace();
                     }
-
-
-            }else  if (requestCode == 103) {
+            }else  if (requestCode == REQUEST_CODE_THREE) {
                     try {
                         uri2 = data.getData();
                         filepath2 = FilePath.getPath(Activity_Resolve.this, uri2);
@@ -347,7 +364,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         EX.getStackTrace();
                     }
 
-                }else  if (requestCode == 104) {
+                }else  if (requestCode == REQUEST_CODE_FOUR) {
                     try {
                         uri3 = data.getData();
                         filepath3 = FilePath.getPath(Activity_Resolve.this, uri3);
@@ -358,12 +375,10 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                                 router_position.setText(filepath3);
                                 try {
                                     bitmap4 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri3);
-
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                     Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show();
                                 }
-
                             } else {
                                 displayToast(R.string.valid_formats);
                             }
@@ -374,17 +389,48 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         EX.getStackTrace();
                     }
 
-                }/*else if (cameraFileUri != null && requestCode == 1) {
-
+                }else if ( requestCode == REQUEST_CAMERA_PERMISSION_ONE) {
                     try {
-
-                        Toast.makeText(this,  mPhotoFile.toString(), Toast.LENGTH_SHORT).show();
-                        Glide.with(Activity_Resolve.this).load(mPhotoFile).apply(new RequestOptions().centerCrop().circleCrop().placeholder(R.drawable.button_purple)).into(image);
-
+                        bitmap5 = BitmapFactory.decodeFile(currentImagePath);
+                        Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
+                        speed_on_wifi.setText(currentImagePath);
+                        str_ext1 = "jpg";
+                        image.setImageBitmap(bitmap5);
+              } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if ( requestCode == REQUEST_CAMERA_PERMISSION_TWO) {
+                    try {
+                        bitmap6 = BitmapFactory.decodeFile(currentImagePath);
+                        Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
+                        other_in_ml.setText(currentImagePath);
+                        str_ext2 = "jpg";
+                        image.setImageBitmap(bitmap6);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }*/
+                }else if ( requestCode == REQUEST_CAMERA_PERMISSION_THREE) {
+                    try {
+                        bitmap7 = BitmapFactory.decodeFile(currentImagePath);
+                        Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
+                        speed_on_lan.setText(currentImagePath);
+                        str_ext3 = "jpg";
+                        image.setImageBitmap(bitmap7);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if ( requestCode == REQUEST_CAMERA_PERMISSION_FOUR) {
+                    try {
+                        bitmap8 = BitmapFactory.decodeFile(currentImagePath);
+                        Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
+                        router_position.setText(currentImagePath);
+                        str_ext4 = "jpg";
+                        image.setImageBitmap(bitmap8);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
         }
     }
 
@@ -406,7 +452,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                                         question_recyler_view.setVisibility(View.VISIBLE);
                                         questionareResponse = response.body().getResponse();
                                         IntCount = response.body().getCount();
-                                        QuestionAnswerAdapter adapter = new QuestionAnswerAdapter(Activity_Resolve.this, questionareResponse, myClickListener);
+                                        QuestionAnswerAdapter adapter = new QuestionAnswerAdapter(Activity_Resolve.this, questionareResponse, /*myClickListener,*/Activity_Resolve.this);
                                         question_recyler_view.setHasFixedSize(true);
                                         question_recyler_view.setLayoutManager(new LinearLayoutManager(Activity_Resolve.this));
                                         question_recyler_view.setAdapter(adapter);
@@ -430,14 +476,16 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     }
 
 
-    private OnItemClickListener myClickListener = (answer) -> {
+   /* private OnItemClickListener myClickListener = (pos,answer) -> {
+        item.clear();
         item.add(answer);
-    };
+        questionmap.put(pos,item);
+      //  item.clear();
+    };*/
+
+
 
     private void getUnifySession() {
-       // String action = "getCurrentSession";
-    //    String canId = customerId;
-
         RCRequest rcRequest = new RCRequest();
         rcRequest.setAuthkey(Constants.AUTH_KEY);
         rcRequest.setAction(Constants.GET_CURRENT_SESSION);
@@ -458,15 +506,13 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         } else if (status.equals("success")) {
                             try {
                                 JSONObject response1 = jsonObject.getJSONObject("response");
-                                if (response1 != null) {
-                                    int byteIn = 0;
-                                    bytesin = response1.getString("bytesin");
-                                    byteIn = Integer.parseInt(bytesin);
-                                    if (byteIn > 0) {
-                                        bytesin = "Up & Running";
-                                    } else {
-                                        bytesin = "Not Working";
-                                    }
+                                int byteIn = 0;
+                                bytesin = response1.getString("bytesin");
+                                byteIn = Integer.parseInt(bytesin);
+                                if (byteIn > 0) {
+                                    bytesin = "Up & Running";
+                                } else {
+                                    bytesin = "Not Working";
                                 }
                             } catch (Exception e) {
                                 bytesin = "Failure in getting Status";
@@ -489,9 +535,6 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
 
     private void getRC3(String rc2Code) {
-      //  String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-      //  String action = "getRCthree";
-
         RCRequest rcRequest = new RCRequest();
         rcRequest.setAuthkey(Constants.AUTH_KEY);
         rcRequest.setAction(Constants.GET_RC_THREE);
@@ -552,7 +595,6 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         rcRequest.setAction(Constants.GET_RC_ONE);
         rcRequest.setSubsubType(StrSubSubType);
 
-
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getRCDetail(rcRequest);
         call.enqueue(new Callback<JsonElement>() {
@@ -606,6 +648,8 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         btnResolveSubmit.setOnClickListener(v -> {
             boolean isValid = true;
             endFlag = true;
+            itemlist1 = new ArrayList<>();
+
 
             if (rc1.getSelectedItem().toString().equals("Select Resolution Code 1")) {
                 isValid = false;
@@ -622,9 +666,9 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             } else if (rfo.getText().toString().equals("")) {
                 isValid = false;
                 Toast.makeText(Activity_Resolve.this, "Please enter RFO", Toast.LENGTH_LONG).show();
-            }else if(item.size()!=IntCount){
+            }else if(questionmap.size()!=IntCount){
                 isValid = false;
-                Toast.makeText(Activity_Resolve.this, "Please choose the answer", Toast.LENGTH_LONG).show();
+                Toast.makeText(Activity_Resolve.this, "Please Choose the Answer", Toast.LENGTH_LONG).show();
             }
 
             if (isValid == true) {
@@ -636,7 +680,13 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     }
 
     private void submitQuestionare() {
-        SaveQuestionareList questionListRequest = new SaveQuestionareList(Constants.ACTION_SAVEQUESTIONARE,item,Constants.AUTH_KEY,MainActivity.prefConfig.readName(),Constants.APP,srNumber,strSlotType);
+        ArrayList<Answer> itemlist =new ArrayList();
+
+        for(Map.Entry<Integer,Answer> map : questionmap.entrySet()){
+            itemlist.add(map.getValue());
+        }
+        System.out.println("CaLL ITEMLIST "+itemlist);
+        SaveQuestionareList questionListRequest = new SaveQuestionareList(Constants.ACTION_SAVEQUESTIONARE,itemlist,Constants.AUTH_KEY,MainActivity.prefConfig.readName(),Constants.APP,srNumber,strSlotType);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonResponse> call = apiService.sendQuestionare(questionListRequest);
         call.enqueue(new Callback<CommonResponse>() {
@@ -645,6 +695,8 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 try {
                     if (response.body() != null) {
                         if (response.body().getStatus().equals("1")) {
+                            questionmap.clear();
+                           // item.clear();
                             Toast.makeText(Activity_Resolve.this, "Questionare Submitted sucessfully", Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(Activity_Resolve.this, "Something went wrong...", Toast.LENGTH_LONG).show();
@@ -664,14 +716,12 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
 
     private void submitOnResolve() {
-        //String action = "saveRCdetails";
         int itemPosition = rc1.getSelectedItemPosition();
         String rc1Id = rc1Code.get(itemPosition).toString();
         itemPosition = rc2.getSelectedItemPosition();
         String rc2Id = rc2Code.get(itemPosition).toString();
         itemPosition = rc3.getSelectedItemPosition();
         String rc3Id = rc3Code.get(itemPosition).toString();
-        String reason = rfo.getText().toString();
         String isContacted = resolveContacted.getSelectedItem().toString();
 
         SRRequest srRequest = new SRRequest();
@@ -682,11 +732,11 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         srRequest.setRConeId(rc1Id);
         srRequest.setRCtwoId(rc2Id);
         srRequest.setRCthirdId(rc3Id);
-        srRequest.setReasonOf(reason);
-        if (isContacted.equals("Yes")) {
-            srRequest.setResolveContacted("True");
-        } else if (isContacted.equals("No")) {
-            srRequest.setResolveContacted("False");
+        srRequest.setReasonOf(rfo.getText().toString());
+        if (isContacted.equals(YES)) {
+            srRequest.setResolveContacted(TRUE);
+        } else if (isContacted.equals(NO)) {
+            srRequest.setResolveContacted(FALSE);
         }
         srRequest.setSource(Constants.APP);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -741,149 +791,94 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.speed_on_wifi:
-                if (PermissionUtils.checkWritePermission(Activity_Resolve.this))
-                    FileUtils.showFileChooser(Activity_Resolve.this,101);
+                if (baseActivity.requestReadWriteCameraPermission()) {
+                    Permission();
+                } else alertSelectImage(REQUEST_CAMERA_PERMISSION_ONE,REQUEST_CODE_ONE);
                 break;
             case R.id.other_in_ml:
-                if (PermissionUtils.checkWritePermission(Activity_Resolve.this))
-                    FileUtils.showFileChooser(Activity_Resolve.this,102);
+                if (baseActivity.requestReadWriteCameraPermission()) {
+                    Permission();
+                } else alertSelectImage(REQUEST_CAMERA_PERMISSION_TWO,REQUEST_CODE_TWO);
                 break;
             case R.id.speed_on_lan:
-                if (PermissionUtils.checkWritePermission(Activity_Resolve.this))
-                    FileUtils.showFileChooser(Activity_Resolve.this,103);
+                if (baseActivity.requestReadWriteCameraPermission()) {
+                    Permission();
+                } else alertSelectImage(REQUEST_CAMERA_PERMISSION_THREE,REQUEST_CODE_THREE);
                 break;
+
             case R.id.router_position:
-               // alertSelectImage();
-                if (PermissionUtils.checkWritePermission(Activity_Resolve.this))
-                    FileUtils.showFileChooser(Activity_Resolve.this,104);
+                    if (baseActivity.requestReadWriteCameraPermission()) {
+                        Permission();
+                    } else alertSelectImage(REQUEST_CAMERA_PERMISSION_FOUR,REQUEST_CODE_FOUR);
                 break;
+
             case R.id.btnUploadArtifacts:
                 uploadArtifacts();
-                /*a= speed_on_lan.getText().toString();
-                b=speed_on_wifi.getText().toString();
-                c= router_position.getText().toString();
-                d=other_in_ml.getText().toString();
-               // next();
-             //  uploadArtifacts();
-                if(speed_on_lan.getText().length()==0||speed_on_wifi.getText().length()==0||router_position.getText().length()==0||other_in_ml.getText().length()==0){
-                   Toast.makeText(this,"Please Upload atleast 1 image",Toast.LENGTH_LONG).show();
-                }else{
-                    ViewDialog alert = new ViewDialog();
-                    alert.showDialog(this);
-                }*/
                 break;
-
-          //  case R.id.radioGroup:
-
         }
     }
 
-    private void alertSelectImage() {
+    private void Permission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA},
+                    REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION);
+        }
+    }
+
+    private void alertSelectImage(int requestCameraPermission, int requestCode) {
         cameraFileUri = null;
         selectedMediaPath = null;
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_select_image);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         dialog.findViewById(R.id.from_camera).setOnClickListener(v -> {
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
-                File photoFile = null;
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(cameraIntent.resolveActivity(getPackageManager())!=null) {
+                File imageFile = null;
                 try {
-                    photoFile = createImageFile();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    // Error occurred while creating the File
+                    imageFile = getImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                if (photoFile != null) {
-                    Uri photoURI = FileProvider.getUriForFile(this,
-                            BuildConfig.APPLICATION_ID + ".provider",
-                            photoFile);
-
-                    mPhotoFile = photoFile;
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    startActivityForResult(takePictureIntent, 1);
-
+                if (imageFile != null) {
+                    Uri imageUri = FileProvider.getUriForFile(this,
+                            BuildConfig.APPLICATION_ID + ".provider", imageFile);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(cameraIntent, requestCameraPermission);
                 }
             }
-          /*  Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File photoFile = new File(Environment.getExternalStorageDirectory().toString(), "image" + System.currentTimeMillis() + ".jpg");
-            selectedMediaPath = photoFile.getAbsolutePath();
-            cameraFileUri = FileProvider.getUriForFile(baseActivity, BuildConfig.APPLICATION_ID + ".fileProvider", photoFile);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraFileUri);
-            cameraIntent.putExtra("return-data", true);
-            startActivityForResult(cameraIntent, 1);
-            Log.i("path", "" + selectedMediaPath);*/
             dialog.dismiss();
         });
         dialog.findViewById(R.id.from_gallery).setOnClickListener(v -> {
             if (PermissionUtils.checkWritePermission(Activity_Resolve.this))
-                FileUtils.showFileChooser(Activity_Resolve.this,104);
+                FileUtils.showFileChooser(Activity_Resolve.this,requestCode);
             dialog.dismiss();
         });
         dialog.getWindow().getAttributes().windowAnimations = R.style.SelectMediaDialogTheme;
         dialog.show();
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String mFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
-        return mFile;
-    }
-
-
-    /* public class ViewDialog {
-
-        public void showDialog(Activity activity){
-            final Dialog dialog = new Dialog(activity);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.artifacts_dialog);
-
-            Button btn_yes = (Button) dialog.findViewById(R.id.btn_yes);
-            TextView txt_msg = (TextView) dialog.findViewById(R.id.txt_msg);
-            btn_yes.setOnClickListener(v -> {
-                if(speed_on_lan.getText()!=null||speed_on_wifi.getText()!=null||router_position.getText()!=null||other_in_ml.getText()!=null){
-                    uploadArtifacts();
-                }
-
-            });
-
-            Button dialogButton = (Button) dialog.findViewById(R.id.btn_no);
-            dialogButton.setOnClickListener(v -> dialog.dismiss());
-
-            dialog.show();
-
-        }
-    }
-*/
-   /* private void listenerArtifact(){
-        String a,b,c,d;
-        a= speed_on_lan.getText().toString();
-        b=speed_on_wifi.getText().toString();
-        c= router_position.getText().toString();
-        d=other_in_ml.getText().toString();
-        btnUploadArtifacts.setOnClickListener(v -> {
-            if(a.equals("")||b.equals("")||c.equals("")||d.equals("")){
-                Toast.makeText(Activity_Resolve.this,"Please Upload atleast 1 image",Toast.LENGTH_LONG).show();
-            }else{
-                ViewDialog alert = new ViewDialog();
-                alert.showDialog(Activity_Resolve.this);
+            private File getImageFile() throws IOException {
+                // Create an image file name
+                @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+                String mFileName = "jpg_"+timeStamp+ "_";
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
+                currentImagePath = mFile.getAbsolutePath();
+                return mFile;
             }
-        });
-    }
-*/
+
+
+
     private void uploadArtifacts()  {
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         progressOverlay.setAnimation(inAnimation);
         progressOverlay.setVisibility(View.VISIBLE);
         String encodedImage="",encodedImage2="",encodedImage3="", encodedImage1="";
-       // String authKey = Constants.AUTH_KEY;
-       // String action = AppConstants.SAVE_ALL_ARTIFACTS;
 
         try {
         if(str_ext1!=null && str_ext1.equals("pdf")){
@@ -896,7 +891,12 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             bitmap1.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream);
             byte[] imageInByte = byteArrayOutputStream.toByteArray();
              encodedImage =  Base64.encodeToString(imageInByte,Base64.NO_WRAP);
-        }
+        }if (bitmap5!=null){
+                ByteArrayOutputStream byteArrayOutputStream3 = new ByteArrayOutputStream();
+                bitmap5.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream3);
+                byte[] imageInByte3 = byteArrayOutputStream3.toByteArray();
+                encodedImage =  Base64.encodeToString(imageInByte3,Base64.NO_WRAP);
+            }
 
             if(str_ext2!=null && str_ext2.equals("pdf")){
                 InputStream inputStream1 = this.getContentResolver().openInputStream(uri1);
@@ -908,6 +908,11 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 bitmap2.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream1);
                 byte[] imageInByte1 = byteArrayOutputStream1.toByteArray();
                  encodedImage1 =  Base64.encodeToString(imageInByte1,Base64.NO_WRAP);
+            }if (bitmap6!=null){
+                ByteArrayOutputStream byteArrayOutputStream3 = new ByteArrayOutputStream();
+                bitmap6.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream3);
+                byte[] imageInByte3 = byteArrayOutputStream3.toByteArray();
+                encodedImage1 =  Base64.encodeToString(imageInByte3,Base64.NO_WRAP);
             }
 
             if(str_ext3!=null && str_ext3.equals("pdf")){
@@ -920,6 +925,11 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 bitmap3.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream2);
                 byte[] imageInByte2 = byteArrayOutputStream2.toByteArray();
                  encodedImage2 =  Base64.encodeToString(imageInByte2,Base64.NO_WRAP);
+            }if (bitmap7!=null){
+                ByteArrayOutputStream byteArrayOutputStream3 = new ByteArrayOutputStream();
+                bitmap7.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream3);
+                byte[] imageInByte3 = byteArrayOutputStream3.toByteArray();
+                encodedImage2 =  Base64.encodeToString(imageInByte3,Base64.NO_WRAP);
             }
 
             if(str_ext4!=null && str_ext4.equals("pdf")){
@@ -932,6 +942,11 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 bitmap4.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream3);
                 byte[] imageInByte3 = byteArrayOutputStream3.toByteArray();
                  encodedImage3 =  Base64.encodeToString(imageInByte3,Base64.NO_WRAP);
+            }else if (bitmap8!=null){
+                ByteArrayOutputStream byteArrayOutputStream3 = new ByteArrayOutputStream();
+                bitmap8.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream3);
+                byte[] imageInByte3 = byteArrayOutputStream3.toByteArray();
+                encodedImage3 =  Base64.encodeToString(imageInByte3,Base64.NO_WRAP);
             }
 
         ArtifactRequest artifactRequest = new ArtifactRequest();
@@ -983,5 +998,11 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         }catch (IOException ex){
             ex.getMessage();
         }
+    }
+
+
+    @Override
+    public void test(int pos, Answer answer) {
+            questionmap.put(pos, answer);
     }
 }
