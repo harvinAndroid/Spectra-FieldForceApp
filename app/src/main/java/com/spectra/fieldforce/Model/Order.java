@@ -35,6 +35,16 @@ public class Order {
     private String etr;
     private String srSubSubType;
 
+    public String getCustomerNetworkTech() {
+        return customerNetworkTech;
+    }
+
+    public void setCustomerNetworkTech(String customerNetworkTech) {
+        this.customerNetworkTech = customerNetworkTech;
+    }
+
+    private String customerNetworkTech;
+
     public String getSrSubSubTypeID() {
         return srSubSubTypeID;
     }

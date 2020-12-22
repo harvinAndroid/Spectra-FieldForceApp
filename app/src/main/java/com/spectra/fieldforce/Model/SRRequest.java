@@ -1,26 +1,47 @@
 package com.spectra.fieldforce.Model;
 
 public class SRRequest {
-    String Authkey = "";
-    String Action = "";
-    String TaskType = "";
-    String SlotType = "";
-    String SrNumber = "";
-    String ActionCode = "";
-    String CustomerName = "";
-    String ContactNo = "";
-    String Contacted = "";
-    String EngId = "";
-    String ETR = "";
-    String EmailId = "";
-    String RConeId = "";
-    String RCtwoId = "";
-    String RCthirdId = "";
-    String ReasonOf = "";
-    String EmpId = "";
-    String UpdatedBy = "";
-    String ResolveContacted = "";
-    String Source = "";
+    private String Authkey = "";
+    private String Action = "";
+    private String TaskType = "";
+    private  String SlotType = "";
+    private String SrNumber = "";
+    private String ActionCode = "";
+    private String CustomerName = "";
+    private String ContactNo = "";
+    private String Contacted = "";
+    private String EngId = "";
+    private String ETR = "";
+    private String EmailId = "";
+    private String RConeId = "";
+    private String RCtwoId = "";
+    private String RCthirdId = "";
+    private String ReasonOf = "";
+    private String EmpId = "";
+    private String UpdatedBy = "";
+    private String ResolveContacted = "";
+    private String Source = "";
+
+    public String getCustomerID() {
+        return CustomerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        CustomerID = customerID;
+    }
+
+    private String CustomerID ;
+
+    public String getNetworkType() {
+        return NetworkType;
+    }
+
+    public void setNetworkType(String networkType) {
+        NetworkType = networkType;
+    }
+
+    private String NetworkType;
+
 
     public String getAuthkey() {
         return Authkey;

@@ -52,7 +52,7 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
     private String canId,SrNumber,strSlotType,StrSubSubType;
     private EditText et_consumption_type,et_item,et_subitem,et_item_type,et_quantity,et_serial_number,et_mac_id,et_type,et_nrgp_serialnum,et_nrgp,et_nrgp_item,et_nrgp_sub_item;
     private AppCompatSpinner sp_consumption_type,sp_item,sp_sub_item,sp_item_type,sp_type,sp_nrgp_item,sp_nrgp_sub_item;
-    private AppCompatButton bt_submit;
+    private AppCompatButton bt_submit,bt_next;
     private TextView txtHeader;
   //  private FloatingActionButton fab;
     private ArrayList<ItemConsumptionDetails.Item> itemlist;
@@ -75,7 +75,7 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
     ArrayList<String> consumptionType;
     ArrayList<String> itemListType;
   //  private BaseActivity baseActivity;
-    private String  macId,quantity,serialNumber,maxCap,strNrgpItemType;
+    private String  macId,quantity,serialNumber,maxCap,strNrgpItemType,customerNetworkTech;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +99,7 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
         SrNumber = requireArguments().getString("SrNumber");
         strSlotType = requireArguments().getString("SlotType");
         StrSubSubType = requireArguments().getString("SubSubType");
+        customerNetworkTech = requireArguments().getString("customerNetworkTech");
 
         et_consumption_type = view.findViewById(R.id.et_consumption_type);
         et_item = view.findViewById(R.id.et_item);
@@ -196,6 +197,17 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
             }
         });
 
+       /* bt_next.setOnClickListener(v -> {
+            Intent i = new Intent(getActivity(),Activity_Resolve.class);
+            i.putExtra("SrNumber", SrNumber);
+            i.putExtra("CustomerId", canId);
+            i.putExtra("SlotType",strSlotType);
+            i.putExtra("SubSubType",StrSubSubType);
+            i.putExtra("customerNetworkTech",customerNetworkTech);
+            startActivity(i);
+            requireActivity().finish();
+        });*/
+
     }
 
     @Override
@@ -226,7 +238,7 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                     if (position != 0) maxCap = "" + MaxCap.get(position - 1);
                     else maxCap = " ";
                     et_item_type.setText(ItemType.get(position));
-                    if (position != 0) str_itemType = "" + ItemType.get(position - 1);
+                    if (position != 0) str_itemType = "" + ItemType.get(position);
                     else str_itemType = " ";
                     et_nrgp.setText(NRGP.get(position));
                     strNrgp = NRGP.get(position);
@@ -309,14 +321,18 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
             public void onResponse(@NonNull Call<ItemResponse> call, @NonNull Response<ItemResponse> response) {
                 int status = Objects.requireNonNull(response.body()).getStatus();
                 if (status==1) {
-                    Intent i = new Intent(getActivity(), Activity_Resolve.class);
+                    AddMaterial();
+                   /* Intent i = new Intent(getActivity(), Activity_Resolve.class);
                     i.putExtra("SrNumber", SrNumber);
                     i.putExtra("CustomerId", canId);
                     i.putExtra("SlotType",strSlotType);
                     i.putExtra("SubSubType",StrSubSubType);
+                    i.putExtra("customerNetworkTech",customerNetworkTech);*/
                     Toast.makeText(getActivity(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                    startActivity(i);
-                    requireActivity().finish();
+                   /* startActivity(i);
+                    requireActivity().finish();*/
+                }else if(status==0){
+                   // Toast.makeText(getActivity(),"Object reference not set to an instance of an object.",Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(getActivity(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                 }
@@ -456,6 +472,20 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                 Log.e("RetroError", t.toString());
             }
         });
+    }
+
+    private void AddMaterial(){
+        Bundle bundle_consumption =new Bundle();
+        bundle_consumption.putString("CustomerId",canId );
+        bundle_consumption.putString("SrNumber", SrNumber);
+        bundle_consumption.putString("SlotType",strSlotType);
+        bundle_consumption.putString("SubSubType",StrSubSubType);
+        bundle_consumption.putString("customerNetworkTech",customerNetworkTech);
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        ItemConsumptionDetailsAddFragment itemConsumptionDetailsAddFragment = new ItemConsumptionDetailsAddFragment();
+        itemConsumptionDetailsAddFragment.setArguments(bundle_consumption);
+        t1.replace(R.id.fregment_container, itemConsumptionDetailsAddFragment);
+        t1.commit();
     }
 
 

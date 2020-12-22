@@ -4,6 +4,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
@@ -16,6 +30,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/next"
+        android:paddingStart="@dimen/_50sdp"
+        android:paddingEnd="@dimen/_50sdp"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/button_black"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerview"
+        />
 
     <TextView
         android:id="@+id/show_msg"
@@ -31,8 +59,10 @@
         android:visibility="gone"
         android:textColor="@color/colorBlack"
         />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-  <!--  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,6 +76,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
-        app:pressedTranslationZ="12dp"/>-->
+        app:pressedTranslationZ="12dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

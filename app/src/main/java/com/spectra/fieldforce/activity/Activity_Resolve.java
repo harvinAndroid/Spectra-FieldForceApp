@@ -29,11 +29,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.multidex.BuildConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.Model.ArtifactRequest;
 import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.QuestionList.QuestionListRequest;
@@ -100,7 +100,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     private FrameLayout progressOverlay;
     private ArrayList<QuestionAnswerList.Response> questionareResponse;
     private List<ArrayList<String>> itemlist = new ArrayList<ArrayList<String>>();
-    private String srNumber, customerId;
+    private String srNumber, customerId,customerNetworkTech;
     private String status;
     private JSONArray result;
     private String mFilepaths;
@@ -132,6 +132,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             srNumber = extras.getString("SrNumber");
             strSlotType=extras.getString("SlotType");
             StrSubSubType = extras.getString("SubSubType");
+            customerNetworkTech = extras.getString("customerNetworkTech");
         }
         //item = new  ArrayList<Answer>();
         baseActivity = ((BaseActivity) this);
@@ -392,7 +393,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 }else if ( requestCode == REQUEST_CAMERA_PERMISSION_ONE) {
                     try {
                         bitmap5 = BitmapFactory.decodeFile(currentImagePath);
-                        Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
                         speed_on_wifi.setText(currentImagePath);
                         str_ext1 = "jpg";
                         image.setImageBitmap(bitmap5);
@@ -402,7 +403,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 }else if ( requestCode == REQUEST_CAMERA_PERMISSION_TWO) {
                     try {
                         bitmap6 = BitmapFactory.decodeFile(currentImagePath);
-                        Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
                         other_in_ml.setText(currentImagePath);
                         str_ext2 = "jpg";
                         image.setImageBitmap(bitmap6);
@@ -412,7 +413,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 }else if ( requestCode == REQUEST_CAMERA_PERMISSION_THREE) {
                     try {
                         bitmap7 = BitmapFactory.decodeFile(currentImagePath);
-                        Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
                         speed_on_lan.setText(currentImagePath);
                         str_ext3 = "jpg";
                         image.setImageBitmap(bitmap7);
@@ -423,7 +424,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 else if ( requestCode == REQUEST_CAMERA_PERMISSION_FOUR) {
                     try {
                         bitmap8 = BitmapFactory.decodeFile(currentImagePath);
-                        Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
                         router_position.setText(currentImagePath);
                         str_ext4 = "jpg";
                         image.setImageBitmap(bitmap8);
@@ -733,6 +734,8 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         srRequest.setRCtwoId(rc2Id);
         srRequest.setRCthirdId(rc3Id);
         srRequest.setReasonOf(rfo.getText().toString());
+        srRequest.setCustomerID(customerId);
+        srRequest.setNetworkType(customerNetworkTech);
         if (isContacted.equals(YES)) {
             srRequest.setResolveContacted(TRUE);
         } else if (isContacted.equals(NO)) {

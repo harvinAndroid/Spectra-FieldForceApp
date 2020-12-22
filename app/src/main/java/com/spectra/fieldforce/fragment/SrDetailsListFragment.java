@@ -50,8 +50,7 @@ public class SrDetailsListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerview);
-
-       str_SrNumber = requireArguments().getString("SrNumber");
+        str_SrNumber = requireArguments().getString("SrNumber");
         getSrDetailsList();
     }
 
@@ -78,7 +77,6 @@ public class SrDetailsListFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-
             }
 
             @Override

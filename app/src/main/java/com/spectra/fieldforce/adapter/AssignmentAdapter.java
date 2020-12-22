@@ -115,11 +115,15 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
 
         if (order.getAcknowledge_status().equals("1")) {
             holder.btnView.setText("View");
+        }else if(order.getAcknowledge_status().equals("0")){
+            holder.btnView.setText("Acknowledge");
         }
+
         holder.customerMobile.setOnClickListener(v -> {
             Uri number = Uri.parse("tel:" + holder.customerMobile.getText().toString());
             call_action(number);
         });
+
         holder.btnView.setOnClickListener(v -> {
             if (order.getAcknowledge_status().equals("0")) {
                 updateAcknow(order.getSrNumber(), order.getSlotType());
@@ -132,7 +136,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
                 ).commit();
             }
         });
-
     }
 
     public void call_action(Uri number) {

@@ -1,39 +1,35 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.spectra.fieldforce.Model.CanIdRequest;
-import com.spectra.fieldforce.Model.CanIdResponse;
 import com.spectra.fieldforce.Model.ChangeBinRequest;
-import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumption;
 import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionRequest;
 import com.spectra.fieldforce.Model.ItemConsumption.ItemEquipment;
 import com.spectra.fieldforce.Model.ItemConsumption.ItemStatus;
-import com.spectra.fieldforce.Model.SrDetailsListResponse;
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.Activity_Resolve;
+import com.spectra.fieldforce.adapter.ItemConsumptionAddDetailAdapter;
 import com.spectra.fieldforce.adapter.ItemConsumptionDetailAdapter;
-import com.spectra.fieldforce.adapter.SpinnerAdapter;
-import com.spectra.fieldforce.adapter.SrDetailsListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
-import com.spectra.fieldforce.api.ApiClientRetrofit;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.utils.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,8 +38,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemConsumptionDetailsFragment extends Fragment {
+public class ItemConsumptionDetailsAddFragment extends Fragment {
     private RecyclerView recyclerView;
+    private AppCompatButton next_button;
     private TextView show_msg;
     private FloatingActionButton fab;
     private ArrayList<GetItemConsumption.Equipment> equipmentresponselist;
@@ -56,7 +53,7 @@ public class ItemConsumptionDetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_srdetails_list,container,false);
+        View view = inflater.inflate(R.layout.fragment_itemadd_list,container,false);
         return view;
     }
 
@@ -66,6 +63,7 @@ public class ItemConsumptionDetailsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview);
         show_msg = view.findViewById(R.id.show_msg);
         fab = view.findViewById(R.id.fab);
+        next_button = view.findViewById(R.id.next_button);
         canId= requireArguments().getString("CustomerId");
         SrNumber = requireArguments().getString("SrNumber");
         strSlotType = requireArguments().getString("SlotType");
@@ -74,6 +72,7 @@ public class ItemConsumptionDetailsFragment extends Fragment {
         getStatus();
         getItemConsumptionDetails();
         fab.setOnClickListener(v -> AddMaterial());
+        next_button.setOnClickListener(v -> NextScreen());
     }
 
 
@@ -120,7 +119,7 @@ public class ItemConsumptionDetailsFragment extends Fragment {
                         }
                         recyclerView.setHasFixedSize(true);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        recyclerView.setAdapter(new ItemConsumptionDetailAdapter(getActivity(), details, canId, SrNumber, approvalStatus, frstStatus,statusMsg));
+                        recyclerView.setAdapter(new ItemConsumptionAddDetailAdapter(getActivity(), details, canId, SrNumber, approvalStatus, frstStatus,statusMsg));
                     }else{
                         show_msg.setVisibility(View.VISIBLE);
                         fab.setVisibility(View.GONE);
@@ -183,6 +182,17 @@ public class ItemConsumptionDetailsFragment extends Fragment {
         itemConsumptionFragment.setArguments(bundle_consumption);
         t1.replace(R.id.fregment_container, itemConsumptionFragment);
         t1.commit();
+    }
+
+    private void NextScreen(){
+        Intent i = new Intent(getActivity(), Activity_Resolve.class);
+        i.putExtra("SrNumber", SrNumber);
+        i.putExtra("CustomerId", canId);
+        i.putExtra("SlotType",strSlotType);
+        i.putExtra("SubSubType",StrSubSubType);
+        i.putExtra("customerNetworkTech",customerNetworkTech);
+        startActivity(i);
+        requireActivity().finish();
     }
 
 

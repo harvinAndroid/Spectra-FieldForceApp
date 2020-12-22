@@ -162,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                                 popupSnackbarForCompleteUpdateAndUnregister();
                             }
-
                             //IMMEDIATE:
                             if (appUpdateInfo.updateAvailability()
                                     == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
@@ -170,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 startAppUpdateImmediate(appUpdateInfo);
                             }
                         });
-
     }
 
     /**
@@ -204,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return null;
     }
 
-    private void checkUpdate() {
+    /*private void checkUpdate() {
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
         Log.d(TAG, "Checking for updates");
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
@@ -220,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.d(TAG, "No Update available");
             }
         });
-    }
+    }*/
 
     @SuppressLint("SetTextI18n")
     private void navigationDrawerSetup() {
@@ -291,12 +289,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
             });
             TextView image = dView.findViewById(R.id.image);
-            image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(MainActivity.this,Activity_Resolve.class);
-                    startActivity(i);
-                }
+            image.setOnClickListener(v -> {
+                Intent i = new Intent(MainActivity.this,Activity_Resolve.class);
+                startActivity(i);
             });
             Menu nav_menu = navigationView.getMenu();
         } catch (Exception ex) {

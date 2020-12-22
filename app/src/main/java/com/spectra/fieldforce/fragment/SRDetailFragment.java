@@ -126,7 +126,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
     private BottomSheetBehavior sheetBehavior;
     private  ConstraintLayout layoutBottomSheet;
     private String SrNum,StrSubSubType;
-    private String str_bbinId,strSlotType;
+    private String str_bbinId,strSlotType,strcustomerNetworkTech;
     private ArrayList<String> rc1Name;
     private ArrayList<String> rc1Code;
     private ArrayList<String> addMater;
@@ -329,6 +329,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
             i.putExtra("SrNumber",srNumber.getText().toString());
             i.putExtra("SlotType",strSlotType);
             i.putExtra("SubSubType",StrSubSubType);
+            i.putExtra("customerNetworkTech",strcustomerNetworkTech);
             startActivity(i);
         });
         btnETRSubmit.setOnClickListener(v -> {
@@ -650,6 +651,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                         SrNum = order.getSrNumber();
                                         StrSubSubType = order.getSrSubSubTypeID();
                                         strAssignmentStatus = order.getSrStatus();
+                                        strcustomerNetworkTech = order.getCustomerNetworkTech();
                                         bindChangeStatus(0);
                                     }
 
@@ -1034,7 +1036,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
     }
 
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+    SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm a");
     @SuppressLint("SetTextI18n")
     final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
         mCalendar.set(Calendar.YEAR, year);
@@ -1284,6 +1286,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         bundle_consumption.putString("CustomerId", customerId.getText().toString());
         bundle_consumption.putString("SlotType",strSlotType);
         bundle_consumption.putString("SubSubType",StrSubSubType);
+        bundle_consumption.putString("customerNetworkTech",strcustomerNetworkTech);
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         ItemConsumptionFragment itemConsumptionFragment = new ItemConsumptionFragment();
         itemConsumptionFragment.setArguments(bundle_consumption);
