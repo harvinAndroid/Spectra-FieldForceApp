@@ -41,6 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.MyViewHolder> {
+
     private List<Order> orderList;
     private Activity activity;
     private String status;

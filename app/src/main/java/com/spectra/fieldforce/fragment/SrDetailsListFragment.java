@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.spectra.fieldforce.Model.ChangeBinRequest;
 import com.spectra.fieldforce.Model.SrDetailsListResponse;
 import com.spectra.fieldforce.R;
@@ -33,6 +34,7 @@ public class SrDetailsListFragment extends Fragment {
     private RecyclerView recyclerView;
     private String str_SrNumber;
     private ArrayList<SrDetailsListResponse.Note> SrDetailsList;
+    private FloatingActionButton fab;
 
     @Nullable
     @Override
@@ -51,6 +53,8 @@ public class SrDetailsListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerview);
         str_SrNumber = requireArguments().getString("SrNumber");
+        fab = view.findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         getSrDetailsList();
     }
 

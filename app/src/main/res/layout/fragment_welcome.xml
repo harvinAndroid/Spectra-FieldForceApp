@@ -24,5 +24,41 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/empty_cart"
+            android:visibility="gone"
+            android:background="@android:color/white"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgview"
+                android:layout_width="@dimen/_180sdp"
+                android:background="@drawable/thumbsupone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="@dimen/_180sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/imgview"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/at_present_there_is_no_pending_sr"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:textSize="@dimen/_16sdp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
+
+
+
 </LinearLayout>

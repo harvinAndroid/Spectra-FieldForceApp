@@ -555,6 +555,15 @@
                 android:layout_marginTop="10dp"
                 android:textSize="14sp" />
 
+            <EditText
+                android:id="@+id/change_bin_note"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="Remarks"
+                android:textColorHint="@android:color/darker_gray"
+                android:layout_below="@id/sp_change_bin"
+                android:layout_height="wrap_content"/>
+
             <Button
                 android:id="@+id/btnSubmitChnageBin"
                 android:layout_width="wrap_content"
@@ -567,7 +576,7 @@
                 android:paddingLeft="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:paddingRight="@dimen/_20sdp"
-                android:layout_below="@id/sp_change_bin"
+                android:layout_below="@id/change_bin_note"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 

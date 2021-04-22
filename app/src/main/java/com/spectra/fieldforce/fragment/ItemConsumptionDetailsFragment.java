@@ -1,11 +1,13 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +29,8 @@ import com.spectra.fieldforce.Model.ItemConsumption.ItemEquipment;
 import com.spectra.fieldforce.Model.ItemConsumption.ItemStatus;
 import com.spectra.fieldforce.Model.SrDetailsListResponse;
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.adapter.ItemConsumptionDetailAdapter;
-import com.spectra.fieldforce.adapter.SpinnerAdapter;
-import com.spectra.fieldforce.adapter.SrDetailsListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiClientRetrofit;
 import com.spectra.fieldforce.api.ApiInterface;
@@ -46,13 +47,14 @@ public class ItemConsumptionDetailsFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView show_msg;
     private FloatingActionButton fab;
+   // private Button next_button;
     private ArrayList<GetItemConsumption.Equipment> equipmentresponselist;
     private ArrayList<GetItemConsumption.Item> itemlist;
     private ArrayList<ItemEquipment> details;
     private GetItemConsumption.Response materialList;
     private List<ItemStatus.Response> itemStatus;
-
     private String canId,SrNumber,approvalStatus,frstStatus,statusMsg,strSlotType,StrSubSubType,customerNetworkTech;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class ItemConsumptionDetailsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview);
         show_msg = view.findViewById(R.id.show_msg);
         fab = view.findViewById(R.id.fab);
+      //  next_button = view.findViewById(R.id.next_button);
         canId= requireArguments().getString("CustomerId");
         SrNumber = requireArguments().getString("SrNumber");
         strSlotType = requireArguments().getString("SlotType");
@@ -74,7 +77,23 @@ public class ItemConsumptionDetailsFragment extends Fragment {
         getStatus();
         getItemConsumptionDetails();
         fab.setOnClickListener(v -> AddMaterial());
+     /*   next_button.setOnClickListener(v -> {
+            NextScreen();
+        });*/
     }
+
+/*
+    private void NextScreen(){
+        Intent i = new Intent(getActivity(), Activity_Resolve.class);
+        i.putExtra("SrNumber", SrNumber);
+        i.putExtra("CustomerId", canId);
+        i.putExtra("SlotType",strSlotType);
+        i.putExtra("SubSubType",StrSubSubType);
+        i.putExtra("customerNetworkTech",customerNetworkTech);
+        startActivity(i);
+        requireActivity().finish();
+    }
+*/
 
 
     private void getItemConsumptionDetails() {
@@ -93,6 +112,8 @@ public class ItemConsumptionDetailsFragment extends Fragment {
                     if(itemlist!=null || equipmentresponselist!=null) {
                         details = new ArrayList<>();
                         ItemEquipment temequp;
+                        fab.setVisibility(View.VISIBLE);
+                       // next_button.setVisibility(View.VISIBLE);
                         if (itemlist != null) {
                             for (int i = 0; i < itemlist.size(); i++) {
                                 temequp = new ItemEquipment();
@@ -124,6 +145,7 @@ public class ItemConsumptionDetailsFragment extends Fragment {
                     }else{
                         show_msg.setVisibility(View.VISIBLE);
                         fab.setVisibility(View.GONE);
+                        //next_button.setVisibility(View.GONE);
                         show_msg.setText("NO DATA FOUND");
                         //Toast.makeText(getActivity(),str_material,Toast.LENGTH_LONG).show();
                     }
@@ -131,6 +153,7 @@ public class ItemConsumptionDetailsFragment extends Fragment {
                 }else if(status==0){
                     show_msg.setVisibility(View.VISIBLE);
                     fab.setVisibility(View.GONE);
+                   // next_button.setVisibility(View.GONE);
                     show_msg.setText("NO DATA FOUND");
                 }
 
@@ -184,10 +207,5 @@ public class ItemConsumptionDetailsFragment extends Fragment {
         t1.replace(R.id.fregment_container, itemConsumptionFragment);
         t1.commit();
     }
-
-
-
-
-
 
 }

@@ -47,6 +47,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     public static PrefConfig prefConfig;
     private static final String TAG = "MainActivity";
     private DrawerLayout drawerLayout;
@@ -267,7 +268,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TextView btnGpon = dView.findViewById(R.id.nav_gpon);
             btnGpon.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
-                final String appPackageName = "valuelabs.spectra.com";
+                Intent i = new Intent(MainActivity.this,ProvisioningTabActivity.class);
+                startActivity(i);
+                finish();
+               /* final String appPackageName = "valuelabs.spectra.com";
                 Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage(appPackageName);
                 if (launchIntent != null) {
                     startActivity(launchIntent);
@@ -277,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     } catch (android.content.ActivityNotFoundException anfe) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
                     }
-                }
+                }*/
             });
             TextView btnLogout = dView.findViewById(R.id.nav_logout);
             btnLogout.setOnClickListener(v -> {

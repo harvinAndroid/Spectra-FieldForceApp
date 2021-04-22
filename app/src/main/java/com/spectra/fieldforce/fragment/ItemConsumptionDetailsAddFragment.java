@@ -25,7 +25,6 @@ import com.spectra.fieldforce.Model.ItemConsumption.ItemStatus;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.adapter.ItemConsumptionAddDetailAdapter;
-import com.spectra.fieldforce.adapter.ItemConsumptionDetailAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.utils.Constants;

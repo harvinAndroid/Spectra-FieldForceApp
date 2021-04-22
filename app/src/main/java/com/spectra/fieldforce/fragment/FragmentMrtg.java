@@ -32,10 +32,9 @@ import retrofit2.Response;
 
 
 public class FragmentMrtg extends BottomSheetDialogFragment {
-    private TextView textview1,textview2,textview3,textview4,textview5,textview6,textview7,textview9;
+    private TextView textview1,textview3,textview5,textview7,textview9;
     private PhotoView imageView;
     private String canId;
-
 
 
     @Nullable
@@ -105,7 +104,7 @@ public class FragmentMrtg extends BottomSheetDialogFragment {
 
 
     public void getMRTG() {
-        String authKey = "AdgT68HnjkehEqlkd4";
+        String authKey = "AdgT68HnjC8U5S3TkehEqlkd4";
         String action = "getMRTGbycanid";
         String dateType="1";
         MrtgRequest mrtgRequest = new MrtgRequest();

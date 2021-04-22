@@ -21,23 +21,14 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.spectra.fieldforce.Model.AssignmentRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumption;
 import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumptionRequest;
 import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionDetails;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionRequest;
 import com.spectra.fieldforce.Model.ItemConsumption.ItemResponse;
 import com.spectra.fieldforce.Model.ItemConsumption.NrgpDetails;
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.Activity_Resolve;
-import com.spectra.fieldforce.activity.BaseActivity;
-import com.spectra.fieldforce.activity.MainActivity;
-import com.spectra.fieldforce.adapter.ItemConsumptionDetailAdapter;
 import com.spectra.fieldforce.adapter.SpinnerAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
@@ -144,7 +135,6 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_type.setAdapter(adapter);
-
     }
 
     private void Listener(){
@@ -210,6 +200,7 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {

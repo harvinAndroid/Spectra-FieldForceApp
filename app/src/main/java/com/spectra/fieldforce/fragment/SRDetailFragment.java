@@ -38,8 +38,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,9 +48,6 @@ import com.spectra.fieldforce.Model.ChangeBinRequest;
 import com.spectra.fieldforce.Model.ChangeBinResponse;
 import com.spectra.fieldforce.Model.CommonResponse;
 import com.spectra.fieldforce.Model.EndtimeRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionDetails;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionRequest;
 import com.spectra.fieldforce.Model.Order;
 import com.spectra.fieldforce.Model.RCRequest;
 import com.spectra.fieldforce.Model.SRRequest;
@@ -61,27 +56,21 @@ import com.spectra.fieldforce.Model.StarttimeRequest;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.activity.MainActivity;
-import com.spectra.fieldforce.adapter.ItemConsumptionDetailAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
-import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.spectra.fieldforce.utils.AppConstants.EMPTY;
 import static com.spectra.fieldforce.utils.AppConstants.FALSE;
 import static com.spectra.fieldforce.utils.AppConstants.HOLD;
@@ -107,7 +96,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
             startTime, endTime, startLocation, endLocation, foni, repeat_sr, massoutage, contactName, contactNumber, txtHeader;
     private Button btnHoldSubmit, btnStartTime, btnEndTime, btnETRSubmit, btnUnifySession, btnResolveSubmit,
             btnSubmitChnageBin,btnUnhold,btnitemConsumption;
-    private EditText DateEdit, rfo;
+    private EditText DateEdit, rfo,change_bin_note;
     private FloatingActionButton fab_item_consumption;
     private Spinner resolveContacted, changeStatus, rc1, holdReason, contacted,sp_change_bin,spntemConsumption;
     private String status,action_code,str_segment,bin_name,str_CanId,strAssignmentStatus;
@@ -219,7 +208,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         sp_change_bin =view.findViewById(R.id.sp_change_bin);
         btnSubmitChnageBin = view.findViewById(R.id.btnSubmitChnageBin);
         fab_item_consumption = view.findViewById(R.id.fab_item_consumption);
-     //   btnSrDetails = view.findViewById(R.id.btnSrDetails);
+        change_bin_note = view.findViewById(R.id.change_bin_note);
         BottomNavigationView bottom_navigation = view.findViewById(R.id.bottom_navigation);
         bottom_navigation.setOnNavigationItemSelectedListener(this);
        /* bindChangeStatus(0);*/
@@ -315,12 +304,19 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         });
 
         btnSubmitChnageBin.setOnClickListener(v -> {
-                    if(str_bbinId.equals("0")){
-                        Toast.makeText(getActivity(),"Please select the Change bin",Toast.LENGTH_LONG).show();
-                    }else{
-                        SendBinDetails();
-                    }
-                }
+               if(change_bin_note.getText().toString().equals("")){
+                   Toast.makeText(getActivity(),"Please enter the Remark for Change bin",Toast.LENGTH_LONG).show();
+               }else{
+                   if(str_bbinId.equals("0")){
+                       Toast.makeText(getActivity(),"Please select the Change bin",Toast.LENGTH_LONG).show();
+                   }else{
+                       String note = change_bin_note.getText().toString();
+                       SendBinDetails();
+                       SaveBinNote(note);
+                   }
+               }
+               }
+
         );
 
         btnResolveSubmit.setOnClickListener(v -> {
@@ -521,6 +517,46 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                     } else {
                         Toast.makeText(getActivity(),"Something went wrong...",Toast.LENGTH_LONG).show();
                     }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChangeBinResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
+
+    private void SaveBinNote(String note) {
+        String action = "createSRNotes";
+        SendChangeBinRequest sendChangeBinRequest = new SendChangeBinRequest();
+        sendChangeBinRequest.setAuthkey(Constants.AUTH_KEY);
+        sendChangeBinRequest.setAction(action);
+        sendChangeBinRequest.setSrNumber(SrNum);
+        sendChangeBinRequest.setNoteDes(note);
+        sendChangeBinRequest.setNoteTitle("Bin Movement");
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ChangeBinResponse> call = apiService.sendBinDetails(sendChangeBinRequest);
+        call.enqueue(new Callback<ChangeBinResponse>() {
+            @Override
+            public void onResponse(Call<ChangeBinResponse> call, @NotNull Response<ChangeBinResponse> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        String status= String.valueOf(Objects.requireNonNull(response.body()).getStatus());
+                        if(status.equals("1")){
+                           // Toast.makeText(getActivity(),"Change Bin Submitted Sucessfully",Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(getActivity(),MainActivity.class);
+                            startActivity(i);
+                            requireActivity().finish();
+                        } else {
+                            Toast.makeText(getActivity(),"Something went wrong...",Toast.LENGTH_LONG).show();
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1055,7 +1091,10 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
 
 
     private void WebViewNoc(){
+        Bundle bundle=new Bundle();
+        bundle.putString("CanId", customerId.getText().toString());
         NocFragment myFragment = new NocFragment();
+        myFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, myFragment).addToBackStack(null).commit();
     }
 

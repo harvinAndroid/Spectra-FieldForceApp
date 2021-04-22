@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,7 +43,8 @@ public class WelcomeFragment extends Fragment {
     private JSONArray result;
     private String EmailID;
     private List<Order> orderList;
-    AssignmentAdapter assignAdapter;
+    private AssignmentAdapter assignAdapter;
+    ConstraintLayout empty_cart;
 
     public WelcomeFragment() {
         orderList = new ArrayList<>();
@@ -73,6 +75,7 @@ public class WelcomeFragment extends Fragment {
                         status = jsonObject.getString("Status");
                         if (status.equals("Failure")) {
                             Log.d("Failure", "error");
+                            empty_cart.setVisibility(View.VISIBLE);
                         } else if (status.equals("Success")) {
                             try {
                                 result = jsonObject.getJSONArray("response");
@@ -118,6 +121,7 @@ public class WelcomeFragment extends Fragment {
         getAssignment();
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        empty_cart = view.findViewById(R.id.empty_cart);
         swipeRefreshLayout.setEnabled(true);
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(() -> {
@@ -126,14 +130,13 @@ public class WelcomeFragment extends Fragment {
         });
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         assignAdapter = new AssignmentAdapter(activity, orderList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(assignAdapter);
+
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(assignAdapter);
+        //}
+
         return view;
     }
-
-
-
-
 }

@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/tv_cust_account_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/customer_account_id"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/flightsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="566777777"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_cust_account_id"
+            app:layout_constraintStart_toEndOf="@+id/tv_cust_account_id"
+            app:layout_constraintTop_toTopOf="@+id/tv_cust_account_id" />
+
+
+        <TextView
+            android:id="@+id/tv_cust_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/customer_name"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cust_account_id" />
+
+        <TextView
+            android:id="@+id/tv_customer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="566777777"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/tv_cust_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cust_account_id" />
+
+
+        <TextView
+            android:id="@+id/tv_city_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/city"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cust_name" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delhi"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/tv_city_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_customer_name" />
+
+        <TextView
+            android:id="@+id/tv_product_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/product_name"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_city_name" />
+
+        <TextView
+            android:id="@+id/tv_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/product_name"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/tv_city_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_city" />
+
+
+        <TextView
+            android:id="@+id/tv_building"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/building_society"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+
+        <TextView
+            android:id="@+id/tv_building_society"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telegana"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/tv_city_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_area" />
+
+
+        <TextView
+            android:id="@+id/tv_building_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Building/Socity Status"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_building_society" />
+
+        <TextView
+            android:id="@+id/tv_segment_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Business"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/tv_building_status"
+            app:layout_constraintTop_toBottomOf="@+id/tv_building_society" />
+
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/address"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_building_status" />
+
+        <TextView
+            android:id="@+id/tv_address_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="frrrrrrssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaaaaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/tv_building_status"
+            app:layout_constraintTop_toBottomOf="@+id/tv_building_status" />
+
+
+
+        <LinearLayout
+            android:id="@+id/linear_six"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_address"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_enter_ont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/ont_serail_number"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linear_seven"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_six"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/re_enter_ont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/re_enter_ont_serail_number"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linear_eight"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_seven"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/model"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_nine"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_eight"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/profile_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_ten"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_nine"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_tower"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/tower_structure"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_eleven"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_ten"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_serving_db"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/serving_db"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_provisioning"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_30sdp"
+            android:text="@string/submit"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingStart="@dimen/_25sdp"
+            android:paddingEnd="@dimen/_25sdp"
+            android:background="@drawable/button_background"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@android:color/white"
+            app:layout_constraintTop_toBottomOf="@+id/linear_eleven" />
+
+        <TextView
+            android:id="@+id/tv_wcr"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_30sdp"
+            android:text="@string/reset"
+            android:gravity="center"
+            android:paddingStart="@dimen/_25sdp"
+            android:paddingEnd="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_purple"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_provisioning"
+            app:layout_constraintStart_toEndOf="@+id/tv_provisioning" />
+
+
+
+        <TextView
+            android:id="@+id/tv_account_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/back_to_account_search"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/tv_provisioning"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

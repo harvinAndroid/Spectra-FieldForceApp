@@ -14,11 +14,10 @@ public class Constants {
     public static final String ACTION_SAVEQUESTIONARE="saveQuestionerdetails";
     public static final String ACTION_GETSAVEQUESTIONARE="getQuestBySrNo";
     public static final String URL = "http://fiber.spectra.co/";
-    public static final String NOC = "https://cs.spectra.co/nocportal/index.php?account_no_bil=9063188";
+   // public static final String NOC = "https://cs.spectra.co/nocportal/index.php?account_no_bil=9063188";
 
     public static final String GET_QUESTIONARE_LIST ="getQuestBySrNo";
     public static final String APP="FFA App";
-
     public static final String ACTION_AUTHENTICATION = "authentication";
     public static final String User = "User";
     public static final String SAVE_DEVICE_TOKEN = "saveDeviceToken";
@@ -41,9 +40,6 @@ public class Constants {
     public static final String GET_MATERIAL_CONSUMPTION_FLAG = "getMaterialConsumptionFlag";
     public static final String SAVE_MATERIAL_CONSUMPTION_FLAG = "saveMaterialConsumptionFlag";
     public static final String GET_CONSUMPTION_STATUS = "getConsumptionstatus";
-  public static final String GET_ALL_ITEM_MASTER = "getAllItemMaster";
-
-
-
+    public static final String GET_ALL_ITEM_MASTER = "getAllItemMaster";
 
 }

@@ -84,6 +84,7 @@ import static com.spectra.fieldforce.utils.AppConstants.TRUE;
 import static com.spectra.fieldforce.utils.AppConstants.YES;
 
 public class Activity_Resolve extends BaseActivity implements View.OnClickListener ,QuestionAnswerAdapter.Test{
+
     private Button btnResolveSubmit, btnUnifySession,btnUploadArtifacts;
     private TextView sessionStatus;
     private ImageView img;
@@ -118,7 +119,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     private Uri cameraFileUri;
     private String selectedMediaPath;
     private BaseActivity baseActivity;
-    HashMap<Integer,Answer> questionmap = new HashMap<Integer,Answer>();
+    private HashMap<Integer,Answer> questionmap = new HashMap<Integer,Answer>();
     private String currentImagePath,currentImagePath1,currentImagePath2,currentImagePath3= null;
 
 

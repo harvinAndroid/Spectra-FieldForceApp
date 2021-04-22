@@ -17,6 +17,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+   <!-- <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/next_button"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/button_black"
+        android:paddingStart="@dimen/_50sdp"
+        android:paddingEnd="@dimen/_50sdp"
+        android:text="@string/next"
+        android:textColor="@color/colorWhite"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerview" />-->
+
     <TextView
         android:id="@+id/show_msg"
         android:layout_width="match_parent"
@@ -26,26 +40,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="@dimen/_16sdp"
-       android:layout_marginStart="@dimen/_100sdp"
+        android:layout_marginStart="@dimen/_100sdp"
         android:textStyle="bold"
         android:visibility="gone"
         android:textColor="@color/colorBlack"
         />
 
-  <!--  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/add"
-        android:visibility="visible"
-        app:backgroundTint="@color/colorButton"
+        app:backgroundTint="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
-        android:foregroundGravity="right"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_gravity="bottom"
         app:elevation="6dp"
+        android:visibility="gone"
+        android:foregroundGravity="bottom"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
-        app:pressedTranslationZ="12dp"/>-->
+        android:layout_marginStart="@dimen/_250sdp"
+        app:pressedTranslationZ="12dp"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

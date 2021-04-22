@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ public class NocFragment extends Fragment {
     private WebView webView;
     private ImageView backpressed;
     private TextView txtHeader;
+    private String CanId;
 
     @Nullable
     @Override
@@ -37,10 +39,12 @@ public class NocFragment extends Fragment {
         Toolbar mtoolbar = getActivity().findViewById(R.id.toolbar);
         txtHeader = mtoolbar.findViewById(R.id.txtHeader);
         txtHeader.setText("NOC");
+        CanId = requireArguments().getString("CanId");
         webView = view.findViewById(R.id.webView);
         backpressed = view.findViewById(R.id.backpressed);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("https://cs.spectra.co/nocportal/index.php?account_no_bil=9063188");
+     //  Toast.makeText(getContext(),"https://cs.spectra.co/nocportal/index.php?account_no_bil="+CanId,Toast.LENGTH_LONG).show();
+        webView.loadUrl("https://cs.spectra.co/nocportal/index.php?account_no_bil="+CanId);
        // init();
     }
 

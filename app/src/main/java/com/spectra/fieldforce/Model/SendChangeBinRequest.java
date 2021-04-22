@@ -1,10 +1,28 @@
 package com.spectra.fieldforce.Model;
 
 public class SendChangeBinRequest {
-    String Authkey;
-    String Action;
-    String SrNumber;
-    String BinId;
+    private String Authkey;
+    private String Action;
+    private String SrNumber;
+    private String BinId;
+    private String NoteTitle;
+    private String NoteDes;
+
+    public String getNoteTitle() {
+        return NoteTitle;
+    }
+
+    public void setNoteTitle(String noteTitle) {
+        NoteTitle = noteTitle;
+    }
+
+    public String getNoteDes() {
+        return NoteDes;
+    }
+
+    public void setNoteDes(String noteDes) {
+        NoteDes = noteDes;
+    }
 
     public String getBinId() {
         return BinId;

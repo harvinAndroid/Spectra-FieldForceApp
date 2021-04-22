@@ -36,6 +36,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class LoginActivity extends AppCompatActivity implements OnLoginFormActivityListener {
+
     public static PrefConfig prefConfig;
     private TextView RegText, StatusMess, ErrorMessage,textView;
     private EditText UserName, UserPassword;
@@ -61,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         // RegText = null;
         UserName = findViewById(R.id.user_name);
         UserPassword = findViewById(R.id.user_pass);
-        StatusMess = findViewById(R.id.error_text);
+       // StatusMess = findViewById(R.id.error_text);
         ErrorMessage = findViewById(R.id.errortxt);
 
         Typeface mytextFace = Typeface.createFromAsset(activity.getAssets(), "fonts/helveticaneue-font/helveticaneue-light.ttf");
@@ -70,7 +71,6 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
 
         LoginBn = findViewById(R.id.login_btn);
         LoginBn.setOnClickListener(view -> performLogin());
-
         RegText.setOnClickListener(view -> performResetpassword());
     }
 
@@ -98,9 +98,9 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         prefConfig.writeName(email);
         prefConfig.writeUserName(name);
 //        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-        Log.d("Point", "1");
         finish();
         startActivity(new Intent(activity, MainActivity.class));
+      /*  startActivity(new Intent(activity, DashBoardActivity.class));*/
     }
 
     @Override
@@ -157,8 +157,6 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
 
             }
         });
-         // UserName.setText("");
-        //UserPassword.setText("");
         ErrorMessage.setText("");
     }
 

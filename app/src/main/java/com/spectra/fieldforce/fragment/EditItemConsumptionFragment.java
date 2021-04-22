@@ -38,6 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditItemConsumptionFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+
     private String canId,SrNumber;
     private EditText et_consumption_type,et_item,et_subitem,et_item_type,et_quantity,et_serial_number,et_mac_id,et_type,et_nrgp_serialnum,et_nrgp,et_nrgp_item;
     private AppCompatSpinner sp_consumption_type,sp_item,sp_sub_item,sp_item_type,sp_type,sp_nrgp_item,sp_nrgp_sub_item;
@@ -130,7 +131,6 @@ public class EditItemConsumptionFragment extends Fragment implements AdapterView
     }
 
     private void Listener() {
-
         bt_submit.setOnClickListener(v -> {
                     if (sp_type.getSelectedItem().toString().equals("Select Consumption Type"))
                         Toast.makeText(getActivity(), "Please Select Consumption Type", Toast.LENGTH_LONG).show();

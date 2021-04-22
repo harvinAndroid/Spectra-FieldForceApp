@@ -1,0 +1,56 @@
+<androidx.appcompat.widget.Toolbar
+    android:orientation="horizontal"
+    android:contentInsetLeft="0dp"
+    android:layout_marginTop="@dimen/_20sdp"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:gravity="center"
+            >
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:id="@+id/iv_back"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/todo"
+                android:src="@drawable/back_arrow">
+
+            </ImageView>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_inner_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="start"
+            >
+
+            <TextView
+                android:id="@+id/tv_lang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:fontFamily="@font/lato_semibold"
+                android:includeFontPadding="false"
+                android:text="@string/spectra"
+                android:textColor="@color/colorButton"
+                android:textSize="@dimen/_16sdp"
+                android:visibility="visible"/>
+
+
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
