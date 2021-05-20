@@ -19,8 +19,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.spectra.fieldforce.Model.AssignmentRequest;
-import com.spectra.fieldforce.Model.Order;
+import com.spectra.fieldforce.model.AssignmentRequest;
+import com.spectra.fieldforce.model.Order;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.MainActivity;
 import com.spectra.fieldforce.adapter.AssignmentAdapter;

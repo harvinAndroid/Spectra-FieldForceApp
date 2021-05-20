@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <variable
+            name="event"
+            type="com.spectra.fieldforce.fragment.ProvisioningScreenFragment" />
+
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@android:color/white">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -29,16 +39,15 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/customer_account_id"
             android:textColor="@color/colorBlack"
-            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/flightsIcon"
+            android:id="@+id/tv_customer_account_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="566777777"
             android:layout_marginStart="@dimen/_20sdp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/tv_cust_account_id"
@@ -53,7 +62,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/customer_name"
             android:textColor="@color/colorBlack"
-            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_cust_account_id" />
@@ -62,7 +71,6 @@
             android:id="@+id/tv_customer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="566777777"
             android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_cust_name"
@@ -76,7 +84,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/city"
             android:textColor="@color/colorBlack"
-            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_cust_name" />
@@ -85,7 +93,6 @@
             android:id="@+id/tv_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delhi"
             android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_city_name"
@@ -103,10 +110,9 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_city_name" />
 
         <TextView
-            android:id="@+id/tv_area"
+            android:id="@+id/tv_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/product_name"
             android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_city_name"
@@ -120,7 +126,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/building_society"
             android:textColor="@color/colorBlack"
-            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
@@ -129,11 +135,10 @@
             android:id="@+id/tv_building_society"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Telegana"
             android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_city_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_area" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_product" />
 
 
         <TextView
@@ -141,9 +146,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="Building/Socity Status"
+            android:text="@string/segment"
             android:textColor="@color/colorBlack"
-            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_building_society" />
@@ -152,11 +156,9 @@
             android:id="@+id/tv_segment_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Business"
             android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_10sdp"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintStart_toEndOf="@+id/tv_building_status"
+            app:layout_constraintStart_toEndOf="@+id/tv_customer_account_id"
             app:layout_constraintTop_toBottomOf="@+id/tv_building_society" />
 
 
@@ -167,7 +169,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/address"
             android:textColor="@color/colorBlack"
-            app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+            app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_building_status" />
@@ -176,11 +178,9 @@
             android:id="@+id/tv_address_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="frrrrrrssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaaaaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
             android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_10sdp"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintStart_toEndOf="@+id/tv_building_status"
+            app:layout_constraintStart_toEndOf="@+id/tv_city_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_building_status" />
 
 
@@ -190,7 +190,7 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_address"
@@ -217,18 +217,7 @@
                     android:textSize="@dimen/_12sdp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/linear_seven"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_six"
-            android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -251,18 +240,7 @@
                     android:textSize="@dimen/_12sdp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/linear_eight"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_seven"
-            android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -285,17 +263,7 @@
                     android:textSize="@dimen/_12sdp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linear_nine"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_eight"
-            android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -318,17 +286,7 @@
                     android:textSize="@dimen/_12sdp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linear_ten"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_nine"
-            android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -351,17 +309,7 @@
                     android:textSize="@dimen/_12sdp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linear_eleven"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_ten"
-            android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -402,7 +350,7 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@+id/linear_eleven" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_six" />
 
         <TextView
             android:id="@+id/tv_wcr"
@@ -437,3 +385,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

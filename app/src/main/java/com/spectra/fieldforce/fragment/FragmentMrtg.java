@@ -11,20 +11,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.spectra.fieldforce.Model.CanIdRequest;
-import com.spectra.fieldforce.Model.CanIdResponse;
-import com.spectra.fieldforce.Model.MRTG;
-import com.spectra.fieldforce.Model.MrtgRequest;
+import com.spectra.fieldforce.model.CanIdRequest;
+import com.spectra.fieldforce.model.CanIdResponse;
+import com.spectra.fieldforce.model.MRTG;
+import com.spectra.fieldforce.model.MrtgRequest;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClientRetrofit;
 import com.spectra.fieldforce.api.ApiInterface;
-
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;

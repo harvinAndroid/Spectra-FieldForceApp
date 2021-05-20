@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/wcr_complete_fragment">
+    <data>
+        <variable
+            name="wcr"
+            type="com.spectra.fieldforce.fragment.WcrCompletedFragment"/>
+
+        <variable
+            name="customerDetails"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.Wcr"/>
+
+    </data>
+<LinearLayout android:id="@+id/linear_five"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+  >
+
+    <TextView
+        android:id="@+id/tv_customer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`BusinessSegment :  ` + customerDetails.businessSegment}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/et_item_type3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{`POD :  ` + customerDetails.pod}"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/et_item_type5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@{`Product :  ` + customerDetails.product}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp" />
+
+
+    <TextView
+        android:id="@+id/et_item_type7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@{customerDetails.installationdate}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp" />
+
+
+</LinearLayout>
+</layout>

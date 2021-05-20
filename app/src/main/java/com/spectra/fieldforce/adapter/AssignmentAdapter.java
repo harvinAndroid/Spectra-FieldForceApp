@@ -21,8 +21,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
-import com.spectra.fieldforce.Model.Order;
-import com.spectra.fieldforce.Model.SRRequest;
+import com.spectra.fieldforce.model.Order;
+import com.spectra.fieldforce.model.SRRequest;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;

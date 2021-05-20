@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.spectra.fieldforce.Model.ChangeBinRequest;
-import com.spectra.fieldforce.Model.SrDetailsListResponse;
+import com.spectra.fieldforce.model.ChangeBinRequest;
+import com.spectra.fieldforce.model.SrDetailsListResponse;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.adapter.SrDetailsListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
@@ -23,7 +23,6 @@ import com.spectra.fieldforce.api.ApiInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;

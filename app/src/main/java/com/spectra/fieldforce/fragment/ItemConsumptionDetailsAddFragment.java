@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.spectra.fieldforce.Model.ChangeBinRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemEquipment;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemStatus;
+import com.spectra.fieldforce.model.ChangeBinRequest;
+import com.spectra.fieldforce.model.ItemConsumption.GetItemConsumption;
+import com.spectra.fieldforce.model.ItemConsumption.ItemConsumptionRequest;
+import com.spectra.fieldforce.model.ItemConsumption.ItemEquipment;
+import com.spectra.fieldforce.model.ItemConsumption.ItemStatus;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.adapter.ItemConsumptionAddDetailAdapter;

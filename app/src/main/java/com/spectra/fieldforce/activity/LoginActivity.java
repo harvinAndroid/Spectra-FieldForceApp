@@ -12,11 +12,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonElement;
-import com.spectra.fieldforce.Model.LoginRequest;
-import com.spectra.fieldforce.Model.SavetokenRequest;
+import com.spectra.fieldforce.model.LoginRequest;
+import com.spectra.fieldforce.model.SavetokenRequest;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
@@ -27,6 +26,8 @@ import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
 
 import org.json.JSONObject;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -167,7 +168,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                         Log.w(TAG, "getInstanceId failed", task.getException());
                         return;
                     }
-                    fcmToken = task.getResult().getToken();
+                    fcmToken = Objects.requireNonNull(task.getResult()).getToken();
                     Log.d("FCMToken", fcmToken);
                     performSaveToken();
                 });

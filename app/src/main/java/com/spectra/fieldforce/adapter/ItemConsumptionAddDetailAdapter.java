@@ -1,42 +1,22 @@
 package com.spectra.fieldforce.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.spectra.fieldforce.Model.ItemConsumption.DeleteItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemEquipment;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemResponse;
+import com.spectra.fieldforce.model.ItemConsumption.ItemEquipment;
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.MainActivity;
-import com.spectra.fieldforce.api.ApiClient;
-import com.spectra.fieldforce.api.ApiInterface;
-import com.spectra.fieldforce.fragment.EditItemConsumptionFragment;
-import com.spectra.fieldforce.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ItemConsumptionAddDetailAdapter extends RecyclerView.Adapter<ItemConsumptionAddDetailAdapter.MyViewHolder> {
 

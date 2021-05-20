@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,36 +17,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.spectra.fieldforce.Model.ItemConsumption.DeleteItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemEquipment;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemResponse;
-import com.spectra.fieldforce.Model.SaveQuestionareList.Answer;
-import com.spectra.fieldforce.Model.questionAnsResponse.QuestionAnswerList;
+import com.spectra.fieldforce.model.ItemConsumption.DeleteItemConsumption;
+import com.spectra.fieldforce.model.ItemConsumption.ItemEquipment;
+import com.spectra.fieldforce.model.ItemConsumption.ItemResponse;
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.activity.MainActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.fragment.EditItemConsumptionFragment;
-import com.spectra.fieldforce.fragment.ItemConsumptionDetailsFragment;
-import com.spectra.fieldforce.listener.OnItemClickListener;
 import com.spectra.fieldforce.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static java.security.AccessController.getContext;
 
 public class ItemConsumptionDetailAdapter extends RecyclerView.Adapter<ItemConsumptionDetailAdapter.MyViewHolder> {
 

@@ -1,15 +1,11 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,20 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.spectra.fieldforce.Model.CanIdRequest;
-import com.spectra.fieldforce.Model.CanIdResponse;
-import com.spectra.fieldforce.Model.ChangeBinRequest;
-import com.spectra.fieldforce.Model.CommonResponse;
-import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemEquipment;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemStatus;
-import com.spectra.fieldforce.Model.SrDetailsListResponse;
+import com.spectra.fieldforce.model.ChangeBinRequest;
+import com.spectra.fieldforce.model.ItemConsumption.GetItemConsumption;
+import com.spectra.fieldforce.model.ItemConsumption.ItemConsumptionRequest;
+import com.spectra.fieldforce.model.ItemConsumption.ItemEquipment;
+import com.spectra.fieldforce.model.ItemConsumption.ItemStatus;
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.adapter.ItemConsumptionDetailAdapter;
 import com.spectra.fieldforce.api.ApiClient;
-import com.spectra.fieldforce.api.ApiClientRetrofit;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.utils.Constants;
 import java.util.ArrayList;

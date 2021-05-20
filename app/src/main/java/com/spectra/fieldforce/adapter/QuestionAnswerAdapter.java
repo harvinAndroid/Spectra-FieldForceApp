@@ -12,10 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.spectra.fieldforce.Model.QuestionListResponse;
-import com.spectra.fieldforce.Model.SaveQuestionareList.Answer;
-import com.spectra.fieldforce.Model.questionAnsResponse.QuestionAnswerList;
-import com.spectra.fieldforce.Model.questionAnsResponse.Response;
+import com.spectra.fieldforce.model.SaveQuestionareList.Answer;
+import com.spectra.fieldforce.model.questionAnsResponse.QuestionAnswerList;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.listener.OnItemClickListener;

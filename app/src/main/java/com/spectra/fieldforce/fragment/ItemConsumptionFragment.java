@@ -1,7 +1,6 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,11 +22,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.spectra.fieldforce.Model.AssignmentRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumptionRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionDetails;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemResponse;
-import com.spectra.fieldforce.Model.ItemConsumption.NrgpDetails;
+import com.spectra.fieldforce.model.AssignmentRequest;
+import com.spectra.fieldforce.model.ItemConsumption.GetItemConsumptionRequest;
+import com.spectra.fieldforce.model.ItemConsumption.ItemConsumptionDetails;
+import com.spectra.fieldforce.model.ItemConsumption.ItemResponse;
+import com.spectra.fieldforce.model.ItemConsumption.NrgpDetails;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.adapter.SpinnerAdapter;
 import com.spectra.fieldforce.api.ApiClient;
@@ -135,6 +134,8 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_type.setAdapter(adapter);
+
+
     }
 
     private void Listener(){

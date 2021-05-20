@@ -2,36 +2,57 @@ package com.spectra.fieldforce.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.spectra.fieldforce.Model.AddItemDetails.AddConsumptionItem;
-import com.spectra.fieldforce.Model.ArtifactRequest;
-import com.spectra.fieldforce.Model.AssignmentRequest;
-import com.spectra.fieldforce.Model.CanIdRequest;
-import com.spectra.fieldforce.Model.CanIdResponse;
-import com.spectra.fieldforce.Model.ChangeBinRequest;
-import com.spectra.fieldforce.Model.ChangeBinResponse;
-import com.spectra.fieldforce.Model.CommonResponse;
-import com.spectra.fieldforce.Model.EndtimeRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.AddItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.DeleteItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumption;
-import com.spectra.fieldforce.Model.ItemConsumption.GetItemConsumptionRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionDetails;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemConsumptionRequest;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemResponse;
-import com.spectra.fieldforce.Model.ItemConsumption.ItemStatus;
-import com.spectra.fieldforce.Model.ItemConsumption.NrgpDetails;
-import com.spectra.fieldforce.Model.LoginRequest;
-import com.spectra.fieldforce.Model.MRTG;
-import com.spectra.fieldforce.Model.MrtgRequest;
-import com.spectra.fieldforce.Model.QuestionList.QuestionListRequest;
-import com.spectra.fieldforce.Model.RCRequest;
-import com.spectra.fieldforce.Model.SRRequest;
-import com.spectra.fieldforce.Model.SaveQuestionareList.SaveQuestionareList;
-import com.spectra.fieldforce.Model.SavetokenRequest;
-import com.spectra.fieldforce.Model.SendChangeBinRequest;
-import com.spectra.fieldforce.Model.SrDetailsListResponse;
-import com.spectra.fieldforce.Model.StarttimeRequest;
-import com.spectra.fieldforce.Model.questionAnsResponse.QuestionAnswerList;
+import com.spectra.fieldforce.model.ArtifactRequest;
+import com.spectra.fieldforce.model.AssignmentRequest;
+import com.spectra.fieldforce.model.CanIdRequest;
+import com.spectra.fieldforce.model.CanIdResponse;
+import com.spectra.fieldforce.model.ChangeBinRequest;
+import com.spectra.fieldforce.model.ChangeBinResponse;
+import com.spectra.fieldforce.model.CommonResponse;
+import com.spectra.fieldforce.model.EndtimeRequest;
+import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
+import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
+import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
+import com.spectra.fieldforce.model.gpon.request.EditItemConsumptionNavRequest;
+import com.spectra.fieldforce.model.gpon.request.EnggDetailsResquest;
+import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
+import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
+import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
+import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
+import com.spectra.fieldforce.model.gpon.response.AccInfoResponse;
+import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
+import com.spectra.fieldforce.model.gpon.response.GetFibreCable;
+import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetItemConumptionByIdResponse;
+import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
+import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
+import com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse;
+import com.spectra.fieldforce.model.gpon.response.WcrInfoResponse;
+import com.spectra.fieldforce.model.ItemConsumption.DeleteItemConsumption;
+import com.spectra.fieldforce.model.ItemConsumption.GetItemConsumption;
+import com.spectra.fieldforce.model.ItemConsumption.GetItemConsumptionRequest;
+import com.spectra.fieldforce.model.ItemConsumption.ItemConsumptionDetails;
+import com.spectra.fieldforce.model.ItemConsumption.ItemConsumptionRequest;
+import com.spectra.fieldforce.model.ItemConsumption.ItemResponse;
+import com.spectra.fieldforce.model.ItemConsumption.ItemStatus;
+import com.spectra.fieldforce.model.ItemConsumption.NrgpDetails;
+import com.spectra.fieldforce.model.LoginRequest;
+import com.spectra.fieldforce.model.MRTG;
+import com.spectra.fieldforce.model.MrtgRequest;
+import com.spectra.fieldforce.model.QuestionList.QuestionListRequest;
+import com.spectra.fieldforce.model.RCRequest;
+import com.spectra.fieldforce.model.SRRequest;
+import com.spectra.fieldforce.model.SaveQuestionareList.SaveQuestionareList;
+import com.spectra.fieldforce.model.SavetokenRequest;
+import com.spectra.fieldforce.model.SendChangeBinRequest;
+import com.spectra.fieldforce.model.SrDetailsListResponse;
+import com.spectra.fieldforce.model.StarttimeRequest;
+import com.spectra.fieldforce.model.gpon.response.WcrResponse;
+import com.spectra.fieldforce.model.questionAnsResponse.QuestionAnswerList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -124,4 +145,67 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<NrgpDetails> getNrgpData (@Body AssignmentRequest itemConsumptionRequest );
+
+
+      @POST("index.php")
+    Call<AccInfoResponse> getAccountInfo(@Body AccountInfoRequest accountInfoRequest);
+
+    @POST ("index.php")
+    Call<WcrResponse> getWcrInfo(@Body AccountInfoRequest accountInfoRequest);
+
+    @POST ("index.php")
+    Call<IrInfoResponse> getIrInfo(@Body AccountInfoRequest accountInfoRequest);
+
+    @POST ("index.php")
+    Call<WCRHoldCategoryResponse> getHoldCategory(@Body AccountInfoRequest accountInfoRequest);
+
+
+    @POST ("index.php")
+    Call<GetItemListResponse> getConsumptionItemList(@Body AccountInfoRequest accountInfoRequest);
+
+
+    @POST ("index.php")
+    Call<GetFmsListResponse> getFmsList(@Body AccountInfoRequest accountInfoRequest);
+
+
+    @POST ("index.php")
+    Call<GetItemListResponse> getItemListName(@Body AccountInfoRequest accountInfoRequest);
+
+    @POST ("index.php")
+    Call<GetSubItemListResponse> getSubItem(@Body ItemConsumptionById itemConsumptionById);
+
+    @POST ("index.php")
+    Call<GetFibreCable> getFibreList(@Body AccountInfoRequest accountInfoRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> addItemConsumption(@Body AddItemConsumption addItemConsumption);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updateAssociateDetails(@Body AssociatedResquest associatedResquest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updsteFmsDetails(@Body UpdateFmsRequest updateFmsRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updateWcrEng(@Body UpdateWcrEnggRequest updateWcrEnggRequest);
+
+    @POST ("index.php")
+    Call<GetItemConumptionByIdResponse> getItemDetailsById(@Body ItemConsumptionById itemConsumptionById);
+
+    @POST ("index.php")
+    Call<CommonResponse> wcrEnggDetails(@Body UpdateWcrEnggRequest updateWcrEnggRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updateHoldCategory(@Body HoldWcrRequest holdWcrRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> wcrComplete(@Body WcrCompleteRequest wcrCompleteRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> resendCodeWcr(@Body ResendActivationCodeRequest resendActivationCodeRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updateQualityParam(@Body UpdateQualityParamRequest updateQualityParamRequest);
+
+
 }

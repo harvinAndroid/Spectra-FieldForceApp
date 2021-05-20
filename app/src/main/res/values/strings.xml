@@ -148,7 +148,7 @@
     <string name="wi_fi_ssd">WI-FI SSD</string>
     <string name="tx_power">Tx Power</string>
     <string name="save">Save</string>
-    <string name="installation_quality_parameters">Installation Quality Parameters:</string>
+    <string name="installation_quality_parameters">Installation Quality Parameters</string>
     <string name="cable_crimped_to_the_wall_properly">Cable_crimped to the wall properly</string>
     <string name="speed_test_results_shown_to_coustomer">Speed test results shown to coustomer</string>
     <string name="face_plate_mount_to_the_wall_properly">Face plate mount to the wall properly</string>
@@ -175,6 +175,30 @@
     <string name="cpe_ip">CPE IP:</string>
     <string name="ir_attached">IR Attached:</string>
     <string name="otp">OTP:</string>
+    <string name="location_with_landmark">Location with Landmark</string>
+    <string name="fiber_no_tube_wise">Fiber No. Tube Wise</string>
+    <string name="manhole_type">Manhole Type</string>
+    <string name="distance">Distance</string>
+    <string name="fiber_tube">Fiber Tube</string>
+    <string name="wi_fi_ssid">WI-FI SSID</string>
+    <string name="rx_power">Rx Power</string>
+    <string name="associated_entities_details">Associated Entities Details</string>
+    <string name="fms_details">FMS Details</string>
+    <string name="manhole_details">Manhole Details</string>
+    <string name="fibre_cable">Fibre Cable</string>
+    <string name="add_item_consumption">Add Item Consumption</string>
+    <string name="customer_end_fms_first_level">Customer End FMS(First Level)</string>
+    <string name="customer_end_fms_second_level">Customer End FMS(Second Level)</string>
+    <string name="pod_end_fms_no">POD End FMS No.:</string>
+    <string name="port_number_cx_end">Port Number (Cx End)</string>
+    <string name="port_number_pod_end">Port Number (POD End)</string>
+    <string name="fiber_no_running_no_wise">Fiber No Running No. Wise</string>
+    <string name="installation_code">Installation Code</string>
+    <string name="created_on">Created On</string>
+    <string name="wcr">WCR</string>
+    <string name="pod">POD:</string>
+    <string name="education_customer_regarding_selfcare_portal">Education customer Regarding Selfcare Portal</string>
+    <string name="update">UPDATE</string>
     <!-- <string name="item_type">Item Type</string>-->
 
 </resources>

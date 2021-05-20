@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.spectra.fieldforce.Model.SrDetailsListResponse;
+import com.spectra.fieldforce.model.SrDetailsListResponse;
 import com.spectra.fieldforce.R;
 
 import org.jetbrains.annotations.NotNull;

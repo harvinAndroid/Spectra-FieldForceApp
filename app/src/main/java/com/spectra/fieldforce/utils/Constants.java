@@ -41,5 +41,26 @@ public class Constants {
     public static final String SAVE_MATERIAL_CONSUMPTION_FLAG = "saveMaterialConsumptionFlag";
     public static final String GET_CONSUMPTION_STATUS = "getConsumptionstatus";
     public static final String GET_ALL_ITEM_MASTER = "getAllItemMaster";
+    public static final String GET_ACCOUNT_INFO="getAccountInfo";
+    public static final String GET_WCR_INFO = "getWCRInfo";
+    public static final String GET_IR_INFO = "getIRInfo";
+    public static final String GET_HOLD_CATEGORY = "WCRholdCategories";
+    public static final String GET_IRHOLD_CATEGORY = "IRHoldCategories";
+    public static final String GET_ITEM_LIST = "getItemList";
+    public static final String GET_FMS_LIST = "getFMSList";
+    //edit
+    public static final String GET_ITEM_CONSUMPTION_BY_ID = "getItemConsumtionByID";
+    public static final String GET_FIBRE_CABLE = "getFiberCable";
+    public static final String PROVISIONING = "provisioning";
+    public static final String GET_SUBITEM_LIST = "getSubItemList";
+    public static final String POST_ITEM_CONSUMPTIONS = "postItemConsumptions";
+    public static final String UPDATE_ASSOCIATE = "updateAssociate";
+    public static final String UPDATE_FMS_DETAILS ="updateFMSdetails";
+    public static final String UPDATE_WCR_ENGINER ="updateWCREngineer";
+    public static final String HOLD_WCR = "holdWCR";
+    public static final String WCR_COMPLETE = "WCRComplete";
+    public static final String RESEND_NAV_WCR = "resendNavWCR";
+    public static final String UPDATE_POST_HOLDIR_QUALITY= "updatePostHoldIRQuality";
+
 
 }
