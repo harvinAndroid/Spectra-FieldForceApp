@@ -176,7 +176,7 @@ public class IrInfoResponse {
         private List<ItemConsumtion> itemConsumtionList;
         @SerializedName("InstallationItemList")
         @Expose
-        private List<Object> installationItemList ;
+        private List<InstallationItemList> installationItemList ;
         @SerializedName("General")
         @Expose
         private General general;
@@ -203,11 +203,11 @@ public class IrInfoResponse {
             this.itemConsumtionList = itemConsumtionList;
         }
 
-        public List<Object> getInstallationItemList() {
+        public List<InstallationItemList> getInstallationItemList() {
             return installationItemList;
         }
 
-        public void setInstallationItemList(List<Object> installationItemList) {
+        public void setInstallationItemList(List<InstallationItemList> installationItemList) {
             this.installationItemList = installationItemList;
         }
 
@@ -234,6 +234,56 @@ public class IrInfoResponse {
         public void setInstallationQty(InstallationQty installationQty) {
             this.installationQty = installationQty;
         }
+
+    }
+
+    public class InstallationItemList{
+        private String Item;
+        private String SubItem;
+        private String ItemType;
+        private String Quantity;
+        private String ItemID;
+
+        public String getItem() {
+            return Item;
+        }
+
+        public String getSubItem() {
+            return SubItem;
+        }
+
+        public String getItemType() {
+            return ItemType;
+        }
+
+        public String getQuantity() {
+            return Quantity;
+        }
+
+        public String getItemID() {
+            return ItemID;
+        }
+
+        public String getSerialNumber() {
+            return SerialNumber;
+        }
+
+        public String getIRGUID() {
+            return IRGUID;
+        }
+
+        public String getCANID() {
+            return CANID;
+        }
+
+        public String getItemCode() {
+            return ItemCode;
+        }
+
+        private String SerialNumber;
+        private String IRGUID;
+        private String CANID;
+        private String ItemCode;
 
     }
 

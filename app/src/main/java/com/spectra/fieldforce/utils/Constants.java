@@ -59,8 +59,8 @@ public class Constants {
     public static final String UPDATE_WCR_ENGINER ="updateWCREngineer";
     public static final String HOLD_WCR = "holdWCR";
     public static final String WCR_COMPLETE = "WCRComplete";
-    public static final String RESEND_NAV_WCR = "resendNavWCR";
+    public static final String RESEND_CODE = "resendCode";
     public static final String UPDATE_POST_HOLDIR_QUALITY= "updatePostHoldIRQuality";
-
+    public static final String GET_ACCOUNT_DETAILS = "getAccountDetails";
 
 }

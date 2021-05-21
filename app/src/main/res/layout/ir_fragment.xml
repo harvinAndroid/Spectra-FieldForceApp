@@ -123,6 +123,7 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="0dp"
+                android:visibility="gone"
                 android:background="@color/gray"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp"
@@ -132,96 +133,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 >
 
-                <TextView
-                    android:id="@+id/et_item_type1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/customer_business_segment"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/tv_customer_business"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp"/>
-
-                <TextView
-                    android:id="@+id/tv_item_type3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pod"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item_type2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/tv_pod"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item_type3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp"/>
-
-                <TextView
-                    android:id="@+id/tv_item_type5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/product"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item_type4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/tv_product"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item_type5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item_type7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/installation_date"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item_type6"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/tv_installation_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="bbbb"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item_type7"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
+                <include
+                    android:id="@+id/layout_customerDetails"
+                    layout="@layout/ir_customer_details"
+                    />
 
             </LinearLayout>
 
@@ -261,222 +176,15 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/linear_nine"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_weight="1">
+                app:layout_constraintEnd_toEndOf="parent">
 
-                <Button
-                    android:id="@+id/btn_item_consumption1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_item_consumption"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
-                    android:textSize="@dimen/_16sdp"
-                    android:background="@color/colorButton"
-                    android:layout_margin="@dimen/_20sdp"
-                    android:textColor="@android:color/white"
+                <include
+                    android:id="@+id/layout_itemcousumption"
+                    layout="@layout/ir_item_consumption_details"
                     />
-
-                <View
-                    android:id="@+id/view3"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:background="@color/color_light_blue"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:layout_margin="@dimen/_5sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_item_consumption"
-                    />
-
-
-                <TextView
-                    android:id="@+id/et_item1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item"
-                    app:layout_constraintTop_toBottomOf="@+id/view3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp"/>
-
-                <TextView
-                    android:id="@+id/et_item3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sub_item"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp"/>
-
-                <TextView
-                    android:id="@+id/et_item5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/item_code"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item6"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="bbbb"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item7"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-
-                <TextView
-                    android:id="@+id/et_item9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Serail No.:"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="bbbb"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item9"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/quantity"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item10"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="bbbb"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item11"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textA"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_30sdp"
-                        android:background="@drawable/button_background"
-                        android:text="@string/edit"
-                        android:layout_weight=".5"
-                        android:gravity="center"
-                        android:textColor="@android:color/white"
-                        app:layout_constrainedWidth="true"
-                        android:layout_margin="@dimen/_10sdp"
-                        app:layout_constraintEnd_toStartOf="@id/textB"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_item12"/>
-
-                    <TextView
-                        android:id="@+id/textB"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_30sdp"
-                        android:padding="4dp"
-                        android:layout_weight=".5"
-                        android:text="@string/delete"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/button_black"
-                        android:gravity="center"
-                        app:layout_constraintStart_toEndOf="@+id/textA"
-                        app:layout_constraintTop_toBottomOf="@+id/et_item12"/>
-
-
-                </LinearLayout>
-
             </LinearLayout>
 
 
@@ -512,6 +220,7 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="0dp"
+                android:visibility="gone"
                 android:background="@color/gray"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp"
@@ -519,234 +228,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/linear_six"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_weight="1">
+                >
 
-                <Button
-                    android:id="@+id/btn_item_consumption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Add Equipment"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
-                    android:textSize="@dimen/_16sdp"
-                    android:background="@color/colorButton"
-                    android:layout_margin="@dimen/_20sdp"
-                    android:textColor="@android:color/white"
+                <include
+                    android:id="@+id/layout_add_equipment"
+                    layout="@layout/ir_add_equipment"
                     />
-
-                <View
-                    android:id="@+id/view4"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:background="@color/color_light_blue"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:layout_margin="@dimen/_5sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_item_consumption"
-                    />
-
-
-                <TextView
-                    android:id="@+id/et_ite1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item"
-                    app:layout_constraintTop_toBottomOf="@+id/view4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_ite2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp"/>
-
-                <TextView
-                    android:id="@+id/et_ite3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sub_item"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_ite4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp"/>
-
-                <TextView
-                    android:id="@+id/et_ite5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_ite6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="@string/item_type"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_ite7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/item_code"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite6"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_ite8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="bbbb"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite7"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-
-                <TextView
-                    android:id="@+id/et_ite9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Serial No.:/Lot no."
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_ite10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="bbbb"
-                    app:layout_constraintTop_toBottomOf="@+id/et_ite9"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/quantity"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item14"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/et_item15"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:text="bbbb"
-                    app:layout_constraintTop_toBottomOf="@+id/et_item14"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_14sdp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_30sdp"
-                        android:background="@drawable/button_background"
-                        android:text="@string/edit"
-                        android:layout_weight=".5"
-                        android:gravity="center"
-                        android:textColor="@android:color/white"
-                        app:layout_constrainedWidth="true"
-                        android:layout_margin="@dimen/_10sdp"
-                        app:layout_constraintEnd_toStartOf="@id/textB"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_item12"/>
-
-                    <TextView
-                        android:id="@+id/tv_delete"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_30sdp"
-                        android:padding="4dp"
-                        android:layout_weight=".5"
-                        android:text="@string/delete"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/button_black"
-                        android:gravity="center"
-                        app:layout_constraintStart_toEndOf="@+id/tv_edit"
-                        app:layout_constraintTop_toBottomOf="@+id/et_item12"/>
-
-
-                </LinearLayout>
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/viewfour"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@color/color_light_blue"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_5sdp"
 
-                android:layout_marginEnd="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/linear_eight"
-                />
 
             <LinearLayout
                 android:id="@+id/linea11"
@@ -756,10 +247,10 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                app:layout_constraintTop_toBottomOf="@+id/viewfour"
+                app:layout_constraintTop_toBottomOf="@+id/linear_eight"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_weight="1">
+                >
 
                 <TextView
                     android:id="@+id/et_cpe_mac"
@@ -780,69 +271,18 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="0dp"
+                android:visibility="gone"
                 android:background="@color/gray"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 app:layout_constraintTop_toBottomOf="@+id/linea11"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_weight="1">
-
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_cpe_mac_shared"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_cpe_mac_shared"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:hint="@string/cpe_mac_shared"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/tv_cust_save"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:text="@string/save"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:gravity="center"
-                    android:layout_marginBottom="@dimen/_30sdp"
-                    android:layout_marginStart="@dimen/_40sdp"
-                    android:layout_marginEnd="@dimen/_40sdp"
-                    android:background="@drawable/button_background"
-                    app:layout_constraintTop_toBottomOf="@+id/et_speed_lan"
-                    android:textSize="@dimen/_16sdp"
-                    android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent">
+                <include
+                    android:id="@+id/layout_cpemac"
+                    layout="@layout/ir_cpe_mac"
                     />
-
             </LinearLayout>
 
 
@@ -858,7 +298,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linear12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_weight="1">
+                >
 
                 <TextView
                     android:id="@+id/et_installation_quality"
@@ -875,18 +315,7 @@
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/viewfive"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@color/color_light_blue"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/linea13"
-                />
+
 
             <LinearLayout
                 android:id="@+id/linear14"
@@ -895,392 +324,19 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_height="0dp"
+                android:visibility="gone"
                 android:background="@color/gray"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linea13">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_ip_add_subnet"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_ip_add_subnet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/ip_address_subnet_pool"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_device_port"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_device_port"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/device_port_no"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_first_usable_ip"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_first_usable_ip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/first_usable_ip"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_last_usable_ip"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_last_usable_ip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/last_usable_ip"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_subnet_mask"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_subnet_mask"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/subnet_mask"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_gateway"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_gateway"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/gateway"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_primary_dns"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_primary_dns"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/primary_dns"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_seconday_dns"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_secondary_dns"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/secondary_dns"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_device_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_device_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/device_id"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_cpe_ip"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_cpe_ip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/cpe_ip"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_ir_attached"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_ir_attached"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/ir_attached"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-                <TextView
-                    android:id="@+id/tv_general_details_save"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:text="@string/save"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:gravity="center"
-                    android:background="@drawable/button_background"
-                    android:textSize="@dimen/_16sdp"
-                    android:textColor="@android:color/white"
+                <include
+                    android:id="@+id/layout_general_details"
+                    layout="@layout/ir_general_details"
                     />
+
             </LinearLayout>
 
-            <View
-                android:id="@+id/view6"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@color/color_light_blue"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_margin="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/linear14"
-                />
 
             <LinearLayout
                 android:id="@+id/linea15"
@@ -1290,7 +346,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                app:layout_constraintTop_toBottomOf="@+id/view6"
+                app:layout_constraintTop_toBottomOf="@+id/linear14"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -1315,116 +371,19 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_height="0dp"
+                android:visibility="gone"
                 android:background="@color/gray"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linea15">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_engg_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/engineer_name"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_installation_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="Installation Code"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_created_on"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:backgroundTint="@color/color_light_blue"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/otp"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:lines="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/save_engg_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:text="@string/save"
-                    android:gravity="center"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_40sdp"
-                    android:layout_marginStart="@dimen/_40sdp"
-                    android:textSize="@dimen/_16sdp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/button_background"
+                <include
+                    android:id="@+id/layout_engg_details"
+                    layout="@layout/ir_engg_details"
                     />
-            </LinearLayout>
 
-            <View
-                android:id="@+id/view8"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@color/color_light_blue"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_margin="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/linear16"
-                />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linea18"
@@ -1434,7 +393,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                app:layout_constraintTop_toBottomOf="@+id/view8"
+                app:layout_constraintTop_toBottomOf="@+id/linear16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -1459,6 +418,7 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_height="0dp"
+                android:visibility="gone"
                 android:background="@color/gray"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1538,17 +498,6 @@
                     />
             </LinearLayout>
 
-            <View
-                android:id="@+id/view9"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@color/color_light_blue"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_margin="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/linear19"
-                />
 
             <LinearLayout
                 android:id="@+id/linea20"
@@ -1558,7 +507,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                app:layout_constraintTop_toBottomOf="@+id/view9"
+                app:layout_constraintTop_toBottomOf="@+id/linear19"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -1584,6 +533,7 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_height="0dp"
+                android:visibility="gone"
                 android:background="@color/gray"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1631,10 +581,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/linear21">
 
                 <TextView
-                    android:id="@+id/tv_wcr_complete"
+                    android:id="@+id/tv_ir_complete"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"
-                    android:text="@string/wcr_completed"
+                    android:text="@string/ir"
                     android:gravity="center"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"

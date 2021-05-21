@@ -1,7 +1,10 @@
 package com.spectra.fieldforce.model.gpon.request;
 
 public class ResendActivationCodeRequest {
-    private String Authkey,Action,WCRguidId,Segment,ItemType;
+    private String Authkey;
+    private String Action;
+    private String IsIR;
+    private String GUID;
 
     public void setAuthkey(String authkey) {
         Authkey = authkey;
@@ -11,15 +14,20 @@ public class ResendActivationCodeRequest {
         Action = action;
     }
 
-    public void setWCRguidId(String WCRguidId) {
-        this.WCRguidId = WCRguidId;
+    public void setIsIR(String isIR) {
+        IsIR = isIR;
     }
 
-    public void setSegment(String segment) {
-        Segment = segment;
+    public void setGUID(String GUID) {
+        this.GUID = GUID;
     }
 
-    public void setItemType(String itemType) {
-        ItemType = itemType;
+    public void setType(String type) {
+        Type = type;
     }
+
+    private String Type;
+
+
 }
+

@@ -7,6 +7,9 @@
         <variable
             name="event"
             type="com.spectra.fieldforce.fragment.ProvisioningScreenFragment" />
+        <variable
+            name="response"
+            type="com.spectra.fieldforce.model.gpon.response.AccountDetailsResponse.Response" />
 
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
+            android:text="@{response.accountNumber}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/tv_cust_account_id"
             app:layout_constraintStart_toEndOf="@+id/tv_cust_account_id"
@@ -72,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:text="@{response.name}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_cust_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_cust_account_id" />
@@ -94,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:text="@{response.city}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_city_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_customer_name" />
@@ -114,6 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:text="@{response.productname}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_city_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_city" />
@@ -136,6 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:text="@{response.building}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_city_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_product" />
@@ -146,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/segment"
+            android:text="@string/status"
             android:textColor="@color/colorBlack"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
@@ -157,6 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:text="@{response.status}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_customer_account_id"
             app:layout_constraintTop_toBottomOf="@+id/tv_building_society" />
@@ -179,6 +188,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:text="@{response.address}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_city_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_building_status" />
@@ -262,7 +272,7 @@
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout

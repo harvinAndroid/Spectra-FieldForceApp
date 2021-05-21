@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:hintTextAppearance="@style/AppearanceText">
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/sp_cpe_mac_shared"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:visibility="invisible" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_cpe_mac_shared"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:backgroundTint="@color/color_light_blue"
+            android:hint="@string/cpe_mac_shared"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHighlight="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_cust_save"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:text="@string/save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:layout_marginStart="@dimen/_40sdp"
+        android:layout_marginEnd="@dimen/_40sdp"
+        android:background="@drawable/button_background"
+        app:layout_constraintTop_toBottomOf="@+id/et_speed_lan"
+        android:textSize="@dimen/_16sdp"
+        android:textColor="@android:color/white"
+        />
+
+
+</LinearLayout>
+</layout>

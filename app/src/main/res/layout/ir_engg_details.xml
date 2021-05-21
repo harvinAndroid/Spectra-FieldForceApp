@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="engineer"
+            type="com.spectra.fieldforce.model.gpon.response.IrInfoResponse.Engineer" />
+    </data>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextAppearance="@style/AppearanceText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_engg_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:backgroundTint="@color/color_light_blue"
+            android:drawableEnd="@drawable/ic_expand_down"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/engineer_name"
+            android:text="@{@string/installation_date + engineer.engName}"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHighlight="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextAppearance="@style/AppearanceText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_installation_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:backgroundTint="@color/color_light_blue"
+            android:drawableEnd="@drawable/ic_expand_down"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="Installation Code"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHighlight="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextAppearance="@style/AppearanceText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_created_on"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:backgroundTint="@color/color_light_blue"
+            android:drawableEnd="@drawable/ic_expand_down"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/otp"
+            android:text="@{@string/installation_date + engineer.otp}"
+
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHighlight="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/save_engg_details"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:text="@string/save"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_40sdp"
+        android:textSize="@dimen/_16sdp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_background"
+        />
+
+</LinearLayout>
+</layout>

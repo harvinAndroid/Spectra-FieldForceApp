@@ -27,7 +27,6 @@ import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
-import com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
@@ -70,6 +69,12 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
       Listener();
       hold();
       qualityParam();
+      binding.tvResendService.setOnClickListener(v -> {
+          resendCode("Activation");
+      });
+        binding.tvResendInstallation.setOnClickListener(v -> {
+            resendCode("Installation");
+        });
     }
 
     public void getWcrInfo() {
@@ -214,11 +219,13 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
     }
 
 
-    public void resendCode() {
+    public void resendCode(String type) {
         ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
         resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
-        resendActivationCodeRequest.setAction(Constants.RESEND_NAV_WCR);
-       // accountInfoRequest.setCanId("221373");
+        resendActivationCodeRequest.setAction(Constants.RESEND_CODE);
+       resendActivationCodeRequest.setGUID("febd0a7f-4681-ea11-80f1-000d3af224b9");
+       resendActivationCodeRequest.setIsIR("false");
+       resendActivationCodeRequest.setType(type);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.resendCodeWcr(resendActivationCodeRequest);

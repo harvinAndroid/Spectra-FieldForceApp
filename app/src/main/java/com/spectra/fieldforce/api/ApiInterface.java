@@ -23,6 +23,7 @@ import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.AccInfoResponse;
+import com.spectra.fieldforce.model.gpon.response.AccountDetailsResponse;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetFibreCable;
 import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
@@ -206,6 +207,9 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<CommonClassResponse> updateQualityParam(@Body UpdateQualityParamRequest updateQualityParamRequest);
+
+    @POST("index.php")
+    Call<AccountDetailsResponse> getAccountDetails(@Body AccountInfoRequest accountInfoRequest);
 
 
 }

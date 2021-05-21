@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="event"
+            type="com.spectra.fieldforce.adapter.IrEquipmentConsumpAdapter" />
+
+        <variable
+            name="equipment"
+            type="com.spectra.fieldforce.model.gpon.response.IrInfoResponse.InstallationItemList" />
+
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/et_ite1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`Item :  ` + equipment.item}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp" />
+
+    <TextView
+        android:id="@+id/et_ite2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`SubItem :  ` + equipment.subItem}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_14sdp"/>
+
+    <TextView
+        android:id="@+id/et_ite3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{`ItemType :  ` + equipment.itemType}"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp" />
+
+    <TextView
+        android:id="@+id/et_ite4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`ItemCode :  ` + equipment.itemCode}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_14sdp"/>
+
+    <TextView
+        android:id="@+id/et_ite5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@{`Serial No.:/Lot no. :  ` + equipment.serialNumber}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp" />
+
+    <TextView
+        android:id="@+id/et_ite6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`Quantity :  ` + equipment.quantity}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_14sdp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_edit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:background="@drawable/button_background"
+            android:text="@string/edit"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:layout_margin="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:padding="4dp"
+            android:layout_weight=".5"
+            android:text="@string/delete"
+            android:layout_margin="@dimen/_10sdp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_black"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+</LinearLayout>
+</layout>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="customerDetails"
+            type="com.spectra.fieldforce.model.gpon.response.IrInfoResponse.Ir" />
+    </data>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/et_item_type1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{@string/customer_business_segment    + customerDetails.businessSegment}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp" />
+
+
+    <TextView
+        android:id="@+id/tv_item_type3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{@string/pod  + customerDetails.pod}"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp" />
+
+
+
+    <TextView
+        android:id="@+id/tv_item_type5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@{@string/product  + customerDetails.product}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp" />
+
+    <TextView
+        android:id="@+id/et_item_type7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@{@string/installation_date + customerDetails.installationdate}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp" />
+
+</LinearLayout>
+</layout>
