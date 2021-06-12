@@ -34,7 +34,6 @@ public class WcrItemConsumptionListAdapter extends RecyclerView.Adapter<WcrItemC
     @Override
     public WcrItemConsumptionListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                                          int viewType) {
-
          binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.wcr_itemsconsumption_list, parent, false);
@@ -54,18 +53,18 @@ public class WcrItemConsumptionListAdapter extends RecyclerView.Adapter<WcrItemC
 
     @Override
     public int getItemCount() {
-
         return itemConsumtions.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
          WcrItemsconsumptionListBinding binding;
-        MyViewHolder( WcrItemsconsumptionListBinding binding) {
-            super(binding.getRoot());
+
+         MyViewHolder(WcrItemsconsumptionListBinding binding) {
+           super(binding.getRoot());
            this.binding = binding;
         }
 
     }
+
 
 }

@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/wcr_fragment">
+    <data>
+        <variable
+            name="Fms"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.FMSDetails" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -61,6 +66,7 @@
                         android:focusableInTouchMode="false"
                         android:hint="@string/customer_end_fms_first_level"
                         android:imeOptions="actionNext"
+                        android:text="@{Fms.fmsfirst}"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
@@ -87,6 +93,7 @@
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableEnd="@drawable/ic_expand_down"
                         android:focusable="false"
+                        android:text="@{Fms.fmssecond}"
                         android:focusableInTouchMode="false"
                         android:hint="@string/customer_end_fms_second_level"
                         android:imeOptions="actionNext"
@@ -109,6 +116,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorPrimary"
                         android:hint="@string/pod_end_fms_no"
+                        android:text="@{Fms.podendfmsno}"
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
@@ -130,6 +138,7 @@
                         android:backgroundTint="@color/colorPrimary"
                          android:hint="@string/port_number_cx_end"
                         android:imeOptions="actionNext"
+                        android:text="@{Fms.portnocxend}"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
@@ -151,6 +160,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorPrimary"
                        android:hint="@string/port_number_pod_end"
+                        android:text="@{Fms.podendfmsno}"
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"

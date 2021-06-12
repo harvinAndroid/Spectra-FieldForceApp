@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.spectra.fieldforce.R;
 
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener{
     private boolean isDestroyed;
     LinearLayout layoutProgressBar;
 
@@ -45,6 +46,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (bundle != null)
             intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 
     /**

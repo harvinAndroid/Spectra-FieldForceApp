@@ -37,6 +37,7 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.fragment.DashboardFragment;
 import com.spectra.fieldforce.fragment.WelcomeFragment;
 import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
@@ -46,7 +47,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static PrefConfig prefConfig;
     private static final String TAG = "MainActivity";
@@ -86,7 +87,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (prefConfig.readLoginStatus()) {
                 navigationDrawerSetup();
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-            } else {
+            }else if (prefConfig.LoginStatus()){
+                navigationDrawerSetup();
+              /* Intent i = new Intent(this,DashBoardActivity.class);
+               startActivity(i);
+               finish();*/
+                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
+
+            }
+            else {
                 finish();
                 startActivity(new Intent(activity, LoginActivity.class));
             }
@@ -243,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
             });
+
             TextView btnWiFi = dView.findViewById(R.id.nav_Wifi);
             btnWiFi.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
@@ -258,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             });
+
             TextView btnSpeed = dView.findViewById(R.id.nav_Speed);
             btnSpeed.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
@@ -268,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TextView btnGpon = dView.findViewById(R.id.nav_gpon);
             btnGpon.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
-                Intent i = new Intent(MainActivity.this,ProvisioningTabActivity.class);
+                Intent i = new Intent(MainActivity.this,BucketTabActivity.class);
                 startActivity(i);
                 finish();
                /* final String appPackageName = "valuelabs.spectra.com";
@@ -287,6 +298,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             btnLogout.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
                 MainActivity.prefConfig.writeLoginStatus(false);
+                MainActivity.prefConfig.LoginStatus(false);
                 MainActivity.prefConfig.writeName("User");
                 startActivity(new Intent(activity, MainActivity.class));
                 finish();

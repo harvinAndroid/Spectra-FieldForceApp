@@ -34,7 +34,7 @@
                     android:id="@+id/txtHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/your_assignments"
+                    android:text="@string/dashboard"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_18sdp"
                     android:textStyle="bold" />

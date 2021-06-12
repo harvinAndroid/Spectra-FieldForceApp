@@ -10,29 +10,41 @@ import com.spectra.fieldforce.model.ChangeBinRequest;
 import com.spectra.fieldforce.model.ChangeBinResponse;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.EndtimeRequest;
+import com.spectra.fieldforce.model.LoginResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
+import com.spectra.fieldforce.model.gpon.request.AddBucketListRequest;
 import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
+import com.spectra.fieldforce.model.gpon.request.AddProvisioningRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
-import com.spectra.fieldforce.model.gpon.request.EditItemConsumptionNavRequest;
-import com.spectra.fieldforce.model.gpon.request.EnggDetailsResquest;
+import com.spectra.fieldforce.model.gpon.request.BucketListRequest;
+import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
+import com.spectra.fieldforce.model.gpon.request.IRCompleteRequest;
 import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
+import com.spectra.fieldforce.model.gpon.request.ReleaseMyBucket;
 import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
+import com.spectra.fieldforce.model.gpon.request.ResendCodeIRRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateCpeMacRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateGeneralDetails;
+import com.spectra.fieldforce.model.gpon.request.UpdateIREngineer;
+import com.spectra.fieldforce.model.gpon.request.UpdateManHoleRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.AccInfoResponse;
 import com.spectra.fieldforce.model.gpon.response.AccountDetailsResponse;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
+import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
 import com.spectra.fieldforce.model.gpon.response.GetFibreCable;
 import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemConumptionByIdResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetManholeById;
+import com.spectra.fieldforce.model.gpon.response.GetMyBucketList;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
 import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
 import com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse;
-import com.spectra.fieldforce.model.gpon.response.WcrInfoResponse;
 import com.spectra.fieldforce.model.ItemConsumption.DeleteItemConsumption;
 import com.spectra.fieldforce.model.ItemConsumption.GetItemConsumption;
 import com.spectra.fieldforce.model.ItemConsumption.GetItemConsumptionRequest;
@@ -63,7 +75,7 @@ import retrofit2.http.POST;
 public interface ApiInterface {
 
     @POST ("index.php")
-    Call<JsonElement> performUserLogin(@Body LoginRequest loginRequest);
+    Call<LoginResponse> performUserLogin(@Body LoginRequest loginRequest);
    // Call<User> performRegistration(@Query("name") String Name, @Query("user_name") String UserName, @Query("user_password") String UserPass);
 
 
@@ -211,5 +223,45 @@ public interface ApiInterface {
     @POST("index.php")
     Call<AccountDetailsResponse> getAccountDetails(@Body AccountInfoRequest accountInfoRequest);
 
+    @POST("index.php")
+    Call<CommonClassResponse> addProvisioning(@Body AddProvisioningRequest addProvisioningRequest);
 
+    @POST("index.php")
+    Call<CommonClassResponse> addManholeItem(@Body UpdateManHoleRequest updateManHoleRequest);
+
+    @POST("index.php")
+    Call<GetAllBucketList> getAllBucketList(@Body BucketListRequest bucketListRequest);
+
+
+    @POST("index.php")
+    Call<CommonClassResponse> deleteItemById(@Body DeleteItemRequest deleteItemRequest);
+
+
+    @POST("index.php")
+    Call<GetManholeById> editManholeById(@Body UpdateManHoleRequest updateManHoleRequest);
+
+    @POST("index.php")
+    Call<CommonClassResponse> getResendCodeIR(@Body ResendCodeIRRequest resendActivationCodeRequest);
+
+    @POST("index.php")
+    Call<CommonClassResponse> updateGeneralDetails(@Body UpdateGeneralDetails updateGeneralDetails);
+
+
+    @POST("index.php")
+    Call<CommonClassResponse> updateIrEnginer(@Body UpdateIREngineer updateIREngineer);
+
+    @POST("index.php")
+    Call<CommonClassResponse> updateCpeMac(@Body UpdateCpeMacRequest updateCpeMacRequest);
+
+    @POST("index.php")
+    Call<CommonClassResponse> updateIR(@Body   IRCompleteRequest irCompleteRequest);
+
+    @POST("index.php")
+    Call<CommonClassResponse> addItemToBucket(@Body AddBucketListRequest addBucketListRequest);
+
+    @POST("index.php")
+    Call<GetMyBucketList> getMyBucketList(@Body BucketListRequest bucketListRequest);
+
+    @POST("index.php")
+    Call<CommonResponse> releaseMyBucket(@Body ReleaseMyBucket releaseMyBucket);
 }

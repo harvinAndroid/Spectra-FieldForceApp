@@ -13,10 +13,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.BucketTabActivity;
+import com.spectra.fieldforce.adapter.WcrAddManholeAdapter;
+import com.spectra.fieldforce.adapter.WcrCompletteItemConsumptionListAdapter;
+import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrFragmentBinding;
@@ -24,8 +30,10 @@ import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.ItemConsumption.NrgpDetails;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
+import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
+import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetFibreCable;
 import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
@@ -41,25 +49,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
     private WcrFragmentBinding binding;
     private ArrayList<String> FmsType;
     private ArrayList<String> FmsId;
-    private ArrayList<String> ManholeType;
     private List<GetFmsListResponse.Fms> fmsList;
-    private List<GetFibreCable.Datum> fibreCable;
     private ArrayList<String> fmsName;
     private ArrayList<String> firstFmsID;
-    private ArrayList<String> fibreType;
-    private ArrayList<String> fibreValue;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
     private String strGuuId,strSegment, strfmsId,strSecFmsId;
     private ArrayList<String> itemType;
-
+    private String strCanId ,strholdId,strProductSegment;
+    private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
+    private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
 
     public WcrFragment() {
-
     }
 
     @Override
@@ -70,8 +75,21 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.rl_back) {
+            Intent i = new Intent(getActivity(), BucketTabActivity.class);
+            startActivity(i);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().finish();
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.searchtoolbar.rlBack.setOnClickListener(this);
+        binding.searchtoolbar.tvLang.setText("WCR");
+        strCanId = requireArguments().getString("canId");
         init();
         initOne();
     }
@@ -80,21 +98,60 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         getWcrInfo();
         getFmsList();
         Type();
+
         binding.layoutItemConsumption.btnItemConsumption1.setOnClickListener(v -> {
             @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-          WcrEditItemConsumption wcrItemConsumption = new WcrEditItemConsumption();
+            WcrItemConsumption wcrItemConsumption = new WcrItemConsumption();
+            Bundle bundle = new Bundle();
+            bundle.putString("strGuuId", strGuuId);
             t1.replace(R.id.frag_container, wcrItemConsumption);
+            wcrItemConsumption.setArguments(bundle);
             t1.commit();
-
-          /*  WcrItemConsumption wcrItemConsumption = new WcrItemConsumption();
-            t1.replace(R.id.frag_container, wcrItemConsumption);
-            t1.commit();*/
         });
-        getFibreCable();
-        binding.layoutAssociatedDetails.btSubmitAssociate.setOnClickListener(v ->
-                updateAssociateDetails());
-        binding.layoutWcrFms.btSubmitFmsDetails.setOnClickListener(v ->
-                updateFmsDetails());
+        binding.layoutAssociatedDetails.btSubmitAssociate.setOnClickListener((View v) -> {
+            String idb = Objects.requireNonNull(binding.layoutAssociatedDetails.etIdbLength.getText()).toString();
+            String link = Objects.requireNonNull(binding.layoutAssociatedDetails.etLinkBudget.getText()).toString();
+
+            if(idb.isEmpty()){
+                Toast.makeText(getContext(),"Please Enter IDB Length",Toast.LENGTH_LONG).show();
+            }else if(link.isEmpty()){
+                Toast.makeText(getContext(),"Please Enter Link Budget",Toast.LENGTH_LONG).show();
+            }else{
+                updateAssociateDetails();
+            }
+            }
+        );
+        binding.layoutWcrFms.btSubmitFmsDetails.setOnClickListener(v -> {
+                    if (binding.layoutWcrFms.spCustomerEndFms.getSelectedItem().toString().equals("Select Fms Type")) {
+                        Toast.makeText(getContext(), "Please Select Fms Type", Toast.LENGTH_LONG).show();
+                    } else if (binding.layoutWcrFms.spCustomerEndFmsSec.getSelectedItem().toString().equals("Select Customer End FMS(Second Level)")) {
+                        Toast.makeText(getContext(), "Please Select Customer End FMS(Second Level)", Toast.LENGTH_LONG).show();
+                    } else if (Objects.requireNonNull(binding.layoutWcrFms.etPodEnd.getText()).toString().equals("POD End FMS No.:")) {
+                        Toast.makeText(getContext(), "Please Enter Pod End Fms", Toast.LENGTH_LONG).show();
+                    } else if (Objects.requireNonNull(binding.layoutWcrFms.etPortNumCx.getText()).toString().equals("Port Number (Cx End)")) {
+                        Toast.makeText(getContext(), "Please Enter Port Number CX End", Toast.LENGTH_LONG).show();
+                    } else if (Objects.requireNonNull(binding.layoutWcrFms.etPortnumEnd.getText()).toString().equals("Port Number (POD End)")) {
+                        Toast.makeText(getContext(), "Please Enter Port Number Pod End", Toast.LENGTH_LONG).show();
+                    } else {
+                        updateFmsDetails();
+                    }
+                }
+        );
+        binding.layoutmanholDetails.btnAddManhole.setOnClickListener(v -> {
+            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+            WcrAddManholeFragment wcrAddManholeFragment = new WcrAddManholeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("strCanId", strCanId);
+            bundle.putString("strGuuId", strGuuId);
+            wcrAddManholeFragment.setArguments(bundle);
+            t1.replace(R.id.frag_container, wcrAddManholeFragment);
+            t1.commit();
+        });
+        binding.tvWcrSave.setOnClickListener(v -> updateWcrComplete());
+        binding.tvWcrSave.setOnClickListener((View v) -> {
+
+            updateWcrEnginer();
+        });
     }
 
 
@@ -104,10 +161,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         binding.layoutWcrFms.spCustomerEndFms.setOnItemSelectedListener(this);
         binding.layoutWcrFms.etCustomerEndFmsSec.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFmsSec.performClick());
         binding.layoutWcrFms.spCustomerEndFmsSec.setOnItemSelectedListener(this);
-        binding.layoutmanholDetails.etManholeType.setOnClickListener(v-> binding.layoutmanholDetails.spManholeType.performClick());
-        binding.layoutmanholDetails.spManholeType.setOnItemSelectedListener(this);
-        binding.layoutmanholDetails.etFibreCable.setOnClickListener(v-> binding.layoutmanholDetails.spFibreCable.performClick());
-        binding.layoutmanholDetails.spFibreCable.setOnItemSelectedListener(this);
+
         binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
         binding.spHoldCategory.setOnItemSelectedListener(this);
         binding.linearFive.setVisibility(View.VISIBLE);
@@ -193,6 +247,29 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
+    private void listener(){
+        if(strSegment.equals("Business")){
+            binding.linearFour.setVisibility(View.VISIBLE);
+            binding.linearNine.setVisibility(View.VISIBLE);
+            binding.linearSix.setVisibility(View.VISIBLE);
+            binding.linea11.setVisibility(View.VISIBLE);
+            binding.linea13.setVisibility(View.VISIBLE);
+            binding.linea15.setVisibility(View.VISIBLE);
+            binding.linea18.setVisibility(View.GONE);
+            binding.linea20.setVisibility(View.VISIBLE);
+        }else if(strSegment.equals("Home")){
+            binding.linearFour.setVisibility(View.VISIBLE);
+            binding.linea11.setVisibility(View.VISIBLE);
+            binding.linearNine.setVisibility(View.GONE);
+            binding.linearSix.setVisibility(View.GONE);
+            binding.linea13.setVisibility(View.GONE);
+            binding.linearNine.setVisibility(View.VISIBLE);
+            binding.linea15.setVisibility(View.VISIBLE);
+            binding.linea18.setVisibility(View.VISIBLE);
+            binding.linea20.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void getFmsList() {
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
@@ -231,43 +308,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
-    private void getFibreCable() {
-        AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
-        accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
-        accountInfoRequest.setAction(Constants.GET_FIBRE_CABLE);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<GetFibreCable> call = apiService.getFibreList(accountInfoRequest);
-        call.enqueue(new Callback<GetFibreCable>() {
-            @Override
-            public void onResponse(Call<GetFibreCable> call, Response<GetFibreCable> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    try {
-                        fibreCable = response.body().response.data;
-                        fibreType = new ArrayList<>();
-                        fibreValue = new ArrayList<>();
-                        fibreType.add("Select Fibre Type");
-                        for (GetFibreCable.Datum datum : fibreCable)
-                            fibreType.add(datum.type);
-                        for (GetFibreCable.Datum data : fibreCable)
-                            fibreValue.add(data.value);
-                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fibreType);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.layoutmanholDetails.spFibreCable.setAdapter(adapter1);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<GetFibreCable> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }
 
     private void Type() {
         FmsType = new ArrayList<String>();
@@ -280,15 +321,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);
-
-        ManholeType = new ArrayList<String>();
-        ManholeType.add("Select Manhole Type");
-        ManholeType.add("In");
-        ManholeType.add("Out");
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, ManholeType);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.layoutmanholDetails.spManholeType.setAdapter(adapter1);
-
 
 
         holdCategory = new ArrayList<String>();
@@ -309,6 +341,17 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spHoldCategory.setAdapter(adapter2);
+
+        binding.saveHold.setOnClickListener(v -> {
+            if (binding.spHoldCategory.getSelectedItem().toString().equals("Hold Category")) {
+                Toast.makeText(getContext(), "Please Select Hold Category", Toast.LENGTH_LONG).show();
+            } else if (Objects.requireNonNull(binding.etHoldReason.getText()).toString().equals("Hold Reason:")) {
+                Toast.makeText(getContext(), "Please Enter Hold Reason", Toast.LENGTH_LONG).show();
+            }else {
+                updateHoldCategory();
+            }
+          }
+        );
     }
 
 
@@ -322,12 +365,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.layoutWcrFms.etCustomerEndFmsSec.setText(fmsName.get(position));
             if (position != 0) strSecFmsId = "" + firstFmsID.get(position - 1);
             else strSecFmsId = " ";
-        }else if(parent.getId() == R.id.sp_fibre_cable){
-            binding.layoutmanholDetails.etFibreCable.setText(fibreType.get(position));
-        }else if(parent.getId() == R.id.sp_manhole_type){
-            binding.layoutmanholDetails.etManholeType.setText(ManholeType.get(position));
         }else if(parent.getId() == R.id.sp_hold_category){
             binding.etHoldCategory.setText(holdCategory.get(position));
+            if (position != 0) strholdId = "" + holdCategoryId.get(position - 1);
+            else strholdId = " ";
         }
 
 
@@ -342,7 +383,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_WCR_INFO);
-        accountInfoRequest.setCanId("229698");
+        accountInfoRequest.setCanId(strCanId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<WcrResponse> call = apiService.getWcrInfo(accountInfoRequest);
@@ -353,15 +394,23 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         binding.tvWcrStatus.setText("WCR Status: "+response.body().getResponse().getWcr().getWCRConsumptionStatus());
-                        binding.layoutWcrFragmentCustomerDetails.tvCustomerSegment.setText(response.body().getResponse().getWcr().getBusinessSegment());
-                        binding.layoutWcrFragmentCustomerDetails.tvPod.setText(response.body().getResponse().getWcr().getPod());
-                        binding.layoutWcrFragmentCustomerDetails.tvProductName.setText(response.body().getResponse().getWcr().getProduct());
-                        binding.layoutWcrFragmentCustomerDetails.tvReduncanyRequired.setText(response.body().getResponse().getWcr().getRedundacy());
-                        binding.layoutWcrFragmentCustomerDetails.tvRackRequired.setText(response.body().getResponse().getWcr().getRack());
-                        binding.layoutWcrFragmentCustomerDetails.tvContactPersonName.setText(response.body().getResponse().getWcr().getTechContactName());
-                        binding.layoutWcrFragmentCustomerDetails.tvContactPersonNum.setText(response.body().getResponse().getWcr().getTechcontactnumber());
+                        binding.layoutWcrFragmentCustomerDetails.setCustomer(response.body().getResponse().getWcr());
                         strGuuId = response.body().getResponse().getWcr().getWcrguidid();
+                        strProductSegment = response.body().getResponse().getWcr().getProductSegment();
                         strSegment = response.body().getResponse().getWcr().getBusinessSegment();
+                        manHoleDetails = response.body().getResponse().getManHoleDetailsList();
+                        binding.layoutAssociatedDetails.setAssociated(response.body().getResponse().getAssociated());
+                        binding.layoutWcrFms.setFms(response.body().getResponse().getFMSDetails());
+                        binding.layoutWcrEngrDetails.setEngg(response.body().getResponse().getEngineerDetails());
+                        binding.setHoldCategory(response.body().getResponse().getEngineerDetails());
+                        binding.layoutmanholDetails.rvAddManhole.setHasFixedSize(true);
+                        binding.layoutmanholDetails.rvAddManhole.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.layoutmanholDetails.rvAddManhole.setAdapter(new WcrAddManholeAdapter(getActivity(),manHoleDetails));
+                        itemConsumtions = response.body().getResponse().getItemConsumtionList();
+                        binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
+                        binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(),itemConsumtions));
+                        listener();
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
@@ -391,10 +440,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                     if (response.isSuccessful()&& response.body()!=null) {
                         try {
-                        if(response.body().getStatus().equals("Success")){
+                        if(response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                           /* binding.layoutAssociatedDetails.etIdbLength.setText("");
-                            binding.layoutAssociatedDetails.etLinkBudget.setText("");*/
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -408,6 +457,45 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     Log.e("RetroError", t.toString());
                 }
             });
+
+    }
+
+    private void updateWcrComplete(){
+
+        WcrCompleteRequest wcrCompleteRequest = new WcrCompleteRequest();
+        wcrCompleteRequest.setAuthkey(Constants.AUTH_KEY);
+        wcrCompleteRequest.setAction(Constants.WCR_COMPLETE);
+        wcrCompleteRequest.setIsHold(strholdId);
+        wcrCompleteRequest.setProductSegment(strProductSegment);
+        wcrCompleteRequest.setSegment(strSegment);
+        wcrCompleteRequest.setRemarks(binding.etRemarksText.getText().toString());
+        wcrCompleteRequest.setWCRguidId(strGuuId);
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.wcrComplete(wcrCompleteRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
 
     }
 
@@ -431,8 +519,11 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if(response.body().getStatus().equals("Success")){
+                        if(response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -450,14 +541,12 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateWcrEnginer(){
-
         UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
         updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
         updateWcrEnggRequest.setAction(Constants.UPDATE_WCR_ENGINER);
         updateWcrEnggRequest.setEngName(binding.layoutWcrEngrDetails.etEnggName.getText().toString());
         updateWcrEnggRequest.setInstcode(binding.layoutWcrEngrDetails.etInstallationCode.getText().toString());
         updateWcrEnggRequest.setWCRguidId(strGuuId);
-
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateWcrEng(updateWcrEnggRequest);
@@ -466,8 +555,50 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if(response.body().getStatus().equals("Success")){
+                        if(response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+    private void updateHoldCategory(){
+
+        HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
+        holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
+        holdWcrRequest.setAction(Constants.HOLD_WCR);
+        holdWcrRequest.setCategory(strholdId);
+        holdWcrRequest.setReason(binding.etHoldReason.getText().toString());
+        holdWcrRequest.setWCRguidId(strGuuId);
+        holdWcrRequest.setSegment(strSegment);
+
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.updateHoldCategory(holdWcrRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

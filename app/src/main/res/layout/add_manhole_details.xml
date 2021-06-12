@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/add_manhole_details">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorWhite"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <include
+                android:id="@+id/searchtoolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:background="@color/colorButton"
+                android:layout_height="?attr/actionBarSize" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/location_with_landmark"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_fibre_cable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="visible" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_fibre_cable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/fibre_cable"
+                    android:imeOptions="actionNext"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_fibre_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/fiber_no_tube_wise"
+                    android:imeOptions="actionNext"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_manhole_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_manhole_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/manhole_type"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_distance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:hint="@string/distance"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_fiber_tube"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/fiber_tube"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_fiber_no_runn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:hint="@string/fiber_no_running_no_wise"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_addmanhole_submit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_50sdp"
+                android:layout_marginLeft="@dimen/_50sdp"
+                android:layout_marginRight="@dimen/_50sdp"
+                android:layout_marginEnd="@dimen/_50sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:elevation="@dimen/_5sdp"
+                android:text="@string/add"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_16sdp"
+                android:background="@drawable/button_purple"
+                app:cornerRadius="@dimen/_25sdp" />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

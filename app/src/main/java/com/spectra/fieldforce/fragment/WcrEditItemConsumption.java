@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
@@ -46,13 +47,14 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
     private List<GetSubItemListResponse.Datum> subItem;
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
-    private String strItemType,strItemTypeData;
-    private  String strsubItemId;
+    private String strItemType,strItemTypeData,strItem;
+    private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID;;
 
 
     public WcrEditItemConsumption() {
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,12 +66,14 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ItemId = requireArguments().getString("ItemId");
+        GuIID = requireArguments().getString("GuIID");
         init();
     }
 
     private void init(){
-      //  Type();
-        getItemConsumptionDetailsById();
+        Type();
+        getItemConsumptionDetailsById(ItemId);
         binding.btSubmit.setText(getResources().getString(R.string.update));
         binding.etType.setOnClickListener(v-> binding.spType.performClick());
         binding.spType.setOnItemSelectedListener(this);
@@ -80,13 +84,12 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
         binding.btSubmit.setOnClickListener(v -> updateItemConsumption());
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
-        binding.etSubitem.setOnClickListener(v -> getSubItemList("87eb625a-d706-eb11-8121-000d3ac9a7b3"));
+        binding.etSubitem.setOnClickListener(v -> getSubItemList(ItemId));
     }
 
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
-        itemType.add("IR");
         itemType.add("WCR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -181,11 +184,11 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
 
     }
 
-    public void getItemConsumptionDetailsById() {
+    public void getItemConsumptionDetailsById(String itemId) {
         ItemConsumptionById itemConsumptionById = new ItemConsumptionById();
         itemConsumptionById.setAuthkey(Constants.AUTH_KEY);
         itemConsumptionById.setAction(Constants.GET_ITEM_CONSUMPTION_BY_ID);
-        itemConsumptionById.setId("e6ea5ef6-0786-ea11-80f2-000d3ac99f0d");
+        itemConsumptionById.setId(itemId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetItemConumptionByIdResponse> call = apiService.getItemDetailsById(itemConsumptionById);
@@ -218,16 +221,16 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
     private void updateItemConsumption(){
         AddItemConsumption addItem_Consumption = new AddItemConsumption();
         addItem_Consumption.setAuthkey(Constants.AUTH_KEY);
-        addItem_Consumption.setAction(Constants.POST_ITEM_CONSUMPTIONS);
-        addItem_Consumption.setItem(strItemType);
-        addItem_Consumption.setSubItem("279451d9-d706-eb11-8121-000d3ac9a7b3");
-       // addItem_Consumption.setSubItem(strsubItemId);
+        addItem_Consumption.setAction(Constants.EDIT_ITEM_CONSUMPTIONNAV);
+       // addItem_Consumption.setItem(strItemType);
+        addItem_Consumption.setItemID(ItemId);
+      //  addItem_Consumption.setSubItem(strsubItemId);
         addItem_Consumption.setItemType(strItemTypeData);
-        addItem_Consumption.setConsumptionType("111260002");
+        addItem_Consumption.setConsumptionType("111260001");
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
-        addItem_Consumption.setWCRguidId("febd0a7f-4681-ea11-80f1-000d3af224b9");
+        addItem_Consumption.setWCRguidId(GuIID);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
@@ -237,6 +240,7 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        nextScreen();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -249,5 +253,12 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
                 Log.e("RetroError", t.toString());
             }
         });
+    }
+
+    private void nextScreen(){
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        WcrFragment wcrFragment = new WcrFragment();
+        t1.replace(R.id.frag_container, wcrFragment);
+        t1.commit();
     }
 }

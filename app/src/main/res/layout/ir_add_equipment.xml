@@ -6,11 +6,11 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btn_item_consumption"
+        android:id="@+id/btn_item_eqipment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Equipment"
-        android:textSize="@dimen/_16sdp"
+        android:text="@string/add_equipment"
+        android:textSize="@dimen/_12sdp"
         android:background="@color/colorButton"
         android:layout_margin="@dimen/_20sdp"
         android:textColor="@android:color/white"
@@ -25,150 +25,10 @@
         android:layout_margin="@dimen/_5sdp"
         />
 
-
-    <TextView
-        android:id="@+id/et_ite1"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_add_equipment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="@string/item"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
-
-    <TextView
-        android:id="@+id/et_ite2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="@string/item_type"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"/>
-
-    <TextView
-        android:id="@+id/et_ite3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sub_item"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
-
-    <TextView
-        android:id="@+id/et_ite4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="@string/item_type"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"/>
-
-    <TextView
-        android:id="@+id/et_ite5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="@string/item_type"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
-
-    <TextView
-        android:id="@+id/et_ite6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="@string/item_type"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp" />
-
-    <TextView
-        android:id="@+id/et_ite7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="@string/item_code"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
-
-    <TextView
-        android:id="@+id/et_ite8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="bbbb"
-
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp" />
-
-
-    <TextView
-        android:id="@+id/et_ite9"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Serial No.:/Lot no."
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
-
-    <TextView
-        android:id="@+id/et_ite10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="bbbb"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp" />
-
-    <TextView
-        android:id="@+id/et_item14"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="@string/quantity"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
-
-    <TextView
-        android:id="@+id/et_item15"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="bbbb"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/tv_edit"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:background="@drawable/button_background"
-            android:text="@string/edit"
-            android:layout_weight=".5"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:layout_margin="@dimen/_10sdp"
-           />
-
-        <TextView
-            android:id="@+id/tv_delete"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:padding="4dp"
-            android:layout_weight=".5"
-            android:text="@string/delete"
-            android:layout_margin="@dimen/_10sdp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_black"
-            android:gravity="center" />
-
-
-    </LinearLayout>
-
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
 </layout>

@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,10 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.databinding.ActivityLoginBinding;
 import com.spectra.fieldforce.model.LoginRequest;
+import com.spectra.fieldforce.model.LoginResponse;
 import com.spectra.fieldforce.model.SavetokenRequest;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
@@ -22,11 +26,13 @@ import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.fragment.RegistrationFragment;
 import com.spectra.fieldforce.fragment.ResetpasswordFragment;
 import com.spectra.fieldforce.listener.OnLoginFormActivityListener;
+import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -37,13 +43,11 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class LoginActivity extends AppCompatActivity implements OnLoginFormActivityListener {
-
+    ActivityLoginBinding binding;
     public static PrefConfig prefConfig;
-    private TextView RegText, StatusMess, ErrorMessage,textView;
-    private EditText UserName, UserPassword;
-    private Button LoginBn;
     private String couponCodeString, userEmail, userEmailN, userName,message,fcmToken;
     private AppCompatActivity activity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,27 +56,17 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         prefConfig = new PrefConfig(activity);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        setContentView(R.layout.activity_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
         Typeface myTypeFace = Typeface.createFromAsset(activity.getAssets(), "fonts/Spectra-Regular.ttf");
-        textView = findViewById(R.id.spectraText);
-        textView.setTypeface(myTypeFace);
-
-        RegText = findViewById(R.id.register_txt);
-        // RegText = null;
-        UserName = findViewById(R.id.user_name);
-        UserPassword = findViewById(R.id.user_pass);
-       // StatusMess = findViewById(R.id.error_text);
-        ErrorMessage = findViewById(R.id.errortxt);
+        binding.spectraText.setTypeface(myTypeFace);
 
         Typeface mytextFace = Typeface.createFromAsset(activity.getAssets(), "fonts/helveticaneue-font/helveticaneue-light.ttf");
-        UserName.setTypeface(mytextFace);
-        UserPassword.setTypeface(mytextFace);
+        binding.userName.setTypeface(mytextFace);
+        binding.userPass.setTypeface(mytextFace);
 
-        LoginBn = findViewById(R.id.login_btn);
-        LoginBn.setOnClickListener(view -> performLogin());
-        RegText.setOnClickListener(view -> performResetpassword());
+        binding.loginBtn.setOnClickListener(view -> performLogin());
+        binding.registerTxt.setOnClickListener(view -> performResetpassword());
     }
 
     @Override
@@ -94,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
             getSupportFragmentManager().popBackStack();
         }
     }
+
     @Override
     public void performLogin(String email, String name) {
         prefConfig.writeName(email);
@@ -107,46 +102,57 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
     @Override
     public void performLogout() {
         prefConfig.writeLoginStatus(false);
+      //  prefConfig.LoginStatus(false);
         prefConfig.writeName(Constants.User);
-       // getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new LoginFragment()).commit();
+
+    }
+
+    @Override
+    public void Login(String email, String name) {
+        prefConfig.writeName(email);
+        prefConfig.writeUserName(name);
+//        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+        finish();
+        startActivity(new Intent(activity, MainActivity.class));
     }
 
     private void performLogin() {
-        String username = UserName.getText().toString();
-        String password = UserPassword.getText().toString();
 
         LoginRequest loginRequest = new LoginRequest();
 
         loginRequest.setAction(Constants.ACTION_AUTHENTICATION);
-        loginRequest.setUser_name(username);
-        loginRequest.setUser_password(password);
+        loginRequest.setUser_name(binding.userName.getText().toString());
+        loginRequest.setUser_password(binding.userPass.getText().toString());
         loginRequest.setAuthkey(Constants.AUTH_KEY);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JsonElement> call = apiService.performUserLogin(loginRequest);
-        call.enqueue(new Callback<JsonElement>() {
+        Call<LoginResponse> call = apiService.performUserLogin(loginRequest);
+        call.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        couponCodeString = jsonObject.getString("Status");
-                        if (couponCodeString.equals("Failure")) {
-                            message = "Login Failed..Please try again...";
-                            ErrorMessage.setText(message);
-                        } else if (couponCodeString.equals("Success")) {
-                            userEmail = jsonObject.getString("response");
-                            JSONObject jsonObjectN = new JSONObject(String.valueOf(userEmail));
-                            userEmailN = jsonObjectN.getString("name");
-                            userName = jsonObjectN.getString("username");
-                            message = "Welcome " + userName;
-                            Log.d("Point", "1");
-                            MainActivity.prefConfig.writeLoginStatus(true);
-                            performLogin(userEmailN, userName);
-                            Log.d("Point", "3");
-                            getSaveToken();
-                            Log.d("Point", "4");
-                        }
+                       if(response.body().getStatus().equals("Success")){
+                           if(response.body().getResponse().getInstallAuth().equals("N")){
+                               MainActivity.prefConfig.writeLoginStatus(true);
+                             //  MainActivity.prefConfig.LoginStatus(false);
+                               performLogin(response.body().getResponse().getName(), response.body().getResponse().getUsername());
+                           }else if(response.body().getResponse().getInstallAuth().equals("Y")){
+                              MainActivity.prefConfig.LoginStatus(true);
+                               SharedPreferences sp=getSharedPreferences("Login", 0);
+                               SharedPreferences.Editor Ed=sp.edit();
+                               Ed.putString("VenderCode",response.body().getResponse().getVendorCode());
+                               Ed.putString("EnggId",response.body().getResponse().getUserID());
+                               Ed.commit();
+                             // MainActivity.prefConfig.writeLoginStatus(false);
+                              // PrefConfig.saveLoginDetails(loginResponse);
+                               Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());
+                           }
+                           getSaveToken();
+                        }else{
+                           message = "Login Failed..Please try again...";
+                           binding.errortxt.setText(message);
+                       }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -154,12 +160,13 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
             }
 
             @Override
-            public void onFailure(Call<JsonElement> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
 
             }
         });
-        ErrorMessage.setText("");
+        binding.errortxt.setText("");
     }
+
 
     private void getSaveToken() {
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -173,6 +180,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                     performSaveToken();
                 });
     }
+
 
     private void performSaveToken() {
         SavetokenRequest savetokenRequest = new SavetokenRequest();

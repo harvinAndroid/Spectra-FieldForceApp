@@ -27,6 +27,7 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.fragment.SRDetailFragment;
+import com.spectra.fieldforce.utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -151,16 +152,11 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     }
 
     private void updateAcknow(String srText, String slotType) {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "AcknowledgeSR";
-        String srNumber = srText;
-        String actionCode = slotType == "FRE" ? "101-Fibre Team" : "102-Field Engineer";
-
         SRRequest srRequest = new SRRequest();
-        srRequest.setAuthkey(authKey);
-        srRequest.setAction(action);
+        srRequest.setAuthkey(Constants.AUTH_KEY);
+        srRequest.setAction(Constants.ACKNOWLEDGE_SR);
         srRequest.setSrNumber(srText);
-        srRequest.setActionCode(actionCode);
+        srRequest.setActionCode(slotType == "FRE" ? "101-Fibre Team" : "102-Field Engineer");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getSRDetail(srRequest);

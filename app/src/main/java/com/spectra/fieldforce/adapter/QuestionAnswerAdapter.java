@@ -59,21 +59,17 @@ public class QuestionAnswerAdapter extends RecyclerView.Adapter<QuestionAnswerAd
                 case "0":
                     holder.radioButton1.setChecked(true);
                     ans="-1";
-                //    myClickListener.myOnClick(position,new Answer(questionList.get(position).getQuesId(),"0"));
                     break;
                 case "1":
                     holder.radioButton2.setChecked(true);
-                  //  myClickListener.myOnClick(position,new Answer(questionList.get(position).getQuesId(),"1"));
                     ans="1";
                     break;
                 case "-1":
                     holder.radioButton3.setChecked(true);
-                  //  myClickListener.myOnClick(position,new Answer(questionList.get(position).getQuesId(),"-1"));
                     ans="0";
                     break;
             }
-          //  myClickListener. test(position,new Answer(questionList.get(position).getQuesId(),ans));
-          // myClickListener.myOnClick(position,new Answer(questionList.get(position).getQuesId(),ans));
+
             if(ans.equals("")) {
             }else{
                 test.test(position, new Answer(questionList.get(position).getQuesId(), ans));
@@ -88,15 +84,12 @@ public class QuestionAnswerAdapter extends RecyclerView.Adapter<QuestionAnswerAd
                 switch (ans) {
                     case "NA":
                         test.test(position,new Answer(questionList.get(position).getQuesId(),"-1"));
-                     /*   myClickListener.myOnClick(position,new  Answer(id,"-1"));*/
                         break;
                     case "NO":
                         test.test(position,new Answer(questionList.get(position).getQuesId(),"1"));
-                       /* myClickListener.myOnClick(position,new Answer(id,"1"));*/
                         break;
                     case "YES":
                         test.test(position,new Answer(questionList.get(position).getQuesId(),"0"));
-                       /* myClickListener.myOnClick(position,new Answer(id,"0"));*/
                         break;
                 }
             }

@@ -11,6 +11,8 @@ public class Constants {
     public static final String BASE_URL1="https://custappmwuat.spectra.co/";
 
     public static final String AUTH_KEY ="ac7b51de9d888e1458dd53d8aJAN3ba6f";
+    public static final String  ASSIGNMENT = "assignment";
+    public static final String ACKNOWLEDGE_SR= "AcknowledgeSR";
     public static final String ACTION_SAVEQUESTIONARE="saveQuestionerdetails";
     public static final String ACTION_GETSAVEQUESTIONARE="getQuestBySrNo";
     public static final String URL = "http://fiber.spectra.co/";
@@ -62,5 +64,22 @@ public class Constants {
     public static final String RESEND_CODE = "resendCode";
     public static final String UPDATE_POST_HOLDIR_QUALITY= "updatePostHoldIRQuality";
     public static final String GET_ACCOUNT_DETAILS = "getAccountDetails";
+    public static final String UPDATE_POST_MANHOLE = "updatePostManHole";
+    public static final String Get_All_BUCKET_LIST = "getInstallationOrders";
+    public static final String ENGINEER_BUCKET = "engineerBucket";
+    public static final String DELETE_ITEM_CONSUMPTIONBY_ID = "deleteItemConsumtionByID";
+    public static final String DELETE_MANHOLE_BYID = "deleteManHoleByID";
+    public static final String EDIT_ITEM_CONSUMPTIONNAV = "editItemConsumptionNAV";
+    public static final String GET_MANHOLE_BYID  = "getManholeByID";
+    public static final String EDIT_POST_MANHOLE = "editPostManHole";
+    public static final String RESEND_NAVIR = "resendNavIR";
+    public static final String UPDATE_GENERAL_DETAILS = "updateGeneralDetails";
+    public static final String ENGINER_UPDATE = "engineerUpdateIR";
+    public static final String SHARED_CPEMAC = "sharedCPEMAC";
+    public static final String SUBMIT_FOR_APPROVAL = "submitForApproval";
+    public static final String IR_COMPLETE  = "IRComplete";
+    public static final String HOLD_IR = "holdIR";
+    public static final String ADD_ORDER_TOBUCKET = "AddOrderToBucket";
+    public static final String  RELEASE_ORDER = "releaseOrder";
 
 }

@@ -1,12 +1,14 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +16,11 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.spectra.fieldforce.activity.BucketTabActivity;
+import com.spectra.fieldforce.activity.MainActivity;
+import com.spectra.fieldforce.databinding.ProvisionFaultTabScreenBinding;
+import com.spectra.fieldforce.databinding.ProvisioningTabScreenBinding;
+import com.spectra.fieldforce.databinding.WcrAddItemConsumptionBinding;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.response.AccInfoResponse;
 import com.spectra.fieldforce.R;
@@ -21,72 +28,89 @@ import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.utils.Constants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProvisioningTabFragment extends Fragment {
-    private TextView tv_get_profile_info;
-     AppCompatEditText search_account_num;
-    private String name,canId,city,area,building,segment;
+public class ProvisioningTabFragment extends Fragment implements View.OnClickListener{
+    ProvisioningTabScreenBinding binding;
+    private String name,canId,city,area,building,segment,statusReport;
 
     public ProvisioningTabFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.provisioning_tab_screen, container, false);
+        binding = ProvisioningTabScreenBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tv_get_profile_info = view.findViewById(R.id.tv_get_profile_info);
-        search_account_num = view.findViewById(R.id.search_account_num);
+        binding.searchtoolbar.rlBack.setOnClickListener(this);
+        binding.searchtoolbar.tvLang.setText("Provisioning");
         init();
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.rl_back) {
+            Intent i = new Intent(getActivity(), BucketTabActivity.class);
+            startActivity(i);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().finish();
+        }
+    }
+
     private void init(){
-       tv_get_profile_info.setOnClickListener(v -> {
-           getAccountDetails();
-         /*  @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t11= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-           ProvisioningFragment provisioningFragment = new ProvisioningFragment();
-           t11.replace(R.id.frag_container, provisioningFragment);
-           t11.commit();*/
+       binding.tvGetProfileInfo.setOnClickListener(v -> {
+           String accountid = binding.searchAccountNum.getText().toString();
+           if(accountid.isEmpty()){
+               Toast.makeText(getContext(),"Please Enter CANID",Toast.LENGTH_LONG).show();
+           }else{
+               getAccountDetails();
+           }
+
        });
-
-
     }
 
     public void getAccountDetails() {
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_ACCOUNT_INFO);
-        accountInfoRequest.setCanId("221373");
-
+        accountInfoRequest.setCanId(binding.searchAccountNum.getText().toString());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<AccInfoResponse> call = apiService.getAccountInfo(accountInfoRequest);
         call.enqueue(new Callback<AccInfoResponse>() {
             @Override
             public void onResponse(Call<AccInfoResponse> call, Response<AccInfoResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    try {
-                       name = response.body().response.name;
-                       canId = response.body().response.cANID;
-                       city = response.body().response.city;
-                       area = response.body().response.area;
-                       building = response.body().response.society;
-                       segment = response.body().response.segment;
-                       nextScreen();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if(response.body().status==1){
+                        try {
+                            name = response.body().response.name;
+                            canId = response.body().response.cANID;
+                            city = response.body().response.city;
+                            area = response.body().response.area;
+                            building = response.body().response.society;
+                            segment = response.body().response.segment;
+                            statusReport = response.body().response.statusofReport;
+                            nextScreen();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }else if(response.body().status==0){
+                            Toast.makeText(getContext(),"Account Id (CAN Id) does not exist or Inactive.",Toast.LENGTH_LONG).show();
                     }
+
                 }
 
             }
@@ -106,6 +130,7 @@ public class ProvisioningTabFragment extends Fragment {
         accountinfo.putString("area", area);
         accountinfo.putString("building", building);
         accountinfo.putString("segment",segment);
+        accountinfo.putString("statusReport",statusReport);
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t11= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         ProvisioningFragment provisioningFragment = new ProvisioningFragment();
         t11.replace(R.id.frag_container, provisioningFragment);

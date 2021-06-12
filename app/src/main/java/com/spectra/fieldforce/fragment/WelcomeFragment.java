@@ -26,6 +26,7 @@ import com.spectra.fieldforce.activity.MainActivity;
 import com.spectra.fieldforce.adapter.AssignmentAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
+import com.spectra.fieldforce.utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,14 +54,10 @@ public class WelcomeFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
 
     public void getAssignment() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "assignment";
-        EmailID = MainActivity.prefConfig.readName();
-
         AssignmentRequest assignmentRequest = new AssignmentRequest();
-        assignmentRequest.setAuthkey(authKey);
-        assignmentRequest.setAction(action);
-        assignmentRequest.setemailID(EmailID);
+        assignmentRequest.setAuthkey(Constants.AUTH_KEY);
+        assignmentRequest.setAction(Constants.ASSIGNMENT);
+        assignmentRequest.setemailID(MainActivity.prefConfig.readName());
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.performUserAssignment(assignmentRequest);

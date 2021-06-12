@@ -13,7 +13,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.databinding.AdapterIrequipmentListBinding;
 import com.spectra.fieldforce.databinding.AdapterWcrequipmentListBinding;
+import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,10 +24,10 @@ import java.util.ArrayList;
 
 public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentConsumpAdapter.MyViewHolder> {
     private Context context;
-    private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
-    AdapterWcrequipmentListBinding binding;
+    private ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists;
+        AdapterIrequipmentListBinding binding;
 
-    public IrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists) {
+    public IrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists) {
         this.context = activity;
         this.equipmentDetailsLists = equipmentDetailsLists;
     }
@@ -36,7 +38,7 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
                                                                      int viewType) {
          binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.adapter_wcrequipment_list, parent, false);
+                R.layout.adapter_irequipment_list, parent, false);
         return new IrEquipmentConsumpAdapter.MyViewHolder(binding);
     }
 
@@ -45,7 +47,7 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        WcrResponse.EquipmentDetailsList equipment = equipmentDetailsLists.get(position);
+        IrInfoResponse.InstallationItemList equipment = equipmentDetailsLists.get(position);
        holder.binding.setEquipment(equipment);
     }
 
@@ -58,8 +60,8 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-         AdapterWcrequipmentListBinding binding;
-        MyViewHolder( AdapterWcrequipmentListBinding binding) {
+         AdapterIrequipmentListBinding binding;
+        MyViewHolder( AdapterIrequipmentListBinding binding) {
             super(binding.getRoot());
            this.binding = binding;
         }

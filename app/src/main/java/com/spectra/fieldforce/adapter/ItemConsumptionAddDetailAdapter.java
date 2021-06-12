@@ -51,68 +51,11 @@ public class ItemConsumptionAddDetailAdapter extends RecyclerView.Adapter<ItemCo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        holder.tv_item.setText("Item Name: "+details.get(position).getItemName());
-        holder.tv_subitem.setText("Sub Item Name: "+details.get(position).getSubitemName());
-        holder.tv_status.setText("Status: " +  firstStatus);
+        holder.tv_item.setText("Item Name: " + details.get(position).getItemName());
+        holder.tv_subitem.setText("Sub Item Name: " + details.get(position).getSubitemName());
+        holder.tv_status.setText("Status: " + firstStatus);
         holder.tv_cons_status.setText("Consumption Status: " + approvalStatus);
-      /*  holder.btn_edit.setOnClickListener(v -> {
-            if(approvalStatus!=null){
-            if(approvalStatus.equals("Rejected")){
-                Bundle bundle = new Bundle();
-                bundle.putString("SrNumber", SrNumber);
-                bundle.putString("CustomerId", CanId);
-                AppCompatActivity activity = (AppCompatActivity) context;
-                Fragment myFragment = new EditItemConsumptionFragment();
-                myFragment.setArguments(bundle);
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, myFragment).addToBackStack(null).commit();
-            }else{
-                if(approvalStatus!=null){
-                    Toast.makeText(context,approvalStatus,Toast.LENGTH_LONG).show();
-                }else if(approvalStatus==null){
-                    Toast.makeText(context,statusMsg,Toast.LENGTH_LONG).show();
-                }
-            }
-            }else{
-                Toast.makeText(context,statusMsg,Toast.LENGTH_LONG).show();
-            }
-        });
-        holder.img_delete.setOnClickListener(v -> {
-            if(details.get(position).getDefaultKey().equals("item"))
-            {
-                deleteItemConsumption("",details.get(position).getItemconsumptionID());
-            }else{
-                deleteItemConsumption(details.get(position).getItemconsumptionID(),"");
-            }
-        });*/
-
     }
-
-  /*  private void deleteItemConsumption(String itemcosmid, String etsqcomsid) {
-
-        DeleteItemConsumption deleteItemConsumption = new DeleteItemConsumption(Constants.DELETE_ITEM_CONSUMPTION,Constants.AUTH_KEY,itemcosmid,etsqcomsid,SrNumber);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ItemResponse> call = apiService.deleteItemConsumptionDetails(deleteItemConsumption);
-        call.enqueue(new Callback<ItemResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<ItemResponse> call, @NonNull Response<ItemResponse> response) {
-                int status = Objects.requireNonNull(response.body()).getStatus();
-                if (status==1) {
-                    Intent i = new Intent(context, MainActivity.class);
-                    Toast.makeText(context,"Item Deleted successfully",Toast.LENGTH_LONG).show();
-                    context.startActivity(i);
-                    ((Activity)context).finish();
-                }else{
-                    Toast.makeText(context,"Something went wrong...",Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ItemResponse> call, @NonNull Throwable t) {
-
-            }
-        });
-    }*/
 
     @Override
     public int getItemCount() {

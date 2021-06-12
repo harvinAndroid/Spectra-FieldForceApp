@@ -14,13 +14,20 @@
     android:background="@android:color/white"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/searchtoolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:background="@color/colorButton"
+        android:layout_height="?attr/actionBarSize" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchtoolbar"
         >
 
     <TextView
@@ -156,7 +163,7 @@
         android:id="@+id/tv_segment_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Business"
+        android:text="@string/business"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
@@ -208,7 +215,7 @@
         app:layout_constraintStart_toEndOf="@+id/tv_wcr" />
 
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/tv_wcr_completed"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_30sdp"
@@ -219,7 +226,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/colorWhite"
         app:layout_constraintTop_toBottomOf="@+id/tv_provisioning"
-        />
+        />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

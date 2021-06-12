@@ -687,7 +687,6 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         for(Map.Entry<Integer,Answer> map : questionmap.entrySet()){
             itemlist.add(map.getValue());
         }
-        System.out.println("CaLL ITEMLIST "+itemlist);
         SaveQuestionareList questionListRequest = new SaveQuestionareList(Constants.ACTION_SAVEQUESTIONARE,itemlist,Constants.AUTH_KEY,MainActivity.prefConfig.readName(),Constants.APP,srNumber,strSlotType);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonResponse> call = apiService.sendQuestionare(questionListRequest);

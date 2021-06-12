@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,18 +9,19 @@
     android:background="@android:color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
+
+
+
+    <include
+        android:id="@+id/searchtoolbar"
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleTextColor="@color/colorBlack"
-        android:tooltipText="fff"
         android:background="@color/colorButton"
-        android:id="@+id/toolbar"
-        />
+        android:layout_height="?attr/actionBarSize" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/searchtoolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabIndicatorColor="#fff"
@@ -39,7 +43,8 @@
     <FrameLayout
         android:id="@+id/frag_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
 
 </RelativeLayout>
+</layout>

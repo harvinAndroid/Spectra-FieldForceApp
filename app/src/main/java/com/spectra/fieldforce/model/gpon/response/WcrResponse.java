@@ -1,5 +1,6 @@
 package com.spectra.fieldforce.model.gpon.response;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class WcrResponse {
         @SerializedName("EquipmentDetailsList")
         private ArrayList<EquipmentDetailsList> equipmentDetailsList;
         @SerializedName("ManHoleDetailsList")
-        private List<Object> manHoleDetailsList;
+        private ArrayList<ManHoleDetails> manHoleDetailsList;
         @SerializedName("Associated")
         private Associated associated;
         @SerializedName("FMSDetails")
@@ -96,11 +97,11 @@ public class WcrResponse {
             this.equipmentDetailsList = equipmentDetailsList;
         }
 
-        public List<Object> getManHoleDetailsList() {
+        public ArrayList<ManHoleDetails> getManHoleDetailsList() {
             return manHoleDetailsList;
         }
 
-        public void setManHoleDetailsList(List<Object> manHoleDetailsList) {
+        public void setManHoleDetailsList(ArrayList<ManHoleDetails> manHoleDetailsList) {
             this.manHoleDetailsList = manHoleDetailsList;
         }
 
@@ -121,6 +122,85 @@ public class WcrResponse {
         }
 
     }
+
+    public class ManHoleDetails {
+
+        @SerializedName("FiberNoRunningNoWise")
+        @Expose
+        private Integer fiberNoRunningNoWise;
+        @SerializedName("FiberTube")
+        @Expose
+        private Integer fiberTube;
+        @SerializedName("Distance")
+        @Expose
+        private String distance;
+        @SerializedName("ManHoleType")
+        @Expose
+        private String manHoleType;
+        @SerializedName("FiberNoTubeWise")
+        @Expose
+        private Integer fiberNoTubeWise;
+        @SerializedName("FiberCable")
+        @Expose
+        private String fiberCable;
+        @SerializedName("LocationLandmark")
+        @Expose
+        private String locationLandmark;
+        @SerializedName("itemID")
+        @Expose
+        private String itemID;
+        @SerializedName("WCRGUIDID")
+        @Expose
+        private String wcrguidid;
+
+        public Integer getFiberNoRunningNoWise() {
+            return fiberNoRunningNoWise;
+        }
+
+        public Integer getFiberTube() {
+            return fiberTube;
+        }
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public String getManHoleType() {
+            return manHoleType;
+        }
+
+        public Integer getFiberNoTubeWise() {
+            return fiberNoTubeWise;
+        }
+
+        public String getFiberCable() {
+            return fiberCable;
+        }
+
+        public String getLocationLandmark() {
+            return locationLandmark;
+        }
+
+        public String getItemID() {
+            return itemID;
+        }
+
+        public String getWcrguidid() {
+            return wcrguidid;
+        }
+
+        public String getCanid() {
+            return canid;
+        }
+
+        @SerializedName("CANID")
+        @Expose
+        private String canid;
+
+
+
+    }
+
 
     public class FMSDetails {
 

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="generalDetails"
+            type="com.spectra.fieldforce.model.gpon.response.IrInfoResponse.General"/>
+    </data>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -12,26 +19,17 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_ip_add_subnet"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_ip_add_subnet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+
+            android:text="@{generalDetails.ipAddress}"
+
             android:hint="@string/ip_address_subnet_pool"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -44,26 +42,15 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_device_port"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_device_port"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:text="@{generalDetails.devicePort}"
             android:hint="@string/device_port_no"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -78,26 +65,15 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_first_usable_ip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_first_usable_ip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:text="@{generalDetails.first}"
             android:hint="@string/first_usable_ip"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -110,26 +86,14 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_last_usable_ip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_last_usable_ip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:text="@{generalDetails.last}"
             android:hint="@string/last_usable_ip"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -142,26 +106,14 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_subnet_mask"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_subnet_mask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:text="@{generalDetails.subnet}"
             android:hint="@string/subnet_mask"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -173,26 +125,15 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_gateway"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_gateway"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:text="@{generalDetails.gateway}"
             android:hint="@string/gateway"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -205,26 +146,13 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_primary_dns"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_primary_dns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:text="@{generalDetails.primary}"
             android:hint="@string/primary_dns"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -249,15 +177,10 @@
             android:id="@+id/et_secondary_dns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:text="@{generalDetails.secondary}"
             android:hint="@string/secondary_dns"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -270,26 +193,15 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_device_id"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_device_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:text="@{generalDetails.deviceId}"
             android:hint="@string/device_id"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -303,26 +215,14 @@
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_cpe_ip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_cpe_ip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_1sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:hint="@string/cpe_ip"
+            android:text="@{generalDetails.cpe}"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -352,9 +252,8 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:hint="@string/ir_attached"
+            android:text="@{generalDetails.IRAttached}"
             android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -368,9 +267,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_60sdp"
+        android:layout_marginStart="@dimen/_60sdp"
         android:gravity="center"
         android:background="@drawable/button_background"
-        android:textSize="@dimen/_16sdp"
+        android:textSize="@dimen/_14sdp"
         android:textColor="@android:color/white"
         />
 

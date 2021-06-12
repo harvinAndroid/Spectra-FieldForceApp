@@ -25,6 +25,18 @@ public class HoldWcrRequest {
         Reason = reason;
     }
 
-    private String Authkey,Action,WCRguidId,Segment,Category,Reason;
+    private String Authkey;
+    private String Action;
+    private String WCRguidId;
+    private String Segment;
+    private String Category;
+    private String Reason;
+
+    public void setIRguidId(String IRguidId) {
+        this.IRguidId = IRguidId;
+    }
+
+    private String IRguidId;
 
 }
+

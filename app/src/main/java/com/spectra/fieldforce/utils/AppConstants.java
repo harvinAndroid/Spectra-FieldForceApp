@@ -25,6 +25,13 @@ public interface AppConstants {
     String TRUE = "True";
     String FALSE = "False";
     String EMPTY = "Empty";
+    String SELECT_FIBRE_TYPE ="Select Fibre Type";
+    String SELECT_MANHOLE_TYPE = "Select Manhole Type";
+
+    String prefrence_key="SpectraPref";
+    String User_name = "User_name";
+    String User_email = "User_email";
+
 
 
 }

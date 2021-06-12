@@ -29,6 +29,7 @@
             android:layout_margin="@dimen/_1sdp"
             android:backgroundTint="@color/color_light_blue"
             android:hint="@string/cpe_mac_shared"
+            android:drawableEnd="@drawable/ic_expand_down"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:imeOptions="actionNext"
@@ -50,11 +51,11 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:gravity="center"
         android:layout_marginBottom="@dimen/_30sdp"
-        android:layout_marginStart="@dimen/_40sdp"
-        android:layout_marginEnd="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_60sdp"
+        android:layout_marginEnd="@dimen/_60sdp"
         android:background="@drawable/button_background"
         app:layout_constraintTop_toBottomOf="@+id/et_speed_lan"
-        android:textSize="@dimen/_16sdp"
+        android:textSize="@dimen/_12sdp"
         android:textColor="@android:color/white"
         />
 

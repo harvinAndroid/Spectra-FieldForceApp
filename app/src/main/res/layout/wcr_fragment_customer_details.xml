@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/wcr_fragment">
+
+    <data>
+        <variable
+            name="customer"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.Wcr" />
+    </data>
 <LinearLayout android:id="@+id/linear_five"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -24,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="@string/item_type"
+        android:text="@{customer.businessSegment}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"/>
 
@@ -42,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="@string/item_type"
+        android:text="@{customer.pod}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"/>
 
@@ -60,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="@string/item_type"
+        android:text="@{customer.product}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
@@ -78,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="bbbb"
+        android:text="@{customer.redundacy}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
@@ -96,7 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="bbbb"
+        android:text="@{customer.rack}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
@@ -114,7 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="bbbb"
+        android:text="@{customer.techContactName}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
@@ -132,7 +137,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="bbbb"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 

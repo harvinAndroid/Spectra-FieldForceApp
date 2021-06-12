@@ -7,4 +7,6 @@ public interface OnLoginFormActivityListener {
     public void performResetpassword();
 
     public void performLogout();
+
+    public void Login(String email, String name);
 }

@@ -54,4 +54,13 @@ public class AddItemConsumption {
     private String ItemType;
 
 
+    public void setItemID(String itemID) {
+        ItemID = itemID;
+    }
+
+    private String ItemID;
+
+
+
+
 }

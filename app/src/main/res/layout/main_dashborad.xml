@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,6 +20,7 @@
             style="@style/Base_ToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:visibility="gone"
             android:background="@color/colorBlack"
             app:layout_collapseMode="pin"
             app:popupTheme="@style/AppTheme">
@@ -44,7 +48,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_100sdp"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+       android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_120sdp"
         android:weightSum="1"
         >
 
@@ -93,3 +99,4 @@
     </LinearLayout>
     </LinearLayout>
 </LinearLayout>
+</layout>

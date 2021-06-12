@@ -5,6 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/wcr_fragment">
 
+    <data>
+        <variable
+            name="associated"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.Associated" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,7 +45,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_1sdp"
                         android:backgroundTint="@color/color_light_blue"
-                        android:hint="IDB Length"
+                        android:hint="@string/idb_length"
+                        android:text="@{associated.IDBlength}"
                         android:imeOptions="actionNext"
                         android:lines="1"
                         android:textColor="@color/colorPrimaryDark"
@@ -62,7 +69,8 @@
                         android:layout_margin="@dimen/_1sdp"
                         android:backgroundTint="@color/color_light_blue"
                         android:focusableInTouchMode="true"
-                        android:hint="Link Budget"
+                        android:hint="@string/link_budget"
+                        android:text="@{associated.linkBudget}"
                         android:imeOptions="actionNext"
                         android:lines="1"
                         android:textColor="@color/colorPrimaryDark"

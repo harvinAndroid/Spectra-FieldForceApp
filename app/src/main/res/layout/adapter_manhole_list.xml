@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="event"
+            type="com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter" />
+
+        <variable
+            name="equipment"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.ManHoleDetails" />
+
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/et_ite1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`FiberNoRunningNoWise :  ` + equipment.fiberNoRunningNoWise}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp"  />
+
+    <TextView
+        android:id="@+id/et_ite2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{`FiberTube :  ` + equipment.fiberTube}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/et_ite3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{`Distance :  ` + equipment.distance}"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp"  />
+
+    <TextView
+        android:id="@+id/et_ite4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`ManHoleType :  ` + equipment.manHoleType}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/et_ite5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@{`FiberNoTubeWise :  ` + equipment.fiberNoTubeWise}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp"  />
+
+    <TextView
+        android:id="@+id/et_ite6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`FiberCable :  ` + equipment.fiberCable}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp"  />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`LocationLandmark :  ` + equipment.locationLandmark}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp"  />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`CANID :  ` + equipment.canid}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_edit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:background="@drawable/button_background"
+            android:text="@string/edit"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:layout_margin="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:padding="4dp"
+            android:layout_weight=".5"
+            android:text="@string/delete"
+            android:layout_margin="@dimen/_10sdp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_black"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/color_light_blue"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
+        />
+</LinearLayout>
+</layout>

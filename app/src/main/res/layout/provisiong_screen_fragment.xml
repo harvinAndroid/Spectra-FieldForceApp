@@ -2,19 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
-        <variable
-            name="event"
-            type="com.spectra.fieldforce.fragment.ProvisioningScreenFragment" />
-        <variable
+           <variable
             name="response"
             type="com.spectra.fieldforce.model.gpon.response.AccountDetailsResponse.Response" />
 
     </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="gone"
+    android:id="@+id/constaint"
     android:background="@android:color/white">
 
     <androidx.core.widget.NestedScrollView
@@ -29,11 +30,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
+
+        <include
+            android:id="@+id/searchtoolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:background="@color/colorButton"
+            android:layout_height="?attr/actionBarSize" />
+
 
         <TextView
             android:id="@+id/tv_cust_account_id"
@@ -42,10 +50,11 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/customer_account_id"
             android:textColor="@color/colorBlack"
+            android:layout_margin="@dimen/_10sdp"
             app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/searchtoolbar" />
 
         <TextView
             android:id="@+id/tv_customer_account_id"
@@ -62,6 +71,7 @@
         <TextView
             android:id="@+id/tv_cust_name"
             android:layout_width="0dp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/customer_name"
@@ -75,7 +85,6 @@
             android:id="@+id/tv_customer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
             android:text="@{response.name}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/tv_cust_name"
@@ -86,8 +95,8 @@
             android:id="@+id/tv_city_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/city"
+            android:layout_margin="@dimen/_10sdp"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -108,7 +117,7 @@
             android:id="@+id/tv_product_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:text="@string/product_name"
             android:textColor="@color/colorBlack"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -130,7 +139,7 @@
             android:id="@+id/tv_building"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:text="@string/building_society"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
@@ -153,7 +162,7 @@
             android:id="@+id/tv_building_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:text="@string/status"
             android:textColor="@color/colorBlack"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -167,7 +176,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@{response.status}"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintStart_toEndOf="@+id/tv_customer_account_id"
+            app:layout_constraintStart_toEndOf="@+id/tv_city_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_building_society" />
 
 
@@ -175,7 +184,7 @@
             android:id="@+id/tv_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:text="@string/address"
             android:textColor="@color/colorBlack"
             app:layout_constraintEnd_toStartOf="@+id/tv_customer_account_id"
@@ -200,11 +209,10 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_address"
-            android:layout_weight="1">
+            app:layout_constraintTop_toBottomOf="@+id/tv_address">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -216,12 +224,10 @@
                     android:id="@+id/et_enter_ont"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
                     android:backgroundTint="@color/color_light_blue"
                     android:hint="@string/ont_serail_number"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
@@ -239,12 +245,9 @@
                     android:id="@+id/re_enter_ont"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:backgroundTint="@color/color_light_blue"
                     android:hint="@string/re_enter_ont_serail_number"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
@@ -258,21 +261,28 @@
                 android:textColorHint="@color/colorPrimary"
                 app:hintTextAppearance="@style/AppearanceText">
 
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tv_model"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_1sdp"
-                    android:backgroundTint="@color/color_light_blue"
                     android:hint="@string/model"
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
 
-                            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -289,8 +299,6 @@
                     android:backgroundTint="@color/color_light_blue"
                     android:hint="@string/profile_name"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
@@ -311,9 +319,8 @@
                     android:layout_margin="@dimen/_1sdp"
                     android:backgroundTint="@color/color_light_blue"
                     android:hint="@string/tower_structure"
+                    android:text="@{response.towerDetail.get(0).towerName}"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
@@ -334,9 +341,8 @@
                     android:layout_margin="@dimen/_1sdp"
                     android:backgroundTint="@color/color_light_blue"
                     android:hint="@string/serving_db"
+                    android:text="@{response.towerDetail.get(0).servingDB}"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:lines="1"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
@@ -346,13 +352,13 @@
 
 
         <TextView
-            android:id="@+id/tv_provisioning"
-            android:layout_width="0dp"
+            android:id="@+id/tv_provisioning_save"
+            android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_30sdp"
             android:text="@string/submit"
             android:layout_marginTop="@dimen/_35sdp"
             android:gravity="center"
-            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_90sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:paddingStart="@dimen/_25sdp"
             android:paddingEnd="@dimen/_25sdp"
@@ -362,37 +368,10 @@
             android:textColor="@android:color/white"
             app:layout_constraintTop_toBottomOf="@+id/linear_six" />
 
-        <TextView
-            android:id="@+id/tv_wcr"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_30sdp"
-            android:text="@string/reset"
-            android:gravity="center"
-            android:paddingStart="@dimen/_25sdp"
-            android:paddingEnd="@dimen/_25sdp"
-            android:layout_marginStart="@dimen/_30sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_35sdp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_purple"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_provisioning"
-            app:layout_constraintStart_toEndOf="@+id/tv_provisioning" />
-
-
-
-        <TextView
-            android:id="@+id/tv_account_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/back_to_account_search"
-            android:layout_marginTop="@dimen/_20sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintTop_toBottomOf="@+id/tv_provisioning"
-            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

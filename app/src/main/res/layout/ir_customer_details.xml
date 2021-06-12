@@ -20,7 +20,7 @@
         android:layout_margin="@dimen/_1sdp"
         android:text="@{@string/customer_business_segment    + customerDetails.businessSegment}"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp" />
 
 
     <TextView
@@ -30,7 +30,7 @@
         android:text="@{@string/pod  + customerDetails.pod}"
         android:layout_marginTop="@dimen/_10sdp"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp" />
 
 
 
@@ -41,7 +41,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:text="@{@string/product  + customerDetails.product}"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/et_item_type7"
@@ -50,7 +50,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:text="@{@string/installation_date + customerDetails.installationdate}"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp" />
 
 </LinearLayout>
 </layout>

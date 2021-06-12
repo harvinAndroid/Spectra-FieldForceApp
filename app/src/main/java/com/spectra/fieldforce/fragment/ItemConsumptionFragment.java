@@ -314,15 +314,8 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                 int status = Objects.requireNonNull(response.body()).getStatus();
                 if (status==1) {
                     AddMaterial();
-                   /* Intent i = new Intent(getActivity(), Activity_Resolve.class);
-                    i.putExtra("SrNumber", SrNumber);
-                    i.putExtra("CustomerId", canId);
-                    i.putExtra("SlotType",strSlotType);
-                    i.putExtra("SubSubType",StrSubSubType);
-                    i.putExtra("customerNetworkTech",customerNetworkTech);*/
                     Toast.makeText(getActivity(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                   /* startActivity(i);
-                    requireActivity().finish();*/
+
                 }else if(status==0){
                    // Toast.makeText(getActivity(),"Object reference not set to an instance of an object.",Toast.LENGTH_LONG).show();
                 }else{

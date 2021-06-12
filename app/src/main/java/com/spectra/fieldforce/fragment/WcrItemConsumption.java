@@ -1,5 +1,6 @@
 package com.spectra.fieldforce.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
@@ -39,7 +41,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSelectedListener{
+public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
+
     private WcrAddItemConsumptionBinding binding;
     private ArrayList<String> itemType;
     private ArrayList<String> itemTypeData;
@@ -51,7 +54,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData;
-    private  String strsubItemId;
+    private  String strsubItemId,strGuIId;
 
 
     public WcrItemConsumption() {
@@ -68,8 +71,12 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        strGuIId = requireArguments().getString("strGuuId");
+        binding.searchtoolbar.rlBack.setOnClickListener(this);
+        binding.searchtoolbar.tvLang.setText("Edit Item Consumption");
         init();
     }
+
 
     private void init(){
         Type();
@@ -80,16 +87,16 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         binding.spItem.setOnItemSelectedListener(this);
         binding.etSubitem.setOnClickListener(v-> binding.spSubItem.performClick());
         binding.spSubItem.setOnItemSelectedListener(this);
-        binding.btSubmit.setOnClickListener(v -> updateItemConsumption());
+        binding.btSubmit.setOnClickListener(v ->
+                updateItemConsumption());
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
-        binding.etSubitem.setOnClickListener(v -> getSubItemList("87eb625a-d706-eb11-8121-000d3ac9a7b3"));
+        binding.etSubitem.setOnClickListener(v -> getSubItemList(strItemType));
     }
 
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
-        itemType.add("IR");
         itemType.add("WCR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -105,7 +112,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
-
     }
 
     public void getSubItemList(String strItemType) {
@@ -168,9 +174,9 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
 
         }else if(parent.getId() == R.id.sp_sub_item){
            binding.etSubitem.setText(subItemName.get(position));
-            strsubItemId = subItemName.get(position);
+            strsubItemId = subItemId.get(position);
             if (position != 0) strsubItemId = "" + subItemId.get(position - 1);
-            else strsubItemId = " ";
+         //   else strsubItemId = " ";
         }else if(parent.getId() == R.id.sp_item_type){
             binding.etItemType.setText(consumptionItemType.get(position));
             strItemTypeData = consumptionItemType.get(position);
@@ -200,6 +206,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
                         itemName = new ArrayList<>();
                         itemId = new ArrayList<>();
                         itemName.add("Select Item");
+
                         for (GetItemListResponse.Datum datum :itemList )
                             itemName.add(datum.getItemName());
                         for (GetItemListResponse.Datum data : itemList)
@@ -207,6 +214,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
                         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemName);
                         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spItem.setAdapter(adapter1);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -222,27 +230,29 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     }
 
     private void updateItemConsumption(){
+
         AddItemConsumption addItem_Consumption = new AddItemConsumption();
         addItem_Consumption.setAuthkey(Constants.AUTH_KEY);
         addItem_Consumption.setAction(Constants.POST_ITEM_CONSUMPTIONS);
         addItem_Consumption.setItem(strItemType);
-        addItem_Consumption.setSubItem("279451d9-d706-eb11-8121-000d3ac9a7b3");
-       // addItem_Consumption.setSubItem(strsubItemId);
+        addItem_Consumption.setSubItem(strsubItemId);
         addItem_Consumption.setItemType(strItemTypeData);
-        addItem_Consumption.setConsumptionType("111260002");
+        addItem_Consumption.setConsumptionType("111260000");
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
-        addItem_Consumption.setWCRguidId("febd0a7f-4681-ea11-80f1-000d3af224b9");
+        addItem_Consumption.setWCRguidId(strGuIId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
         call.enqueue(new Callback<CommonClassResponse>() {
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
+                if (response.isSuccessful() && response.body()!=null) {
                     try {
+
                         Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        nextScreen();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -257,6 +267,15 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         });
     }
 
+    private void nextScreen(){
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        WcrFragment wcrFragment = new WcrFragment();
+        t1.replace(R.id.frag_container, wcrFragment);
+        t1.commit();
+    }
 
+    @Override
+    public void onClick(View v) {
 
+    }
 }

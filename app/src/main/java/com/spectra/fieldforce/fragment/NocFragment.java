@@ -43,7 +43,6 @@ public class NocFragment extends Fragment {
         webView = view.findViewById(R.id.webView);
         backpressed = view.findViewById(R.id.backpressed);
         webView.getSettings().setJavaScriptEnabled(true);
-     //  Toast.makeText(getContext(),"https://cs.spectra.co/nocportal/index.php?account_no_bil="+CanId,Toast.LENGTH_LONG).show();
         webView.loadUrl("https://cs.spectra.co/nocportal/index.php?account_no_bil="+CanId);
        // init();
     }

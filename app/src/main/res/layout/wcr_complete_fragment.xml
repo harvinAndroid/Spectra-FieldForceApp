@@ -36,6 +36,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+        <include
+            android:id="@+id/searchtoolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:background="@color/colorButton"
+            android:layout_height="?attr/actionBarSize" />
+
 
         <TextView
             android:id="@+id/tv_wcr_status"
@@ -45,7 +52,7 @@
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
             android:textSize="@dimen/_12sdp"
             android:textColor="@color/colorButton"
             android:gravity="center"
@@ -604,7 +611,6 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_height="0dp"
-            android:background="@color/gray"
             android:layout_marginTop="@dimen/_40sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

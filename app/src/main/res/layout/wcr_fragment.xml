@@ -9,7 +9,7 @@
 
         <variable
             name="holdCategory"
-            type="com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.EngineerDetails"
             />
         <variable
             name="fmsList"
@@ -35,6 +35,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
+                <include
+                    android:id="@+id/searchtoolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:background="@color/colorButton"
+                    android:layout_height="?attr/actionBarSize" />
+
 
                 <TextView
                     android:id="@+id/tv_wcr_status"
@@ -44,7 +51,7 @@
                     android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
                     android:textSize="@dimen/_14sdp"
                     android:textColor="@color/colorButton"
                     android:gravity="center"
@@ -420,6 +427,7 @@
                             android:backgroundTint="@color/color_light_blue"
                             android:drawableEnd="@drawable/ic_expand_down"
                             android:focusable="false"
+                            android:text="@{holdCategory.holdCategory}"
                             android:focusableInTouchMode="false"
                             android:hint="@string/hold_category"
                             android:imeOptions="actionNext"
@@ -442,6 +450,7 @@
                             android:hint="@string/hold_reason"
                             android:imeOptions="actionNext"
                             android:inputType="text"
+                            android:text="@{holdCategory.holdReason}"
                             android:textColor="@color/colorPrimaryDark"
                             android:textColorHighlight="@color/colorPrimary"
                             android:textSize="@dimen/_12sdp" />
@@ -518,6 +527,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/remarks"
+                            android:text="@{holdCategory.WCRRemarks}"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:lines="1"
@@ -535,15 +545,14 @@
                     android:orientation="vertical"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_height="0dp"
-                    android:background="@color/gray"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_40sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linear21">
 
                     <TextView
-                        android:id="@+id/tv_wcr_complete"
+                        android:id="@+id/tv_wcr_save"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
                         android:text="@string/wcr"

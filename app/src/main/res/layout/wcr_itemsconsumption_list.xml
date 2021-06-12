@@ -145,7 +145,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textA"
+                android:id="@+id/edit"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/button_background"
@@ -157,7 +157,7 @@
                 />
 
             <TextView
-                android:id="@+id/textB"
+                android:id="@+id/delete"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:padding="4dp"
@@ -170,6 +170,18 @@
                 />
 
         </LinearLayout>
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/color_light_blue"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
+            />
 
     </LinearLayout>
 </layout>

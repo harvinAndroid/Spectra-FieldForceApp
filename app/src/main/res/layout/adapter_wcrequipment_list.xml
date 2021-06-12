@@ -25,7 +25,7 @@
         android:layout_margin="@dimen/_1sdp"
         android:text="@{`Item :  ` + equipment.item}"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/et_ite2"
@@ -34,7 +34,7 @@
         android:layout_margin="@dimen/_1sdp"
         android:text="@{`SubItem :  ` + equipment.subItem}"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"/>
+        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/et_ite3"
@@ -43,7 +43,7 @@
         android:text="@{`ItemType :  ` + equipment.itemType}"
         android:layout_marginTop="@dimen/_10sdp"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/et_ite4"
@@ -52,7 +52,7 @@
         android:layout_margin="@dimen/_1sdp"
         android:text="@{`ItemCode :  ` + equipment.itemCode}"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"/>
+        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/et_ite5"
@@ -61,7 +61,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:text="@{`Serial No.:/Lot no. :  ` + equipment.serialNumber}"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp"  />
 
     <TextView
         android:id="@+id/et_ite6"
@@ -70,7 +70,7 @@
         android:layout_margin="@dimen/_1sdp"
         android:text="@{`Quantity :  ` + equipment.quantity}"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_12sdp"  />
 
     <LinearLayout
         android:layout_width="match_parent"
