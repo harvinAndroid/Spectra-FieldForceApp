@@ -134,12 +134,12 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                       if(response.body().getStatus().equals("Success")){
+                      /* if(response.body().getStatus().equals("Success")){
                            if(response.body().getResponse().getInstallAuth().equals("N")){
                                MainActivity.prefConfig.writeLoginStatus(true);
                              //  MainActivity.prefConfig.LoginStatus(false);
                                performLogin(response.body().getResponse().getName(), response.body().getResponse().getUsername());
-                           }else if(response.body().getResponse().getInstallAuth().equals("Y")){
+                           }else if(response.body().getResponse().getInstallAuth().equals("Y")){*/
                               MainActivity.prefConfig.LoginStatus(true);
 
                                SharedPreferences sp=getSharedPreferences("Login", 0);
@@ -150,13 +150,13 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                              // MainActivity.prefConfig.writeLoginStatus(false);
                               // PrefConfig.saveLoginDetails(loginResponse);
                                Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());
-                           }
+                          // }
                            getSaveToken();
                         }else{
                            message = "Login Failed..Please try again...";
                            binding.errortxt.setText(message);
                        }
-                    }
+                 //   }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

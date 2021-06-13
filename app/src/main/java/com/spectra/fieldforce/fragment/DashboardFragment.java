@@ -49,8 +49,8 @@ public class DashboardFragment extends Fragment {
         });
 
         linear_ffa.setOnClickListener(v -> {
-            SpectraFfaActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
-            SpectraFfaActivity.prefConfig.writeLoginStatus(true);
+
+           // SpectraFfaActivity.prefConfig.writeLoginStatus(true);
             Intent i = new Intent(getActivity(), SpectraFfaActivity.class);
             startActivity(i);
             getActivity().finish();

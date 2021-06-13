@@ -74,14 +74,17 @@ public class SpectraFfaActivity extends BaseActivity implements NavigationView.O
             }
         }
         if (findViewById(R.id.fregment_container) != null) {
-            if (prefConfig.readLoginStatus()) {
+            navigationDrawerSetup();
+            getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
+
+           /* if (prefConfig.readLoginStatus()) {
                 navigationDrawerSetup();
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
             }
             else {
                 finish();
                 startActivity(new Intent(activity, LoginActivity.class));
-            }
+            }*/
         }
     }
 
@@ -233,7 +236,9 @@ public class SpectraFfaActivity extends BaseActivity implements NavigationView.O
             btnHome.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
                 SpectraFfaActivity.prefConfig.writeName(SpectraFfaActivity.prefConfig.readName());
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
+
+                //  activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
             });
 
             TextView btnWiFi = dView.findViewById(R.id.nav_Wifi);

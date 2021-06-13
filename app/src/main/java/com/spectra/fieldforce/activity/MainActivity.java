@@ -79,10 +79,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         }
         if (findViewById(R.id.fregment_container) != null) {
-            if (prefConfig.readLoginStatus()) {
+          /*  if (prefConfig.readLoginStatus()) {
                 navigationDrawerSetup();
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-            }else if (prefConfig.LoginStatus()){
+            }else*/ if (prefConfig.LoginStatus()){
                 navigationDrawerSetup();
               /* Intent i = new Intent(this,DashBoardActivity.class);
                startActivity(i);
