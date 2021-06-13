@@ -15,6 +15,7 @@ import com.spectra.fieldforce.utils.PrefConfig;
 public class DashBoardActivity extends AppCompatActivity {
    private LinearLayout linear_ffa,linear_gpon;
     public static PrefConfig prefConfig;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +35,9 @@ public class DashBoardActivity extends AppCompatActivity {
         });
 
         linear_ffa.setOnClickListener(v -> {
-            getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-          /*  Intent ffa = new Intent(DashBoardActivity.this,MainActivity.class);
-            startActivity(ffa);
-            finish();*/
+            Intent i = new Intent(DashBoardActivity.this,SpectraFfaActivity.class);
+            startActivity(i);
+            finish();
         });
 
     }

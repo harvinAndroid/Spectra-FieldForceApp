@@ -28,6 +28,7 @@ import com.spectra.fieldforce.fragment.EditItemConsumptionFragment;
 import com.spectra.fieldforce.fragment.SRDetailFragment;
 import com.spectra.fieldforce.fragment.WcrCompletedFragment;
 import com.spectra.fieldforce.fragment.WcrEditItemConsumption;
+import com.spectra.fieldforce.fragment.WcrEditManholeFragment;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.fragment.WcrItemConsumption;
 import com.spectra.fieldforce.model.gpon.request.BucketListRequest;
@@ -50,6 +51,7 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
     private Context context;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
     WcrItemsconsumptionListBinding binding;
+
 
     public WcrCompletteItemConsumptionListAdapter(FragmentActivity activity, ArrayList<WcrResponse.ItemConsumtion> itemConsumtions) {
         this.context = activity;
@@ -77,13 +79,14 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
         holder.binding.setItemConsumption(item);
 
         holder.binding.delete.setOnClickListener(v -> {
-            deleteItem(item.getItemID());
+            deleteItem(item.getItemID(),item.getCanid());
         });
 
         holder.binding.edit.setOnClickListener(v -> {
             Bundle b = new Bundle();
             b.putString("ItemId", item.getItemID());
             b.putString("GuIID", item.getWcrguidid());
+            b.putString("canId", item.getCanid());
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new WcrEditItemConsumption();
             myFragment.setArguments(b);
@@ -92,7 +95,7 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
     }
 
 
-    private void deleteItem(String itemID){
+    private void deleteItem(String itemID, String canid){
         DeleteItemRequest deleteItemRequest = new DeleteItemRequest();
         deleteItemRequest.setAuthkey(Constants.AUTH_KEY);
         deleteItemRequest.setAction(Constants.DELETE_ITEM_CONSUMPTIONBY_ID);
@@ -108,9 +111,21 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
                         try {
                             if (response.body().getResponse().getStatusCode()==200){
                                 Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                                AppCompatActivity activity1 = (AppCompatActivity) context;
+                              /*  AppCompatActivity activity1 = (AppCompatActivity) context;
+                                Bundle b = new Bundle();
+                                b.putString("canId", id);
+                                myFragment.setArguments(b);
                                 activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), WcrFragment.class.getSimpleName()).addToBackStack(null
-                                ).commit();
+                                ).commit();*/
+
+                                Bundle b = new Bundle();
+                                b.putString("canId", canid);
+                                AppCompatActivity activity = (AppCompatActivity) context;
+                                Fragment myFragment = new WcrFragment();
+                                myFragment.setArguments(b);
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
+
+
                             }
 
                         } catch (NumberFormatException e) {

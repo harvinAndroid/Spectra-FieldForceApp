@@ -2,7 +2,9 @@ package com.spectra.fieldforce.model.gpon.request;
 
 public class AddBucketListRequest {
 
-    private String Authkey,Action,Order_id,Order_type,CustomerID,CustomerName,PODName, CRM_status,HoldCategory,HoldReason,EngineerName,EngineerID,NetworkTechnology,VendorCode;
+   private String  Authkey,Action,Order_id,Order_type,WCRId,
+            IRId,CustomerID,CustomerName,PODName,CRM_status,HoldCategory,
+            HoldReason,EngineerName,EngineerID,NetworkTechnology,VendorCode;
 
     public void setAuthkey(String authkey) {
         Authkey = authkey;
@@ -18,6 +20,14 @@ public class AddBucketListRequest {
 
     public void setOrder_type(String order_type) {
         Order_type = order_type;
+    }
+
+    public void setWCRId(String WCRId) {
+        this.WCRId = WCRId;
+    }
+
+    public void setIRId(String IRId) {
+        this.IRId = IRId;
     }
 
     public void setCustomerID(String customerID) {

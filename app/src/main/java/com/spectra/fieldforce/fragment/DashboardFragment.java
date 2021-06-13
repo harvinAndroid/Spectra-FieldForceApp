@@ -15,12 +15,14 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.BucketTabActivity;
 import com.spectra.fieldforce.activity.DashBoardActivity;
 import com.spectra.fieldforce.activity.MainActivity;
+import com.spectra.fieldforce.activity.SpectraFfaActivity;
 import com.spectra.fieldforce.utils.PrefConfig;
 
 public class DashboardFragment extends Fragment {
 
     private LinearLayout linear_ffa,linear_gpon;
     public static PrefConfig prefConfig;
+    DashBoardActivity context;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,8 +49,10 @@ public class DashboardFragment extends Fragment {
         });
 
         linear_ffa.setOnClickListener(v -> {
-            Intent ffa = new Intent(getContext(), MainActivity.class);
-            startActivity(ffa);
+            SpectraFfaActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
+            SpectraFfaActivity.prefConfig.writeLoginStatus(true);
+            Intent i = new Intent(getActivity(), SpectraFfaActivity.class);
+            startActivity(i);
             getActivity().finish();
         });
 

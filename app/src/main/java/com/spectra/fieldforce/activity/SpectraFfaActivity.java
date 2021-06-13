@@ -29,25 +29,20 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.InstallState;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.fragment.DashboardFragment;
 import com.spectra.fieldforce.fragment.WelcomeFragment;
-import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SpectraFfaActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static PrefConfig prefConfig;
     private static final String TAG = "MainActivity";
@@ -82,12 +77,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             if (prefConfig.readLoginStatus()) {
                 navigationDrawerSetup();
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-            }else if (prefConfig.LoginStatus()){
-                navigationDrawerSetup();
-              /* Intent i = new Intent(this,DashBoardActivity.class);
-               startActivity(i);
-               finish();*/
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
             }
             else {
                 finish();
@@ -140,7 +129,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     appUpdateInfo,
                     AppUpdateType.IMMEDIATE,
                     this,
-                    MainActivity.REQ_CODE_VERSION_UPDATE);
+                    SpectraFfaActivity.REQ_CODE_VERSION_UPDATE);
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
@@ -197,7 +186,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public Fragment getVisibleFragment() {
-        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        FragmentManager fragmentManager = SpectraFfaActivity.this.getSupportFragmentManager();
         List<Fragment> fragments = fragmentManager.getFragments();
         for (Fragment fragment : fragments) {
             if (fragment != null && fragment.isVisible())
@@ -243,10 +232,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             TextView btnHome = dView.findViewById(R.id.nav_home);
             btnHome.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
-                MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
-
-                //     activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
+                SpectraFfaActivity.prefConfig.writeName(SpectraFfaActivity.prefConfig.readName());
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
             });
 
             TextView btnWiFi = dView.findViewById(R.id.nav_Wifi);
@@ -275,7 +262,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             TextView btnGpon = dView.findViewById(R.id.nav_gpon);
             btnGpon.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
-                Intent i = new Intent(MainActivity.this,BucketTabActivity.class);
+                Intent i = new Intent(SpectraFfaActivity.this,BucketTabActivity.class);
                 startActivity(i);
                 finish();
                /* final String appPackageName = "valuelabs.spectra.com";
@@ -293,16 +280,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             TextView btnLogout = dView.findViewById(R.id.nav_logout);
             btnLogout.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
-                MainActivity.prefConfig.writeLoginStatus(false);
-                MainActivity.prefConfig.LoginStatus(false);
-                MainActivity.prefConfig.writeName("User");
-                startActivity(new Intent(activity, MainActivity.class));
+                SpectraFfaActivity.prefConfig.writeLoginStatus(false);
+                SpectraFfaActivity.prefConfig.LoginStatus(false);
+                SpectraFfaActivity.prefConfig.writeName("User");
+                startActivity(new Intent(activity, SpectraFfaActivity.class));
                 finish();
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
             });
             TextView image = dView.findViewById(R.id.image);
             image.setOnClickListener(v -> {
-                Intent i = new Intent(MainActivity.this,Activity_Resolve.class);
+                Intent i = new Intent(SpectraFfaActivity.this,Activity_Resolve.class);
                 startActivity(i);
             });
             Menu nav_menu = navigationView.getMenu();

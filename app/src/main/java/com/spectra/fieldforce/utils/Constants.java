@@ -79,7 +79,7 @@ public class Constants {
     public static final String SUBMIT_FOR_APPROVAL = "submitForApproval";
     public static final String IR_COMPLETE  = "IRComplete";
     public static final String HOLD_IR = "holdIR";
-    public static final String ADD_ORDER_TOBUCKET = "AddOrderToBucket";
+    public static final String ADD_ORDER_TOBUCKET = "addOrderToBucket";
     public static final String  RELEASE_ORDER = "releaseOrder";
 
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -68,6 +69,7 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
         super.onViewCreated(view, savedInstanceState);
         ItemId = requireArguments().getString("ItemId");
         GuIID = requireArguments().getString("GuIID");
+        CanId = requireArguments().getString("canId");
         init();
     }
 
@@ -258,7 +260,11 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
     private void nextScreen(){
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         WcrFragment wcrFragment = new WcrFragment();
+        Bundle b = new Bundle();
+        b.putString("canId", CanId);
+        wcrFragment.setArguments(b);
         t1.replace(R.id.frag_container, wcrFragment);
         t1.commit();
+
     }
 }

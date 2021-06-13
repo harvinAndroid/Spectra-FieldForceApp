@@ -91,6 +91,14 @@
 
         <activity android:name=".activity.BucketTabActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.ProvisioningScreenActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.SpectraFfaActivity"
+            android:screenOrientation="portrait"
+            />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

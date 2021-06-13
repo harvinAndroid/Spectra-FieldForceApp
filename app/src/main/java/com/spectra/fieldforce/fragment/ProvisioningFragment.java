@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.BucketTabActivity;
+import com.spectra.fieldforce.activity.ProvisioningScreenActivity;
 import com.spectra.fieldforce.databinding.ProvisionFragmentBinding;
 
 import java.util.Objects;
@@ -65,7 +66,7 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
         provisionFragmentBinding.tvSegmentType.setText(segment);
         provisionFragmentBinding.searchtoolbar.rlBack.setOnClickListener(this);
         provisionFragmentBinding.searchtoolbar.tvLang.setText("Provisioning");
-        if(statusReport.equals("Installation Pending")||statusReport.equals("Pending")){
+        if(statusReport.equals("Installation Pending")||statusReport.equals("Pending")||statusReport.equals("Installation On Hold")){
             provisionFragmentBinding.tvWcr.setText("WCR");
             provisionFragmentBinding.tvWcr.setOnClickListener(v -> {
                 @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
@@ -93,7 +94,17 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
 
     private void init(){
         provisionFragmentBinding.tvProvisioning.setOnClickListener(v -> {
-            Bundle accountinfo = new Bundle();
+            Intent i = new Intent(getActivity(), ProvisioningScreenActivity.class);
+          //  i.putExtra("name", name);
+            i.putExtra("canId", canId);
+         /*   i.putExtra("city", city);
+            i.putExtra("area", area);
+            i.putExtra("building", building);
+            i.putExtra("segment",segment);*/
+            startActivity(i);
+          //  i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().finish();
+          /*  Bundle accountinfo = new Bundle();
             accountinfo.putString("name", name);
             accountinfo.putString("canId", canId);
             accountinfo.putString("city", city);
@@ -104,7 +115,7 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
             ProvisioningScreenFragment provisioningScreenFragment = new ProvisioningScreenFragment();
             t11.replace(R.id.frag_container, provisioningScreenFragment);
             provisioningScreenFragment.setArguments(accountinfo);
-            t11.commit();
+            t11.commit();*/
 
         });
 

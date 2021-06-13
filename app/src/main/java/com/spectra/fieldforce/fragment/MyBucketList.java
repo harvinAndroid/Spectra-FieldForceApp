@@ -47,6 +47,16 @@ public class MyBucketList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getallBucketList();
+        init();
+    }
+
+    private void init(){
+        binding.swipeRefreshLayout.setEnabled(true);
+        binding.swipeRefreshLayout.setRefreshing(true);
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            binding.swipeRefreshLayout.setRefreshing(true);
+           getallBucketList();
+        });
     }
 
     public void getallBucketList() {
@@ -70,6 +80,7 @@ public class MyBucketList extends Fragment {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         getBucketList = response.body().getResponse();
+                        binding.swipeRefreshLayout.setRefreshing(false);
                         outAnimation = new AlphaAnimation(1f, 0f);
                         outAnimation.setDuration(200);
                         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
@@ -93,6 +104,7 @@ public class MyBucketList extends Fragment {
             @Override
             public void onFailure(Call<GetMyBucketList> call, Throwable t) {
                 binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                binding.swipeRefreshLayout.setRefreshing(false);
                 Log.e("RetroError", t.toString());
             }
         });

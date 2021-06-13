@@ -4,6 +4,7 @@ package com.spectra.fieldforce.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,15 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.BucketTabActivity;
+import com.spectra.fieldforce.activity.DashBoardActivity;
 import com.spectra.fieldforce.activity.ProvisioningTabActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.AdpterAllBucketListBinding;
 import com.spectra.fieldforce.databinding.AdpterMyBucketListBinding;
+import com.spectra.fieldforce.fragment.MyBucketList;
+import com.spectra.fieldforce.fragment.ProvisioningFragment;
 import com.spectra.fieldforce.fragment.ProvisioningTabFragment;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.CommonResponse;
@@ -50,6 +55,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
         this.context = activity;
         this.getBucketList = getBucketList;
     }
+    
 
     @NotNull
     @Override
@@ -137,9 +143,12 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                     try {
                         if (response.body().getStatus().equals("Success")){
                             Toast.makeText(context,response.body().getResponse(),Toast.LENGTH_LONG).show();
-                            AppCompatActivity activity1 = (AppCompatActivity) context;
-                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), WcrFragment.class.getSimpleName()).addToBackStack(null
-                            ).commit();
+                            Intent i = new Intent(context, BucketTabActivity.class);
+                            context.startActivity(i);
+
+                            /*AppCompatActivity activity1 = (AppCompatActivity) context;
+                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new Buc(), MyBucketList.class.getSimpleName()).addToBackStack(null
+                            ).commit();*/
                         }
 
                     } catch (NumberFormatException e) {

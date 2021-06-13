@@ -69,7 +69,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         holder.binding.tvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AllBucketListAdapter.this.addItemToBucket(itemList.getId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), itemList.getPodName(),
+                AllBucketListAdapter.this.addItemToBucket(itemList.getId(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), itemList.getPodName(),
                         itemList.getStatus(), itemList.getHoldCategory(), itemList.getHoldReason(), itemList.getEngineerName(), itemList.getNetworkTechnology());
 
 
@@ -119,7 +119,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     }
 
 
-    private void addItemToBucket(String id, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String engineerName, String networkTechnology){
+    private void addItemToBucket(String id, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String engineerName, String networkTechnology){
         SharedPreferences sp1=context.getSharedPreferences("Login",0);
         String vendor =sp1.getString("VenderCode", null);
         String enggId = sp1.getString("EnggId", null);
@@ -127,7 +127,8 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         addBucketListRequest.setAuthkey(Constants.AUTH_KEY);
         addBucketListRequest.setAction(Constants.ADD_ORDER_TOBUCKET);
         addBucketListRequest.setOrder_id(id);
-        addBucketListRequest.setOrder_type(orderType);
+        addBucketListRequest.setWCRId(wcrId);
+        addBucketListRequest.setIRId(irId);
         addBucketListRequest.setCustomerID(canId);
         addBucketListRequest.setCustomerName(customerName);
         addBucketListRequest.setPODName(podName);

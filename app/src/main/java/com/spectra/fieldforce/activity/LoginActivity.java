@@ -113,6 +113,8 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         prefConfig.writeUserName(name);
 //        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
         finish();
+        performLogin(email, name);
+
         startActivity(new Intent(activity, MainActivity.class));
     }
 
@@ -139,6 +141,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                                performLogin(response.body().getResponse().getName(), response.body().getResponse().getUsername());
                            }else if(response.body().getResponse().getInstallAuth().equals("Y")){
                               MainActivity.prefConfig.LoginStatus(true);
+
                                SharedPreferences sp=getSharedPreferences("Login", 0);
                                SharedPreferences.Editor Ed=sp.edit();
                                Ed.putString("VenderCode",response.body().getResponse().getVendorCode());
