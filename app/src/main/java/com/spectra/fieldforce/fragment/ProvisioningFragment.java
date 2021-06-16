@@ -39,11 +39,18 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rl_back) {
-            Intent i = new Intent(getActivity(), BucketTabActivity.class);
-            startActivity(i);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().finish();
+          nextScreen();
         }
+    }
+
+    private void nextScreen(){
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        ProvisioningTabFragment provisioningScreenFragment = new ProvisioningTabFragment();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", canId);
+        t.replace(R.id.frag_container, provisioningScreenFragment);
+        provisioningScreenFragment.setArguments(accountinfo);
+        t.commit();
     }
 
 

@@ -35,6 +35,7 @@ public class MyBucketList extends Fragment {
     private List<GetMyBucketList.Response> getBucketList;
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -235,11 +235,6 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
 
     private void nextScreen(){
         getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new ProvisioningTabFragment(), ProvisioningTabFragment.class.getSimpleName()).addToBackStack(null).commit();
-
-     /*   @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t11= Objects.requireNonNull(activity.getFragmentManager()).beginTransaction();
-        ProvisioningFragment provisioningFragment = new ProvisioningFragment();
-        t11.replace(R.id.frag_container, provisioningFragment);
-        t11.commit();*/
     }
 
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.spectra.fieldforce.R;
@@ -35,6 +36,7 @@ import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,14 +67,21 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rl_back) {
-            Intent i = new Intent(getActivity(), BucketTabActivity.class);
-            startActivity(i);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            getActivity().finish();
+            nextScreen();
         }
     }
 
+
+    private void moveNext(){
+
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        WcrFragment wcrFragment = new WcrFragment();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
+        t.replace(R.id.frag_container, wcrFragment);
+        wcrFragment.setArguments(accountinfo);
+        t.commit();
+    }
 
 
     @Override
@@ -108,23 +117,28 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onResponse(Call<WcrResponse> call, Response<WcrResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    try {
-                        binding.setStatus(response.body().getResponse().getWcr());
-                        itemConsumtions = response.body().getResponse().getItemConsumtionList();
-                        binding.layoutItemconsumption.rvWcrItemlist.setHasFixedSize(true);
-                        binding.layoutItemconsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        binding.layoutItemconsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(),itemConsumtions));
-                        equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
-                        binding.layoutWcrEquipmentdetails.rvEquipment.setHasFixedSize(true);
-                        binding.layoutWcrEquipmentdetails.rvEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        binding.layoutWcrEquipmentdetails.rvEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(),equipmentDetailsLists));
-                        binding.layoutWcrcustomerNetwork.setCustomerNetwork(response.body().getResponse().getCusotmerNetwork());
-                        strGuuId = response.body().getResponse().getWcr().getWcrguidid();
-                        strSegment = response.body().getResponse().getWcr().getBusinessSegment();
-                        strProductSegment = response.body().getResponse().getWcr().getProductSegment();
-                        listener();
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
+                    if(response.body().getStatus().equals("Success")) {
+                        try {
+                            binding.setStatus(response.body().getResponse().getWcr());
+                            itemConsumtions = response.body().getResponse().getItemConsumtionList();
+                            binding.layoutItemconsumption.rvWcrItemlist.setHasFixedSize(true);
+                            binding.layoutItemconsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutItemconsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions));
+                            equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
+                            binding.layoutWcrEquipmentdetails.rvEquipment.setHasFixedSize(true);
+                            binding.layoutWcrEquipmentdetails.rvEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutWcrEquipmentdetails.rvEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(), equipmentDetailsLists));
+                            binding.layoutWcrcustomerNetwork.setCustomerNetwork(response.body().getResponse().getCusotmerNetwork());
+                            strGuuId = response.body().getResponse().getWcr().getWcrguidid();
+                            strSegment = response.body().getResponse().getWcr().getBusinessSegment();
+                            strProductSegment = response.body().getResponse().getWcr().getProductSegment();
+                            listener();
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }else if(response.body().getStatus().equals("Failure")){
+                        Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
+                        nextScreen();
                     }
                 }
             }
@@ -134,6 +148,17 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
             }
         });
     }
+
+    private void nextScreen(){
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        ProvisioningTabFragment provisioningScreenFragment = new ProvisioningTabFragment();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
+        t.replace(R.id.frag_container, provisioningScreenFragment);
+        provisioningScreenFragment.setArguments(accountinfo);
+        t.commit();
+    }
+
 
     private void listener(){
         if(strSegment.equals("Business")){
@@ -279,6 +304,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            moveNext();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
 
@@ -368,6 +394,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            moveNext();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse(),Toast.LENGTH_LONG).show();
                         }
@@ -409,6 +436,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getStatus().equals("Success")){
+                            moveNext();
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -449,6 +477,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getStatus().equals("Success")){
+                            moveNext();
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -490,6 +519,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            nextScreen();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }

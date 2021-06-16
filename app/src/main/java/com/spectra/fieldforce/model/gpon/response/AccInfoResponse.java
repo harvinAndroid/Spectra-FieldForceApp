@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class AccInfoResponse {
     @SerializedName("Status")
-    public int status;
+    public String status;
     @SerializedName("Response")
     public Response response;
 

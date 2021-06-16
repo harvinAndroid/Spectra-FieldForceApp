@@ -21,6 +21,7 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.AdpterAllBucketListBinding;
+import com.spectra.fieldforce.fragment.MyBucketList;
 import com.spectra.fieldforce.fragment.SRDetailFragment;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.gpon.request.AddBucketListRequest;
@@ -98,11 +99,10 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -147,11 +147,16 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if (response.body().getResponse().getStatusCode()==200){
+                        if (response.body().getStatus().equals("Success")){
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             AppCompatActivity activity1 = (AppCompatActivity) context;
-                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), SRDetailFragment.class.getSimpleName()).addToBackStack(null
+                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new MyBucketList(), MyBucketList.class.getSimpleName()).addToBackStack(null
                             ).commit();
+                        }else if(response.body().getStatus().equals("Failure")){
+                            Toast.makeText(context,"Not Added in bucket.",Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(context,"Something went wrong...",Toast.LENGTH_LONG).show();
+
                         }
 
                     } catch (NumberFormatException e) {

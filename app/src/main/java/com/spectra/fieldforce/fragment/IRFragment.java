@@ -56,10 +56,9 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> irCpeMac;
     private ArrayList<String> IrType;
     private ArrayList<String> irCpeMacid;
-    private String strCpe,strGuiID,strSegment,strCanId,str_provisionId;
+    private String strCpe,strGuiID,strSegment,strCanId,str_provisionId,strholdId;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private String strholdId;
 
     public IRFragment() {
 
@@ -90,10 +89,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rl_back) {
-            Intent i = new Intent(getActivity(), BucketTabActivity.class);
-            startActivity(i);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().finish();
+           nextScreen();
         }
     }
 
@@ -175,6 +171,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
+                            moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -198,9 +195,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_IR_INFO);
         accountInfoRequest.setCanId(strCanId);
-/*
-        accountInfoRequest.setCanId(strCanId);
-*/
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<IrInfoResponse> call = apiService.getIrInfo(accountInfoRequest);
@@ -208,7 +202,9 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<IrInfoResponse> call, Response<IrInfoResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    if(response.body().getStatus().equals("Success")) {
                     try {
+                        binding.constraint.setVisibility(View.VISIBLE);
                         binding.layoutCustomerDetails.setCustomerDetails(response.body().getResponse().getIr());
                         binding.setIR(response.body().getResponse().getIr());
                         strGuiID = response.body().getResponse().getIr().getIrguid();
@@ -232,6 +228,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    }else if(response.body().getStatus().equals("Failure")){
+                        Toast.makeText(getContext(),"Account Id (CAN Id) does not exist or Inactive.",Toast.LENGTH_LONG).show();
+                        nextScreen();
+                    }
                 }
 
             }
@@ -241,6 +241,16 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 Log.e("RetroError", t.toString());
             }
         });
+    }
+
+    private void nextScreen(){
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        ProvisioningTabFragment provisioningScreenFragment = new ProvisioningTabFragment();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
+        t.replace(R.id.frag_container, provisioningScreenFragment);
+        provisioningScreenFragment.setArguments(accountinfo);
+        t.commit();
     }
 
 
@@ -391,6 +401,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
+                            moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -425,6 +436,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
+                            moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else {
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -443,6 +455,17 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
+    private void moveNext(){
+
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        IRFragment irFragment = new IRFragment();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
+        t.replace(R.id.frag_container, irFragment);
+        irFragment.setArguments(accountinfo);
+        t.commit();
+    }
+
     private void updateCpeMac(){
         UpdateCpeMacRequest updateCpeMacRequest = new UpdateCpeMacRequest();
         updateCpeMacRequest.setAuthkey(Constants.AUTH_KEY);
@@ -457,6 +480,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
+                            moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else {
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -492,6 +516,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
+                           nextScreen();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else {
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -528,6 +553,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getStatus().equals("Success")){
+                            moveNext();
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();

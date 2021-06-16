@@ -237,7 +237,6 @@ public class SpectraFfaActivity extends BaseActivity implements NavigationView.O
                 drawerLayout.closeDrawers();
                 SpectraFfaActivity.prefConfig.writeName(SpectraFfaActivity.prefConfig.readName());
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
-
                 //  activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
             });
 
@@ -288,7 +287,10 @@ public class SpectraFfaActivity extends BaseActivity implements NavigationView.O
                 SpectraFfaActivity.prefConfig.writeLoginStatus(false);
                 SpectraFfaActivity.prefConfig.LoginStatus(false);
                 SpectraFfaActivity.prefConfig.writeName("User");
-                startActivity(new Intent(activity, SpectraFfaActivity.class));
+                MainActivity.prefConfig.writeLoginStatus(false);
+                MainActivity.prefConfig.LoginStatus(false);
+                MainActivity.prefConfig.writeName("User");
+                startActivity(new Intent(activity, LoginActivity.class));
                 finish();
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
             });

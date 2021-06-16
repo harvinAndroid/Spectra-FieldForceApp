@@ -107,7 +107,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
-                            Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                          //  Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
 

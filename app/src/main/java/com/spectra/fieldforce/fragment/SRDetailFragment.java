@@ -61,6 +61,7 @@ import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -358,6 +359,10 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         btnUnhold.setOnClickListener(v ->
                 ChangeUnholdStatus());
 
+       /* holdReason.setOnItemClickListener((parent, view1, position, id) -> setActionCode());*/
+
+
+
 
 
         DateEdit.setOnClickListener(v -> {
@@ -412,6 +417,8 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,addMater);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spntemConsumption.setAdapter(adapter1);
+
+
     }
 
     private void bindContacted() {
@@ -571,12 +578,9 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
     }
 
     private void getActionCode() {
-       // String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getActioncodeMst";
-
-        RCRequest rcRequest = new RCRequest();
+       RCRequest rcRequest = new RCRequest();
         rcRequest.setAuthkey(Constants.AUTH_KEY);
-        rcRequest.setAction(action);
+        rcRequest.setAction(Constants.GET_ACTION_CODEMST);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getRCDetail(rcRequest);
@@ -594,6 +598,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                 result = jsonObject.getJSONArray("Response");
                                 if (result != null) {
                                     ArrayList<String> action = new ArrayList<String>();
+
                                     if(action_code==null){
                                         action.add("Select Hold Reason");
                                         for (int i = 0; i < result.length(); i++) {
@@ -604,6 +609,8 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
                                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         holdReason.setAdapter(adapter);
+
+
                                     }else{
                                         action.add(action_code);
                                         contactName.setText(str_contact_name);
@@ -612,7 +619,32 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         holdReason.setAdapter(adapter);
                                         holdReason.setSelection(Integer.parseInt(action_code));
+
                                     }
+                                    /*holdReason.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            action.add("Select Hold Reason");
+                                            for (int i = 0; i < result.length(); i++) {
+                                                JSONObject jsonData = null;
+                                                try {
+                                                    jsonData = new JSONObject(String.valueOf(result.getString(i)));
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                String code = null;
+                                                try {
+                                                    code = jsonData.getString("actionCode");
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                action.add(code);
+                                            }
+                                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
+                                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                            holdReason.setAdapter(adapter);
+                                        }
+                                    });*/
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -631,15 +663,64 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         });
     }
 
+
+    private void setActionCode() {
+        RCRequest rcRequest = new RCRequest();
+        rcRequest.setAuthkey(Constants.AUTH_KEY);
+        rcRequest.setAction(Constants.GET_ACTION_CODEMST);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<JsonElement> call = apiService.getRCDetail(rcRequest);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
+                        status = jsonObject.getString("Status");
+                        if (status.equals("Failure")) {
+                            Log.d("Failure", "error");
+                        } else if (status.equals("1")) {
+                            try {
+                                result = jsonObject.getJSONArray("Response");
+                                if (result != null) {
+                                    ArrayList<String> action = new ArrayList<String>();
+                                        action.add("Select Hold Reason");
+                                        for (int i = 0; i < result.length(); i++) {
+                                            JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
+                                            String code = jsonData.getString("actionCode");
+                                            action.add(code);
+                                        }
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
+                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        holdReason.setAdapter(adapter);
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
+
     private void getAssignment(String srText, String slotType) {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getASRBySrNumber";
-        String taskType = "Assigned";
 
         SRRequest srRequest = new SRRequest();
-        srRequest.setAuthkey(authKey);
-        srRequest.setAction(action);
-        srRequest.setTaskType(taskType);
+        srRequest.setAuthkey(Constants.AUTH_KEY);
+        srRequest.setAction(Constants.GETASR_BY_SRNUMBER);
+        srRequest.setTaskType(Constants.ASSIGNED);
         srRequest.setSlotType(slotType);
         srRequest.setSrNumber(srText);
 

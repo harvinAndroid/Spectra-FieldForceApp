@@ -77,10 +77,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rl_back) {
-            Intent i = new Intent(getActivity(), BucketTabActivity.class);
-            startActivity(i);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().finish();
+            nextScreen();
         }
     }
 
@@ -108,6 +105,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             wcrItemConsumption.setArguments(bundle);
             t1.commit();
         });
+
         binding.layoutAssociatedDetails.btSubmitAssociate.setOnClickListener((View v) -> {
             String idb = Objects.requireNonNull(binding.layoutAssociatedDetails.etIdbLength.getText()).toString();
             String link = Objects.requireNonNull(binding.layoutAssociatedDetails.etLinkBudget.getText()).toString();
@@ -121,6 +119,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
             }
         );
+
         binding.layoutWcrFms.btSubmitFmsDetails.setOnClickListener(v -> {
                     if (binding.layoutWcrFms.spCustomerEndFms.getSelectedItem().toString().equals("Select Fms Type")) {
                         Toast.makeText(getContext(), "Please Select Fms Type", Toast.LENGTH_LONG).show();
@@ -392,27 +391,32 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<WcrResponse> call, Response<WcrResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    try {
-                        binding.tvWcrStatus.setText("WCR Status: "+response.body().getResponse().getWcr().getWCRConsumptionStatus());
-                        binding.layoutWcrFragmentCustomerDetails.setCustomer(response.body().getResponse().getWcr());
-                        strGuuId = response.body().getResponse().getWcr().getWcrguidid();
-                        strProductSegment = response.body().getResponse().getWcr().getProductSegment();
-                        strSegment = response.body().getResponse().getWcr().getBusinessSegment();
-                        manHoleDetails = response.body().getResponse().getManHoleDetailsList();
-                        binding.layoutAssociatedDetails.setAssociated(response.body().getResponse().getAssociated());
-                        binding.layoutWcrFms.setFms(response.body().getResponse().getFMSDetails());
-                        binding.layoutWcrEngrDetails.setEngg(response.body().getResponse().getEngineerDetails());
-                        binding.setHoldCategory(response.body().getResponse().getEngineerDetails());
-                        binding.layoutmanholDetails.rvAddManhole.setHasFixedSize(true);
-                        binding.layoutmanholDetails.rvAddManhole.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        binding.layoutmanholDetails.rvAddManhole.setAdapter(new WcrAddManholeAdapter(getActivity(),manHoleDetails));
-                        itemConsumtions = response.body().getResponse().getItemConsumtionList();
-                        binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
-                        binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(),itemConsumtions));
-                        listener();
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
+                    if(response.body().getStatus().equals("Success")) {
+                        try {
+                            binding.tvWcrStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
+                            binding.layoutWcrFragmentCustomerDetails.setCustomer(response.body().getResponse().getWcr());
+                            strGuuId = response.body().getResponse().getWcr().getWcrguidid();
+                            strProductSegment = response.body().getResponse().getWcr().getProductSegment();
+                            strSegment = response.body().getResponse().getWcr().getBusinessSegment();
+                            manHoleDetails = response.body().getResponse().getManHoleDetailsList();
+                            binding.layoutAssociatedDetails.setAssociated(response.body().getResponse().getAssociated());
+                            binding.layoutWcrFms.setFms(response.body().getResponse().getFMSDetails());
+                            binding.layoutWcrEngrDetails.setEngg(response.body().getResponse().getEngineerDetails());
+                            binding.setHoldCategory(response.body().getResponse().getEngineerDetails());
+                            binding.layoutmanholDetails.rvAddManhole.setHasFixedSize(true);
+                            binding.layoutmanholDetails.rvAddManhole.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutmanholDetails.rvAddManhole.setAdapter(new WcrAddManholeAdapter(getActivity(), manHoleDetails));
+                            itemConsumtions = response.body().getResponse().getItemConsumtionList();
+                            binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
+                            binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions));
+                            listener();
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }else if(response.body().getStatus().equals("Failure")){
+                        Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
+                        nextScreen();
                     }
                 }
             }
@@ -421,6 +425,30 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 Log.e("RetroError", t.toString());
             }
         });
+    }
+
+    private void nextScreen(){
+
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        ProvisioningTabFragment provisioningScreenFragment = new ProvisioningTabFragment();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
+        t.replace(R.id.frag_container, provisioningScreenFragment);
+        provisioningScreenFragment.setArguments(accountinfo);
+        t.commit();
+    }
+
+
+
+    private void moveNext(){
+
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        WcrFragment wcrFragment = new WcrFragment();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
+        t.replace(R.id.frag_container, wcrFragment);
+        wcrFragment.setArguments(accountinfo);
+        t.commit();
     }
 
     private void updateAssociateDetails(){
@@ -442,6 +470,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                         try {
                         if(response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                            moveNext();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -459,6 +488,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             });
 
     }
+
 
     private void updateWcrComplete(){
 
@@ -481,6 +511,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            nextScreen();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -521,6 +552,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                            moveNext();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
 
@@ -556,6 +588,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
+                            moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -595,6 +628,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getStatus().equals("Success")){
+                            moveNext();
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();

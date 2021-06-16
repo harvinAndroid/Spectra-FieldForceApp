@@ -78,11 +78,11 @@ public class GetAllBucketListFragment extends Fragment {
                         outAnimation.setDuration(200);
                         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                         binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                        if(response.body().getStatus()==1){
+                        if(response.body().getStatus().equals("Success")){
                             binding.rvAllBucketList.setHasFixedSize(true);
                             binding.rvAllBucketList.setLayoutManager(new LinearLayoutManager(getContext()));
                             binding.rvAllBucketList.setAdapter(new AllBucketListAdapter(getActivity(),getBucketList));
-                        }else if(response.body().getStatus()==204){
+                        }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),"Something went wrong..",Toast.LENGTH_LONG).show();

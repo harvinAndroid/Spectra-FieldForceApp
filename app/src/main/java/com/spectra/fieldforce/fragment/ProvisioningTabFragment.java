@@ -94,7 +94,7 @@ public class ProvisioningTabFragment extends Fragment implements View.OnClickLis
             @Override
             public void onResponse(Call<AccInfoResponse> call, Response<AccInfoResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    if(response.body().status==1){
+                    if(response.body().status.equals("Success")){
                         try {
                             name = response.body().response.name;
                             canId = response.body().response.cANID;
@@ -107,7 +107,7 @@ public class ProvisioningTabFragment extends Fragment implements View.OnClickLis
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }else if(response.body().status==0){
+                    }else if(response.body().status.equals("Failure")){
                             Toast.makeText(getContext(),"Account Id (CAN Id) does not exist or Inactive.",Toast.LENGTH_LONG).show();
                     }
 

@@ -245,7 +245,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 drawerLayout.closeDrawers();
                 MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
-
                 //     activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
             });
 
@@ -296,7 +295,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 MainActivity.prefConfig.writeLoginStatus(false);
                 MainActivity.prefConfig.LoginStatus(false);
                 MainActivity.prefConfig.writeName("User");
-                startActivity(new Intent(activity, MainActivity.class));
+                try{
+                    SpectraFfaActivity.prefConfig.writeLoginStatus(false);
+                    SpectraFfaActivity.prefConfig.LoginStatus(false);
+                    SpectraFfaActivity.prefConfig.writeName("User");
+                }catch (Exception ex){
+                    ex.getMessage();
+                }
+
+                startActivity(new Intent(activity, LoginActivity.class));
                 finish();
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
             });

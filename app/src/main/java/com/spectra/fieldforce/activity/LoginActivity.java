@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -65,7 +66,19 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         binding.userName.setTypeface(mytextFace);
         binding.userPass.setTypeface(mytextFace);
 
-        binding.loginBtn.setOnClickListener(view -> performLogin());
+        binding.loginBtn.setOnClickListener(view -> {
+            String idb = Objects.requireNonNull(binding.userName.getText()).toString();
+            String link = Objects.requireNonNull(binding.userPass.getText()).toString();
+
+            if(idb.isEmpty()){
+                Toast.makeText(this,"Please Enter UserName",Toast.LENGTH_LONG).show();
+            }else if(link.isEmpty()){
+                Toast.makeText(this,"Please Enter Password",Toast.LENGTH_LONG).show();
+            }else{
+                performLogin();
+            }
+
+        });
         binding.registerTxt.setOnClickListener(view -> performResetpassword());
     }
 
@@ -94,8 +107,9 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         prefConfig.writeName(email);
         prefConfig.writeUserName(name);
 //        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-        finish();
+
         startActivity(new Intent(activity, MainActivity.class));
+        finish();
       /*  startActivity(new Intent(activity, DashBoardActivity.class));*/
     }
 
@@ -114,7 +128,6 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
 //        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
         finish();
         performLogin(email, name);
-
         startActivity(new Intent(activity, MainActivity.class));
     }
 
@@ -140,21 +153,25 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                              //  MainActivity.prefConfig.LoginStatus(false);
                                performLogin(response.body().getResponse().getName(), response.body().getResponse().getUsername());
                            }else if(response.body().getResponse().getInstallAuth().equals("Y")){*/
-                              MainActivity.prefConfig.LoginStatus(true);
+                        if(response.body().getStatus().equals("Success")) {
+                            MainActivity.prefConfig.LoginStatus(true);
 
-                               SharedPreferences sp=getSharedPreferences("Login", 0);
-                               SharedPreferences.Editor Ed=sp.edit();
-                               Ed.putString("VenderCode",response.body().getResponse().getVendorCode());
-                               Ed.putString("EnggId",response.body().getResponse().getUserID());
-                               Ed.commit();
-                             // MainActivity.prefConfig.writeLoginStatus(false);
-                              // PrefConfig.saveLoginDetails(loginResponse);
-                               Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());
-                          // }
-                           getSaveToken();
-                        }else{
-                           message = "Login Failed..Please try again...";
-                           binding.errortxt.setText(message);
+                            SharedPreferences sp = getSharedPreferences("Login", 0);
+                            SharedPreferences.Editor Ed = sp.edit();
+                            Ed.putString("VenderCode", response.body().getResponse().getVendorCode());
+                            Ed.putString("EnggId", response.body().getResponse().getUserID());
+                            Ed.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
+                            Ed.putString("FFA", response.body().getResponse().getFfaAuth());
+                            Ed.apply();
+                            // MainActivity.prefConfig.writeLoginStatus(false);
+                            // PrefConfig.saveLoginDetails(loginResponse);
+                            Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());
+                            // }
+                            getSaveToken();
+                        } else {
+                            message = "Login Failed..Please try again...";
+                            binding.errortxt.setText(message);
+                        }
                        }
                  //   }
                 } catch (Exception e) {

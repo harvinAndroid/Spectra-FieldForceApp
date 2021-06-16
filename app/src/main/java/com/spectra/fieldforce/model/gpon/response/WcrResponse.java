@@ -8,25 +8,18 @@ import java.util.List;
 
 public class WcrResponse {
     @SerializedName("Status")
-    private Integer status;
+    private String status;
     @SerializedName("Response")
     private Response response;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public Response getResponse() {
         return response;
     }
 
-    public void setResponse(Response response) {
-        this.response = response;
-    }
 
     public class Response {
 
@@ -53,73 +46,50 @@ public class WcrResponse {
             return wcr;
         }
 
-        public void setWcr(Wcr wcr) {
-            this.wcr = wcr;
-        }
 
         public CusotmerNetwork getCusotmerNetwork() {
             return cusotmerNetwork;
         }
 
-        public void setCusotmerNetwork(CusotmerNetwork cusotmerNetwork) {
-            this.cusotmerNetwork = cusotmerNetwork;
-        }
 
         public InstallationQuality getInstallationQuality() {
             return installationQuality;
         }
 
-        public void setInstallationQuality(InstallationQuality installationQuality) {
-            this.installationQuality = installationQuality;
-        }
 
         public EngineerDetails getEngineerDetails() {
             return engineerDetails;
         }
 
-        public void setEngineerDetails(EngineerDetails engineerDetails) {
-            this.engineerDetails = engineerDetails;
-        }
+
 
         public ArrayList<ItemConsumtion> getItemConsumtionList() {
             return itemConsumtionList;
         }
 
-        public void setItemConsumtionList(ArrayList<ItemConsumtion> itemConsumtionList) {
-            this.itemConsumtionList = itemConsumtionList;
-        }
+
 
         public ArrayList<EquipmentDetailsList> getEquipmentDetailsList() {
             return equipmentDetailsList;
         }
 
-        public void setEquipmentDetailsList(ArrayList<EquipmentDetailsList> equipmentDetailsList) {
-            this.equipmentDetailsList = equipmentDetailsList;
-        }
+
 
         public ArrayList<ManHoleDetails> getManHoleDetailsList() {
             return manHoleDetailsList;
         }
 
-        public void setManHoleDetailsList(ArrayList<ManHoleDetails> manHoleDetailsList) {
-            this.manHoleDetailsList = manHoleDetailsList;
-        }
+
 
         public Associated getAssociated() {
             return associated;
         }
 
-        public void setAssociated(Associated associated) {
-            this.associated = associated;
-        }
 
         public FMSDetails getFMSDetails() {
             return fMSDetails;
         }
 
-        public void setFMSDetails(FMSDetails fMSDetails) {
-            this.fMSDetails = fMSDetails;
-        }
 
     }
 
@@ -218,42 +188,21 @@ public class WcrResponse {
         public String getFmsfirst() {
             return fmsfirst;
         }
-
-        public void setFmsfirst(String fmsfirst) {
-            this.fmsfirst = fmsfirst;
-        }
-
         public String getFmssecond() {
             return fmssecond;
         }
-
-        public void setFmssecond(String fmssecond) {
-            this.fmssecond = fmssecond;
-        }
-
         public String getPodendfmsno() {
             return podendfmsno;
-        }
-
-        public void setPodendfmsno(String podendfmsno) {
-            this.podendfmsno = podendfmsno;
         }
 
         public String getPortnocxend() {
             return portnocxend;
         }
 
-        public void setPortnocxend(String portnocxend) {
-            this.portnocxend = portnocxend;
-        }
-
         public String getPortnopodend() {
             return portnopodend;
         }
 
-        public void setPortnopodend(String portnopodend) {
-            this.portnopodend = portnopodend;
-        }
 
     }
 
@@ -268,16 +217,8 @@ public class WcrResponse {
             return iDBlength;
         }
 
-        public void setIDBlength(String iDBlength) {
-            this.iDBlength = iDBlength;
-        }
-
         public String getLinkBudget() {
             return linkBudget;
-        }
-
-        public void setLinkBudget(String linkBudget) {
-            this.linkBudget = linkBudget;
         }
 
     }
@@ -307,9 +248,7 @@ public class WcrResponse {
             return item;
         }
 
-        public void setItem(String item) {
-            this.item = item;
-        }
+
 
         public String getSubItem() {
             return subItem;
