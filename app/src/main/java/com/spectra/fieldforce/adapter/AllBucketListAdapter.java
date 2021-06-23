@@ -4,6 +4,7 @@ package com.spectra.fieldforce.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,12 +19,14 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.BucketTabActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.AdpterAllBucketListBinding;
 import com.spectra.fieldforce.fragment.MyBucketList;
 import com.spectra.fieldforce.fragment.SRDetailFragment;
 import com.spectra.fieldforce.fragment.WcrFragment;
+import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.gpon.request.AddBucketListRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
@@ -67,18 +70,20 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
 
         GetAllBucketList.Response itemList = allbucketlist.get(position);
         holder.binding.setAllBucketList(itemList);
-        holder.binding.tvAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AllBucketListAdapter.this.addItemToBucket(itemList.getId(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), itemList.getPodName(),
-                        itemList.getStatus(), itemList.getHoldCategory(), itemList.getHoldReason(), itemList.getEngineerName(), itemList.getNetworkTechnology());
+       /* if(itemList.getEngineerName().equals("")){
+            binding.tvAdd.setEnabled(false);
+            binding.tvAdd.setText("Assigned");
+            binding.tvAdd.setBackgroundColor(context.getResources().getColor(android.R.color.secondary_text_light));
+        }*/
+        holder.binding.tvAdd.setOnClickListener(v -> {
+            AllBucketListAdapter.this.addItemToBucket(itemList.getId(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), itemList.getPodName(),
+                    itemList.getStatus(), itemList.getHoldCategory(), itemList.getHoldReason(), itemList.getEngineerName(), itemList.getNetworkTechnology());
 
 
-                if(itemList.getOrderType().equals("WCR")){
-                    updateEnginer("updateWCREngineer", itemList.getCustomerName(), itemList.getWcrId());
-                }else if(itemList.getOrderType().equals("IR")){
-                    updateEnginer("engineerUpdateIR", itemList.getCustomerName(),itemList.getIrId());
-                }
+            if(itemList.getOrderType().equals("WCR")){
+                updateEnginer("updateWCREngineer", itemList.getCustomerName(), itemList.getWcrId());
+            }else if(itemList.getOrderType().equals("IR")){
+                updateEnginer("engineerUpdateIR", itemList.getCustomerName(),itemList.getIrId());
             }
         });
 
@@ -100,7 +105,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getStatus().equals("Success")){
-                            Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                           // Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -139,19 +144,22 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         addBucketListRequest.setNetworkTechnology(networkTechnology);
         addBucketListRequest.setEngineerID(enggId);
         addBucketListRequest.setVendorCode(vendor);
+        addBucketListRequest.setOrder_type(orderType);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.addItemToBucket(addBucketListRequest);
-        call.enqueue(new Callback<CommonClassResponse>() {
+        Call<CommonResponse> call = apiService.addItemToBucket(addBucketListRequest);
+        call.enqueue(new Callback<CommonResponse>() {
             @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if (response.body().getStatus().equals("Success")){
-                            Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                            AppCompatActivity activity1 = (AppCompatActivity) context;
+                            Toast.makeText(context,"Order has been Added into bucket.",Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(context, BucketTabActivity.class);
+                            context.startActivity(i);
+                           /* AppCompatActivity activity1 = (AppCompatActivity) context;
                             activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new MyBucketList(), MyBucketList.class.getSimpleName()).addToBackStack(null
-                            ).commit();
+                            ).commit();*/
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(context,"Not Added in bucket.",Toast.LENGTH_LONG).show();
                         }else{
@@ -165,7 +173,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
                 }
             }
             @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });

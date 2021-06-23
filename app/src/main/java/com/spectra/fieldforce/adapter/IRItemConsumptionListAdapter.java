@@ -24,6 +24,7 @@ import com.spectra.fieldforce.databinding.IrItemConsumptionDetailsBinding;
 import com.spectra.fieldforce.databinding.IrItemCousumptionBinding;
 import com.spectra.fieldforce.databinding.WcrItemsconsumptionListBinding;
 import com.spectra.fieldforce.fragment.IREditItemConsumption;
+import com.spectra.fieldforce.fragment.IRFragment;
 import com.spectra.fieldforce.fragment.WcrEditItemConsumption;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
@@ -73,17 +74,18 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
             Bundle b = new Bundle();
             b.putString("ItemId", item.getItemID());
             b.putString("IrID", item.getIrguid());
+            b.putString("canId",item.getCanid());
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new IREditItemConsumption();
             myFragment.setArguments(b);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
         });
         holder.binding.tvDelete.setOnClickListener(v -> {
-            deleteItem(item.getItemID());
+            deleteItem(item.getItemID(),item.getCanid());
         });
     }
 
-    private void deleteItem(String itemID){
+    private void deleteItem(String id, String itemID){
         DeleteItemRequest deleteItemRequest = new DeleteItemRequest();
         deleteItemRequest.setAuthkey(Constants.AUTH_KEY);
         deleteItemRequest.setAction(Constants.DELETE_ITEM_CONSUMPTIONBY_ID);
@@ -97,11 +99,16 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if (response.body().getResponse().getStatusCode()==200){
+                        if (response.body().getStatus().equals("Success")){
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                            AppCompatActivity activity1 = (AppCompatActivity) context;
-                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), WcrFragment.class.getSimpleName()).addToBackStack(null
-                            ).commit();
+
+                            Bundle b = new Bundle();
+                            b.putString("canId", id);
+                            AppCompatActivity activity = (AppCompatActivity) context;
+                            Fragment myFragment = new IRFragment();
+                            myFragment.setArguments(b);
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
+
                         }
 
                     } catch (NumberFormatException e) {

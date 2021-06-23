@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.spectra.fieldforce.R;
@@ -46,6 +48,8 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
     private ArrayList<String> modelId;
     private String strCanId ;
     private ArrayList<AccountDetailsResponse.OnuProfile> onuProfile;
+    private AlphaAnimation inAnimation;
+    private AlphaAnimation outAnimation;
    /* AppCompatActivity activity;*/
 
 
@@ -62,13 +66,6 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
         init();
     }
 
-   /* @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = ProvisiongScreenFragmentBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }*/
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rl_back) {
@@ -78,15 +75,6 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
         }
     }
 
-  /*  @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        strCanId = requireArguments().getString("canId");
-        binding.searchtoolbar.rlBack.setOnClickListener(this);
-        binding.searchtoolbar.tvLang.setText("Provisioning ");
-        init();
-    }*/
-
     private void init(){
         getAccountDetails();
         binding.tvProvisioningSave.setOnClickListener(v -> {
@@ -95,15 +83,16 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
             String profilename = Objects.requireNonNull(binding.tvProfileName.getText()).toString();
             String tower = Objects.requireNonNull(binding.tvTower.getText()).toString();
             String serving = Objects.requireNonNull(binding.tvServingDb.getText()).toString();
+            String model = binding.tvModel.getText().toString();
 
 
             if(ont.isEmpty()){
                 Toast.makeText(this,"Please Enter ONT Serial Number",Toast.LENGTH_LONG).show();
             }else if(reont.isEmpty()){
                 Toast.makeText(this,"Please Enter Re enter ONT Serial Number",Toast.LENGTH_LONG).show();
-            }else if (binding.spModel.getSelectedItem().toString().equals("Select Model Name)")) {
+            }else if (model.equals("Select Model Name)")||model.isEmpty()) {
                 Toast.makeText(this, "Please Select Model Name", Toast.LENGTH_LONG).show();
-            }else if(profilename.isEmpty()||profilename.equals(null)){
+            }else if(profilename.isEmpty()|| profilename == null){
                 Toast.makeText(this,"Please Enter Profile Name",Toast.LENGTH_LONG).show();
             }
             else if(tower.isEmpty()){
@@ -111,18 +100,24 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
             }
             else if(serving.isEmpty()){
                 Toast.makeText(this,"Please Enter Serving db",Toast.LENGTH_LONG).show();
-            }
-            else{
+            }else if(ont.equals(reont)){
                 updateProvisioning();
+            } else{
+                Toast.makeText(this,"ONT And ReOnt Value Mismatched",Toast.LENGTH_LONG).show();
             }
 
         });
     }
 
     public void getAccountDetails() {
+
         try {
             binding.tvModel.setOnClickListener(v -> binding.spModel.performClick());
             binding.spModel.setOnItemSelectedListener(this);
+            inAnimation = new AlphaAnimation(0f, 1f);
+            inAnimation.setDuration(200);
+            binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+            binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
             AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
             accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
             accountInfoRequest.setAction(Constants.GET_ACCOUNT_DETAILS);
@@ -134,6 +129,10 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                 @Override
                 public void onResponse(Call<AccountDetailsResponse> call, Response<AccountDetailsResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
+                        outAnimation = new AlphaAnimation(1f, 0f);
+                        outAnimation.setDuration(200);
+                        binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                        binding.progressLayout.progressOverlay.setVisibility(View.GONE);
 
                         if (response.body().getStatus().equals("Success")) {
                             try {
@@ -164,7 +163,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
 
                 @Override
                 public void onFailure(Call<AccountDetailsResponse> call, Throwable t) {
-
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     Log.e("RetroError", t.toString());
                 }
             });
@@ -190,6 +189,10 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
     }
 
     private void updateProvisioning(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
 
         AddProvisioningRequest addProvisioningRequest = new AddProvisioningRequest();
         addProvisioningRequest.setAuthkey(Constants.AUTH_KEY);
@@ -207,10 +210,14 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(ProvisioningScreenActivity.this,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
+                            nextScreen();
                         }else if (response.body().getStatus().equals("Failure")) {
                             Toast.makeText(ProvisioningScreenActivity.this, "Something went wrong..", Toast.LENGTH_LONG).show();
                         }
@@ -222,6 +229,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -234,7 +242,15 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
     }
 
     private void nextScreen(){
-        getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new ProvisioningTabFragment(), ProvisioningTabFragment.class.getSimpleName()).addToBackStack(null).commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final ProvisioningTabFragment myFragment = new ProvisioningTabFragment();
+        Bundle b = new Bundle();
+        b.putString("canId", strCanId);
+        myFragment.setArguments(b);
+        fragmentTransaction.add(R.id.frag_container, myFragment).commit();
     }
+
+
 
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -52,13 +53,15 @@ import retrofit2.Response;
 public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
     IrFragmentBinding binding;
     private ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions;
-    private ArrayList<IrInfoResponse.InstallationItemList> installationItemLists;
+     ArrayList<IrInfoResponse.InstallationItemList> installationItemLists;
     private ArrayList<String> irCpeMac;
     private ArrayList<String> IrType;
     private ArrayList<String> irCpeMacid;
     private String strCpe,strGuiID,strSegment,strCanId,str_provisionId,strholdId;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
+    private AlphaAnimation inAnimation;
+    private AlphaAnimation outAnimation;
 
     public IRFragment() {
 
@@ -134,6 +137,18 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
 
     private void setData(){
+
+        binding.layoutAddEquipment.btnItemEqipment.setOnClickListener(v -> {
+            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+            IREquipmentConsumption irEquipmentConsumption = new IREquipmentConsumption();
+            Bundle bundle = new Bundle();
+            bundle.putString("strGuuId", strGuiID);
+            bundle.putString("canId",strCanId);
+            t1.replace(R.id.frag_container, irEquipmentConsumption);
+            irEquipmentConsumption.setArguments(bundle);
+            t1.commit();
+        });
+
         binding.layoutCpemac.etCpeMacShared.setOnClickListener(v->  binding.layoutCpemac.spCpeMacShared.performClick());
         binding.layoutCpemac.spCpeMacShared.setOnItemSelectedListener(this);
         irCpeMac = new ArrayList<String>();
@@ -147,7 +162,16 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
         binding.tvResendOtp.setOnClickListener(v -> resendCode());
         binding.layoutCpemac.tvCustSave.setOnClickListener(v -> updateCpeMac());
-        binding.tvIrComplete.setOnClickListener(v -> updateIR());
+        binding.tvIrComplete.setOnClickListener(v -> {
+            String remark = binding.etRemarksText.getText().toString();
+            if(remark.isEmpty()){
+                Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
+            }else{
+                updateIR(remark);
+            }
+
+
+        });
         binding.saveHold.setOnClickListener(v -> updateHoldCategory());
 
         binding.layoutGeneralDetails.tvGeneralDetailsSave.setOnClickListener(v -> updateGeneralDetails());
@@ -156,6 +180,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     public void resendCode() {
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         ResendCodeIRRequest resendActivationCodeRequest = new ResendCodeIRRequest();
         resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
         resendActivationCodeRequest.setAction(Constants.RESEND_NAVIR);
@@ -169,6 +197,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
                             moveNext();
@@ -185,12 +217,17 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
     }
 
     private void getIrInfo(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_IR_INFO);
@@ -202,9 +239,13 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<IrInfoResponse> call, Response<IrInfoResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    //irstatusofreport
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     if(response.body().getStatus().equals("Success")) {
                     try {
-                        binding.constraint.setVisibility(View.VISIBLE);
                         binding.layoutCustomerDetails.setCustomerDetails(response.body().getResponse().getIr());
                         binding.setIR(response.body().getResponse().getIr());
                         strGuiID = response.body().getResponse().getIr().getIrguid();
@@ -216,11 +257,12 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         if(itemConsumtions.size()!=0){
                             binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(),itemConsumtions));
                         }
+                        installationItemLists = (ArrayList<IrInfoResponse.InstallationItemList>) response.body().getResponse().getInstallationItemList();
                         binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                         binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
-                     /*   if(installationItemLists.size()!=0){
+                        if(installationItemLists.size()!=0){
                             binding.layoutAddEquipment.rvAddEquipment.setAdapter(new IrEquipmentConsumpAdapter(getActivity(),installationItemLists));
-                        }*/
+                        }
                         binding.layoutGeneralDetails.setGeneralDetails(response.body().getResponse().getGeneral());
                         binding.layoutEnggDetails.setEngineer(response.body().getResponse().getEngineer());
                         binding.setHold(response.body().getResponse().getEngineer());
@@ -238,6 +280,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<IrInfoResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -369,6 +412,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     public void updateGeneralDetails() {
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         String ir;
         ir = binding.layoutGeneralDetails.etIrAttached.getText().toString();
         if(ir.equals("Yes")){
@@ -399,6 +446,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
                             moveNext();
@@ -415,12 +466,17 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
     }
 
     private void updateIrEnginer(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         UpdateIREngineer updateIREngineer = new UpdateIREngineer();
         updateIREngineer.setAuthkey(Constants.AUTH_KEY);
         updateIREngineer.setAction(Constants.ENGINER_UPDATE);
@@ -434,6 +490,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
                             moveNext();
@@ -450,6 +510,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -467,6 +528,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateCpeMac(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         UpdateCpeMacRequest updateCpeMacRequest = new UpdateCpeMacRequest();
         updateCpeMacRequest.setAuthkey(Constants.AUTH_KEY);
         updateCpeMacRequest.setAction(Constants.SHARED_CPEMAC);
@@ -478,12 +543,16 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else {
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"Something went wrong..",Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -494,12 +563,17 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
     }
 
-    private void updateIR(){
+    private void updateIR(String remark){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         IRCompleteRequest irCompleteRequest = new IRCompleteRequest();
         irCompleteRequest.setAuthkey(Constants.AUTH_KEY);
         irCompleteRequest.setAction(Constants.IR_COMPLETE);
@@ -507,15 +581,19 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         irCompleteRequest.setIRguid(strGuiID);
         irCompleteRequest.setIshold(strholdId);
         irCompleteRequest.setMACShared("111260000");
-        irCompleteRequest.setRemarks(binding.etRemarksText.getText().toString());
+        irCompleteRequest.setRemarks(remark);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateIR(irCompleteRequest);
         call.enqueue(new Callback<CommonClassResponse>() {
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                            nextScreen();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else {
@@ -530,13 +608,17 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
     }
 
     private void updateHoldCategory(){
-
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
         holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
         holdWcrRequest.setAction(Constants.HOLD_IR);
@@ -551,10 +633,14 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
 
@@ -568,6 +654,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });

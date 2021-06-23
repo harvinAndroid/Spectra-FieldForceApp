@@ -109,7 +109,7 @@
             android:background="@color/ColorLightGray"
             android:layout_height="@dimen/_1sdp"/>
 
-        <TextView
+       <!-- <TextView
             android:id="@+id/nav_gpon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,8 +123,8 @@
             android:gravity="start|center"
             android:text="@string/gpon"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
-        <View
+            android:textSize="18sp" />-->
+       <!-- <View
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_20sdp"
@@ -132,7 +132,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:background="@color/ColorLightGray"
-            android:layout_height="@dimen/_1sdp"/>
+            android:layout_height="@dimen/_1sdp"/>-->
 
         <TextView
             android:id="@+id/nav_logout"
@@ -147,6 +147,20 @@
             android:drawablePadding="@dimen/_20sdp"
             android:gravity="start|center"
             android:text="@string/logout"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/nav_version"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:drawablePadding="@dimen/_20sdp"
+            android:text="@string/version"
             android:textColor="@color/colorWhite"
             android:textSize="18sp" />
 

@@ -63,7 +63,7 @@ public class GetAllBucketListFragment extends Fragment {
         BucketListRequest bucketListRequest = new BucketListRequest();
         bucketListRequest.setAuthkey(Constants.AUTH_KEY);
         bucketListRequest.setAction(Constants.Get_All_BUCKET_LIST);
-        bucketListRequest.setVendorCode(vendor);
+        bucketListRequest.setVendorCode("");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetAllBucketList> call = apiService.getAllBucketList(bucketListRequest);

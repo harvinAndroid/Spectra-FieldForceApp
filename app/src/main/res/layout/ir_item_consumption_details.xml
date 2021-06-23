@@ -12,12 +12,6 @@
     android:layout_height="wrap_content"
     android:visibility="visible"
 >
-        <include
-            android:id="@+id/searchtoolbar"
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:background="@color/colorButton"
-            android:layout_height="?attr/actionBarSize" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_ir_itemlist"

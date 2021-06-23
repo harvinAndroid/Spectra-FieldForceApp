@@ -5,6 +5,7 @@ package com.spectra.fieldforce.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ import com.spectra.fieldforce.databinding.AdpterMyBucketListBinding;
 import com.spectra.fieldforce.fragment.MyBucketList;
 import com.spectra.fieldforce.fragment.ProvisioningFragment;
 import com.spectra.fieldforce.fragment.ProvisioningTabFragment;
+import com.spectra.fieldforce.fragment.WcrEditItemConsumption;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
@@ -76,18 +79,28 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         GetMyBucketList.Response itemList = getBucketList.get(position);
         holder.binding.setAllBucketList(itemList);
-        holder.binding.tvRelease.setOnClickListener(v -> {
-            releaseBucketItem(itemList.getCustomerID(), itemList.getOrderId(), itemList.getOrderType());
-            if(itemList.getOrderType().equals("WCR")){
-                updateEnginer("updateWCREngineer",  itemList.getWcrId());
-            }else if(itemList.getOrderType().equals("IR")){
-                updateEnginer("engineerUpdateIR",itemList.getIrId());
-            }
+        String statusReport = itemList.getCrmStatus();
+            holder.binding.tvRelease.setOnClickListener(v -> {
+                if(statusReport.equals("Installation On Hold")||statusReport.equals("hold")) {
+                    holder.binding.tvRelease.setEnabled(false);
+                    Toast.makeText(context,"Installation status is hold can't release ",Toast.LENGTH_LONG).show();
+                }   else{
+                    releaseBucketItem(itemList.getCustomerID(), itemList.getOrderId(), itemList.getOrderType());
+                    if(itemList.getOrderType().equals("WCR")){
+                        updateEnginer("updateWCREngineer",  itemList.getWcrId());
+                    }else if(itemList.getOrderType().equals("IR")){
+                        updateEnginer("engineerUpdateIR",itemList.getIrId());
+                    }
+                }
         });
+
         holder.binding.tvNext.setOnClickListener((View v) -> {
-            AppCompatActivity activity1 = (AppCompatActivity) context;
-            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new ProvisioningTabFragment(), ProvisioningTabFragment.class.getSimpleName()).addToBackStack(null
-            ).commit();
+            Bundle b = new Bundle();
+            b.putString("canId",itemList.getCustomerID());
+            AppCompatActivity activity = (AppCompatActivity) context;
+            Fragment myFragment = new ProvisioningTabFragment();
+            myFragment.setArguments(b);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
         });
     }
 
@@ -168,7 +181,6 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
 
     @Override
     public int getItemCount() {
-
         return getBucketList.size();
     }
 

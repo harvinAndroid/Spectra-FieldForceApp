@@ -6,6 +6,12 @@ public class AccountInfoRequest {
 
    private String Action;
 
+    public void setItemId(String itemId) {
+        ItemId = itemId;
+    }
+
+    private String ItemId;
+
     public String getCanId() {
         return CanId;
     }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class GetFibreCable {
     @SerializedName("Status")
-    public int status;
+    public String status;
     @SerializedName("Response")
     public Response response;
 

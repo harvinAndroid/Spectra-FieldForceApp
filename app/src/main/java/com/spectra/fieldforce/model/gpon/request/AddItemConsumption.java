@@ -53,6 +53,12 @@ public class AddItemConsumption {
     private String MacId;
     private String ItemType;
 
+    public void setIRguid(String IRguid) {
+        this.IRguid = IRguid;
+    }
+
+    private String IRguid;
+
 
     public void setItemID(String itemID) {
         ItemID = itemID;

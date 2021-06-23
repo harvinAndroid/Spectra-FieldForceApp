@@ -621,30 +621,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                         holdReason.setSelection(Integer.parseInt(action_code));
 
                                     }
-                                    /*holdReason.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            action.add("Select Hold Reason");
-                                            for (int i = 0; i < result.length(); i++) {
-                                                JSONObject jsonData = null;
-                                                try {
-                                                    jsonData = new JSONObject(String.valueOf(result.getString(i)));
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                String code = null;
-                                                try {
-                                                    code = jsonData.getString("actionCode");
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                action.add(code);
-                                            }
-                                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
-                                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                            holdReason.setAdapter(adapter);
-                                        }
-                                    });*/
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -664,54 +640,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
     }
 
 
-    private void setActionCode() {
-        RCRequest rcRequest = new RCRequest();
-        rcRequest.setAuthkey(Constants.AUTH_KEY);
-        rcRequest.setAction(Constants.GET_ACTION_CODEMST);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JsonElement> call = apiService.getRCDetail(rcRequest);
-        call.enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
-                        status = jsonObject.getString("Status");
-                        if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
-                        } else if (status.equals("1")) {
-                            try {
-                                result = jsonObject.getJSONArray("Response");
-                                if (result != null) {
-                                    ArrayList<String> action = new ArrayList<String>();
-                                        action.add("Select Hold Reason");
-                                        for (int i = 0; i < result.length(); i++) {
-                                            JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
-                                            String code = jsonData.getString("actionCode");
-                                            action.add(code);
-                                        }
-                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
-                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                        holdReason.setAdapter(adapter);
-
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonElement> call, Throwable t) {
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }
 
 
 
@@ -762,8 +690,8 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                         action_code = order.getActionCode();
                                         // contactName.setText(order.getCustomer_contacted());
                                         str_etr = order.getEtr();
-                                        str_contact_name = order.getCustomerName();
-                                        str_contact_num = order.getCustomerMobile();
+                                        str_contact_name = order.getContactedName();
+                                        str_contact_num = order.getContactedNumber();
                                         str_segment = order.getSegment();
                                         SrNum = order.getSrNumber();
                                         StrSubSubType = order.getSrSubSubTypeID();

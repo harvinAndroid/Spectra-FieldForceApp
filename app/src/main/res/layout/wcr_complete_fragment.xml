@@ -48,7 +48,7 @@
             android:id="@+id/tv_wcr_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`@string/wcr_status :  ` + status.WCRConsumptionStatus}"
+            android:text="@{`WCR Status  ` + status.WCRConsumptionStatus}"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -635,6 +635,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/progress"
+        android:id="@+id/progressLayout"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

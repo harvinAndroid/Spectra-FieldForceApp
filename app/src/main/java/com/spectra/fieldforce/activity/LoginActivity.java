@@ -1,5 +1,6 @@
 package com.spectra.fieldforce.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -48,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
     public static PrefConfig prefConfig;
     private String couponCodeString, userEmail, userEmailN, userName,message,fcmToken;
     private AppCompatActivity activity;
-
+    public static final String PREF ="Login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,14 +156,29 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                            }else if(response.body().getResponse().getInstallAuth().equals("Y")){*/
                         if(response.body().getStatus().equals("Success")) {
                             MainActivity.prefConfig.LoginStatus(true);
+                            SharedPreferences sp = getSharedPreferences(PREF , 0);
+                            SharedPreferences.Editor myEdit = sp.edit();
+                            myEdit.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
+                            myEdit.putString("FFA", response.body().getResponse().getFfaAuth());
+                            myEdit.putString("VenderCode", response.body().getResponse().getVendorCode());
+                            myEdit.putString("EnggId", response.body().getResponse().getUserID());
+                            myEdit.commit();
 
-                            SharedPreferences sp = getSharedPreferences("Login", 0);
+                            Log.e("ffalogin", String.valueOf(sp));
+
+
+                          /*  SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",this.MODE_PRIVATE);
+                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                            myEdit.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
+                            myEdit.putString("FFA", response.body().getResponse().getFfaAuth());
+                            myEdit.commit();*/
+                          /*  SharedPreferences sp = getSharedPreferences("Login", 0);
                             SharedPreferences.Editor Ed = sp.edit();
                             Ed.putString("VenderCode", response.body().getResponse().getVendorCode());
                             Ed.putString("EnggId", response.body().getResponse().getUserID());
                             Ed.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
                             Ed.putString("FFA", response.body().getResponse().getFfaAuth());
-                            Ed.apply();
+                            Ed.apply();*/
                             // MainActivity.prefConfig.writeLoginStatus(false);
                             // PrefConfig.saveLoginDetails(loginResponse);
                             Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());

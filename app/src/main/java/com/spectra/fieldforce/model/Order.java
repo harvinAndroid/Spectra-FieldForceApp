@@ -35,6 +35,16 @@ public class Order {
     private String etr;
     private String srSubSubType;
 
+    private String contactedName,contactedNumber;
+
+    public String getContactedName() {
+        return contactedName;
+    }
+
+    public String getContactedNumber() {
+        return contactedNumber;
+    }
+
     public String getCustomerNetworkTech() {
         return customerNetworkTech;
     }

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -63,6 +64,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private String strCanId ,strholdId,strProductSegment;
     private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
+    private AlphaAnimation inAnimation;
+    private AlphaAnimation outAnimation;
 
     public WcrFragment() {
     }
@@ -100,6 +103,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
             WcrItemConsumption wcrItemConsumption = new WcrItemConsumption();
             Bundle bundle = new Bundle();
+            bundle.putString("canId", strCanId);
             bundle.putString("strGuuId", strGuuId);
             t1.replace(R.id.frag_container, wcrItemConsumption);
             wcrItemConsumption.setArguments(bundle);
@@ -270,6 +274,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     public void getFmsList() {
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_FMS_LIST);
@@ -281,6 +289,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<GetFmsListResponse> call, Response<GetFmsListResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         fmsList = response.body().getResponse().getFMSList();
                         firstFmsID = new ArrayList<>();
@@ -302,6 +314,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<GetFmsListResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -379,6 +392,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     public void getWcrInfo() {
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_WCR_INFO);
@@ -391,6 +408,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<WcrResponse> call, Response<WcrResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     if(response.body().getStatus().equals("Success")) {
                         try {
                             binding.tvWcrStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
@@ -422,6 +443,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
             @Override
             public void onFailure(Call<WcrResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -452,7 +474,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateAssociateDetails(){
-
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         AssociatedResquest associatedResquest = new AssociatedResquest();
         associatedResquest.setAuthkey(Constants.AUTH_KEY);
         associatedResquest.setAction(Constants.UPDATE_ASSOCIATE);
@@ -467,6 +492,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 @Override
                 public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                     if (response.isSuccessful()&& response.body()!=null) {
+                        outAnimation = new AlphaAnimation(1f, 0f);
+                        outAnimation.setDuration(200);
+                        binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                        binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                         try {
                         if(response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -483,6 +512,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
                 @Override
                 public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     Log.e("RetroError", t.toString());
                 }
             });
@@ -491,7 +521,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
 
     private void updateWcrComplete(){
-
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         WcrCompleteRequest wcrCompleteRequest = new WcrCompleteRequest();
         wcrCompleteRequest.setAuthkey(Constants.AUTH_KEY);
         wcrCompleteRequest.setAction(Constants.WCR_COMPLETE);
@@ -508,6 +541,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
@@ -524,6 +561,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -531,7 +569,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateFmsDetails(){
-
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         UpdateFmsRequest updateFmsRequest = new UpdateFmsRequest();
         updateFmsRequest.setAuthkey(Constants.AUTH_KEY);
         updateFmsRequest.setAction(Constants.UPDATE_FMS_DETAILS);
@@ -549,6 +590,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -566,6 +611,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -573,6 +619,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateWcrEnginer(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
         updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
         updateWcrEnggRequest.setAction(Constants.UPDATE_WCR_ENGINER);
@@ -586,6 +636,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
                             moveNext();
@@ -603,13 +657,17 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
     }
 
     private void updateHoldCategory(){
-
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
         holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
         holdWcrRequest.setAction(Constants.HOLD_WCR);
@@ -626,6 +684,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -643,6 +705,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });

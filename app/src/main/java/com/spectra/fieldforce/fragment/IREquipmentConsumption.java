@@ -18,33 +18,27 @@ import androidx.fragment.app.FragmentTransaction;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
-import com.spectra.fieldforce.databinding.ProvisiongScreenFragmentBinding;
+import com.spectra.fieldforce.databinding.IrAddEquipmentConsumptionBinding;
 import com.spectra.fieldforce.databinding.WcrAddItemConsumptionBinding;
-import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
-import com.spectra.fieldforce.model.gpon.request.EditItemConsumptionNavRequest;
 import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
-import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
-import com.spectra.fieldforce.model.gpon.response.GetItemConumptionByIdResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
-import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
+public class IREquipmentConsumption extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
 
-    private WcrAddItemConsumptionBinding binding;
+    private IrAddEquipmentConsumptionBinding binding;
     private ArrayList<String> itemType;
     private ArrayList<String> itemTypeData;
     private List<GetItemListResponse.Datum> itemList;
@@ -58,14 +52,14 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     private  String strsubItemId,strGuIId,strCanId;
 
 
-    public WcrItemConsumption() {
+    public IREquipmentConsumption() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = WcrAddItemConsumptionBinding.inflate(inflater, container, false);
+        binding = IrAddEquipmentConsumptionBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -75,7 +69,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         strGuIId = requireArguments().getString("strGuuId");
         strCanId = requireArguments().getString("canId");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
-        binding.searchtoolbar.tvLang.setText(AppConstants.ITEM_CONSUMPTION);
+        binding.searchtoolbar.tvLang.setText("Add Equipment");
         init();
     }
 
@@ -106,7 +100,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
-        itemType.add("WCR");
+        itemType.add("IR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spType.setAdapter(adapter);
@@ -171,7 +165,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.sp_type) {
             binding.etType.setText(itemType.get(position));
-          //  strItemType = itemId.get(position);
+            //  strItemType = itemId.get(position);
           /*  if(strItemType.equals("IR")){
                 //getItemConsumptionDetails(strItemType);
             }else if(strItemType.equals("WCR")){
@@ -183,13 +177,13 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
             if (position != 0) strItemType = "" + itemId.get(position - 1);
             else strItemType = " ";
             Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
-           // getSubItemList(strItemType);
+            // getSubItemList(strItemType);
 
         }else if(parent.getId() == R.id.sp_sub_item){
-           binding.etSubitem.setText(subItemName.get(position));
+            binding.etSubitem.setText(subItemName.get(position));
             strsubItemId = subItemId.get(position);
             if (position != 0) strsubItemId = "" + subItemId.get(position - 1);
-         //   else strsubItemId = " ";
+            //   else strsubItemId = " ";
         }else if(parent.getId() == R.id.sp_item_type){
             binding.etItemType.setText(consumptionItemType.get(position));
             strItemTypeData = consumptionItemType.get(position);
@@ -207,6 +201,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_ITEM_LIST);
+
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetItemListResponse> call = apiService.getItemListName(accountInfoRequest);
@@ -246,15 +241,15 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
 
         AddItemConsumption addItem_Consumption = new AddItemConsumption();
         addItem_Consumption.setAuthkey(Constants.AUTH_KEY);
-        addItem_Consumption.setAction(Constants.POST_ITEM_CONSUMPTIONS);
+        addItem_Consumption.setAction(Constants.ADD_ITEM_EQUIPMENT);
         addItem_Consumption.setItem(strItemType);
         addItem_Consumption.setSubItem(strsubItemId);
         addItem_Consumption.setItemType(strItemTypeData);
-        addItem_Consumption.setConsumptionType("111260000");
+        addItem_Consumption.setConsumptionType("111260001");
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
-        addItem_Consumption.setWCRguidId(strGuIId);
+        addItem_Consumption.setIRguid(strGuIId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
@@ -262,12 +257,16 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful() && response.body()!=null) {
-                    try {
+                    if(response.body().getStatus().equals("Success")) {
+                        try {
 
-                        Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                        nextScreen();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                            Toast.makeText(getContext(), response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
+                            nextScreen();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(getContext(), response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -282,11 +281,11 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
 
     private void nextScreen(){
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        WcrFragment wcrFragment = new WcrFragment();
-        Bundle accountinfo = new Bundle();
-        accountinfo.putString("canId", strCanId);
-        t1.replace(R.id.frag_container, wcrFragment);
-        wcrFragment.setArguments(accountinfo);
+        IRFragment irFragment = new IRFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("canId", strCanId);
+        t1.replace(R.id.frag_container, irFragment);
+        irFragment.setArguments(bundle);
         t1.commit();
     }
 
@@ -294,4 +293,5 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     public void onClick(View v) {
 
     }
+
 }

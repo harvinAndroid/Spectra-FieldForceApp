@@ -31,7 +31,7 @@
         android:textSize="@dimen/_14sdp"
         android:layout_margin="@dimen/_10sdp" />
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <TextView
         android:id="@+id/search_account_num"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_30sdp"
@@ -39,11 +39,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_customer_account"
         android:background="@drawable/textinputborder"
-        android:hint="@string/enter_customer_account_id"
         android:paddingStart="@dimen/_10sdp"
+        android:textSize="@dimen/_14sdp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center|start"
         android:paddingEnd="@dimen/_10sdp"
         android:layout_margin="@dimen/_10sdp"
-        android:inputType="text" />
+       />
 
     <TextView
         android:id="@+id/tv_get_profile_info"

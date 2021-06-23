@@ -191,10 +191,14 @@ public class ProvisioningScreenFragment extends Fragment implements AdapterView.
     }
 
     private void nextScreen(){
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t11= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         ProvisioningTabFragment provisioningTabFragment = new ProvisioningTabFragment();
         t11.replace(R.id.frag_container, provisioningTabFragment);
+        provisioningTabFragment.setArguments(accountinfo);
         t11.commit();
     }
+
 
 }

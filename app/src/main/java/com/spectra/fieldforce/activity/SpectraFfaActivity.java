@@ -34,9 +34,11 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
+import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.fragment.DashboardFragment;
 import com.spectra.fieldforce.fragment.WelcomeFragment;
+import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
 
@@ -263,24 +265,10 @@ public class SpectraFfaActivity extends BaseActivity implements NavigationView.O
                 i.setData(Uri.parse(Constants.URL));
                 startActivity(i);
             });
-            TextView btnGpon = dView.findViewById(R.id.nav_gpon);
-            btnGpon.setOnClickListener(v -> {
-                drawerLayout.closeDrawers();
-                Intent i = new Intent(SpectraFfaActivity.this,BucketTabActivity.class);
-                startActivity(i);
-                finish();
-               /* final String appPackageName = "valuelabs.spectra.com";
-                Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage(appPackageName);
-                if (launchIntent != null) {
-                    startActivity(launchIntent);
-                } else {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                    }
-                }*/
-            });
+            TextView version = dView.findViewById(R.id.nav_version);
+            // int versionCode = BuildConfig.VERSION_CODE;
+            String versionName = BuildConfig.VERSION_NAME;
+            version.setText(AppConstants.VERSION_NAME +" : "+versionName);
             TextView btnLogout = dView.findViewById(R.id.nav_logout);
             btnLogout.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();

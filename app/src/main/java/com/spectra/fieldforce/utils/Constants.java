@@ -84,5 +84,9 @@ public class Constants {
     public static final String HOLD_IR = "holdIR";
     public static final String ADD_ORDER_TOBUCKET = "addOrderToBucket";
     public static final String  RELEASE_ORDER = "releaseOrder";
+    public static final String  ADD_ITEM_EQUIPMENT = "addItemEquipment";
+    public static final String  GET_EQUIPMENT_BYINSTALL  = "getEquipmentByIDInstall";
+    public static final String  GET_EDITEQUIPMENT_BYINSTALL  ="editItemEquipmentInstall";
+    public static final String  DELETE_EQUIPMENT_BYINSTALL = "deleteEquipmentByIDInstall";
 
 }

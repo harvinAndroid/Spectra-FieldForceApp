@@ -67,6 +67,7 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         super.onViewCreated(view, savedInstanceState);
         ItemId = requireArguments().getString("ItemId");
         IrID = requireArguments().getString("IrID");
+        CanId = requireArguments().getString("canId");
         init();
     }
 
@@ -80,7 +81,20 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         binding.spItem.setOnItemSelectedListener(this);
         binding.etSubitem.setOnClickListener(v-> binding.spSubItem.performClick());
         binding.spSubItem.setOnItemSelectedListener(this);
-        binding.btSubmit.setOnClickListener(v -> updateItemConsumption());
+        binding.btSubmit.setOnClickListener(v -> {
+            strItemTypeData = binding.etItemType.getText().toString();
+            if(strItemTypeData.equals("Select Type")){
+                Toast.makeText(getContext(),"Please Select Item Type",Toast.LENGTH_LONG).show();
+            }else{
+                if(strItemTypeData.equals("Additional")){
+                    strItemTypeData="111260001";
+                }else if(strItemTypeData.equals("Default")){
+                    strItemTypeData="111260000";
+                }
+                updateItemConsumption(strItemTypeData);
+            }
+
+        });
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
         binding.etSubitem.setOnClickListener(v -> getSubItemList(ItemId));
@@ -99,8 +113,8 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         consumptionItemType.add("Select Type");
         consumptionItemType.add("Additional");
         consumptionItemType.add("Default");
-        itemTypeData.add("111260001");
-        itemTypeData.add("111260000");
+      /*  itemTypeData.add("111260001");
+        itemTypeData.add("111260000");*/
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
@@ -170,12 +184,12 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
             strsubItemId = subItemName.get(position);
             if (position != 0) strsubItemId = "" + subItemId.get(position - 1);
             else strsubItemId = " ";
-        }else if(parent.getId() == R.id.sp_item_type){
+        }/*else if(parent.getId() == R.id.sp_item_type){
             binding.etItemType.setText(consumptionItemType.get(position));
             strItemTypeData = consumptionItemType.get(position);
             if (position != 0) strItemTypeData = "" + itemTypeData.get(position - 1);
             else strItemTypeData = " ";
-        }
+        }*/
     }
 
     @Override
@@ -217,14 +231,14 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         });
     }
 
-    private void updateItemConsumption(){
+    private void updateItemConsumption(String strItemTypeData1){
         AddItemConsumption addItem_Consumption = new AddItemConsumption();
         addItem_Consumption.setAuthkey(Constants.AUTH_KEY);
         addItem_Consumption.setAction(Constants.EDIT_ITEM_CONSUMPTIONNAV);
         addItem_Consumption.setItem(strItemType);
         addItem_Consumption.setItemID(ItemId);
       //  addItem_Consumption.setSubItem(strsubItemId);
-        addItem_Consumption.setItemType(strItemTypeData);
+        addItem_Consumption.setItemType(strItemTypeData1);
         addItem_Consumption.setConsumptionType("111260001");
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
@@ -238,9 +252,11 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             nextScreen();
+                        }else{
+                            Toast.makeText(getContext(),"Something went wrong..",Toast.LENGTH_LONG).show();
                         }
 
                     } catch (Exception e) {
@@ -259,8 +275,11 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
 
     private void nextScreen(){
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        WcrFragment wcrFragment = new WcrFragment();
-        t1.replace(R.id.frag_container, wcrFragment);
+        IRFragment irFragment = new IRFragment();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", CanId);
+        t1.replace(R.id.frag_container, irFragment);
+        irFragment.setArguments(accountinfo);
         t1.commit();
     }
 }

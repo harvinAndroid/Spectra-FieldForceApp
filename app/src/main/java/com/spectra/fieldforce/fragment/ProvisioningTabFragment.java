@@ -39,9 +39,10 @@ import retrofit2.Response;
 
 public class ProvisioningTabFragment extends Fragment implements View.OnClickListener{
     ProvisioningTabScreenBinding binding;
-    private String name,canId,city,area,building,segment,statusReport;
+    private String name,canId,city,area,building,segment,statusReport,strCanId;
 
     public ProvisioningTabFragment() {
+
     }
 
 
@@ -58,6 +59,7 @@ public class ProvisioningTabFragment extends Fragment implements View.OnClickLis
         super.onViewCreated(view, savedInstanceState);
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Provisioning");
+        strCanId = requireArguments().getString("canId");
         init();
     }
 
@@ -72,8 +74,10 @@ public class ProvisioningTabFragment extends Fragment implements View.OnClickLis
     }
 
     private void init(){
+        binding.searchAccountNum.setText(strCanId);
        binding.tvGetProfileInfo.setOnClickListener(v -> {
-           String accountid = binding.searchAccountNum.getText().toString();
+
+         String accountid = binding.searchAccountNum.getText().toString();
            if(accountid.isEmpty()){
                Toast.makeText(getContext(),"Please Enter CANID",Toast.LENGTH_LONG).show();
            }else{

@@ -15,7 +15,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:visibility="gone"
     android:id="@+id/constraint"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -58,7 +57,7 @@
                 android:id="@+id/tv_consumption_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{`IR Status:` + IR.consumptionStatus}"
+                android:text="@{`Consumption Status:` + IR.consumptionStatus}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_ir_status"
@@ -613,6 +612,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/progress"
+        android:id="@+id/progressLayout"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

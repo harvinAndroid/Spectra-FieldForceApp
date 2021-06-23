@@ -257,7 +257,7 @@ public interface ApiInterface {
     Call<CommonClassResponse> updateIR(@Body   IRCompleteRequest irCompleteRequest);
 
     @POST("index.php")
-    Call<CommonClassResponse> addItemToBucket(@Body AddBucketListRequest addBucketListRequest);
+    Call<CommonResponse> addItemToBucket(@Body AddBucketListRequest addBucketListRequest);
 
     @POST("index.php")
     Call<GetMyBucketList> getMyBucketList(@Body BucketListRequest bucketListRequest);

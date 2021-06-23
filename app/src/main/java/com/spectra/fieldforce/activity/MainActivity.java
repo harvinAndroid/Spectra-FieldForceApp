@@ -36,6 +36,7 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.fragment.DashboardFragment;
 import com.spectra.fieldforce.fragment.WelcomeFragment;
@@ -271,24 +272,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 i.setData(Uri.parse(Constants.URL));
                 startActivity(i);
             });
-            TextView btnGpon = dView.findViewById(R.id.nav_gpon);
-            btnGpon.setOnClickListener(v -> {
-                drawerLayout.closeDrawers();
-                Intent i = new Intent(MainActivity.this,BucketTabActivity.class);
-                startActivity(i);
-                finish();
-               /* final String appPackageName = "valuelabs.spectra.com";
-                Intent launchIntent = activity.getPackageManager().getLaunchIntentForPackage(appPackageName);
-                if (launchIntent != null) {
-                    startActivity(launchIntent);
-                } else {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                    }
-                }*/
-            });
             TextView btnLogout = dView.findViewById(R.id.nav_logout);
             btnLogout.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
@@ -307,6 +290,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 finish();
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
             });
+            TextView version = dView.findViewById(R.id.nav_version);
+           // int versionCode = BuildConfig.VERSION_CODE;
+            String versionName = BuildConfig.VERSION_NAME;
+            version.setText(AppConstants.VERSION_NAME +" : "+versionName);
             TextView image = dView.findViewById(R.id.image);
             image.setOnClickListener(v -> {
                 Intent i = new Intent(MainActivity.this,Activity_Resolve.class);

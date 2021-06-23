@@ -208,6 +208,7 @@
     <string name="idb_length">IDB Length</string>
     <string name="link_budget">Link Budget</string>
     <string name="dashboard">DASHBOARD</string>
+    <string name="version">Version</string>
 
 
     <!-- <string name="item_type">Item Type</string>-->

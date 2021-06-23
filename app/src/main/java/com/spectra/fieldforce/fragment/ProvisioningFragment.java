@@ -104,25 +104,8 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
             Intent i = new Intent(getActivity(), ProvisioningScreenActivity.class);
           //  i.putExtra("name", name);
             i.putExtra("canId", canId);
-         /*   i.putExtra("city", city);
-            i.putExtra("area", area);
-            i.putExtra("building", building);
-            i.putExtra("segment",segment);*/
             startActivity(i);
-          //  i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().finish();
-          /*  Bundle accountinfo = new Bundle();
-            accountinfo.putString("name", name);
-            accountinfo.putString("canId", canId);
-            accountinfo.putString("city", city);
-            accountinfo.putString("area", area);
-            accountinfo.putString("building", building);
-            accountinfo.putString("segment",segment);
-             FragmentTransaction t11= this.requireFragmentManager().beginTransaction();
-            ProvisioningScreenFragment provisioningScreenFragment = new ProvisioningScreenFragment();
-            t11.replace(R.id.frag_container, provisioningScreenFragment);
-            provisioningScreenFragment.setArguments(accountinfo);
-            t11.commit();*/
 
         });
 

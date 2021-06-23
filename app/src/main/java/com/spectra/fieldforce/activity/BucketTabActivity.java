@@ -12,6 +12,7 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.adapter.MyBucketAdapter;
 import com.spectra.fieldforce.databinding.ProvisionFaultTabScreenBinding;
 import com.spectra.fieldforce.databinding.ProvisiongScreenFragmentBinding;
+import com.spectra.fieldforce.utils.AppConstants;
 
 public class BucketTabActivity extends BaseActivity {
     ProvisionFaultTabScreenBinding binding;
@@ -20,8 +21,8 @@ public class BucketTabActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          binding = DataBindingUtil.setContentView(this, R.layout.provision_fault_tab_screen);
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("BUCKET"));
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("MY BUCKET"));
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(AppConstants.VENDOR_BUCKET));
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(AppConstants.ENGINEER_BUCKET));
         binding.tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final MyBucketAdapter adapter = new MyBucketAdapter(this,getSupportFragmentManager(),
                 binding.tabLayout.getTabCount());
