@@ -52,7 +52,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
     private ArrayList<String> holdCategoryId;
     private ArrayList<String> qualityParam;
     private ArrayList<String> qualityParamId;
-    private String strSpeedTest,strCableCrimped,strFacePlate,streOntLogin,strWifiSsid,strEducation,strAntivirus,strCanId;
+    private String strSpeedTest,strCableCrimped,strFacePlate,streOntLogin,strWifiSsid,strEducation,strAntivirus,strCanId,strStatusofReport;
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
     public WcrCompletedFragment() {
@@ -75,13 +75,13 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
 
 
     private void moveNext(){
-
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        WcrFragment wcrFragment = new WcrFragment();
+        WcrCompletedFragment wcrCompletedFragment = new WcrCompletedFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
-        t.replace(R.id.frag_container, wcrFragment);
-        wcrFragment.setArguments(accountinfo);
+        accountinfo.putString("StatusofReport",strStatusofReport);
+        t.replace(R.id.frag_container, wcrCompletedFragment);
+        wcrCompletedFragment.setArguments(accountinfo);
         t.commit();
     }
 
@@ -90,6 +90,8 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         strCanId = requireArguments().getString("canId");
+        strStatusofReport = requireArguments().getString("StatusofReport");
+        binding.tvConsumptionStatus.setText("Consumption Status: " + strStatusofReport );
       getWcrInfo();
       Listener();
 

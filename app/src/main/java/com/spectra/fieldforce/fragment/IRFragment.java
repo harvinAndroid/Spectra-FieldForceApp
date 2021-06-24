@@ -57,7 +57,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> irCpeMac;
     private ArrayList<String> IrType;
     private ArrayList<String> irCpeMacid;
-    private String strCpe,strGuiID,strSegment,strCanId,str_provisionId,strholdId;
+    private String strCpe,strGuiID,strSegment,strCanId,str_provisionId,strholdId,strStatusofReport;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
     private AlphaAnimation inAnimation;
@@ -78,6 +78,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         strCanId = requireArguments().getString("canId");
+      /*  strStatusofReport = requireArguments().getString("StatusofReport");
+        binding.tvConsumptionStatus.setText("Consumption Status: " + strStatusofReport );*/
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("IR");
         getIrInfo();
@@ -144,6 +146,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             Bundle bundle = new Bundle();
             bundle.putString("strGuuId", strGuiID);
             bundle.putString("canId",strCanId);
+        //    bundle.putString("StatusofReport",strStatusofReport);
             t1.replace(R.id.frag_container, irEquipmentConsumption);
             irEquipmentConsumption.setArguments(bundle);
             t1.commit();
@@ -202,7 +205,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                     binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
@@ -291,6 +294,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         ProvisioningTabFragment provisioningScreenFragment = new ProvisioningTabFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
+      //  accountinfo.putString("StatusofReport",strStatusofReport);
         t.replace(R.id.frag_container, provisioningScreenFragment);
         provisioningScreenFragment.setArguments(accountinfo);
         t.commit();
@@ -522,6 +526,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         IRFragment irFragment = new IRFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
+    //    accountinfo.putString("StatusofReport",strStatusofReport);
         t.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);
         t.commit();

@@ -34,6 +34,14 @@
             android:textSize="@dimen/_12sdp"  />
 
         <TextView
+            android:id="@+id/engg_nm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
             android:id="@+id/tv_can_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,13 +99,7 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
-        <TextView
-            android:id="@+id/engg_nm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Engineer Name:  ` + allBucketList.engineerName}"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_12sdp" />
+
 
         <TextView
             android:id="@+id/ntwrk_tech"

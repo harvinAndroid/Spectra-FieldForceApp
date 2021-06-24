@@ -88,5 +88,6 @@ public class Constants {
     public static final String  GET_EQUIPMENT_BYINSTALL  = "getEquipmentByIDInstall";
     public static final String  GET_EDITEQUIPMENT_BYINSTALL  ="editItemEquipmentInstall";
     public static final String  DELETE_EQUIPMENT_BYINSTALL = "deleteEquipmentByIDInstall";
+    public static final String GET_MAX_CAP = "getMaxCapgetMaxCap";
 
 }

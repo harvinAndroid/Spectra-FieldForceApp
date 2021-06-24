@@ -18,6 +18,7 @@ import com.spectra.fieldforce.model.gpon.request.AddProvisioningRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.BucketListRequest;
 import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
+import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
 import com.spectra.fieldforce.model.gpon.request.IRCompleteRequest;
 import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
@@ -191,7 +192,7 @@ public interface ApiInterface {
     Call<GetFibreCable> getFibreList(@Body AccountInfoRequest accountInfoRequest);
 
     @POST ("index.php")
-    Call<CommonClassResponse> addItemConsumption(@Body AddItemConsumption addItemConsumption);
+    Call<CommonResponse> addItemConsumption(@Body AddItemConsumption addItemConsumption);
 
     @POST ("index.php")
     Call<CommonClassResponse> updateAssociateDetails(@Body AssociatedResquest associatedResquest);
@@ -264,4 +265,7 @@ public interface ApiInterface {
 
     @POST("index.php")
     Call<CommonResponse> releaseMyBucket(@Body ReleaseMyBucket releaseMyBucket);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> getMaxCapValue(@Body GetMaxCap getMaxCap);
 }

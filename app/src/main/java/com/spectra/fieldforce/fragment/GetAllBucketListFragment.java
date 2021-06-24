@@ -81,7 +81,9 @@ public class GetAllBucketListFragment extends Fragment {
                         if(response.body().getStatus().equals("Success")){
                             binding.rvAllBucketList.setHasFixedSize(true);
                             binding.rvAllBucketList.setLayoutManager(new LinearLayoutManager(getContext()));
+                            binding.rvAllBucketList.setNestedScrollingEnabled(false);
                             binding.rvAllBucketList.setAdapter(new AllBucketListAdapter(getActivity(),getBucketList));
+
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
                         }else{
@@ -100,6 +102,4 @@ public class GetAllBucketListFragment extends Fragment {
             }
         });
     }
-
-
 }

@@ -6,15 +6,15 @@ import java.util.List;
 
 public class GetFmsListResponse {
     @SerializedName("Status")
-    private Integer status;
+    private String status;
     @SerializedName("Response")
     private Response response;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

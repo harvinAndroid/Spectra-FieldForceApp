@@ -598,8 +598,11 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                 result = jsonObject.getJSONArray("Response");
                                 if (result != null) {
                                     ArrayList<String> action = new ArrayList<String>();
-
-                                    if(action_code==null){
+                                    if(action_code!=null) {
+                                        action.add(action_code);
+                                    }
+                                    contactName.setText(str_contact_name);
+                                    contactNumber.setText(str_contact_num);
                                         action.add("Select Hold Reason");
                                         for (int i = 0; i < result.length(); i++) {
                                             JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
@@ -610,17 +613,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         holdReason.setAdapter(adapter);
 
-
-                                    }else{
-                                        action.add(action_code);
-                                        contactName.setText(str_contact_name);
-                                        contactNumber.setText(str_contact_num);
-                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
-                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                        holdReason.setAdapter(adapter);
-                                        holdReason.setSelection(Integer.parseInt(action_code));
-
-                                    }
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

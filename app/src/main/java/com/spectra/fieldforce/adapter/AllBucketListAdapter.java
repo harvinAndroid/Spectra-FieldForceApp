@@ -70,11 +70,17 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
 
         GetAllBucketList.Response itemList = allbucketlist.get(position);
         holder.binding.setAllBucketList(itemList);
-       /* if(itemList.getEngineerName().equals("")){
+        holder.binding.enggNm.setText("Engineer Name: " +itemList.getEngineerName());
+        String enggName = holder.binding.enggNm.getText().toString();
+       //String enggName = itemList.getEngineerName();
+        if(enggName.isEmpty()||enggName.equals("Engineer Name: ")){
+            binding.tvAdd.setText("ADD");
+            // binding.tvAdd.setBackgroundColor(context.getResources().getColor(android.R.color.secondary_text_light));
+        }else{
             binding.tvAdd.setEnabled(false);
             binding.tvAdd.setText("Assigned");
-            binding.tvAdd.setBackgroundColor(context.getResources().getColor(android.R.color.secondary_text_light));
-        }*/
+           // Toast.makeText(context,"Already Assigned",Toast.LENGTH_LONG).show();
+        }
         holder.binding.tvAdd.setOnClickListener(v -> {
             AllBucketListAdapter.this.addItemToBucket(itemList.getId(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), itemList.getPodName(),
                     itemList.getStatus(), itemList.getHoldCategory(), itemList.getHoldReason(), itemList.getEngineerName(), itemList.getNetworkTechnology());
@@ -121,6 +127,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
                 Log.e("RetroError", t.toString());
             }
         });
+       notifyDataSetChanged();
     }
 
 

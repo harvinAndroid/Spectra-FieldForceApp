@@ -90,6 +90,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("WCR");
         strCanId = requireArguments().getString("canId");
+       // strStatusofReport = requireArguments().getString("StatusofReport");
         init();
         initOne();
     }
@@ -125,15 +126,19 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         );
 
         binding.layoutWcrFms.btSubmitFmsDetails.setOnClickListener(v -> {
-                    if (binding.layoutWcrFms.spCustomerEndFms.getSelectedItem().toString().equals("Select Fms Type")) {
-                        Toast.makeText(getContext(), "Please Select Fms Type", Toast.LENGTH_LONG).show();
-                    } else if (binding.layoutWcrFms.spCustomerEndFmsSec.getSelectedItem().toString().equals("Select Customer End FMS(Second Level)")) {
+            String custEnd = binding.layoutWcrFms.etCustomerEndFmsSec.getText().toString();
+            String custEndFms = binding.layoutWcrFms.etPodEnd.getText().toString();
+            String PortNumCx = binding.layoutWcrFms.etPortNumCx.getText().toString();
+            String PortnumEnd = binding.layoutWcrFms.etPortnumEnd.getText().toString();
+            if(binding.layoutWcrFms.etCustomerEndFms.getText().toString().equals("Select Fms Type")){
+                Toast.makeText(getContext(), "Please Select Fms Type", Toast.LENGTH_LONG).show();
+            } else if (custEnd.equals("Select Customer End FMS(Second Level)")||custEnd.equals("")) {
                         Toast.makeText(getContext(), "Please Select Customer End FMS(Second Level)", Toast.LENGTH_LONG).show();
-                    } else if (Objects.requireNonNull(binding.layoutWcrFms.etPodEnd.getText()).toString().equals("POD End FMS No.:")) {
+                    } else if (custEndFms.equals("POD End FMS No.:")||custEndFms.equals("")) {
                         Toast.makeText(getContext(), "Please Enter Pod End Fms", Toast.LENGTH_LONG).show();
-                    } else if (Objects.requireNonNull(binding.layoutWcrFms.etPortNumCx.getText()).toString().equals("Port Number (Cx End)")) {
+                    } else if (PortNumCx.equals("Port Number (Cx End)")||PortNumCx.equals("")) {
                         Toast.makeText(getContext(), "Please Enter Port Number CX End", Toast.LENGTH_LONG).show();
-                    } else if (Objects.requireNonNull(binding.layoutWcrFms.etPortnumEnd.getText()).toString().equals("Port Number (POD End)")) {
+                    } else if (PortnumEnd.equals("Port Number (POD End)")||PortnumEnd.equals("")) {
                         Toast.makeText(getContext(), "Please Enter Port Number Pod End", Toast.LENGTH_LONG).show();
                     } else {
                         updateFmsDetails();
@@ -144,7 +149,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
             WcrAddManholeFragment wcrAddManholeFragment = new WcrAddManholeFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("strCanId", strCanId);
+            bundle.putString("canId", strCanId);
             bundle.putString("strGuuId", strGuuId);
             wcrAddManholeFragment.setArguments(bundle);
             t1.replace(R.id.frag_container, wcrAddManholeFragment);
@@ -595,7 +600,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             moveNext();
                         }else{
@@ -641,7 +646,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{

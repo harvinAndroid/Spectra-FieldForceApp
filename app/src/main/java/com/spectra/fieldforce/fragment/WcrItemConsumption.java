@@ -2,10 +2,13 @@ package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -23,7 +26,9 @@ import com.spectra.fieldforce.databinding.WcrAddItemConsumptionBinding;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
+import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.EditItemConsumptionNavRequest;
+import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
@@ -55,7 +60,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData;
-    private  String strsubItemId,strGuIId,strCanId;
+    private  String strsubItemId,strGuIId,strCanId,maxCap;
 
 
     public WcrItemConsumption() {
@@ -103,6 +108,43 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         });
     }
 
+    private void getMaxCap(){
+        GetMaxCap getMaxCap = new GetMaxCap();
+        getMaxCap.setAuthkey(Constants.AUTH_KEY);
+        getMaxCap.setAction(Constants.GET_MAX_CAP);
+        getMaxCap.setCanId(strCanId);
+        getMaxCap.setItemName(strItemType);
+        getMaxCap.setSubItemName(strsubItemId);
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.getMaxCapValue(getMaxCap);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                           // Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                          //  Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+
+    }
+
+
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
@@ -121,6 +163,38 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
+
+       /* binding.etQuantity.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                System.out.println("Check string :" + binding.etQuantity.getText().toString());
+
+                if (!binding.etQuantity.getText().toString().isEmpty()) {
+                    int test = Integer.parseInt(binding.etQuantity.getText().toString());
+
+                    if (test <= Integer.parseInt(maxCap)) {
+                        System.out.println("Check string :allow ");
+                    } else {
+                        Toast.makeText(getActivity(), "Quantity Cannot be exceeded more than MAX Cap", Toast.LENGTH_LONG).show();
+                        binding.etQuantity.setText("");
+                    }
+
+                }
+
+
+            }
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
+
+
+            }
+        });*/
+
     }
 
     public void getSubItemList(String strItemType) {
@@ -167,6 +241,8 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     }
 
 
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.sp_type) {
@@ -182,8 +258,9 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
             strItemType = itemName.get(position);
             if (position != 0) strItemType = "" + itemId.get(position - 1);
             else strItemType = " ";
-            Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
            // getSubItemList(strItemType);
+            getMaxCap();
 
         }else if(parent.getId() == R.id.sp_sub_item){
            binding.etSubitem.setText(subItemName.get(position));
@@ -257,24 +334,28 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         addItem_Consumption.setWCRguidId(strGuIId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
-        call.enqueue(new Callback<CommonClassResponse>() {
+        Call<CommonResponse> call = apiService.addItemConsumption(addItem_Consumption);
+        call.enqueue(new Callback<CommonResponse>() {
             @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                 if (response.isSuccessful() && response.body()!=null) {
-                    try {
+                    if (response.body().getStatus().equals("Success")) {
+                        try {
+                            Toast.makeText(getContext(),"Item Updated Successfully", Toast.LENGTH_LONG).show();
+                            nextScreen();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_LONG).show();
 
-                        Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                        nextScreen();
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
 
             }
 
             @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });

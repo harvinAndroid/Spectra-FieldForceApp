@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/tools">
     <data>
-        <import type="android.view.View" />
         <variable
             name="event"
             type="com.spectra.fieldforce.fragment.WcrCompletedFragment" />
@@ -12,12 +11,12 @@
            name="holdCategory"
            type="com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse"
            />
+
         <variable
             name="status"
             type="com.spectra.fieldforce.model.gpon.response.WcrResponse.Wcr"/>
-
-
     </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,6 +35,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
         <include
             android:id="@+id/searchtoolbar"
             layout="@layout/toolbar"
@@ -154,7 +154,6 @@
                     android:layout_margin="@dimen/_1sdp"
                     android:backgroundTint="@color/colorPrimary"
                     android:drawableEnd="@drawable/ic_expand_down"
-                    android:drawableRight="@drawable/ic_expand_down"
                     android:text="@string/customer_details"
                     android:textColor="@color/colorPrimary"
                     android:textColorHighlight="@color/colorPrimary"
@@ -181,8 +180,6 @@
                 layout="@layout/wcr_customer_details"
                 app:customerDetails="@{status}"
                 />
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -205,7 +202,6 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_expand_down"
-                android:drawableRight="@drawable/ic_expand_down"
                 android:text="@string/item_consumption_details"
                 android:textColor="@color/colorPrimary"
                 android:textColorHighlight="@color/colorPrimary"
@@ -255,7 +251,6 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_expand_down"
-                android:drawableRight="@drawable/ic_expand_down"
                 android:text="@string/equipment_details"
                 android:textColor="@color/colorPrimary"
                 android:textColorHighlight="@color/colorPrimary"
@@ -303,7 +298,6 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_expand_down"
-                android:drawableRight="@drawable/ic_expand_down"
                 android:text="@string/customer_network"
                 android:textColor="@color/colorPrimary"
                 android:textColorHighlight="@color/colorPrimary"
@@ -352,7 +346,6 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_expand_down"
-                android:drawableRight="@drawable/ic_expand_down"
                 android:text="@string/installation_quality_parameters"
                 android:textColor="@color/colorPrimary"
                 android:textColorHighlight="@color/colorPrimary"
@@ -398,7 +391,6 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_expand_down"
-                android:drawableRight="@drawable/ic_expand_down"
                 android:text="@string/engineer_details"
                 android:textColor="@color/colorPrimary"
                 android:textColorHighlight="@color/colorPrimary"
@@ -446,7 +438,6 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_expand_down"
-                android:drawableRight="@drawable/ic_expand_down"
                 android:text="@string/on_hold"
                 android:textColor="@color/colorPrimary"
                 android:textColorHighlight="@color/colorPrimary"
@@ -559,7 +550,6 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_expand_down"
-                android:drawableRight="@drawable/ic_expand_down"
                 android:text="@string/remarks"
                 android:textColor="@color/colorPrimary"
                 android:textColorHighlight="@color/colorPrimary"

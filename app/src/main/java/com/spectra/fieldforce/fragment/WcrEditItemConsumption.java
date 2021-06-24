@@ -20,6 +20,7 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrAddItemConsumptionBinding;
+import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
 import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
@@ -235,23 +236,28 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
         addItem_Consumption.setWCRguidId(GuIID);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
-        call.enqueue(new Callback<CommonClassResponse>() {
+        Call<CommonResponse> call = apiService.addItemConsumption(addItem_Consumption);
+        call.enqueue(new Callback<CommonResponse>() {
             @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    try {
-                        Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                        nextScreen();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if(response.body().getStatus().equals("Success")) {
+                        try {
+                            Toast.makeText(getContext(),"Item Edited Successfully", Toast.LENGTH_LONG).show();
+                            nextScreen();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_LONG).show();
+
                     }
                 }
 
             }
 
             @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });

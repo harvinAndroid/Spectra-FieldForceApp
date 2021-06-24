@@ -72,6 +72,9 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
         provisionFragmentBinding.tvBuildingSociety.setText(building);
         provisionFragmentBinding.tvSegmentType.setText(segment);
         provisionFragmentBinding.searchtoolbar.rlBack.setOnClickListener(this);
+        if(segment.equals("Home")){
+            provisionFragmentBinding.tvIr.setVisibility(View.INVISIBLE);
+        }
         provisionFragmentBinding.searchtoolbar.tvLang.setText("Provisioning");
         if(statusReport.equals("Installation Pending")||statusReport.equals("Pending")||statusReport.equals("Installation On Hold")){
             provisionFragmentBinding.tvWcr.setText("WCR");
@@ -79,6 +82,7 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
                 @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
                 WcrFragment wcrFragment = new WcrFragment();
                 Bundle accountinfo = new Bundle();
+                accountinfo.putString("StatusofReport",statusReport);
                 accountinfo.putString("canId", canId);
                 t1.replace(R.id.frag_container, wcrFragment);
                 wcrFragment.setArguments(accountinfo);
@@ -91,6 +95,7 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
                 WcrCompletedFragment wcrCompletedFragment = new WcrCompletedFragment();
                 Bundle accountinfo = new Bundle();
                 accountinfo.putString("canId", canId);
+                accountinfo.putString("StatusofReport",statusReport);
                 t.replace(R.id.frag_container, wcrCompletedFragment);
                 wcrCompletedFragment.setArguments(accountinfo);
                 t.commit();
@@ -114,12 +119,11 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
             IRFragment irFragment = new IRFragment();
             Bundle accountinfo = new Bundle();
             accountinfo.putString("canId", canId);
+            accountinfo.putString("StatusofReport",statusReport);
             t.replace(R.id.frag_container, irFragment);
             irFragment.setArguments(accountinfo);
             t.commit();
         });
 
     }
-
-
 }

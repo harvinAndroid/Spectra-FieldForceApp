@@ -36,7 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class WcrAddManholeFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class WcrAddManholeFragment extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
 
     AddManholeDetailsBinding binding;
     private ArrayList<String> fibreType;
@@ -59,7 +59,9 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         strGuIId = requireArguments().getString("strGuuId");
-        strCanId = requireArguments().getString("strCanId");
+        strCanId = requireArguments().getString("canId");
+        binding.searchtoolbar.rlBack.setOnClickListener(this);
+        binding.searchtoolbar.tvLang.setText("Add Manhole");
 
         init();
         getFibreCable();
@@ -78,7 +80,43 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, ManholeType);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spManholeType.setAdapter(adapter1);
-        binding.btAddmanholeSubmit.setOnClickListener(v -> addMahole());
+        binding.btAddmanholeSubmit.setOnClickListener(v -> {
+
+            String manhole = binding.etManholeType.getText().toString();
+
+            String distance = binding.etDistance.getText().toString();
+            String fibreRun = binding.etFiberNoRunn.getText().toString();
+            String fibreNo = binding.etFibreNo.getText().toString();
+            String fibreTube = binding.etFiberTube.getText().toString();
+            String Location = binding.etLocation.getText().toString();
+            if(Location.equals("Location with Landmark")||Location.isEmpty()){
+                Toast.makeText(getContext(), "Please Enter Location with Landmark", Toast.LENGTH_LONG).show();
+            }else if(distance.equals("Distance")||distance.isEmpty()){
+                Toast.makeText(getContext(), "Please Enter Distance", Toast.LENGTH_LONG).show();
+            }else  if(fibreRun.equals("Fiber No Running No. Wise")||fibreRun.isEmpty()){
+                Toast.makeText(getContext(), "Please Enter Fiber No Running No. Wise", Toast.LENGTH_LONG).show();
+            }else  if(fibreNo.equals("Fiber No. Tube Wise")||fibreNo.isEmpty()){
+                Toast.makeText(getContext(), "Please Enter Fiber No. Tube Wise", Toast.LENGTH_LONG).show();
+            }else  if(fibreTube.equals("Fiber Tube")||fibreTube.isEmpty()){
+                Toast.makeText(getContext(), "Please Enter Fiber Tube", Toast.LENGTH_LONG).show();
+            }
+              else  if(manhole.equals(AppConstants.SELECT_MANHOLE_TYPE)||manhole.isEmpty()){
+                Toast.makeText(getContext(), "Please Select Manhole Type", Toast.LENGTH_LONG).show();
+            } else  if(strFibre.equals(AppConstants.SELECT_FIBRE_TYPE)||strFibre.isEmpty()){
+                Toast.makeText(getContext(), "Please Select Fibre Type", Toast.LENGTH_LONG).show();
+            }
+            else {
+                String strManhole="";
+                if(manhole.equals("In")){
+                    strManhole = "0";
+                }else if(manhole.equals("Out")){
+                    strManhole = "1";
+                }
+                addMahole(distance,fibreRun,fibreNo,fibreTube,Location,strManhole);
+            }
+
+
+        });
     }
 
 
@@ -135,27 +173,21 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
         });
     }
 
-    private void addMahole(){
-         String strManhole="";
-        String manhole = binding.etManholeType.getText().toString();
-        if(manhole.equals("In")){
-            strManhole = "0";
-        }else if(manhole.equals("Out")){
-            strManhole = "1";
-        }
+    private void addMahole(String distance, String fibreRun, String fibreNo, String fibreTube, String location,String manhole){
+
         UpdateManHoleRequest updateManHoleRequest = new UpdateManHoleRequest();
         updateManHoleRequest.setAuthkey(Constants.AUTH_KEY);
         updateManHoleRequest.setAction(Constants.UPDATE_POST_MANHOLE);
         updateManHoleRequest.setCanId(strCanId);
-        updateManHoleRequest.setDistance(binding.etDistance.getText().toString());
+        updateManHoleRequest.setDistance(distance);
         updateManHoleRequest.setFiberCable(strFibre);
-        updateManHoleRequest.setFiberNoRunningNoWise(binding.etFiberNoRunn.getText().toString());
-        updateManHoleRequest.setFiberNoTubeWise(binding.etFibreNo.getText().toString());
+        updateManHoleRequest.setFiberNoRunningNoWise(fibreRun);
+        updateManHoleRequest.setFiberNoTubeWise(fibreNo);
         updateManHoleRequest.setItemID("");
-        updateManHoleRequest.setManHoleType(strManhole);
+        updateManHoleRequest.setManHoleType(manhole);
         updateManHoleRequest.setWCRguidId(strGuIId);
-        updateManHoleRequest.setFiberTube(binding.etFiberTube.getText().toString());
-        updateManHoleRequest.setLocationLandmark(binding.etLocation.getText().toString());
+        updateManHoleRequest.setFiberTube(fibreTube);
+        updateManHoleRequest.setLocationLandmark(location);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addManholeItem(updateManHoleRequest);
@@ -164,7 +196,7 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             nextScreen();
                         }
@@ -185,11 +217,18 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
     }
 
     private void nextScreen(){
-        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         WcrFragment wcrFragment = new WcrFragment();
-        t1.replace(R.id.frag_container, wcrFragment);
-        t1.commit();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
+        t.replace(R.id.frag_container, wcrFragment);
+        wcrFragment.setArguments(accountinfo);
+        t.commit();
     }
 
 
+    @Override
+    public void onClick(View v) {
+        nextScreen();
+    }
 }
