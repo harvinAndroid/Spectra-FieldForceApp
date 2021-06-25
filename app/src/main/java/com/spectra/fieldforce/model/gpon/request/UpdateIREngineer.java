@@ -6,6 +6,12 @@ public class UpdateIREngineer {
     private String Action;
     private String IRguid;
 
+    public void setAppointmentDate(String appointmentDate) {
+        AppointmentDate = appointmentDate;
+    }
+
+    private String AppointmentDate;
+
     public void setAuthkey(String authkey) {
         Authkey = authkey;
     }

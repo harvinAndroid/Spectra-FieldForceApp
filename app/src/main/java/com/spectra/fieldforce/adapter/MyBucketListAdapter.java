@@ -111,6 +111,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
         updateWcrEnggRequest.setEngName("");
         updateWcrEnggRequest.setInstcode("");
         updateWcrEnggRequest.setWCRguidId(wcrId);
+        updateWcrEnggRequest.setAppointmentDate("");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateWcrEng(updateWcrEnggRequest);

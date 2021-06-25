@@ -80,14 +80,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         }
         if (findViewById(R.id.fregment_container) != null) {
-          /*  if (prefConfig.readLoginStatus()) {
+        if (prefConfig.LoginStatus()){
                 navigationDrawerSetup();
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-            }else*/ if (prefConfig.LoginStatus()){
-                navigationDrawerSetup();
-              /* Intent i = new Intent(this,DashBoardActivity.class);
-               startActivity(i);
-               finish();*/
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
             }
             else {
@@ -206,24 +200,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         return null;
     }
-
-    /*private void checkUpdate() {
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-        Log.d(TAG, "Checking for updates");
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                Log.d(TAG, "Update available");
-                try {
-                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.IMMEDIATE, this, 300);
-                } catch (IntentSender.SendIntentException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.d(TAG, "No Update available");
-            }
-        });
-    }*/
 
     @SuppressLint("SetTextI18n")
     private void navigationDrawerSetup() {

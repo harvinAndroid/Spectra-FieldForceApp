@@ -42,6 +42,11 @@ public class UpdateWcrEnggRequest {
     }
 
     private String Authkey,Action,WCRguidId,EngName,Instcode;
+    public void setAppointmentDate(String appointmentDate) {
+        AppointmentDate = appointmentDate;
+    }
+
+    private String AppointmentDate;
 }
 
 

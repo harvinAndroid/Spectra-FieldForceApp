@@ -417,8 +417,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,addMater);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spntemConsumption.setAdapter(adapter1);
-
-
     }
 
     private void bindContacted() {
@@ -557,7 +555,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                     if (response.isSuccessful()) {
                         String status= String.valueOf(Objects.requireNonNull(response.body()).getStatus());
                         if(status.equals("1")){
-                           // Toast.makeText(getActivity(),"Change Bin Submitted Sucessfully",Toast.LENGTH_LONG).show();
                             Intent i = new Intent(getActivity(),MainActivity.class);
                             startActivity(i);
                             requireActivity().finish();

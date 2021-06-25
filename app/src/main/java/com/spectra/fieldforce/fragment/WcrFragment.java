@@ -271,7 +271,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearNine.setVisibility(View.GONE);
             binding.linearSix.setVisibility(View.GONE);
             binding.linea13.setVisibility(View.GONE);
-            binding.linearNine.setVisibility(View.VISIBLE);
             binding.linea15.setVisibility(View.VISIBLE);
             binding.linea18.setVisibility(View.VISIBLE);
             binding.linea20.setVisibility(View.VISIBLE);

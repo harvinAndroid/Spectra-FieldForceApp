@@ -40,6 +40,7 @@ public class GetAllBucketListFragment extends Fragment {
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

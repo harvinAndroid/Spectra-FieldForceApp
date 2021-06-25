@@ -487,6 +487,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         updateIREngineer.setEngName(binding.layoutEnggDetails.etEnggName.getText().toString());
         updateIREngineer.setInstattionDate(binding.layoutEnggDetails.etInstallationCode.getText().toString());
         updateIREngineer.setIRguid(strGuiID);
+        updateIREngineer.setInstattionDate("");
         updateIREngineer.setOTP(binding.layoutEnggDetails.etInstallationCode.getText().toString());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateIrEnginer(updateIREngineer);

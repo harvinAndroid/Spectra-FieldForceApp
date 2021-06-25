@@ -94,10 +94,11 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
         binding.tvConsumptionStatus.setText("Consumption Status: " + strStatusofReport );
       getWcrInfo();
       Listener();
+      Lock();
 
 
-      hold();
-      qualityParam();
+      //hold();
+    //  qualityParam();
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("WCR Complete");
       binding.tvResendService.setOnClickListener(v -> {
@@ -106,6 +107,16 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
         binding.tvResendInstallation.setOnClickListener(v -> {
             resendCode("Installation");
         });
+    }
+
+    private void Lock(){
+        binding.layoutWcrcustomerNetwork.tvCustSave.setVisibility(View.GONE);
+        binding.layoutWcrengineer.etEnggName.setFocusable(false);
+        binding.layoutWcrengineer.etCreatedOn.setFocusable(false);
+        binding.layoutInstallationquality.tvSaveQualityParam.setVisibility(View.GONE);
+        binding.layoutWcrengineer.saveEnggDetails.setVisibility(View.GONE);
+
+
     }
 
     public void getWcrInfo() {
