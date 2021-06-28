@@ -154,7 +154,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                                 e.printStackTrace();
                             }
                         } else if (response.body().getStatus().equals("Failure")) {
-                            Toast.makeText(ProvisioningScreenActivity.this, "Product is not associated with any ONU profile.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProvisioningScreenActivity.this, "IP allocation or CPE MAC task not completed for the provided CAN ID.", Toast.LENGTH_LONG).show();
                             nextScreen();
                         }
                     }
@@ -219,7 +219,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                             Toast.makeText(ProvisioningScreenActivity.this,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             nextScreen();
                         }else if (response.body().getStatus().equals("Failure")) {
-                            Toast.makeText(ProvisioningScreenActivity.this, "Something went wrong..", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProvisioningScreenActivity.this, response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

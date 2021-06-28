@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="event"
+            type="com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter" />
+
+        <variable
+            name="equipment"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.EquipmentDetailsList" />
+
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/et_ite1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`Item :  ` + equipment.item}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/et_ite2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`SubItem :  ` + equipment.subItem}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/et_ite3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{`ItemType :  ` + equipment.itemType}"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/et_ite4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`ItemCode :  ` + equipment.itemCode}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/et_ite5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@{`Serial No.:/Lot no. :  ` + equipment.serialNumber}"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12sdp"  />
+
+    <TextView
+        android:id="@+id/et_ite6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:text="@{`Quantity :  ` + equipment.quantity}"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp"  />
+
+</LinearLayout>
+</layout>

@@ -1,7 +1,6 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,42 +18,50 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.BucketTabActivity;
-import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
+import com.spectra.fieldforce.adapter.WcrAddManholeAdapter;
+import com.spectra.fieldforce.adapter.WcrCConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.WcrCompletteItemConsumptionListAdapter;
+import com.spectra.fieldforce.adapter.WcrEquipmentAdapter;
+import com.spectra.fieldforce.adapter.WcrManholeAdapter;
+import com.spectra.fieldforce.api.ApiClient;
+import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrCompleteFragmentBinding;
-import com.spectra.fieldforce.model.CommonResponse;
+import com.spectra.fieldforce.databinding.WcrFragmentBinding;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
+import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
-import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
-import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
-import com.spectra.fieldforce.api.ApiClient;
-import com.spectra.fieldforce.api.ApiInterface;
+import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WcrCompletedFragment extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
+public class WcrCompletedFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
     private WcrCompleteFragmentBinding binding;
-    private String strGuuId,strSegment,strholdId,strProductSegment;
-    private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
-    private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
+    private ArrayList<String> FmsType;
+    private ArrayList<String> FmsId;
+    private List<GetFmsListResponse.Fms> fmsList;
+    private ArrayList<String> fmsName;
+    private ArrayList<String> firstFmsID;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private ArrayList<String> qualityParam;
-    private ArrayList<String> qualityParamId;
-    private String strSpeedTest,strCableCrimped,strFacePlate,streOntLogin,strWifiSsid,strEducation,strAntivirus,strCanId,strStatusofReport;
-    private AlphaAnimation inAnimation;
-    private AlphaAnimation outAnimation;
+    private String strGuuId,strSegment, strfmsId,strSecFmsId,strCanId ,strholdId,strProductSegment;
+    private ArrayList<String> itemType;
+    private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
+    private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
+    private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
+    private AlphaAnimation inAnimation,outAnimation;
+
     public WcrCompletedFragment() {
 
     }
@@ -73,49 +80,420 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.searchtoolbar.rlBack.setOnClickListener(this);
+        binding.searchtoolbar.tvLang.setText("WCR");
+        strCanId = requireArguments().getString("canId");
+        // strStatusofReport = requireArguments().getString("StatusofReport");
+        init();
+        initOne();
+        Lock();
+    }
+    private void Lock(){
+        binding.layoutCustomerNetwork.tvCustSave.setVisibility(View.GONE);
+        binding.layoutAssociatedDetails.btSubmitAssociate.setVisibility(View.GONE);
+        binding.layoutAssociatedDetails.etLinkBudget.setFocusable(false);
+        binding.layoutAssociatedDetails.etIdbLength.setFocusable(false);
+        binding.layoutWcrFms.etCustomerEndFms.setFocusable(false);
+        binding.layoutWcrFms.etCustomerEndFmsSec.setFocusable(false);
+        binding.layoutWcrFms.etPortnumEnd.setFocusable(false);
+        binding.layoutWcrFms.etPortNumCx.setFocusable(false);
+        binding.layoutWcrFms.etPodEnd.setFocusable(false);
+        binding.etRemarks.setFocusable(false);
+        binding.layoutWcrEngrDetails.etEnggName.setFocusable(false);
+        binding.layoutWcrEngrDetails.etInstallationCode.setFocusable(false);
+        binding.layoutWcrEngrDetails.etAppointmentDate.setFocusable(false);
+        binding.layoutWcrEngrDetails.etCreatedOn.setFocusable(false);
+        binding.layoutWcrFms.btSubmitFmsDetails.setVisibility(View.GONE);
+        binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
+        binding.layoutmanholDetails.btnAddManhole.setVisibility(View.GONE);
+        binding.tvWcrSave.setVisibility(View.GONE);
+        binding.layoutWcrEngrDetails.etEnggName.setFocusable(false);
+        binding.layoutWcrEngrDetails.etCreatedOn.setFocusable(false);
+        binding.layoutInstallationparam.tvSaveQualityParam.setVisibility(View.GONE);
+        binding.layoutWcrEngrDetails.saveEnggDetails.setVisibility(View.GONE);
+    }
 
-    private void moveNext(){
-        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        WcrCompletedFragment wcrCompletedFragment = new WcrCompletedFragment();
-        Bundle accountinfo = new Bundle();
-        accountinfo.putString("canId", strCanId);
-        accountinfo.putString("StatusofReport",strStatusofReport);
-        t.replace(R.id.frag_container, wcrCompletedFragment);
-        wcrCompletedFragment.setArguments(accountinfo);
-        t.commit();
+    private void initOne(){
+        getWcrInfo();
+        getFmsList();
+        Type();
+        binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
+      /*  binding.layoutItemConsumption.btnItemConsumption1.setOnClickListener(v -> {
+            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+            WcrItemConsumption wcrItemConsumption = new WcrItemConsumption();
+            Bundle bundle = new Bundle();
+            bundle.putString("canId", strCanId);
+            bundle.putString("strGuuId", strGuuId);
+            t1.replace(R.id.frag_container, wcrItemConsumption);
+            wcrItemConsumption.setArguments(bundle);
+            t1.commit();
+        });
+
+        binding.layoutAssociatedDetails.btSubmitAssociate.setOnClickListener((View v) -> {
+            String idb = Objects.requireNonNull(binding.layoutAssociatedDetails.etIdbLength.getText()).toString();
+            String link = Objects.requireNonNull(binding.layoutAssociatedDetails.etLinkBudget.getText()).toString();
+
+            if(idb.isEmpty()){
+                Toast.makeText(getContext(),"Please Enter IDB Length",Toast.LENGTH_LONG).show();
+            }else if(link.isEmpty()){
+                Toast.makeText(getContext(),"Please Enter Link Budget",Toast.LENGTH_LONG).show();
+            }else{
+                updateAssociateDetails();
+            }
+            }
+        );
+
+        binding.layoutAddEquipment.btnItemEqipment.setOnClickListener(v -> {
+            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+            WcrEquipmentConsumption wcrEquipmentConsumption = new WcrEquipmentConsumption();
+            Bundle bundle = new Bundle();
+            bundle.putString("strGuuId", strGuuId);
+            bundle.putString("canId",strCanId);
+            t1.replace(R.id.frag_container, wcrEquipmentConsumption);
+            wcrEquipmentConsumption.setArguments(bundle);
+            t1.commit();
+        });
+
+        binding.layoutWcrFms.btSubmitFmsDetails.setOnClickListener(v -> {
+            String custEnd = binding.layoutWcrFms.etCustomerEndFmsSec.getText().toString();
+            String custEndFms = binding.layoutWcrFms.etPodEnd.getText().toString();
+            String PortNumCx = binding.layoutWcrFms.etPortNumCx.getText().toString();
+            String PortnumEnd = binding.layoutWcrFms.etPortnumEnd.getText().toString();
+            if(binding.layoutWcrFms.etCustomerEndFms.getText().toString().equals("Select Fms Type")){
+                Toast.makeText(getContext(), "Please Select Fms Type", Toast.LENGTH_LONG).show();
+            } else if (custEnd.equals("Select Customer End FMS(Second Level)")||custEnd.equals("")) {
+                        Toast.makeText(getContext(), "Please Select Customer End FMS(Second Level)", Toast.LENGTH_LONG).show();
+                    } else if (custEndFms.equals("POD End FMS No.:")||custEndFms.equals("")) {
+                        Toast.makeText(getContext(), "Please Enter Pod End Fms", Toast.LENGTH_LONG).show();
+                    } else if (PortNumCx.equals("Port Number (Cx End)")||PortNumCx.equals("")) {
+                        Toast.makeText(getContext(), "Please Enter Port Number CX End", Toast.LENGTH_LONG).show();
+                    } else if (PortnumEnd.equals("Port Number (POD End)")||PortnumEnd.equals("")) {
+                        Toast.makeText(getContext(), "Please Enter Port Number Pod End", Toast.LENGTH_LONG).show();
+                    } else {
+                        updateFmsDetails();
+                    }
+                }
+        );
+        binding.layoutmanholDetails.btnAddManhole.setOnClickListener(v -> {
+            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+            WcrAddManholeFragment wcrAddManholeFragment = new WcrAddManholeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("canId", strCanId);
+            bundle.putString("strGuuId", strGuuId);
+            wcrAddManholeFragment.setArguments(bundle);
+            t1.replace(R.id.frag_container, wcrAddManholeFragment);
+            t1.commit();
+        });
+        binding.tvWcrSave.setOnClickListener(v ->
+                updateWcrComplete()
+        );
+        binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
+            updateWcrEnginer();
+        });*/
+    }
+
+
+
+    private void init(){
+        binding.layoutWcrFms.etCustomerEndFms.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFms.performClick());
+        binding.layoutWcrFms.spCustomerEndFms.setOnItemSelectedListener(this);
+        binding.layoutWcrFms.etCustomerEndFmsSec.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFmsSec.performClick());
+        binding.layoutWcrFms.spCustomerEndFmsSec.setOnItemSelectedListener(this);
+
+        binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
+        binding.spHoldCategory.setOnItemSelectedListener(this);
+        binding.linearFive.setVisibility(View.VISIBLE);
+        binding.linearFour.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.VISIBLE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearNine.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.VISIBLE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearSix.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.VISIBLE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linea11.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.VISIBLE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linea13.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.VISIBLE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linea15.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.VISIBLE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linea18.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.VISIBLE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linea20.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.VISIBLE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearEquipment.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.VISIBLE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearCustomerNetwork.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.VISIBLE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearInstallationParam.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void listener(){
+        if(strSegment.equals("Business")){
+            binding.linearFour.setVisibility(View.VISIBLE);
+            binding.linearNine.setVisibility(View.VISIBLE);
+            binding.linearSix.setVisibility(View.VISIBLE);
+            binding.linea11.setVisibility(View.VISIBLE);
+            binding.linea13.setVisibility(View.VISIBLE);
+            binding.linea15.setVisibility(View.VISIBLE);
+            binding.linea18.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomerNetwork.setVisibility(View.GONE);
+            binding.linearInstallationParam.setVisibility(View.GONE);
+            binding.linea20.setVisibility(View.VISIBLE);
+        }else if(strSegment.equals("Home")){
+            binding.linearFour.setVisibility(View.VISIBLE);
+            binding.linea11.setVisibility(View.VISIBLE);
+            binding.linearEquipment.setVisibility(View.VISIBLE);
+            binding.linearCustomerNetwork.setVisibility(View.VISIBLE);
+            binding.linearInstallationParam.setVisibility(View.VISIBLE);
+            binding.linearNine.setVisibility(View.GONE);
+            binding.linearSix.setVisibility(View.GONE);
+            binding.linea13.setVisibility(View.GONE);
+            binding.linea15.setVisibility(View.VISIBLE);
+            binding.linea18.setVisibility(View.VISIBLE);
+            binding.linea20.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void getFmsList() {
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
+        accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
+        accountInfoRequest.setAction(Constants.GET_FMS_LIST);
+        // accountInfoRequest.setCanId("221373");
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<GetFmsListResponse> call = apiService.getFmsList(accountInfoRequest);
+        call.enqueue(new Callback<GetFmsListResponse>() {
+            @Override
+            public void onResponse(Call<GetFmsListResponse> call, Response<GetFmsListResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        fmsList = response.body().getResponse().getFMSList();
+                        firstFmsID = new ArrayList<>();
+                        fmsName = new ArrayList<>();
+                        fmsName.add("Select Customer End FMS(Second Level)");
+                        for (GetFmsListResponse.Fms fms : fmsList)
+                            fmsName.add(fms.getFms());
+                        for (GetFmsListResponse.Fms fmss : fmsList)
+                            firstFmsID.add(fmss.getId());
+                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fmsName);
+                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.layoutWcrFms.spCustomerEndFmsSec.setAdapter(adapter1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetFmsListResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
+
+    private void Type() {
+        FmsType = new ArrayList<String>();
+        FmsType.add("Select Fms Type");
+        FmsType.add("WallMount");
+        FmsType.add("RackMount");
+        FmsId = new ArrayList<String>();
+        FmsId.add("569480000");
+        FmsId.add("569480001");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);
+
+
+        holdCategory = new ArrayList<String>();
+        holdCategory.add("Hold Category");
+        holdCategory.add("Building Permission Issue");
+        holdCategory.add("Customer Site Not Ready");
+        holdCategory.add("Delayed By Customer");
+        holdCategory.add("Installation Report Pending To Sign");
+        holdCategory.add("Local Permission Issue");
+        holdCategory.add("Network Constraint");
+        holdCategoryId = new ArrayList<String>();
+        holdCategoryId.add("1");
+        holdCategoryId.add("2");
+        holdCategoryId.add("3");
+        holdCategoryId.add("4");
+        holdCategoryId.add("5");
+        holdCategoryId.add("6");
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spHoldCategory.setAdapter(adapter2);
+
+        binding.saveHold.setOnClickListener(v -> {
+                    if (binding.spHoldCategory.getSelectedItem().toString().equals("Hold Category")) {
+                        Toast.makeText(getContext(), "Please Select Hold Category", Toast.LENGTH_LONG).show();
+                    } else if (Objects.requireNonNull(binding.etHoldReason.getText()).toString().equals("Hold Reason:")) {
+                        Toast.makeText(getContext(), "Please Enter Hold Reason", Toast.LENGTH_LONG).show();
+                    }else {
+                        updateHoldCategory();
+                    }
+                }
+        );
     }
 
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        strCanId = requireArguments().getString("canId");
-        strStatusofReport = requireArguments().getString("StatusofReport");
-        binding.tvConsumptionStatus.setText("Consumption Status: " + strStatusofReport );
-      getWcrInfo();
-      Listener();
-      Lock();
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.sp_customer_end_fms) {
+            binding.layoutWcrFms.etCustomerEndFms.setText(FmsType.get(position));
+            if (position != 0) strfmsId = "" + FmsId.get(position - 1);
+            else strfmsId = " ";
+        }else if(parent.getId() == R.id.sp_customer_end_fms_sec){
+            binding.layoutWcrFms.etCustomerEndFmsSec.setText(fmsName.get(position));
+            if (position != 0) strSecFmsId = "" + firstFmsID.get(position - 1);
+            else strSecFmsId = " ";
+        }else if(parent.getId() == R.id.sp_hold_category){
+            binding.etHoldCategory.setText(holdCategory.get(position));
+            if (position != 0) strholdId = "" + holdCategoryId.get(position - 1);
+            else strholdId = " ";
+        }
 
 
-      //hold();
-    //  qualityParam();
-        binding.searchtoolbar.rlBack.setOnClickListener(this);
-        binding.searchtoolbar.tvLang.setText("WCR Complete");
-      binding.tvResendService.setOnClickListener(v -> {
-          resendCode("Activation");
-      });
-        binding.tvResendInstallation.setOnClickListener(v -> {
-            resendCode("Installation");
-        });
     }
 
-    private void Lock(){
-        binding.layoutWcrcustomerNetwork.tvCustSave.setVisibility(View.GONE);
-        binding.layoutWcrengineer.etEnggName.setFocusable(false);
-        binding.layoutWcrengineer.etCreatedOn.setFocusable(false);
-        binding.layoutInstallationquality.tvSaveQualityParam.setVisibility(View.GONE);
-        binding.layoutWcrengineer.saveEnggDetails.setVisibility(View.GONE);
-
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
@@ -142,19 +520,27 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     if(response.body().getStatus().equals("Success")) {
                         try {
-                            binding.setStatus(response.body().getResponse().getWcr());
-                            itemConsumtions = response.body().getResponse().getItemConsumtionList();
-                            binding.layoutItemconsumption.rvWcrItemlist.setHasFixedSize(true);
-                            binding.layoutItemconsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            binding.layoutItemconsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions));
-                            equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
-                            binding.layoutWcrEquipmentdetails.rvEquipment.setHasFixedSize(true);
-                            binding.layoutWcrEquipmentdetails.rvEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            binding.layoutWcrEquipmentdetails.rvEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(), equipmentDetailsLists));
-                            binding.layoutWcrcustomerNetwork.setCustomerNetwork(response.body().getResponse().getCusotmerNetwork());
+                            binding.tvWcrStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
+                            binding.layoutWcrcustomerDetails.setCustomerDetails(response.body().getResponse().getWcr());
                             strGuuId = response.body().getResponse().getWcr().getWcrguidid();
-                            strSegment = response.body().getResponse().getWcr().getBusinessSegment();
                             strProductSegment = response.body().getResponse().getWcr().getProductSegment();
+                            strSegment = response.body().getResponse().getWcr().getBusinessSegment();
+                            manHoleDetails = response.body().getResponse().getManHoleDetailsList();
+                            binding.layoutAssociatedDetails.setAssociated(response.body().getResponse().getAssociated());
+                            binding.layoutWcrFms.setFms(response.body().getResponse().getFMSDetails());
+                            binding.layoutWcrEngrDetails.setEngg(response.body().getResponse().getEngineerDetails());
+                            binding.setHoldCategory(response.body().getResponse().getEngineerDetails());
+                            binding.layoutmanholDetails.rvAddManhole.setHasFixedSize(true);
+                            binding.layoutmanholDetails.rvAddManhole.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutmanholDetails.rvAddManhole.setAdapter(new WcrManholeAdapter(getActivity(), manHoleDetails));
+                            itemConsumtions = response.body().getResponse().getItemConsumtionList();
+                            binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
+                            binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCConsumptionListAdapter(getActivity(), itemConsumtions));
+                            equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
+                            binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
+                            binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentAdapter(getActivity(), equipmentDetailsLists));
                             listener();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
@@ -174,6 +560,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void nextScreen(){
+
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         ProvisioningTabFragment provisioningScreenFragment = new ProvisioningTabFragment();
         Bundle accountinfo = new Bundle();
@@ -184,154 +571,32 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
     }
 
 
-    private void listener(){
-        if(strSegment.equals("Business")){
-            binding.linearFour.setVisibility(View.VISIBLE);
-            binding.linearNine.setVisibility(View.VISIBLE);
-            binding.linearSix.setVisibility(View.GONE);
-            binding.linea11.setVisibility(View.GONE);
-            binding.linea13.setVisibility(View.GONE);
-            binding.linea15.setVisibility(View.VISIBLE);
-            binding.linea18.setVisibility(View.GONE);
-            binding.linea20.setVisibility(View.VISIBLE);
-        }else if(strSegment.equals("Home")){
-            binding.linearFour.setVisibility(View.VISIBLE);
-            binding.linea11.setVisibility(View.VISIBLE);
-            binding.linearNine.setVisibility(View.GONE);
-            binding.linearSix.setVisibility(View.GONE);
-            binding.linearFive.setVisibility(View.GONE);
-            binding.linea13.setVisibility(View.VISIBLE);
-            binding.linea15.setVisibility(View.VISIBLE);
-            binding.linea18.setVisibility(View.VISIBLE);
-            binding.linea20.setVisibility(View.VISIBLE);
-        }
-    }
 
+  /*  private void moveNext(){
 
+        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+        WcrComplete wcrFragment = new WcrComplete();
+        Bundle accountinfo = new Bundle();
+        accountinfo.putString("canId", strCanId);
+        t.replace(R.id.frag_container, wcrFragment);
+        wcrFragment.setArguments(accountinfo);
+        t.commit();
+    }*/
 
-
-    private void Listener(){
-        binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
-        binding.spHoldCategory.setOnItemSelectedListener(this);
-        binding.linearFive.setVisibility(View.VISIBLE);
-        binding.linearFour.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.VISIBLE);
-            binding.linearTen.setVisibility(View.GONE);
-            binding.linearEight.setVisibility(View.GONE);
-            binding.linear12.setVisibility(View.GONE);
-            binding.linear14.setVisibility(View.GONE);
-            binding.linear16.setVisibility(View.GONE);
-            binding.linear19.setVisibility(View.GONE);
-            binding.linear21.setVisibility(View.GONE);
-        });
-        binding.linearNine.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.GONE);
-            binding.linearTen.setVisibility(View.VISIBLE);
-            binding.linearEight.setVisibility(View.GONE);
-            binding.linear12.setVisibility(View.GONE);
-            binding.linear14.setVisibility(View.GONE);
-            binding.linear16.setVisibility(View.GONE);
-            binding.linear19.setVisibility(View.GONE);
-            binding.linear21.setVisibility(View.GONE);
-        });
-        binding.linearSix.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.GONE);
-            binding.linearTen.setVisibility(View.GONE);
-            binding.linearEight.setVisibility(View.VISIBLE);
-            binding.linear12.setVisibility(View.GONE);
-            binding.linear14.setVisibility(View.GONE);
-            binding.linear16.setVisibility(View.GONE);
-            binding.linear19.setVisibility(View.GONE);
-            binding.linear21.setVisibility(View.GONE);
-        });
-        binding.linearFour.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.VISIBLE);
-            binding.linearTen.setVisibility(View.GONE);
-            binding.linearEight.setVisibility(View.GONE);
-            binding.linear12.setVisibility(View.GONE);
-            binding.linear14.setVisibility(View.GONE);
-            binding.linear16.setVisibility(View.GONE);
-            binding.linear19.setVisibility(View.GONE);
-            binding.linear21.setVisibility(View.GONE);
-        });
-        binding.linea11.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.GONE);
-            binding.linearTen.setVisibility(View.GONE);
-            binding.linearEight.setVisibility(View.GONE);
-            binding.linear12.setVisibility(View.VISIBLE);
-            binding.linear14.setVisibility(View.GONE);
-            binding.linear16.setVisibility(View.GONE);
-            binding.linear19.setVisibility(View.GONE);
-            binding.linear21.setVisibility(View.GONE);
-        });
-        binding.linea13.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.GONE);
-            binding.linearTen.setVisibility(View.GONE);
-            binding.linearEight.setVisibility(View.GONE);
-            binding.linear12.setVisibility(View.GONE);
-            binding.linear14.setVisibility(View.VISIBLE);
-            binding.linear16.setVisibility(View.GONE);
-            binding.linear19.setVisibility(View.GONE);
-            binding.linear21.setVisibility(View.GONE);
-        });
-        binding.linea15.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.GONE);
-            binding.linearTen.setVisibility(View.GONE);
-            binding.linearEight.setVisibility(View.GONE);
-            binding.linear12.setVisibility(View.GONE);
-            binding.linear14.setVisibility(View.GONE);
-            binding.linear16.setVisibility(View.VISIBLE);
-            binding.linear19.setVisibility(View.GONE);
-            binding.linear21.setVisibility(View.GONE);
-        });
-        binding.linea18.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.GONE);
-            binding.linearTen.setVisibility(View.GONE);
-            binding.linearEight.setVisibility(View.GONE);
-            binding.linear12.setVisibility(View.GONE);
-            binding.linear14.setVisibility(View.GONE);
-            binding.linear16.setVisibility(View.GONE);
-            binding.linear19.setVisibility(View.VISIBLE);
-            binding.linear21.setVisibility(View.GONE);
-        });
-        binding.linea20.setOnClickListener(v -> {
-            binding.linearFive.setVisibility(View.GONE);
-            binding.linearTen.setVisibility(View.GONE);
-            binding.linearEight.setVisibility(View.GONE);
-            binding.linear12.setVisibility(View.GONE);
-            binding.linear14.setVisibility(View.GONE);
-            binding.linear16.setVisibility(View.GONE);
-            binding.linear19.setVisibility(View.GONE);
-            binding.linear21.setVisibility(View.VISIBLE);
-        });
-        binding.layoutWcrengineer.saveEnggDetails.setOnClickListener(v -> updateWcrEnginer());
-        binding.saveHold.setOnClickListener(v -> {
-            String remark = binding.etRemarksText.getText().toString();
-            if(remark.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
-            }else{
-               updateHoldCategory(remark);
-            }
-        });
-        binding.tvWcrComplete.setOnClickListener(v -> updateWcrComplete());
-        binding.layoutInstallationquality.tvSaveQualityParam.setOnClickListener(v -> updateQualityParam());
-    }
-
-
-    public void resendCode(String type) {
+    private void updateAssociateDetails(){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
-        resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
-        resendActivationCodeRequest.setAction(Constants.RESEND_CODE);
-       resendActivationCodeRequest.setGUID(strGuuId);
-       resendActivationCodeRequest.setIsIR("false");
-       resendActivationCodeRequest.setType(type);
+        AssociatedResquest associatedResquest = new AssociatedResquest();
+        associatedResquest.setAuthkey(Constants.AUTH_KEY);
+        associatedResquest.setAction(Constants.UPDATE_ASSOCIATE);
+        associatedResquest.setIdb(binding.layoutAssociatedDetails.etIdbLength.getText().toString());
+        associatedResquest.setLink(binding.layoutAssociatedDetails.etLinkBudget.getText().toString());
+        associatedResquest.setWCRguidId(strGuuId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.resendCodeWcr(resendActivationCodeRequest);
+        Call<CommonClassResponse> call = apiService.updateAssociateDetails(associatedResquest);
         call.enqueue(new Callback<CommonClassResponse>() {
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
@@ -342,161 +607,10 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getStatus().equals("Success")){
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
-                            moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                            //moveNext();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }
-
-    private void qualityParam(){
-        binding.layoutInstallationquality.etSpeedTest.setOnClickListener(v->  binding.layoutInstallationquality.spSpeedTest.performClick());
-        binding.layoutInstallationquality.spSpeedTest.setOnItemSelectedListener(this);
-        binding.layoutInstallationquality.etCableCrimped.setOnClickListener(v->  binding.layoutInstallationquality.spCableCrimped.performClick());
-        binding.layoutInstallationquality.spCableCrimped.setOnItemSelectedListener(this);
-        binding.layoutInstallationquality.etFacePlate.setOnClickListener(v->  binding.layoutInstallationquality.spFacePlate.performClick());
-        binding.layoutInstallationquality.spFacePlate.setOnItemSelectedListener(this);
-        binding.layoutInstallationquality.etOntLogin.setOnClickListener(v->  binding.layoutInstallationquality.spOntLogin.performClick());
-        binding.layoutInstallationquality.spOntLogin.setOnItemSelectedListener(this);
-        binding.layoutInstallationquality.etWifiSsid.setOnClickListener(v->  binding.layoutInstallationquality.spWifiSsid.performClick());
-        binding.layoutInstallationquality.spWifiSsid.setOnItemSelectedListener(this);
-        binding.layoutInstallationquality.etEducationCustomer.setOnClickListener(v->  binding.layoutInstallationquality.spEducationCustomer.performClick());
-        binding.layoutInstallationquality.spEducationCustomer.setOnItemSelectedListener(this);
-        binding.layoutInstallationquality.etEducationAntivirus.setOnClickListener(v->  binding.layoutInstallationquality.spEducationAntivirus.performClick());
-        binding.layoutInstallationquality.spEducationAntivirus.setOnItemSelectedListener(this);
-        qualityParam = new ArrayList<String>();
-        qualityParam.add("Select Quality Type");
-        qualityParam.add("Yes");
-        qualityParam.add("No");
-        qualityParamId = new ArrayList<String>();
-        qualityParamId.add("111260000");
-        qualityParamId.add("111260001");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, qualityParam);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.layoutInstallationquality.spSpeedTest.setAdapter(adapter);
-        binding.layoutInstallationquality.spCableCrimped.setAdapter(adapter);
-        binding.layoutInstallationquality.spFacePlate.setAdapter(adapter);
-        binding.layoutInstallationquality.spOntLogin.setAdapter(adapter);
-        binding.layoutInstallationquality.spWifiSsid.setAdapter(adapter);
-        binding.layoutInstallationquality.spEducationCustomer.setAdapter(adapter);
-        binding.layoutInstallationquality.spEducationAntivirus.setAdapter(adapter);
-    }
-
-    private void hold(){
-        holdCategory = new ArrayList<String>();
-        holdCategory.add("Hold Category");
-        holdCategory.add("Building Permission Issue");
-        holdCategory.add("Customer Site Not Ready");
-        holdCategory.add("Delayed By Customer");
-        holdCategory.add("Installation Report Pending To Sign");
-        holdCategory.add("Local Permission Issue");
-        holdCategory.add("Network Constraint");
-        holdCategoryId = new ArrayList<String>();
-        holdCategoryId.add("1");
-        holdCategoryId.add("2");
-        holdCategoryId.add("3");
-        holdCategoryId.add("4");
-        holdCategoryId.add("5");
-        holdCategoryId.add("6");
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spHoldCategory.setAdapter(adapter2);
-    }
-
-    private void updateWcrEnginer(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
-        updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
-        updateWcrEnggRequest.setAction(Constants.UPDATE_WCR_ENGINER);
-        updateWcrEnggRequest.setEngName(binding.layoutWcrengineer.etEnggName.getText().toString());
-        updateWcrEnggRequest.setInstcode(binding.layoutWcrengineer.etInstallationCode.getText().toString());
-        updateWcrEnggRequest.setWCRguidId(strGuuId);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.wcrEnggDetails(updateWcrEnggRequest);
-        call.enqueue(new Callback<CommonResponse>() {
-            @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        if(response.body().getStatus().equals("Success")){
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
-                            moveNext();
-                        }else{
-                            Toast.makeText(getContext(),response.body().getResponse(),Toast.LENGTH_LONG).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-
-    }
-
-
-    private void updateQualityParam(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        UpdateQualityParamRequest updateQualityParamRequest = new UpdateQualityParamRequest();
-        updateQualityParamRequest.setAuthkey(Constants.AUTH_KEY);
-        updateQualityParamRequest.setAction(Constants.UPDATE_POST_HOLDIR_QUALITY);
-        updateQualityParamRequest.setSpeed(binding.layoutInstallationquality.etSpeedTest.getText().toString());
-        updateQualityParamRequest.setCable(binding.layoutInstallationquality.etCableCrimped.getText().toString());
-        updateQualityParamRequest.setAntiVirus(binding.layoutInstallationquality.etEducationAntivirus.getText().toString());
-        updateQualityParamRequest.setSelfCare(binding.layoutInstallationquality.etEducationCustomer.getText().toString());
-        updateQualityParamRequest.setWifi(binding.layoutInstallationquality.etWifiSsid.getText().toString());
-        updateQualityParamRequest.setFace(binding.layoutInstallationquality.etFacePlate.getText().toString());
-        updateQualityParamRequest.setONT(binding.layoutInstallationquality.etOntLogin.getText().toString());
-        updateQualityParamRequest.setWCRguidId(strGuuId);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.updateQualityParam(updateQualityParamRequest);
-        call.enqueue(new Callback<CommonClassResponse>() {
-            @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        if(response.body().getStatus().equals("Success")){
-                            moveNext();
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -514,54 +628,6 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
 
     }
 
-    private void updateHoldCategory(String remark){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
-        holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
-        holdWcrRequest.setAction(Constants.HOLD_WCR);
-        holdWcrRequest.setCategory(strholdId);
-        holdWcrRequest.setReason(remark);
-        holdWcrRequest.setWCRguidId(strGuuId);
-        holdWcrRequest.setSegment(strSegment);
-
-
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.updateHoldCategory(holdWcrRequest);
-        call.enqueue(new Callback<CommonClassResponse>() {
-            @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        if(response.body().getStatus().equals("Success")){
-                            moveNext();
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-
-    }
 
     private void updateWcrComplete(){
         inAnimation = new AlphaAnimation(0f, 1f);
@@ -590,7 +656,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getStatus().equals("Success")){
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             nextScreen();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -611,46 +677,146 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent.getId() == R.id.sp_hold_category){
-            binding.etHoldCategory.setText(holdCategory.get(position));
-            if (position != 0) strholdId = "" + holdCategoryId.get(position - 1);
-            else strholdId = " ";
-        }else  if(parent.getId() == R.id.sp_speed_test){
-            binding.layoutInstallationquality.etSpeedTest.setText(qualityParam.get(position));
-            if (position != 0) strSpeedTest = "" + qualityParamId.get(position - 1);
-            else strSpeedTest = " ";
-        }else  if(parent.getId() == R.id.sp_cable_crimped){
-            binding.layoutInstallationquality.etCableCrimped.setText(qualityParam.get(position));
-            if (position != 0) strCableCrimped = "" + qualityParamId.get(position - 1);
-            else strCableCrimped = " ";
-        }else  if(parent.getId() == R.id.sp_ont_login){
-            binding.layoutInstallationquality.etOntLogin.setText(qualityParam.get(position));
-            if (position != 0) streOntLogin = "" + qualityParamId.get(position - 1);
-            else streOntLogin = " ";
-        }else  if(parent.getId() == R.id.sp_face_plate){
-            binding.layoutInstallationquality.etFacePlate.setText(qualityParam.get(position));
-            if (position != 0) strFacePlate = "" + qualityParamId.get(position - 1);
-            else strFacePlate = " ";
-        }else  if(parent.getId() == R.id.sp_wifi_ssid){
-            binding.layoutInstallationquality.etWifiSsid.setText(qualityParam.get(position));
-            if (position != 0) strWifiSsid = "" + qualityParamId.get(position - 1);
-            else strWifiSsid = " ";
-        }else  if(parent.getId() == R.id.sp_education_customer){
-            binding.layoutInstallationquality.etEducationCustomer.setText(qualityParam.get(position));
-            if (position != 0) strEducation = "" + qualityParamId.get(position - 1);
-            else strEducation = " ";
-        }else  if(parent.getId() == R.id.sp_education_antivirus){
-            binding.layoutInstallationquality.etEducationAntivirus.setText(qualityParam.get(position));
-            if (position != 0) strAntivirus = "" + qualityParamId.get(position - 1);
-            else strAntivirus = " ";
-        }
+    private void updateFmsDetails(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        UpdateFmsRequest updateFmsRequest = new UpdateFmsRequest();
+        updateFmsRequest.setAuthkey(Constants.AUTH_KEY);
+        updateFmsRequest.setAction(Constants.UPDATE_FMS_DETAILS);
+        updateFmsRequest.setFmsFirst(strfmsId);
+        updateFmsRequest.setFmsSecond(strSecFmsId);
+        updateFmsRequest.setWCRguidId(strGuuId);
+        updateFmsRequest.setFmsPODno(binding.layoutWcrFms.etPodEnd.getText().toString());
+        updateFmsRequest.setFmsPortCX(binding.layoutWcrFms.etPortNumCx.getText().toString());
+        updateFmsRequest.setFmsPortPOD(binding.layoutWcrFms.etPortnumEnd.getText().toString());
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.updsteFmsDetails(updateFmsRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                           // moveNext();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    private void updateWcrEnginer(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
+        updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
+        updateWcrEnggRequest.setAction(Constants.UPDATE_WCR_ENGINER);
+        updateWcrEnggRequest.setEngName(binding.layoutWcrEngrDetails.etEnggName.getText().toString());
+        updateWcrEnggRequest.setInstcode(binding.layoutWcrEngrDetails.etInstallationCode.getText().toString());
+        updateWcrEnggRequest.setAppointmentDate(binding.layoutWcrEngrDetails.etAppointmentDate.getText().toString());
+        updateWcrEnggRequest.setWCRguidId(strGuuId);
 
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.updateWcrEng(updateWcrEnggRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                           // moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
     }
 
+    private void updateHoldCategory(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
+        holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
+        holdWcrRequest.setAction(Constants.HOLD_WCR);
+        holdWcrRequest.setCategory(strholdId);
+        holdWcrRequest.setReason(binding.etHoldReason.getText().toString());
+        holdWcrRequest.setWCRguidId(strGuuId);
+        holdWcrRequest.setSegment(strSegment);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.updateHoldCategory(holdWcrRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                          //  moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+
+    }
 }

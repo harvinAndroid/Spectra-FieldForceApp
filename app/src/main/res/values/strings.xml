@@ -210,6 +210,7 @@
     <string name="dashboard">DASHBOARD</string>
     <string name="version">Version</string>
     <string name="appointment_date">Appointment Date</string>
+    <string name="installation_parameters">Installation Parameters</string>
 
 
     <!-- <string name="item_type">Item Type</string>-->

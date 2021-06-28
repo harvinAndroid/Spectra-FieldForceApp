@@ -36,6 +36,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
+
                 <include
                     android:id="@+id/searchtoolbar"
                     layout="@layout/toolbar"
@@ -137,7 +138,6 @@
                         android:id="@+id/et_ite"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableEnd="@drawable/ic_expand_down"
                         android:text="@string/associated_entities_details"
@@ -183,7 +183,6 @@
                         android:id="@+id/et_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableEnd="@drawable/ic_expand_down"
                         android:text="@string/fms_details"
@@ -258,10 +257,145 @@
                         android:id="@+id/layout_item_consumption"
                         layout="@layout/wcr_item_consumption_details"/>
 
+                </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/linear_equipment"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:text="@string/equipment_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_eqipmentdetails"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_equipment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/layout_add_equipment"
+                        layout="@layout/ir_add_equipment"
+                        />
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/linear_customer_network"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_eqipmentdetails"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:text="@string/customer_network"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_customernetwork_details"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_customer_network"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/layout_customer_network"
+                        layout="@layout/wcr_customer_network"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_installation_param"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_customernetwork_details"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:text="@string/installation_parameters"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_installation_param_details"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_installation_param"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/layout_installationparam"
+                        layout="@layout/wcr_installation_quality"
+                        />
+
+                </LinearLayout>
 
 
                 <LinearLayout
@@ -272,16 +406,15 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/linear12"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_installation_param_details"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                   >
 
                     <TextView
-                        android:id="@+id/et_installation_quality"
+                        android:id="@+id/tv_manhole"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableEnd="@drawable/ic_expand_down"
                         android:text="@string/manhole_details"
@@ -310,6 +443,7 @@
                         layout="@layout/wcr_manhole_details"/>
 
                 </LinearLayout>
+
 
 
 
@@ -377,7 +511,6 @@
                         android:id="@+id/et_on_hold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_1sdp"
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableEnd="@drawable/ic_expand_down"
                         android:text="@string/on_hold"

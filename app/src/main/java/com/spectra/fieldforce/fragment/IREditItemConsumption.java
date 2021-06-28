@@ -247,17 +247,17 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         addItem_Consumption.setWCRguidId(IrID);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.addItemConsumption(addItem_Consumption);
-        call.enqueue(new Callback<CommonResponse>() {
+        Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
+        call.enqueue(new Callback<CommonClassResponse>() {
             @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),"Item Updated Successfully",Toast.LENGTH_LONG).show();
                             nextScreen();
                         }else{
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
 
                     } catch (Exception e) {
@@ -268,7 +268,7 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
             }
 
             @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });

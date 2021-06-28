@@ -38,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WcrEditItemConsumption extends Fragment implements AdapterView.OnItemSelectedListener{
+public class WcrEditItemConsumption extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
     private WcrAddItemConsumptionBinding binding;
     private ArrayList<String> itemType;
     private ArrayList<String> itemTypeData;
@@ -71,6 +71,8 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
         ItemId = requireArguments().getString("ItemId");
         GuIID = requireArguments().getString("GuIID");
         CanId = requireArguments().getString("canId");
+        binding.searchtoolbar.rlBack.setOnClickListener(this);
+        binding.searchtoolbar.tvLang.setText("WCR");
         init();
     }
 
@@ -236,10 +238,10 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
         addItem_Consumption.setWCRguidId(GuIID);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.addItemConsumption(addItem_Consumption);
-        call.enqueue(new Callback<CommonResponse>() {
+        Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
+        call.enqueue(new Callback<CommonClassResponse>() {
             @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     if(response.body().getStatus().equals("Success")) {
                         try {
@@ -249,7 +251,7 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
                             e.printStackTrace();
                         }
                     }else{
-                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -257,7 +259,7 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
             }
 
             @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });
@@ -272,5 +274,10 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
         t1.replace(R.id.frag_container, wcrFragment);
         t1.commit();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        nextScreen();
     }
 }

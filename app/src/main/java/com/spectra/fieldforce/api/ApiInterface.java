@@ -26,6 +26,7 @@ import com.spectra.fieldforce.model.gpon.request.ReleaseMyBucket;
 import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendCodeIRRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCpeMacRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateCustomerNetwork;
 import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateGeneralDetails;
 import com.spectra.fieldforce.model.gpon.request.UpdateIREngineer;
@@ -192,7 +193,7 @@ public interface ApiInterface {
     Call<GetFibreCable> getFibreList(@Body AccountInfoRequest accountInfoRequest);
 
     @POST ("index.php")
-    Call<CommonResponse> addItemConsumption(@Body AddItemConsumption addItemConsumption);
+    Call<CommonClassResponse> addItemConsumption(@Body AddItemConsumption addItemConsumption);
 
     @POST ("index.php")
     Call<CommonClassResponse> updateAssociateDetails(@Body AssociatedResquest associatedResquest);
@@ -264,8 +265,14 @@ public interface ApiInterface {
     Call<GetMyBucketList> getMyBucketList(@Body BucketListRequest bucketListRequest);
 
     @POST("index.php")
-    Call<CommonResponse> releaseMyBucket(@Body ReleaseMyBucket releaseMyBucket);
+    Call<CommonClassResponse> releaseMyBucket(@Body ReleaseMyBucket releaseMyBucket);
 
     @POST ("index.php")
     Call<CommonClassResponse> getMaxCapValue(@Body GetMaxCap getMaxCap);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updateCustomerNetwork(@Body UpdateCustomerNetwork updateCustomerNetwork);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updateQualityParamReq(@Body UpdateQualityParamRequest updateQualityParamRequest);
 }

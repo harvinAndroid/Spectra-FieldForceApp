@@ -156,17 +156,22 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
             @Override
             public void onResponse(Call<GetManholeById> call, Response<GetManholeById> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    try {
-                        binding.etFiberTube.setText(response.body().getResponse().getFiberTube());
-                        binding.etFiberNoRunn.setText(response.body().getResponse().getFiberNoRunningNoWise());
-                        binding.etLocation.setText(response.body().getResponse().getLocationLandmark());
-                        binding.etFibreCable.setText(response.body().getResponse().getFiberCable());
-                        binding.etDistance.setText(response.body().getResponse().getDistance());
-                        binding.etFibreNo.setText(response.body().getResponse().getFiberNoTubeWise());
-                        binding.etManholeType.setText(response.body().getResponse().getManHoleType());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                        if (response.body().getStatus().equals("Success")) {
+                            try {
+                                binding.etFiberTube.setText(response.body().getResponse().getFiberTube());
+                                binding.etFiberNoRunn.setText(response.body().getResponse().getFiberNoRunningNoWise());
+                                binding.etLocation.setText(response.body().getResponse().getLocationLandmark());
+                                binding.etFibreCable.setText(response.body().getResponse().getFiberCable());
+                                binding.etDistance.setText(response.body().getResponse().getDistance());
+                                binding.etFibreNo.setText(response.body().getResponse().getFiberNoTubeWise());
+                                binding.etManholeType.setText(response.body().getResponse().getManHoleType());
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "No Response", Toast.LENGTH_LONG).show();
+                        }
                 }
             }
 
@@ -207,9 +212,11 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             nextScreen();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -230,13 +237,16 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
     private void nextScreen(){
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         WcrFragment wcrFragment = new WcrFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("canId", strCanId);
         t1.replace(R.id.frag_container, wcrFragment);
+        wcrFragment.setArguments(bundle);
         t1.commit();
     }
 
 
     @Override
     public void onClick(View v) {
-
+    nextScreen();
     }
 }

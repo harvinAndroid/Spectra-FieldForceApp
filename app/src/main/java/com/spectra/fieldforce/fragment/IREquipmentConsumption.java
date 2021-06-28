@@ -49,8 +49,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
     private List<GetSubItemListResponse.Datum> subItem;
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
-    private String strItemType,strItemTypeData;
-    private  String strsubItemId,strGuIId,strCanId;
+    private String strItemType,strItemTypeData,strsubItemId,strGuIId,strCanId;
 
 
     public IREquipmentConsumption() {
@@ -177,7 +176,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
             strItemType = itemName.get(position);
             if (position != 0) strItemType = "" + itemId.get(position - 1);
             else strItemType = " ";
-            Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
             // getSubItemList(strItemType);
 
         }else if(parent.getId() == R.id.sp_sub_item){
@@ -253,28 +252,27 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         addItem_Consumption.setIRguid(strGuIId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.addItemConsumption(addItem_Consumption);
-        call.enqueue(new Callback<CommonResponse>() {
+        Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
+        call.enqueue(new Callback<CommonClassResponse>() {
             @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful() && response.body()!=null) {
                     if(response.body().getStatus().equals("Success")) {
                         try {
-
                             Toast.makeText(getContext(), "Equipment added Successfully", Toast.LENGTH_LONG).show();
                             nextScreen();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }else{
-                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 
             }
 
             @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });

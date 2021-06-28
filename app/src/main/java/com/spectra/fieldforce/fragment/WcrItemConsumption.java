@@ -334,10 +334,10 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         addItem_Consumption.setWCRguidId(strGuIId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.addItemConsumption(addItem_Consumption);
-        call.enqueue(new Callback<CommonResponse>() {
+        Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
+        call.enqueue(new Callback<CommonClassResponse>() {
             @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful() && response.body()!=null) {
                     if (response.body().getStatus().equals("Success")) {
                         try {
@@ -347,7 +347,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
                             e.printStackTrace();
                         }
                     }else{
-                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -355,7 +355,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
             }
 
             @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });

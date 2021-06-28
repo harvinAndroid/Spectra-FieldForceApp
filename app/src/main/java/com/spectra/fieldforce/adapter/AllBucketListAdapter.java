@@ -87,19 +87,19 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
 
 
             if(itemList.getOrderType().equals("WCR")){
-                updateEnginer("updateWCREngineer", itemList.getCustomerName(), itemList.getWcrId());
+                updateEnginer("updateWCREngineer", itemList.getEngineerName(), itemList.getWcrId());
             }else if(itemList.getOrderType().equals("IR")){
-                updateEnginer("engineerUpdateIR", itemList.getCustomerName(),itemList.getIrId());
+                updateEnginer("engineerUpdateIR", itemList.getEngineerName(),itemList.getIrId());
             }
         });
 
     }
 
-    private void updateEnginer(String updateWCREngineer, String customerName, String wcrId){
+    private void updateEnginer(String updateWCREngineer, String enggName, String wcrId){
         UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
         updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
         updateWcrEnggRequest.setAction(updateWCREngineer);
-        updateWcrEnggRequest.setEngName(customerName);
+        updateWcrEnggRequest.setEngName(enggName);
         updateWcrEnggRequest.setInstcode("");
         updateWcrEnggRequest.setWCRguidId(wcrId);
         updateWcrEnggRequest.setAppointmentDate("");

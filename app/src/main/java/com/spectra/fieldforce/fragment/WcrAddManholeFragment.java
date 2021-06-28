@@ -199,6 +199,9 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             nextScreen();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -36,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IREditEquipmentConsumption extends Fragment implements AdapterView.OnItemSelectedListener{
+public class WcrEditEquipmentConsumption extends Fragment implements AdapterView.OnItemSelectedListener{
     private WcrAddItemConsumptionBinding binding;
     private ArrayList<String> itemType;
     private ArrayList<String> itemTypeData;
@@ -51,7 +51,7 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
     private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID;;
 
 
-    public IREditEquipmentConsumption() {
+    public WcrEditEquipmentConsumption() {
 
     }
 

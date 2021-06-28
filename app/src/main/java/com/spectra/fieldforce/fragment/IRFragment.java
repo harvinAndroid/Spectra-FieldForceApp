@@ -60,8 +60,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private String strCpe,strGuiID,strSegment,strCanId,str_provisionId,strholdId,strStatusofReport;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private AlphaAnimation inAnimation;
-    private AlphaAnimation outAnimation;
+    private AlphaAnimation inAnimation,outAnimation;
+
 
     public IRFragment() {
 
@@ -146,7 +146,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             Bundle bundle = new Bundle();
             bundle.putString("strGuuId", strGuiID);
             bundle.putString("canId",strCanId);
-        //    bundle.putString("StatusofReport",strStatusofReport);
             t1.replace(R.id.frag_container, irEquipmentConsumption);
             irEquipmentConsumption.setArguments(bundle);
             t1.commit();
@@ -166,7 +165,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.tvResendOtp.setOnClickListener(v -> resendCode());
         binding.layoutCpemac.tvCustSave.setOnClickListener(v -> updateCpeMac());
         binding.tvIrComplete.setOnClickListener(v -> {
-            String remark = binding.etRemarksText.getText().toString();
+            String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
             if(remark.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
             }else{
@@ -314,6 +313,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 binding.linear16.setVisibility(View.GONE);
                 binding.linear19.setVisibility(View.GONE);
                 binding.linear21.setVisibility(View.GONE);
+                binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
             });
         binding.linearNine.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -324,6 +325,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
         });
         binding.linearSix.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -334,6 +337,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
         });
         binding.linearFour.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.VISIBLE);
@@ -344,6 +349,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
         });
         binding.linea11.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -354,6 +361,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
         });
         binding.linea13.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -364,6 +373,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
         });
         binding.linea15.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -374,6 +385,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.VISIBLE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
         });
         binding.linea18.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -384,6 +397,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.VISIBLE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
         });
         binding.linea20.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -394,6 +409,18 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.VISIBLE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearInstallationParam.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.VISIBLE);
         });
     }
 
@@ -455,7 +482,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                     binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
@@ -489,6 +516,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         updateIREngineer.setIRguid(strGuiID);
         updateIREngineer.setInstattionDate("");
         updateIREngineer.setOTP(binding.layoutEnggDetails.etInstallationCode.getText().toString());
+        updateIREngineer.setAppointmentDate(binding.layoutEnggDetails.etAppointmentDate.getText().toString());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateIrEnginer(updateIREngineer);
         call.enqueue(new Callback<CommonClassResponse>() {
@@ -500,7 +528,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                     binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else {

@@ -148,21 +148,24 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
         releaseMyBucket.setOrderId(orderId);
         releaseMyBucket.setOrderType(orderType);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.releaseMyBucket(releaseMyBucket);
-        call.enqueue(new Callback<CommonResponse>() {
+        Call<CommonClassResponse> call = apiService.releaseMyBucket(releaseMyBucket);
+        call.enqueue(new Callback<CommonClassResponse>() {
             @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if (response.body().getStatus().equals("Success")){
-                            Toast.makeText(context,response.body().getResponse(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             Intent i = new Intent(context, BucketTabActivity.class);
                             context.startActivity(i);
 
                             /*AppCompatActivity activity1 = (AppCompatActivity) context;
                             activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new Buc(), MyBucketList.class.getSimpleName()).addToBackStack(null
                             ).commit();*/
+                        }else{
+                            Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
                         }
 
                     } catch (NumberFormatException e) {
@@ -171,7 +174,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                 }
             }
             @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
                 Log.e("RetroError", t.toString());
             }
         });

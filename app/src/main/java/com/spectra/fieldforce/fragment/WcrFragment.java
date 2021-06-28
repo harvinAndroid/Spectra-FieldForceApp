@@ -32,7 +32,9 @@ import com.spectra.fieldforce.model.ItemConsumption.NrgpDetails;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateCustomerNetwork;
 import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
@@ -59,15 +61,15 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> firstFmsID;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private String strGuuId,strSegment, strfmsId,strSecFmsId;
+    private String strGuuId,strSegment, strfmsId,strSecFmsId,strCanId ,strholdId,strProductSegment;
     private ArrayList<String> itemType;
-    private String strCanId ,strholdId,strProductSegment;
     private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
-    private AlphaAnimation inAnimation;
-    private AlphaAnimation outAnimation;
+    private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
+    private AlphaAnimation inAnimation,outAnimation;
 
     public WcrFragment() {
+
     }
 
     @Override
@@ -110,6 +112,12 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             wcrItemConsumption.setArguments(bundle);
             t1.commit();
         });
+        binding.layoutCustomerNetwork.tvCustSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateCustomerNetwork();
+            }
+        });
 
         binding.layoutAssociatedDetails.btSubmitAssociate.setOnClickListener((View v) -> {
             String idb = Objects.requireNonNull(binding.layoutAssociatedDetails.etIdbLength.getText()).toString();
@@ -124,6 +132,17 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
             }
         );
+
+        binding.layoutAddEquipment.btnItemEqipment.setOnClickListener(v -> {
+            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+            WcrEquipmentConsumption wcrEquipmentConsumption = new WcrEquipmentConsumption();
+            Bundle bundle = new Bundle();
+            bundle.putString("strGuuId", strGuuId);
+            bundle.putString("canId",strCanId);
+            t1.replace(R.id.frag_container, wcrEquipmentConsumption);
+            wcrEquipmentConsumption.setArguments(bundle);
+            t1.commit();
+        });
 
         binding.layoutWcrFms.btSubmitFmsDetails.setOnClickListener(v -> {
             String custEnd = binding.layoutWcrFms.etCustomerEndFmsSec.getText().toString();
@@ -155,10 +174,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             t1.replace(R.id.frag_container, wcrAddManholeFragment);
             t1.commit();
         });
-        binding.tvWcrSave.setOnClickListener(v -> updateWcrComplete());
-        binding.tvWcrSave.setOnClickListener((View v) -> {
-
+        binding.tvWcrSave.setOnClickListener(v ->
+                updateWcrComplete()
+        );
+        binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
             updateWcrEnginer();
+        });
+        binding.layoutInstallationparam.tvSaveQualityParam.setOnClickListener((View v) -> {
+            updateQualityParam();
         });
     }
 
@@ -182,6 +205,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linearNine.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -192,6 +218,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linearSix.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -202,6 +231,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linea11.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -212,6 +244,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linea13.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -222,6 +257,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linea15.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -232,6 +270,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.VISIBLE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linea18.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -242,6 +283,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.VISIBLE);
             binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linea20.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -252,6 +296,48 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.VISIBLE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearEquipment.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.VISIBLE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearCustomerNetwork.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.VISIBLE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+        });
+        binding.linearInstallationParam.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.VISIBLE);
         });
     }
 
@@ -264,10 +350,16 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linea13.setVisibility(View.VISIBLE);
             binding.linea15.setVisibility(View.VISIBLE);
             binding.linea18.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomerNetwork.setVisibility(View.GONE);
+            binding.linearInstallationParam.setVisibility(View.GONE);
             binding.linea20.setVisibility(View.VISIBLE);
         }else if(strSegment.equals("Home")){
             binding.linearFour.setVisibility(View.VISIBLE);
             binding.linea11.setVisibility(View.VISIBLE);
+            binding.linearEquipment.setVisibility(View.VISIBLE);
+            binding.linearCustomerNetwork.setVisibility(View.VISIBLE);
+            binding.linearInstallationParam.setVisibility(View.VISIBLE);
             binding.linearNine.setVisibility(View.GONE);
             binding.linearSix.setVisibility(View.GONE);
             binding.linea13.setVisibility(View.GONE);
@@ -435,6 +527,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
                             binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
                             binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions));
+                            equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
+                         //   binding.linearEqipmentdetails
                             listener();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
@@ -489,7 +583,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         associatedResquest.setLink(binding.layoutAssociatedDetails.etLinkBudget.getText().toString());
         associatedResquest.setWCRguidId(strGuuId);
 
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<CommonClassResponse> call = apiService.updateAssociateDetails(associatedResquest);
             call.enqueue(new Callback<CommonClassResponse>() {
@@ -501,7 +594,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                         binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                         try {
-                        if(response.body().getResponse().getStatusCode()==200){
+                        if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             moveNext();
                         }else{
@@ -551,7 +644,109 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if(response.body().getStatus().equals("Success")){
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                            nextScreen();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+
+    }
+
+    private void updateCustomerNetwork(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        UpdateCustomerNetwork updateCustomerNetwork = new UpdateCustomerNetwork();
+        updateCustomerNetwork.setAuthkey(Constants.AUTH_KEY);
+        updateCustomerNetwork.setAction(Constants.UPDATE_CUSTOMER_NETWORK);
+        updateCustomerNetwork.setRxPower(binding.layoutCustomerNetwork.etRxPower.getText().toString());
+        updateCustomerNetwork.setSpeedLan(binding.layoutCustomerNetwork.etSpeedLan.getText().toString());
+        updateCustomerNetwork.setSpeedWifi(binding.layoutCustomerNetwork.etSpeedWifi.getText().toString());
+        updateCustomerNetwork.setWifiSSID(binding.layoutCustomerNetwork.etWifiSsd.getText().toString());
+        updateCustomerNetwork.setWCRguidId(strGuuId);
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.updateCustomerNetwork(updateCustomerNetwork);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                            nextScreen();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+
+    }
+
+    private void updateQualityParam(){
+        binding.layoutInstallationparam.etOntLogin.setOnClickListener(v-> binding.layoutInstallationparam.spOntLogin.performClick());
+        binding.layoutInstallationparam.spOntLogin.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etFacePlate.setOnClickListener(v-> binding.layoutInstallationparam.spFacePlate.performClick());
+        binding.layoutInstallationparam.spFacePlate.setOnItemSelectedListener(this);
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        UpdateQualityParamRequest updateQualityParamRequest = new UpdateQualityParamRequest();
+        updateQualityParamRequest.setAuthkey(Constants.AUTH_KEY);
+        updateQualityParamRequest.setAction(Constants.UPDATE_POSTHOLD_IRQUALITY);
+        updateQualityParamRequest.setONT(binding.layoutInstallationparam.etOntLogin.getText().toString());
+        updateQualityParamRequest.setFace(binding.layoutInstallationparam.etFacePlate.getText().toString());
+        updateQualityParamRequest.setWifi(binding.layoutInstallationparam.etWifiSsid.getText().toString());
+        updateQualityParamRequest.setSelfCare(binding.layoutInstallationparam.etSpeedTest.getText().toString());
+        updateQualityParamRequest.setAntiVirus(binding.layoutInstallationparam.etEducationAntivirus.getText().toString());
+        updateQualityParamRequest.setCable(binding.layoutInstallationparam.etCableCrimped.getText().toString());
+        updateQualityParamRequest.setSpeed(binding.layoutInstallationparam.etSpeedTest.getText().toString());
+        updateQualityParamRequest.setWCRguidId(strGuuId);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.updateQualityParamReq(updateQualityParamRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             nextScreen();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -632,6 +827,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         updateWcrEnggRequest.setAction(Constants.UPDATE_WCR_ENGINER);
         updateWcrEnggRequest.setEngName(binding.layoutWcrEngrDetails.etEnggName.getText().toString());
         updateWcrEnggRequest.setInstcode(binding.layoutWcrEngrDetails.etInstallationCode.getText().toString());
+        updateWcrEnggRequest.setAppointmentDate(binding.layoutWcrEngrDetails.etAppointmentDate.getText().toString());
         updateWcrEnggRequest.setWCRguidId(strGuuId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -680,8 +876,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         holdWcrRequest.setWCRguidId(strGuuId);
         holdWcrRequest.setSegment(strSegment);
 
-
-
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateHoldCategory(holdWcrRequest);
         call.enqueue(new Callback<CommonClassResponse>() {
@@ -695,7 +889,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
-                            Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
 

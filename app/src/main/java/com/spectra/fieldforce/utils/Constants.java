@@ -89,5 +89,7 @@ public class Constants {
     public static final String  GET_EDITEQUIPMENT_BYINSTALL  ="editItemEquipmentInstall";
     public static final String  DELETE_EQUIPMENT_BYINSTALL = "deleteEquipmentByIDInstall";
     public static final String GET_MAX_CAP = "getMaxCapgetMaxCap";
+  public static final String UPDATE_CUSTOMER_NETWORK = "updateCustomerNetwork";
+  public static final String UPDATE_POSTHOLD_IRQUALITY = "updatePostHoldIRQuality";
 
 }

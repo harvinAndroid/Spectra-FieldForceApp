@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="itemConsumption"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.ItemConsumtion"/>
+    </data>
+    <LinearLayout
+        android:id="@+id/linear_ten"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        >
+
+
+        <TextView
+            android:id="@+id/et_item1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:text="@{`Item :  ` + itemConsumption.item}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/et_item2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+           android:visibility="gone"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"/>
+
+        <TextView
+            android:id="@+id/et_item3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`SubItem :  ` + itemConsumption.subItem}"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/et_item4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:text="@{`ItemType :  ` + itemConsumption.itemType}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"/>
+
+        <TextView
+            android:id="@+id/et_item5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@{`ItemCode :  ` + itemConsumption.itemCode}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/et_item6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:text="@{`Serial Num :  ` + itemConsumption.serialNumber}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/et_item7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+       <!-- <TextView
+            android:text="@{`Item :  ` + itemConsumption.item}"
+        android:text="@{`Quantity :  ` + itemConsumption.quantity}"
+                      android:text="@{`serialNumber :  ` + itemConsumption.serialNumber}"
+            android:text="@{`Itemcode :  ` + itemConsumption.itemCode}"
+
+            android:id="@+id/et_item8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:text="@{itemConsumption.itemCode}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />
+
+
+        <TextView
+            android:id="@+id/et_item9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Serail No.:"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/et_item10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:text="@{itemConsumption.serialNumber}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/et_item11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/quantity"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+       &lt;!&ndash; <TextView
+            android:id="@+id/et_item12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:text="@{itemConsumption.quantity}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />&ndash;&gt;
+
+        <TextView
+            android:id="@+id/et_item20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />-->
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/color_light_blue"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
+            />
+
+    </LinearLayout>
+</layout>
