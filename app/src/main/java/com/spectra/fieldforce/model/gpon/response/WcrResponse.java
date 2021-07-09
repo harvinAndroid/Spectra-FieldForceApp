@@ -234,7 +234,7 @@ public class WcrResponse {
         @SerializedName("SerialNumber")
         private String serialNumber;
         @SerializedName("Quantity")
-        private Integer quantity;
+        private String quantity;
         @SerializedName("ItemID")
         private String itemID;
         @SerializedName("WCRGUIDID")
@@ -274,11 +274,11 @@ public class WcrResponse {
             this.serialNumber = serialNumber;
         }
 
-        public Integer getQuantity() {
+        public String getQuantity() {
             return quantity;
         }
 
-        public void setQuantity(Integer quantity) {
+        public void setQuantity(String quantity) {
             this.quantity = quantity;
         }
 
@@ -381,6 +381,20 @@ public class WcrResponse {
         private String holdCategory;
         @SerializedName("HoldReason")
         private String holdReason;
+
+        private String AppointmentDate;
+
+        public String getwCRCreatedon() {
+            return wCRCreatedon;
+        }
+
+        public String getwCRRemarks() {
+            return wCRRemarks;
+        }
+
+        public String getAppointmentDate() {
+            return AppointmentDate;
+        }
 
         public String getEngName() {
             return engName;

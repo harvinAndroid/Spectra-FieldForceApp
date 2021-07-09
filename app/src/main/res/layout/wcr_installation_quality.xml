@@ -7,6 +7,9 @@
         <variable
             name="event"
             type="com.spectra.fieldforce.fragment.WcrCompletedFragment" />
+        <variable
+            name="quality"
+            type="com.spectra.fieldforce.model.gpon.response.WcrResponse.InstallationQuality" />
     </data>
 <LinearLayout android:id="@+id/linear14"
     android:layout_width="match_parent"
@@ -231,7 +234,7 @@
             android:drawableEnd="@drawable/ic_expand_down"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:hint="@string/education_customer_regarding_selfcare_portal"
+            android:hint="Antivirus"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:lines="1"

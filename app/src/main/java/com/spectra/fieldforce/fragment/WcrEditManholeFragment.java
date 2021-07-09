@@ -45,7 +45,7 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
     private ArrayList<String> fibreValue;
     private ArrayList<String> ManholeType;
     private List<GetFibreCable.Datum> fibreCable;
-    private String strCanId ,GuIID,strFibre;
+    private String strCanId ,GuIID,strFibre,OrderId,StatusOfReport;
 
     public WcrEditManholeFragment() {
     }
@@ -63,6 +63,8 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
         super.onViewCreated(view, savedInstanceState);
         strCanId = requireArguments().getString("canId");
         GuIID = requireArguments().getString("GuIID");
+        StatusOfReport = requireArguments().getString("StatusofReport");
+        OrderId = requireArguments().getString("OrderId");
         binding.btAddmanholeSubmit.setText("UPDATE");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Edit Manhole");
@@ -239,6 +241,8 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
         WcrFragment wcrFragment = new WcrFragment();
         Bundle bundle = new Bundle();
         bundle.putString("canId", strCanId);
+        bundle.putString("StatusofReport", StatusOfReport);
+        bundle.putString("OrderId", OrderId);
         t1.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(bundle);
         t1.commit();

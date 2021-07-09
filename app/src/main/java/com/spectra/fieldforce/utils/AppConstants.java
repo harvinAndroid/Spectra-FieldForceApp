@@ -32,11 +32,9 @@ public interface AppConstants {
     String User_name = "User_name";
     String User_email = "User_email";
 
-    String VENDOR_BUCKET ="Vendor Bucket";
-    String ENGINEER_BUCKET = "Engineer Bucket";
-    String VERSION_NAME= "Version Name";
+    String VENDOR_BUCKET =" Master Bucket";
+    String ENGINEER_BUCKET = "My Bucket";
+    String VERSION_NAME= "Build Version";
     String ITEM_CONSUMPTION= "Item Consumption";
-
-
 
 }

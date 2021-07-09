@@ -16,38 +16,21 @@
 >
 
     <TextView
-        android:id="@+id/tv_customer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="Customer business segment:"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_12sdp" />
-
-    <TextView
         android:id="@+id/tv_customer_segment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="@{customer.businessSegment}"
+        android:text="@{`Customer business segment :  ` + customer.businessSegment}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"/>
 
-    <TextView
-        android:id="@+id/et_item_type3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="POD:"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/tv_pod"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="@{customer.pod}"
+        android:text="@{`POD :  ` + customer.pod}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"/>
 
@@ -56,17 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Product:"
+        android:text="@{`Product :  ` + customer.product}"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_12sdp" />
-
-    <TextView
-        android:id="@+id/tv_product_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="@{customer.product}"
-        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
     <TextView
@@ -74,25 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Reduncancy required"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_12sdp" />
-
-    <TextView
-        android:id="@+id/tv_reduncany_required"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="@{customer.redundacy}"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_12sdp" />
-
-    <TextView
-        android:id="@+id/et_item_type8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Rack required"
+        android:text="@{`Reduncancy required :  ` + customer.redundacy}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 
@@ -101,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        android:text="@{customer.rack}"
+        android:text="@{`Rack required :  ` + customer.rack}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
@@ -110,34 +66,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Technical contact person Name"
+        android:text="@{`Technical contact person Name :  ` + customer.techContactName}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 
-    <TextView
-        android:id="@+id/tv_contact_person_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:text="@{customer.techContactName}"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/et_item_type10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Technical contact person Number"
+        android:text="@{`Technical contact person Nymber :  ` + customer.techContactName}"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_12sdp" />
-
-    <TextView
-        android:id="@+id/tv_contact_person_num"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
-        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
 

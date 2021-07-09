@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     private Context context;
     private List<GetAllBucketList.Response> allbucketlist;
     AdpterAllBucketListBinding binding;
+    private AlphaAnimation inAnimation,outAnimation;
 
     public AllBucketListAdapter(FragmentActivity activity, List<GetAllBucketList.Response> allbucketlist) {
         this.context = activity;
@@ -83,19 +85,20 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         }
         holder.binding.tvAdd.setOnClickListener(v -> {
             AllBucketListAdapter.this.addItemToBucket(itemList.getId(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), itemList.getPodName(),
-                    itemList.getStatus(), itemList.getHoldCategory(), itemList.getHoldReason(), itemList.getEngineerName(), itemList.getNetworkTechnology());
-
+                    itemList.getStatus(), itemList.getHoldCategory(), itemList.getHoldReason(),  itemList.getNetworkTechnology());
 
             if(itemList.getOrderType().equals("WCR")){
-                updateEnginer("updateWCREngineer", itemList.getEngineerName(), itemList.getWcrId());
+                updateEnginer("updateWCREngineer",  itemList.getWcrId());
             }else if(itemList.getOrderType().equals("IR")){
-                updateEnginer("engineerUpdateIR", itemList.getEngineerName(),itemList.getIrId());
+                updateEnginer("updateIREngineer", itemList.getIrId());
             }
         });
 
     }
 
-    private void updateEnginer(String updateWCREngineer, String enggName, String wcrId){
+    private void updateEnginer(String updateWCREngineer, String wcrId){
+        SharedPreferences sp1=context.getSharedPreferences("Login",0);
+        String enggName =sp1.getString("EnggName", null);
         UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
         updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
         updateWcrEnggRequest.setAction(updateWCREngineer);
@@ -132,10 +135,15 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     }
 
 
-    private void addItemToBucket(String id, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String engineerName, String networkTechnology){
+    private void addItemToBucket(String id, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String networkTechnology){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         SharedPreferences sp1=context.getSharedPreferences("Login",0);
         String vendor =sp1.getString("VenderCode", null);
         String enggId = sp1.getString("EnggId", null);
+        String enggName =sp1.getString("EnggName", null);
         AddBucketListRequest addBucketListRequest = new AddBucketListRequest();
         addBucketListRequest.setAuthkey(Constants.AUTH_KEY);
         addBucketListRequest.setAction(Constants.ADD_ORDER_TOBUCKET);
@@ -148,18 +156,22 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         addBucketListRequest.setCRM_status(status);
         addBucketListRequest.setHoldCategory(holdCategory);
         addBucketListRequest.setHoldReason(holdReason);
-        addBucketListRequest.setEngineerName(engineerName);
+        addBucketListRequest.setEngineerName(enggName);
         addBucketListRequest.setNetworkTechnology(networkTechnology);
         addBucketListRequest.setEngineerID(enggId);
         addBucketListRequest.setVendorCode(vendor);
         addBucketListRequest.setOrder_type(orderType);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonResponse> call = apiService.addItemToBucket(addBucketListRequest);
-        call.enqueue(new Callback<CommonResponse>() {
+        Call<CommonClassResponse> call = apiService.addItemToBucket(addBucketListRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
             @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
                         if (response.body().getStatus().equals("Success")){
                             Toast.makeText(context,"Order has been Added into bucket.",Toast.LENGTH_LONG).show();
@@ -172,7 +184,6 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
                             Toast.makeText(context,"Not Added in bucket.",Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(context,"Something went wrong...",Toast.LENGTH_LONG).show();
-
                         }
 
                     } catch (NumberFormatException e) {
@@ -181,7 +192,9 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
                 }
             }
             @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+
                 Log.e("RetroError", t.toString());
             }
         });
@@ -191,9 +204,9 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
 
 
 
+
     @Override
     public int getItemCount() {
-
         return allbucketlist.size();
     }
 
@@ -204,7 +217,6 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             super(binding.getRoot());
            this.binding = binding;
         }
-
     }
 
 }

@@ -76,6 +76,11 @@ public class GetMyBucketList {
 
         private String irId;
         private String wcrId;
+        private String appointmentDate;
+
+        public String getAppointmentDate() {
+            return appointmentDate;
+        }
 
         public String getOrderId() {
             return orderId;

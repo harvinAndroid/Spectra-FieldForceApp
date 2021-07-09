@@ -44,7 +44,6 @@
                 android:id="@+id/tv_ir_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{`IR Status:` + IR.consumptionStatus}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
@@ -57,6 +56,7 @@
                 android:id="@+id/tv_consumption_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@{`ConsumptionStatus Status:` + IR.consumptionStatus}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_ir_status"
@@ -393,7 +393,7 @@
 
                 <include
                     android:id="@+id/layout_installationparam"
-                    layout="@layout/wcr_installation_quality"
+                    layout="@layout/ir_installation_quality"
                     />
 
             </LinearLayout>
@@ -642,6 +642,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"
                     android:text="@string/ir"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_40sdp"
+                    android:layout_marginStart="@dimen/_40sdp"
+                    android:textSize="@dimen/_16sdp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button_background"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_approval"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:text="@string/approval_to_nav"
                     android:gravity="center"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"

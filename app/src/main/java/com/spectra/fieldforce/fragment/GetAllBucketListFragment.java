@@ -48,6 +48,17 @@ public class GetAllBucketListFragment extends Fragment {
         return binding.getRoot();
     }
 
+  /*  private void init(){
+        binding.swipeRefreshLayout.setEnabled(true);
+        binding.swipeRefreshLayout.setRefreshing(true);
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            binding.swipeRefreshLayout.setRefreshing(true);
+            getallBucketList();
+        });
+    }*/
+
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -64,7 +75,7 @@ public class GetAllBucketListFragment extends Fragment {
         BucketListRequest bucketListRequest = new BucketListRequest();
         bucketListRequest.setAuthkey(Constants.AUTH_KEY);
         bucketListRequest.setAction(Constants.Get_All_BUCKET_LIST);
-        bucketListRequest.setVendorCode("");
+        bucketListRequest.setVendorCode(vendor);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetAllBucketList> call = apiService.getAllBucketList(bucketListRequest);

@@ -32,6 +32,28 @@ public class HoldWcrRequest {
     private String Category;
     private String Reason;
 
+    public void setHoldReason(String holdReason) {
+        HoldReason = holdReason;
+    }
+
+    private String HoldReason;
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
+    public void setOrderID(String orderID) {
+        OrderID = orderID;
+    }
+
+    private String Status;
+    private String OrderID;
+    private String HoldCategory;
+
+    public void setHoldCategory(String holdCategory) {
+        HoldCategory = holdCategory;
+    }
+
     public void setIRguidId(String IRguidId) {
         this.IRguidId = IRguidId;
     }

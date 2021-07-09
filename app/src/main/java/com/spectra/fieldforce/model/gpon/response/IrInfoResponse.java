@@ -308,6 +308,12 @@ public class IrInfoResponse {
         @Expose
         private String holdReason;
 
+        public String getAppointmentDate() {
+            return AppointmentDate;
+        }
+
+        private String AppointmentDate;
+
         public String getEngName() {
             return engName;
         }

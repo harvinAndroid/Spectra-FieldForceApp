@@ -2,6 +2,8 @@ package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +25,11 @@ import com.spectra.fieldforce.databinding.WcrAddItemConsumptionBinding;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
+import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
 import com.spectra.fieldforce.utils.Constants;
 
@@ -49,7 +53,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
     private List<GetSubItemListResponse.Datum> subItem;
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
-    private String strItemType,strItemTypeData,strsubItemId,strGuIId,strCanId;
+    private String strItemType,strItemTypeData,strsubItemId,strGuIId,strCanId,maxCap,strItemname, StrSubItemName,OrderId,StatusOfReport;
 
 
     public IREquipmentConsumption() {
@@ -68,6 +72,8 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         super.onViewCreated(view, savedInstanceState);
         strGuIId = requireArguments().getString("strGuuId");
         strCanId = requireArguments().getString("canId");
+        StatusOfReport = requireArguments().getString("StatusofReport");
+        OrderId = requireArguments().getString("OrderId");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Add Equipment");
         init();
@@ -97,6 +103,44 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         });
     }
 
+    private void getMaxCap(String strSubItemName,String ItemNa){
+        GetMaxCap getMaxCap = new GetMaxCap();
+        getMaxCap.setAuthkey(Constants.AUTH_KEY);
+        getMaxCap.setAction(Constants.GET_MAX_CAP);
+        getMaxCap.setCanId(strCanId);
+        getMaxCap.setItemName(ItemNa);
+        getMaxCap.setSubItemName(strSubItemName);
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<GetMaxCapResponse> call = apiService.getMaxCapValue(getMaxCap);
+        call.enqueue(new Callback<GetMaxCapResponse>() {
+            @Override
+            public void onResponse(Call<GetMaxCapResponse> call, Response<GetMaxCapResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    try {
+                        if(response.body().status.equals("Success")){
+                            maxCap = response.body().response.data.maxCap;
+                            Toast.makeText(getContext(), response.body().response.data.maxCap,Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().response.message,Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetMaxCapResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+
+    }
+
+
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
@@ -115,6 +159,41 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
+
+        binding.etQuantity.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                System.out.println("Check string :" + binding.etQuantity.getText().toString());
+
+                if (!binding.etQuantity.getText().toString().isEmpty()) {
+                    int test = Integer.parseInt(binding.etQuantity.getText().toString());
+                    try {
+
+                        if (test <= Integer.parseInt(maxCap)) {
+                            System.out.println("Check string :allow ");
+                        } else {
+                            Toast.makeText(getActivity(), "Quantity Cannot be exceeded more than MAX Cap", Toast.LENGTH_LONG).show();
+                            binding.etQuantity.setText("");
+                        }
+                    }catch (Exception ex){
+                        ex.getMessage();
+                    }
+
+                }
+
+
+            }
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
+
+
+            }
+        });
     }
 
     public void getSubItemList(String strItemType) {
@@ -176,6 +255,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
             strItemType = itemName.get(position);
             if (position != 0) strItemType = "" + itemId.get(position - 1);
             else strItemType = " ";
+            strItemname = itemName.get(position);
             //Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
             // getSubItemList(strItemType);
 
@@ -183,12 +263,17 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
             binding.etSubitem.setText(subItemName.get(position));
             strsubItemId = subItemId.get(position);
             if (position != 0) strsubItemId = "" + subItemId.get(position - 1);
+            StrSubItemName = (subItemName.get(position));
             //   else strsubItemId = " ";
         }else if(parent.getId() == R.id.sp_item_type){
             binding.etItemType.setText(consumptionItemType.get(position));
             strItemTypeData = consumptionItemType.get(position);
             if (position != 0) strItemTypeData = "" + itemTypeData.get(position - 1);
             else strItemTypeData = " ";
+            String type = consumptionItemType.get(position);
+            if(type.equals("Default")){
+                getMaxCap(StrSubItemName,strItemname);
+            }
         }
     }
 
@@ -283,6 +368,8 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         IRFragment irFragment = new IRFragment();
         Bundle bundle = new Bundle();
         bundle.putString("canId", strCanId);
+        bundle.putString("StatusofReport", StatusOfReport);
+        bundle.putString("OrderId", OrderId);
         t1.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(bundle);
         t1.commit();

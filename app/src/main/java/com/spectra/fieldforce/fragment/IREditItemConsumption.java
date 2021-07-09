@@ -2,6 +2,8 @@ package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +23,12 @@ import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrAddItemConsumptionBinding;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
+import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemConumptionByIdResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
 import com.spectra.fieldforce.utils.Constants;
 
@@ -36,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IREditItemConsumption extends Fragment implements AdapterView.OnItemSelectedListener{
+public class IREditItemConsumption extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
     private WcrAddItemConsumptionBinding binding;
     private ArrayList<String> itemType;
     private ArrayList<String> itemTypeData;
@@ -48,7 +52,7 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,IrID;
-    private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID;;
+    private  String strsubItemId,strFibre,ItemId,StrSubItem,OrderId,StatusOfReport,ItemType,quantity,Serial,CanId,GuIID,maxCap;
 
 
     public IREditItemConsumption() {
@@ -69,6 +73,10 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         ItemId = requireArguments().getString("ItemId");
         IrID = requireArguments().getString("IrID");
         CanId = requireArguments().getString("canId");
+        StatusOfReport = requireArguments().getString("StatusofReport");
+        OrderId = requireArguments().getString("OrderId");
+        binding.searchtoolbar.rlBack.setOnClickListener(this);
+        binding.searchtoolbar.tvLang.setText("IR");
         init();
     }
 
@@ -99,6 +107,9 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
         binding.etSubitem.setOnClickListener(v -> getSubItemList(ItemId));
+
+
+
     }
 
     private void Type() {
@@ -112,13 +123,50 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         consumptionItemType = new ArrayList<String>();
         itemTypeData = new ArrayList<String>();
         consumptionItemType.add("Select Type");
-        consumptionItemType.add("Additional");
+      //  consumptionItemType.add("Additional");
         consumptionItemType.add("Default");
       /*  itemTypeData.add("111260001");
         itemTypeData.add("111260000");*/
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
+
+    }
+
+    private void getMaxCap(String strSubItemName,String ItemNa){
+        GetMaxCap getMaxCap = new GetMaxCap();
+        getMaxCap.setAuthkey(Constants.AUTH_KEY);
+        getMaxCap.setAction(Constants.GET_MAX_CAP);
+        getMaxCap.setCanId(CanId);
+        getMaxCap.setItemName(ItemNa);
+        getMaxCap.setSubItemName(strSubItemName);
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<GetMaxCapResponse> call = apiService.getMaxCapValue(getMaxCap);
+        call.enqueue(new Callback<GetMaxCapResponse>() {
+            @Override
+            public void onResponse(Call<GetMaxCapResponse> call, Response<GetMaxCapResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    try {
+                        if(response.body().status.equals("Success")){
+                            maxCap = response.body().response.data.maxCap;
+                            Toast.makeText(getContext(), response.body().response.data.maxCap,Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().response.message,Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetMaxCapResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
 
     }
 
@@ -279,8 +327,15 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         IRFragment irFragment = new IRFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", CanId);
+        accountinfo.putString("StatusofReport", StatusOfReport);
+        accountinfo.putString("OrderId", OrderId);
         t1.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);
         t1.commit();
+    }
+
+    @Override
+    public void onClick(View v) {
+        nextScreen();
     }
 }

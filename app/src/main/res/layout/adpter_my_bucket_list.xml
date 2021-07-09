@@ -98,6 +98,16 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
+        <EditText
+            android:id="@+id/et_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:focusable="false"
+            android:hint="@string/appointment_date"
+            android:textSize="@dimen/_12sdp"  />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
@@ -143,7 +153,10 @@
             android:layout_marginEnd="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
             />
-
+        <include layout="@layout/progress"
+            android:id="@+id/progressLayout"
+            />
     </LinearLayout>
+
 </LinearLayout>
 </layout>

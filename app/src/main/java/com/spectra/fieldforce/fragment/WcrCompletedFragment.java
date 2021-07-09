@@ -46,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WcrCompletedFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
+public class WcrCompletedFragment extends Fragment implements View.OnClickListener{
     private WcrCompleteFragmentBinding binding;
     private ArrayList<String> FmsType;
     private ArrayList<String> FmsId;
@@ -101,10 +101,9 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
         binding.layoutWcrFms.etPortnumEnd.setFocusable(false);
         binding.layoutWcrFms.etPortNumCx.setFocusable(false);
         binding.layoutWcrFms.etPodEnd.setFocusable(false);
-        binding.etRemarks.setFocusable(false);
+        binding.etRemarksText.setFocusable(false);
         binding.layoutWcrEngrDetails.etEnggName.setFocusable(false);
         binding.layoutWcrEngrDetails.etInstallationCode.setFocusable(false);
-        binding.layoutWcrEngrDetails.etAppointmentDate.setFocusable(false);
         binding.layoutWcrEngrDetails.etCreatedOn.setFocusable(false);
         binding.layoutWcrFms.btSubmitFmsDetails.setVisibility(View.GONE);
         binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
@@ -114,97 +113,25 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
         binding.layoutWcrEngrDetails.etCreatedOn.setFocusable(false);
         binding.layoutInstallationparam.tvSaveQualityParam.setVisibility(View.GONE);
         binding.layoutWcrEngrDetails.saveEnggDetails.setVisibility(View.GONE);
+        binding.saveHold.setVisibility(View.GONE);
+        binding.etHoldReason.setFocusable(false);
     }
 
     private void initOne(){
         getWcrInfo();
-        getFmsList();
-        Type();
         binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
-      /*  binding.layoutItemConsumption.btnItemConsumption1.setOnClickListener(v -> {
-            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-            WcrItemConsumption wcrItemConsumption = new WcrItemConsumption();
-            Bundle bundle = new Bundle();
-            bundle.putString("canId", strCanId);
-            bundle.putString("strGuuId", strGuuId);
-            t1.replace(R.id.frag_container, wcrItemConsumption);
-            wcrItemConsumption.setArguments(bundle);
-            t1.commit();
-        });
-
-        binding.layoutAssociatedDetails.btSubmitAssociate.setOnClickListener((View v) -> {
-            String idb = Objects.requireNonNull(binding.layoutAssociatedDetails.etIdbLength.getText()).toString();
-            String link = Objects.requireNonNull(binding.layoutAssociatedDetails.etLinkBudget.getText()).toString();
-
-            if(idb.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter IDB Length",Toast.LENGTH_LONG).show();
-            }else if(link.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter Link Budget",Toast.LENGTH_LONG).show();
-            }else{
-                updateAssociateDetails();
-            }
-            }
-        );
-
-        binding.layoutAddEquipment.btnItemEqipment.setOnClickListener(v -> {
-            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-            WcrEquipmentConsumption wcrEquipmentConsumption = new WcrEquipmentConsumption();
-            Bundle bundle = new Bundle();
-            bundle.putString("strGuuId", strGuuId);
-            bundle.putString("canId",strCanId);
-            t1.replace(R.id.frag_container, wcrEquipmentConsumption);
-            wcrEquipmentConsumption.setArguments(bundle);
-            t1.commit();
-        });
-
-        binding.layoutWcrFms.btSubmitFmsDetails.setOnClickListener(v -> {
-            String custEnd = binding.layoutWcrFms.etCustomerEndFmsSec.getText().toString();
-            String custEndFms = binding.layoutWcrFms.etPodEnd.getText().toString();
-            String PortNumCx = binding.layoutWcrFms.etPortNumCx.getText().toString();
-            String PortnumEnd = binding.layoutWcrFms.etPortnumEnd.getText().toString();
-            if(binding.layoutWcrFms.etCustomerEndFms.getText().toString().equals("Select Fms Type")){
-                Toast.makeText(getContext(), "Please Select Fms Type", Toast.LENGTH_LONG).show();
-            } else if (custEnd.equals("Select Customer End FMS(Second Level)")||custEnd.equals("")) {
-                        Toast.makeText(getContext(), "Please Select Customer End FMS(Second Level)", Toast.LENGTH_LONG).show();
-                    } else if (custEndFms.equals("POD End FMS No.:")||custEndFms.equals("")) {
-                        Toast.makeText(getContext(), "Please Enter Pod End Fms", Toast.LENGTH_LONG).show();
-                    } else if (PortNumCx.equals("Port Number (Cx End)")||PortNumCx.equals("")) {
-                        Toast.makeText(getContext(), "Please Enter Port Number CX End", Toast.LENGTH_LONG).show();
-                    } else if (PortnumEnd.equals("Port Number (POD End)")||PortnumEnd.equals("")) {
-                        Toast.makeText(getContext(), "Please Enter Port Number Pod End", Toast.LENGTH_LONG).show();
-                    } else {
-                        updateFmsDetails();
-                    }
-                }
-        );
-        binding.layoutmanholDetails.btnAddManhole.setOnClickListener(v -> {
-            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-            WcrAddManholeFragment wcrAddManholeFragment = new WcrAddManholeFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("canId", strCanId);
-            bundle.putString("strGuuId", strGuuId);
-            wcrAddManholeFragment.setArguments(bundle);
-            t1.replace(R.id.frag_container, wcrAddManholeFragment);
-            t1.commit();
-        });
-        binding.tvWcrSave.setOnClickListener(v ->
-                updateWcrComplete()
-        );
-        binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
-            updateWcrEnginer();
-        });*/
     }
 
 
 
     private void init(){
-        binding.layoutWcrFms.etCustomerEndFms.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFms.performClick());
+      /*  binding.layoutWcrFms.etCustomerEndFms.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFms.performClick());
         binding.layoutWcrFms.spCustomerEndFms.setOnItemSelectedListener(this);
         binding.layoutWcrFms.etCustomerEndFmsSec.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFmsSec.performClick());
-        binding.layoutWcrFms.spCustomerEndFmsSec.setOnItemSelectedListener(this);
+        binding.layoutWcrFms.spCustomerEndFmsSec.setOnItemSelectedListener(this);*/
 
-        binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
-        binding.spHoldCategory.setOnItemSelectedListener(this);
+     /*   binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
+        binding.spHoldCategory.setOnItemSelectedListener(this);*/
         binding.linearFive.setVisibility(View.VISIBLE);
         binding.linearFour.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.VISIBLE);
@@ -360,7 +287,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
             binding.linea13.setVisibility(View.VISIBLE);
             binding.linea15.setVisibility(View.VISIBLE);
             binding.linea18.setVisibility(View.GONE);
-            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearEquipment.setVisibility(View.GONE);
             binding.linearCustomerNetwork.setVisibility(View.GONE);
             binding.linearInstallationParam.setVisibility(View.GONE);
             binding.linea20.setVisibility(View.VISIBLE);
@@ -379,7 +306,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
-    public void getFmsList() {
+    /*public void getFmsList() {
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -424,11 +351,11 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                 Log.e("RetroError", t.toString());
             }
         });
-    }
+    }*/
 
 
 
-    private void Type() {
+   /* private void Type() {
         FmsType = new ArrayList<String>();
         FmsType.add("Select Fms Type");
         FmsType.add("WallMount");
@@ -472,8 +399,8 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
         );
     }
 
-
-    @Override
+*/
+   /* @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.sp_customer_end_fms) {
             binding.layoutWcrFms.etCustomerEndFms.setText(FmsType.get(position));
@@ -496,7 +423,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
+*/
     public void getWcrInfo() {
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -542,6 +469,8 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
                             binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
                             binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentAdapter(getActivity(), equipmentDetailsLists));
                             listener();
+                            binding.layoutWcrFms.etCustomerEndFms.setText(response.body().getResponse().getFMSDetails().getFmsfirst());
+                            binding.layoutWcrFms.etCustomerEndFmsSec.setText(response.body().getResponse().getFMSDetails().getFmssecond());
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
@@ -562,7 +491,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
     private void nextScreen(){
 
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        ProvisioningTabFragment provisioningScreenFragment = new ProvisioningTabFragment();
+        ProvisioningFragment provisioningScreenFragment = new ProvisioningFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
         t.replace(R.id.frag_container, provisioningScreenFragment);
@@ -583,7 +512,7 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
         t.commit();
     }*/
 
-    private void updateAssociateDetails(){
+   /* private void updateAssociateDetails(){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -818,5 +747,5 @@ public class WcrCompletedFragment extends Fragment implements AdapterView.OnItem
             }
         });
 
-    }
+    }*/
 }

@@ -26,7 +26,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         String title = remoteMessage.getNotification().getTitle();
         String message = remoteMessage.getNotification().getBody();
-
         showNotifications(title, message);
     }
 
@@ -42,7 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.ffa)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

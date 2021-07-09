@@ -25,7 +25,7 @@ public class BucketTabActivity extends BaseActivity {
         binding.viewPager.setAdapter(adapter);
         binding.viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout));
         binding.searchtoolbar.rlBack.setOnClickListener(this);
-        binding.searchtoolbar.tvLang.setText("Bucket List");
+        binding.searchtoolbar.tvLang.setText("Installation Order");
         binding.viewPager.setCurrentItem(1);
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

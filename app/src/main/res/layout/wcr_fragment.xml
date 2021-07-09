@@ -55,6 +55,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
                     android:textSize="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:textColor="@color/colorButton"
                     android:gravity="center"
                     />
@@ -666,6 +667,42 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearattach"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linea20">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorPrimary"
+                        app:hintTextAppearance="@style/AppearanceText">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_attach"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/click_the_image"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textColorHighlight="@color/colorPrimary"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/linear22"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
@@ -691,6 +728,23 @@
                         android:textColor="@android:color/white"
                         android:background="@drawable/button_background"
                         />
+
+                    <TextView
+                        android:id="@+id/tv_wcr_approval"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:text="@string/approval_to_nav"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_40sdp"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/button_background"
+                        />
+
 
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

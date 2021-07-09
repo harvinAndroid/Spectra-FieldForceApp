@@ -103,11 +103,11 @@ public class ProvisioningScreenFragment extends Fragment implements AdapterView.
                     if (response.isSuccessful() && response.body() != null) {
                        if (response.body().getStatus().equals("Success")) {
                             try {
-                                binding.setResponse(response.body().getResponse());
+                              /*  binding.setResponse(response.body().getResponse());
                                 onuProfile = response.body().getResponse().getOnuProfile();
                                 strTowerId = response.body().getResponse().getTowerDetail().get(0).getTowerId();
                                 strSplitterId = response.body().getResponse().getTowerDetail().get(0).getServingDB();
-                                modelName = new ArrayList<>();
+                              */  modelName = new ArrayList<>();
                                 modelId = new ArrayList<>();
                                 modelName.add("Select Model Name");
                                 for (AccountDetailsResponse.OnuProfile onuProfile : onuProfile)
@@ -194,7 +194,7 @@ public class ProvisioningScreenFragment extends Fragment implements AdapterView.
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t11= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        ProvisioningTabFragment provisioningTabFragment = new ProvisioningTabFragment();
+        ProvisioningFragment provisioningTabFragment = new ProvisioningFragment();
         t11.replace(R.id.frag_container, provisioningTabFragment);
         provisioningTabFragment.setArguments(accountinfo);
         t11.commit();

@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
 import com.spectra.fieldforce.databinding.IrFragmentBinding;
 import com.spectra.fieldforce.databinding.WcrFragmentBinding;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
+import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
 import com.spectra.fieldforce.model.gpon.request.IRCompleteRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
@@ -33,8 +35,11 @@ import com.spectra.fieldforce.model.gpon.request.ResendCodeIRRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCpeMacRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateGeneralDetails;
 import com.spectra.fieldforce.model.gpon.request.UpdateIREngineer;
+import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamIRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
+import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
 import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
@@ -43,6 +48,7 @@ import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -57,11 +63,11 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> irCpeMac;
     private ArrayList<String> IrType;
     private ArrayList<String> irCpeMacid;
-    private String strCpe,strGuiID,strSegment,strCanId,str_provisionId,strholdId,strStatusofReport;
+    private String strCpe,strGuiID,strSegment,strCanId,str_provisionId,strholdId,strStatusofReport,straddition,attach,orderId;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
     private AlphaAnimation inAnimation,outAnimation;
-
+    private ArrayList<String> QualityParam;
 
     public IRFragment() {
 
@@ -74,10 +80,15 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         return binding.getRoot();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         strCanId = requireArguments().getString("canId");
+        strStatusofReport = requireArguments().getString("StatusofReport");
+        orderId = requireArguments().getString("OrderId");
+        binding.tvIrStatus.setText("IR Status:"+ strStatusofReport);
+
       /*  strStatusofReport = requireArguments().getString("StatusofReport");
         binding.tvConsumptionStatus.setText("Consumption Status: " + strStatusofReport );*/
         binding.searchtoolbar.rlBack.setOnClickListener(this);
@@ -86,6 +97,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         init();
         setType();
     }
+
     private void init(){
         Listener();
         setData();
@@ -135,21 +147,49 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spHoldCategory.setAdapter(adapter2);
+
+        binding.layoutInstallationparam.etSpeedTest.setOnClickListener(v-> binding.layoutInstallationparam.spSpeedTest.performClick());
+        binding.layoutInstallationparam.spSpeedTest.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etIp.setOnClickListener(v-> binding.layoutInstallationparam.spIp.performClick());
+        binding.layoutInstallationparam.spIp.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etMrtg.setOnClickListener(v-> binding.layoutInstallationparam.spMrtg.performClick());
+        binding.layoutInstallationparam.spMrtg.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etEducationAntivirus.setOnClickListener(v-> binding.layoutInstallationparam.spEducationAntivirus.performClick());
+        binding.layoutInstallationparam.spEducationAntivirus.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etDns.setOnClickListener(v-> binding.layoutInstallationparam.spDns.performClick());
+        binding.layoutInstallationparam.spDns.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etSelfcare.setOnClickListener(v-> binding.layoutInstallationparam.spSelfcare.performClick());
+        binding.layoutInstallationparam.spSelfcare.setOnItemSelectedListener(this);
     }
 
 
     private void setData(){
-
         binding.layoutAddEquipment.btnItemEqipment.setOnClickListener(v -> {
             @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
             IREquipmentConsumption irEquipmentConsumption = new IREquipmentConsumption();
             Bundle bundle = new Bundle();
             bundle.putString("strGuuId", strGuiID);
             bundle.putString("canId",strCanId);
+            bundle.putString("StatusofReport", strStatusofReport);
+            bundle.putString("OrderId",orderId);
+
             t1.replace(R.id.frag_container, irEquipmentConsumption);
             irEquipmentConsumption.setArguments(bundle);
             t1.commit();
         });
+
+        QualityParam = new ArrayList<String>();
+        QualityParam.add("Select Type");
+        QualityParam.add("Yes");
+        QualityParam.add("No");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.layoutInstallationparam.spDns.setAdapter(adapter);
+        binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapter);
+        binding.layoutInstallationparam.spIp.setAdapter(adapter);
+        binding.layoutInstallationparam.spMrtg.setAdapter(adapter);
+        binding.layoutInstallationparam.spSpeedTest.setAdapter(adapter);
+        binding.layoutInstallationparam.spSelfcare.setAdapter(adapter);
 
         binding.layoutCpemac.etCpeMacShared.setOnClickListener(v->  binding.layoutCpemac.spCpeMacShared.performClick());
         binding.layoutCpemac.spCpeMacShared.setOnItemSelectedListener(this);
@@ -158,28 +198,117 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         irCpeMac.add("Select CPE Type");
         irCpeMac.add("Completed");
         irCpeMacid.add("111260000");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.layoutCpemac.spCpeMacShared.setAdapter(adapter);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.layoutCpemac.spCpeMacShared.setAdapter(adapter1);
 
         binding.tvResendOtp.setOnClickListener(v -> resendCode());
         binding.layoutCpemac.tvCustSave.setOnClickListener(v -> updateCpeMac());
+
         binding.tvIrComplete.setOnClickListener(v -> {
             String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
             if(remark.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
             }else{
-                updateIR(remark);
+                if (installationItemLists.size() == 0 || installationItemLists == null) {
+                    Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
+                } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                    Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                } else {
+                    updateIR(remark);
+                }
             }
-
-
         });
-        binding.saveHold.setOnClickListener(v -> updateHoldCategory());
+
+        binding.saveHold.setOnClickListener(v -> {
+            updateHoldCategory();
+            updateHoldCategoryStatus();
+        });
 
         binding.layoutGeneralDetails.tvGeneralDetailsSave.setOnClickListener(v -> updateGeneralDetails());
-        binding.layoutEnggDetails.saveEnggDetails.setOnClickListener(v -> updateIrEnginer());
+        binding.layoutEnggDetails.saveEnggDetails.setOnClickListener(v -> {
+            String insta = binding.layoutEnggDetails.etInstallationCode.getText().toString();
+            if(insta.isEmpty()){
+                Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
+            }else{
+                updateIrEnginer(insta);
+            }
+
+        });
+
+        binding.layoutInstallationparam.tvSaveQualityParam.setOnClickListener((View v) -> {
+
+            String dns = Objects.requireNonNull(binding.layoutInstallationparam.etDns.getText()).toString();
+            String virus = Objects.requireNonNull(binding.layoutInstallationparam.etEducationAntivirus.getText()).toString();
+            String ip = Objects.requireNonNull(binding.layoutInstallationparam.etIp.getText()).toString();
+            String mrtg = Objects.requireNonNull(binding.layoutInstallationparam.etMrtg.getText()).toString();
+            String speed = Objects.requireNonNull(binding.layoutInstallationparam.etSpeedTest.getText()).toString();
+            String selfcare = Objects.requireNonNull(binding.layoutInstallationparam.etSelfcare.getText()).toString();
+            if(dns.isEmpty()){
+                Toast.makeText(getContext(), "Please Select  DNS", Toast.LENGTH_LONG).show();
+            }if(virus.isEmpty()){
+                Toast.makeText(getContext(), "Please Select  Virus", Toast.LENGTH_LONG).show();
+            }if(ip.isEmpty()){
+                Toast.makeText(getContext(), "Please Select IP", Toast.LENGTH_LONG).show();
+            }if(mrtg.isEmpty()){
+                Toast.makeText(getContext(), "Please Select  MRTG", Toast.LENGTH_LONG).show();
+            }if(speed.isEmpty()){
+                Toast.makeText(getContext(), "Please Select Speed test results shown to coustomer", Toast.LENGTH_LONG).show();
+            }if(selfcare.isEmpty()){
+                Toast.makeText(getContext(), "Please Select Education customer Regarding Selfcare Portal", Toast.LENGTH_LONG).show();
+            }else{
+                updateQualityParam(dns,virus,mrtg,ip,speed,selfcare);
+            }
+        });
+    }
+
+    private void updateHoldCategoryStatus(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
+        holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
+        holdWcrRequest.setAction(Constants.HOLD_ORDER_INSTALLATION);
+        holdWcrRequest.setHoldCategory(strholdId);
+        holdWcrRequest.setHoldReason(binding.etHoldReason.getText().toString());
+        holdWcrRequest.setOrderID(orderId);
+        holdWcrRequest.setStatus("hold");
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.updateHoldCategory(holdWcrRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
 
     }
+
+
+
 
     public void resendCode() {
         inAnimation = new AlphaAnimation(0f, 1f);
@@ -214,7 +343,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         e.printStackTrace();
                     }
                 }
-
             }
 
             @Override
@@ -224,6 +352,88 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             }
         });
     }
+
+
+    private void updateQualityParam( String dns, String virus, String mrtg, String ip, String speed,String self){
+        String dns1,virus1,mrtg1,ip1,speed1,self1;
+        if(dns.equals("Yes")){
+            dns1 =  "111260000";
+        }else{
+            dns1 = "111260001";
+        }
+        if(virus.equals("Yes")){
+            virus1 =  "111260000";
+        }else{
+            virus1 = "111260001";
+        }
+        if(mrtg.equals("Yes")){
+            mrtg1 =  "111260000";
+        }else{
+            mrtg1 = "111260001";
+        }
+        if(ip.equals("Yes")){
+            ip1 =  "111260000";
+        }else{
+            ip1 = "111260001";
+        }
+        if(speed.equals("Yes")){
+            speed1 =  "111260000";
+        }else{
+            speed1 = "111260001";
+        }
+        if(self.equals("Yes")){
+            self1 =  "111260000";
+        }else{
+            self1 = "111260001";
+        }
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        UpdateQualityParamIRequest updateQualityParamRequest = new UpdateQualityParamIRequest();
+        updateQualityParamRequest.setAuthkey(Constants.AUTH_KEY);
+        updateQualityParamRequest.setAction(Constants.UPDATE_IRINSTALLATION);
+        updateQualityParamRequest.setDNS(dns1);
+        updateQualityParamRequest.setIP(ip1);
+        updateQualityParamRequest.setMRTG(mrtg1);
+        updateQualityParamRequest.setSelfCare(self1);
+        updateQualityParamRequest.setAntiVirus(virus1);
+        updateQualityParamRequest.setSpeed(speed1);
+        updateQualityParamRequest.setIRguid(strGuiID);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.updateQualityParamIR(updateQualityParamRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                            nextScreen();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+
+    }
+
 
     private void getIrInfo(){
         inAnimation = new AlphaAnimation(0f, 1f);
@@ -243,7 +453,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 if (response.isSuccessful()&& response.body()!=null) {
                     outAnimation = new AlphaAnimation(1f, 0f);
                     outAnimation.setDuration(200);
-                    //irstatusofreport
                     binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     if(response.body().getStatus().equals("Success")) {
@@ -259,6 +468,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         if(itemConsumtions.size()!=0){
                             binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(),itemConsumtions));
                         }
+                      /*  straddition = installationItemLists.get(0).getItemType();
+                        if(straddition.equals("Additional")){
+                            binding.tvApproval.setVisibility(View.VISIBLE);
+                        }*/
                         installationItemLists = (ArrayList<IrInfoResponse.InstallationItemList>) response.body().getResponse().getInstallationItemList();
                         binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                         binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -268,7 +481,33 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         binding.layoutGeneralDetails.setGeneralDetails(response.body().getResponse().getGeneral());
                         binding.layoutEnggDetails.setEngineer(response.body().getResponse().getEngineer());
                         binding.setHold(response.body().getResponse().getEngineer());
-
+                        attach = response.body().getResponse().getGeneral().getIRAttached();
+                        if(attach!=null){
+                            if(response.body().getResponse().getGeneral().getIRAttached().equals("0")){
+                                IrType.clear();
+                                IrType = new ArrayList<String>();
+                                IrType.add("Yes");
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutGeneralDetails.spIrAttached.setAdapter(adapter);
+                            }else  if(response.body().getResponse().getGeneral().getIRAttached().equals("1")){
+                                IrType.clear();
+                                IrType = new ArrayList<String>();
+                                IrType.add("No");
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutGeneralDetails.spIrAttached.setAdapter(adapter);
+                            }
+                            IrType = new ArrayList<String>();
+                            IrType.add("Select IR Type");
+                            IrType.add("Yes");
+                            IrType.add("No");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            binding.layoutGeneralDetails.spIrAttached.setAdapter(adapter);
+                           // binding.layoutGeneralDetails.etIrAttached.setText(attach);
+                            //IrType.add(attach);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -290,10 +529,11 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
     private void nextScreen(){
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        ProvisioningTabFragment provisioningScreenFragment = new ProvisioningTabFragment();
+        ProvisioningFragment provisioningScreenFragment = new ProvisioningFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
-      //  accountinfo.putString("StatusofReport",strStatusofReport);
+        accountinfo.putString("StatusofReport", strStatusofReport);
+        accountinfo.putString("OrderId", orderId);
         t.replace(R.id.frag_container, provisioningScreenFragment);
         provisioningScreenFragment.setArguments(accountinfo);
         t.commit();
@@ -374,7 +614,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
-
         });
         binding.linea15.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -434,7 +673,29 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.etHoldCategory.setText(holdCategory.get(position));
             if (position != 0) strholdId = "" + holdCategoryId.get(position - 1);
             else strholdId = " ";
+        }else if(parent.getId() == R.id.sp_speed_test) {
+            binding.layoutInstallationparam.etSpeedTest.setText(QualityParam.get(position));
         }
+        else if(parent.getId() == R.id.sp_education_antivirus) {
+            binding.layoutInstallationparam.etEducationAntivirus.setText(QualityParam.get(position));
+        }
+        else if(parent.getId() == R.id.sp_selfcare) {
+            binding.layoutInstallationparam.etSelfcare.setText(QualityParam.get(position));
+        }
+        else if(parent.getId() == R.id.sp_dns) {
+            binding.layoutInstallationparam.etDns.setText(QualityParam.get(position));
+        }
+        else if(parent.getId() == R.id.sp_mrtg) {
+            binding.layoutInstallationparam.etMrtg.setText(QualityParam.get(position));
+        }
+        else if(parent.getId() == R.id.sp_ip) {
+            binding.layoutInstallationparam.etIp.setText(QualityParam.get(position));
+        }  else if(parent.getId() == R.id.sp_ir_attached) {
+            binding.layoutGeneralDetails.etIrAttached.setText(IrType.get(position));
+        }
+
+
+
     }
 
     @Override
@@ -503,7 +764,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
-    private void updateIrEnginer(){
+    private void updateIrEnginer(String insta){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -512,11 +773,11 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         updateIREngineer.setAuthkey(Constants.AUTH_KEY);
         updateIREngineer.setAction(Constants.ENGINER_UPDATE);
         updateIREngineer.setEngName(binding.layoutEnggDetails.etEnggName.getText().toString());
-        updateIREngineer.setInstattionDate(binding.layoutEnggDetails.etInstallationCode.getText().toString());
+        updateIREngineer.setInstattionDate(insta);
         updateIREngineer.setIRguid(strGuiID);
         updateIREngineer.setInstattionDate("");
         updateIREngineer.setOTP(binding.layoutEnggDetails.etInstallationCode.getText().toString());
-        updateIREngineer.setAppointmentDate(binding.layoutEnggDetails.etAppointmentDate.getText().toString());
+        updateIREngineer.setAppointmentDate("");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateIrEnginer(updateIREngineer);
         call.enqueue(new Callback<CommonClassResponse>() {
@@ -550,12 +811,12 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void moveNext(){
-
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         IRFragment irFragment = new IRFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
-    //    accountinfo.putString("StatusofReport",strStatusofReport);
+       accountinfo.putString("StatusofReport",strStatusofReport);
+       accountinfo.putString("OrderId",orderId);
         t.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);
         t.commit();
@@ -586,7 +847,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else {
-                            Toast.makeText(getContext(),"Something went wrong..",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

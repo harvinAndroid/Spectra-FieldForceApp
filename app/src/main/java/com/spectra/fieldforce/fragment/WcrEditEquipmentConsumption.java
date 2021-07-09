@@ -21,10 +21,12 @@ import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrAddItemConsumptionBinding;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
+import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemConumptionByIdResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
 import com.spectra.fieldforce.utils.Constants;
 
@@ -36,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WcrEditEquipmentConsumption extends Fragment implements AdapterView.OnItemSelectedListener{
+public class WcrEditEquipmentConsumption extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
     private WcrAddItemConsumptionBinding binding;
     private ArrayList<String> itemType;
     private ArrayList<String> itemTypeData;
@@ -48,7 +50,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,IrID;
-    private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID;;
+    private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID,OrderId,StatusOfReport,maxCap;
 
 
     public WcrEditEquipmentConsumption() {
@@ -68,8 +70,12 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ItemId = requireArguments().getString("ItemId");
-        IrID = requireArguments().getString("IrID");
+        GuIID = requireArguments().getString("GuIID");
         CanId = requireArguments().getString("canId");
+        StatusOfReport = requireArguments().getString("StatusofReport");
+        OrderId = requireArguments().getString("OrderId");
+        binding.searchtoolbar.rlBack.setOnClickListener(this);
+        binding.searchtoolbar.tvLang.setText("WCR");
         init();
     }
 
@@ -105,7 +111,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
-        itemType.add("IR");
+        itemType.add("WCR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spType.setAdapter(adapter);
@@ -113,7 +119,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         consumptionItemType = new ArrayList<String>();
         itemTypeData = new ArrayList<String>();
         consumptionItemType.add("Select Type");
-        consumptionItemType.add("Additional");
+       // consumptionItemType.add("Additional");
         consumptionItemType.add("Default");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -197,6 +203,43 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
 
     }
 
+    private void getMaxCap(String strSubItemName,String ItemNa){
+        GetMaxCap getMaxCap = new GetMaxCap();
+        getMaxCap.setAuthkey(Constants.AUTH_KEY);
+        getMaxCap.setAction(Constants.GET_MAX_CAP);
+        getMaxCap.setCanId(CanId);
+        getMaxCap.setItemName(ItemNa);
+        getMaxCap.setSubItemName(strSubItemName);
+
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<GetMaxCapResponse> call = apiService.getMaxCapValue(getMaxCap);
+        call.enqueue(new Callback<GetMaxCapResponse>() {
+            @Override
+            public void onResponse(Call<GetMaxCapResponse> call, Response<GetMaxCapResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    try {
+                        if(response.body().status.equals("Success")){
+                            maxCap = response.body().response.data.maxCap;
+                            Toast.makeText(getContext(), response.body().response.data.maxCap,Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().response.message,Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetMaxCapResponse> call, Throwable t) {
+                Log.e("RetroError", t.toString());
+            }
+        });
+
+    }
+
     public void getItemConsumptionDetailsById(String itemId) {
         ItemConsumptionById itemConsumptionById = new ItemConsumptionById();
         itemConsumptionById.setAuthkey(Constants.AUTH_KEY);
@@ -239,11 +282,11 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         addItem_Consumption.setItemID(ItemId);
       //  addItem_Consumption.setSubItem(strsubItemId);
         addItem_Consumption.setItemType(strItemTypeData1);
-        addItem_Consumption.setConsumptionType("111260001");
+        addItem_Consumption.setConsumptionType("111260000");
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
-        addItem_Consumption.setIRguid(IrID);
+        addItem_Consumption.setWCRguidId(IrID);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
@@ -279,8 +322,15 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         IRFragment irFragment = new IRFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", CanId);
+        accountinfo.putString("StatusofReport", StatusOfReport);
+        accountinfo.putString("OrderId", OrderId);
         t1.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);
         t1.commit();
+    }
+
+    @Override
+    public void onClick(View v) {
+        nextScreen();
     }
 }

@@ -77,7 +77,7 @@ public class Constants {
     public static final String EDIT_POST_MANHOLE = "editPostManHole";
     public static final String RESEND_NAVIR = "resendNavIR";
     public static final String UPDATE_GENERAL_DETAILS = "updateGeneralDetails";
-    public static final String ENGINER_UPDATE = "engineerUpdateIR";
+    public static final String ENGINER_UPDATE = "updateIREngineer";
     public static final String SHARED_CPEMAC = "sharedCPEMAC";
     public static final String SUBMIT_FOR_APPROVAL = "submitForApproval";
     public static final String IR_COMPLETE  = "IRComplete";
@@ -88,8 +88,12 @@ public class Constants {
     public static final String  GET_EQUIPMENT_BYINSTALL  = "getEquipmentByIDInstall";
     public static final String  GET_EDITEQUIPMENT_BYINSTALL  ="editItemEquipmentInstall";
     public static final String  DELETE_EQUIPMENT_BYINSTALL = "deleteEquipmentByIDInstall";
-    public static final String GET_MAX_CAP = "getMaxCapgetMaxCap";
-  public static final String UPDATE_CUSTOMER_NETWORK = "updateCustomerNetwork";
-  public static final String UPDATE_POSTHOLD_IRQUALITY = "updatePostHoldIRQuality";
+    public static final String GET_MAX_CAP = "getMaxCap";
+    public static final String UPDATE_CUSTOMER_NETWORK = "updateCustomerNetwork";
+    public static final String UPDATE_POSTHOLD_IRQUALITY = "updatePostHoldIRQuality";
+    public static final String UPDATE_IRINSTALLATION = "updateIRInstallation";
+  public static final String HOLD_ORDER_INSTALLATION = "holdOrderInstallation";
+  public static final String UPDATE_APPOINTMENT = "updateAppointment";
+
 
 }

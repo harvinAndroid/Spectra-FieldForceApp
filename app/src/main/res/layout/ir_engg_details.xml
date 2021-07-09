@@ -42,38 +42,18 @@
             android:id="@+id/et_installation_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Installation Code"
+            android:hint="@string/installation_code"
             android:text="@{engineer.installationDate}"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:lines="1"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/colorPrimary"
-        app:hintTextAppearance="@style/AppearanceText">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_appointment_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/appointment_date"
-            android:imeOptions="actionNext"
-            android:inputType="datetime"
-            android:lines="1"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHighlight="@color/colorPrimary"
-            android:textSize="@dimen/_12sdp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout

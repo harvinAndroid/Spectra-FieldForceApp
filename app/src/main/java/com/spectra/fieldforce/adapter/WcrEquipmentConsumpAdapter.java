@@ -23,7 +23,9 @@ import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.AdapterWcrequipmentListBinding;
 import com.spectra.fieldforce.fragment.IREditEquipmentConsumption;
 import com.spectra.fieldforce.fragment.IRFragment;
+import com.spectra.fieldforce.fragment.WcrEditEquipmentConsumption;
 import com.spectra.fieldforce.fragment.WcrEditItemConsumption;
+import com.spectra.fieldforce.fragment.WcrEquipmentConsumption;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
@@ -76,7 +78,7 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
             b.putString("GuIID", equipment.getWCRGUIDID());
             b.putString("canId", equipment.getCANID());
             AppCompatActivity activity = (AppCompatActivity) context;
-            Fragment myFragment = new IREditEquipmentConsumption();
+            Fragment myFragment = new WcrEditEquipmentConsumption();
             myFragment.setArguments(b);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
         });

@@ -25,12 +25,15 @@ import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
 import com.spectra.fieldforce.model.gpon.request.ReleaseMyBucket;
 import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendCodeIRRequest;
+import com.spectra.fieldforce.model.gpon.request.SubmitApprovalRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateAppointmentRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCpeMacRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCustomerNetwork;
 import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateGeneralDetails;
 import com.spectra.fieldforce.model.gpon.request.UpdateIREngineer;
 import com.spectra.fieldforce.model.gpon.request.UpdateManHoleRequest;
+import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamIRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
@@ -43,6 +46,7 @@ import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemConumptionByIdResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
 import com.spectra.fieldforce.model.gpon.response.GetManholeById;
+import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
 import com.spectra.fieldforce.model.gpon.response.GetMyBucketList;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
 import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
@@ -220,7 +224,7 @@ public interface ApiInterface {
     Call<CommonClassResponse> resendCodeWcr(@Body ResendActivationCodeRequest resendActivationCodeRequest);
 
     @POST ("index.php")
-    Call<CommonClassResponse> updateQualityParam(@Body UpdateQualityParamRequest updateQualityParamRequest);
+    Call<CommonClassResponse> updateQualityParamIR(@Body UpdateQualityParamIRequest updateQualityParamIRequest);
 
     @POST("index.php")
     Call<AccountDetailsResponse> getAccountDetails(@Body AccountInfoRequest accountInfoRequest);
@@ -259,7 +263,7 @@ public interface ApiInterface {
     Call<CommonClassResponse> updateIR(@Body   IRCompleteRequest irCompleteRequest);
 
     @POST("index.php")
-    Call<CommonResponse> addItemToBucket(@Body AddBucketListRequest addBucketListRequest);
+    Call<CommonClassResponse> addItemToBucket(@Body AddBucketListRequest addBucketListRequest);
 
     @POST("index.php")
     Call<GetMyBucketList> getMyBucketList(@Body BucketListRequest bucketListRequest);
@@ -268,11 +272,18 @@ public interface ApiInterface {
     Call<CommonClassResponse> releaseMyBucket(@Body ReleaseMyBucket releaseMyBucket);
 
     @POST ("index.php")
-    Call<CommonClassResponse> getMaxCapValue(@Body GetMaxCap getMaxCap);
+    Call<GetMaxCapResponse> getMaxCapValue(@Body GetMaxCap getMaxCap);
 
     @POST ("index.php")
     Call<CommonClassResponse> updateCustomerNetwork(@Body UpdateCustomerNetwork updateCustomerNetwork);
 
     @POST ("index.php")
     Call<CommonClassResponse> updateQualityParamReq(@Body UpdateQualityParamRequest updateQualityParamRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> submitApproval(@Body SubmitApprovalRequest submitApprovalRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updateAppointmentDate(@Body UpdateAppointmentRequest updateAppointmentRequest);
+
 }

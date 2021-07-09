@@ -25,8 +25,8 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.ProvisiongScreenFragmentBinding;
+import com.spectra.fieldforce.fragment.DashboardFragment;
 import com.spectra.fieldforce.fragment.ProvisioningFragment;
-import com.spectra.fieldforce.fragment.ProvisioningTabFragment;
 import com.spectra.fieldforce.fragment.WelcomeFragment;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AddProvisioningRequest;
@@ -43,7 +43,7 @@ import retrofit2.Response;
 
 public class ProvisioningScreenActivity extends BaseActivity implements AdapterView.OnItemSelectedListener,View.OnClickListener{
     private ProvisiongScreenFragmentBinding binding;
-    private String strModel,strTowerId,strSplitterId;
+    private String strModel,strTowerId,strSplitterId,statusReport,orderId;
     private ArrayList<String> modelName;
     private ArrayList<String> modelId;
     private String strCanId ;
@@ -60,6 +60,8 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             strCanId = extras.getString("canId");
+            statusReport = extras.getString("StatusofReport");
+            orderId = extras.getString("OrderId");
         }
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Provisioning ");
@@ -69,9 +71,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rl_back) {
-            Intent i = new Intent(this, BucketTabActivity.class);
-            startActivity(i);
-            finish();
+          nextScreen();
         }
     }
 
@@ -83,14 +83,14 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
             String profilename = Objects.requireNonNull(binding.tvProfileName.getText()).toString();
             String tower = Objects.requireNonNull(binding.tvTower.getText()).toString();
             String serving = Objects.requireNonNull(binding.tvServingDb.getText()).toString();
-            String model = binding.tvModel.getText().toString();
+            String model = Objects.requireNonNull(binding.tvModel.getText()).toString();
 
 
             if(ont.isEmpty()){
                 Toast.makeText(this,"Please Enter ONT Serial Number",Toast.LENGTH_LONG).show();
             }else if(reont.isEmpty()){
                 Toast.makeText(this,"Please Enter Re enter ONT Serial Number",Toast.LENGTH_LONG).show();
-            }else if (model.equals("Select Model Name)")||model.isEmpty()) {
+            }else if (model.equals("Select Model Name")) {
                 Toast.makeText(this, "Please Select Model Name", Toast.LENGTH_LONG).show();
             }else if(profilename.isEmpty()|| profilename == null){
                 Toast.makeText(this,"Please Enter Profile Name",Toast.LENGTH_LONG).show();
@@ -136,10 +136,10 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
 
                         if (response.body().getStatus().equals("Success")) {
                             try {
-                                binding.setResponse(response.body().getResponse());
-                                onuProfile = response.body().getResponse().getOnuProfile();
-                                strTowerId = response.body().getResponse().getTowerDetail().get(0).getTowerId();
-                                strSplitterId = response.body().getResponse().getTowerDetail().get(0).getServingDB();
+                                binding.setResponse(response.body().getResponse().data);
+                                onuProfile = response.body().getResponse().getData().getOnuProfile();
+                                strTowerId = response.body().getResponse().getData().getTowerDetail().get(0).getTowerId();
+                                strSplitterId = response.body().getResponse().getData().getTowerDetail().get(0).getServingDB();
                                 modelName = new ArrayList<>();
                                 modelId = new ArrayList<>();
                                 modelName.add("Select Model Name");
@@ -154,7 +154,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                                 e.printStackTrace();
                             }
                         } else if (response.body().getStatus().equals("Failure")) {
-                            Toast.makeText(ProvisioningScreenActivity.this, "IP allocation or CPE MAC task not completed for the provided CAN ID.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProvisioningScreenActivity.this, response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
                             nextScreen();
                         }
                     }
@@ -242,13 +242,16 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
     }
 
     private void nextScreen(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        final ProvisioningTabFragment myFragment = new ProvisioningTabFragment();
-        Bundle b = new Bundle();
-        b.putString("canId", strCanId);
-        myFragment.setArguments(b);
-        fragmentTransaction.add(R.id.frag_container, myFragment).commit();
+        ProvisioningFragment newFragment = new ProvisioningFragment();
+        Bundle args = new Bundle();
+        args.putString("canId", strCanId);
+        args.putString("StatusofReport", statusReport);
+        args.putString("OrderId", orderId);
+        newFragment.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frag_container, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 

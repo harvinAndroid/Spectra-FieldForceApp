@@ -11,6 +11,12 @@ public class UpdateQualityParamRequest {
     private String Wifi;
     private String SelfCare;
 
+    public void setIRguid(String IRguid) {
+        this.IRguid = IRguid;
+    }
+
+    private String IRguid;
+
     public void setAuthkey(String authkey) {
         Authkey = authkey;
     }

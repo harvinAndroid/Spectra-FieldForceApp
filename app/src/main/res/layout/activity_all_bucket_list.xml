@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
-
+   <!-- <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_all_bucket_list"
@@ -13,6 +16,7 @@
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+  <!--  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
     <include layout="@layout/progress"
         android:id="@+id/progress_layout"

@@ -135,5 +135,9 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
             />
 
+        <include layout="@layout/progress"
+            android:id="@+id/progressLayout"
+            />
+
     </LinearLayout>
 </layout>

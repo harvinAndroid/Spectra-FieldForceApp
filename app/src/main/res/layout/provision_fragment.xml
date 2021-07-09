@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="event"
-            type="com.spectra.fieldforce.fragment.ProvisioningFragment" />
+            name="provisioning"
+            type="com.spectra.fieldforce.model.gpon.response.AccInfoResponse.Response" />
 
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/_10sdp"
+        android:text="@{provisioning.cANID}"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/tv_cust_account_id"
         app:layout_constraintStart_toEndOf="@+id/tv_cust_account_id"
@@ -69,7 +70,7 @@
         android:id="@+id/tv_customer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="566777777"
+        android:text="@{provisioning.name}"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
@@ -93,7 +94,7 @@
         android:id="@+id/tv_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delhi"
+        android:text="@{provisioning.city}"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
@@ -115,7 +116,7 @@
         android:id="@+id/tv_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Noida"
+        android:text="@{provisioning.area}"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
@@ -139,7 +140,7 @@
         android:id="@+id/tv_building_society"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Telegana"
+        android:text="@{provisioning.society}"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
@@ -163,7 +164,7 @@
         android:id="@+id/tv_segment_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/business"
+        android:text="@{provisioning.segment}"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"

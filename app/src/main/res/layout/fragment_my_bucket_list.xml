@@ -6,6 +6,7 @@
     android:background="@color/colorWhite"
     android:orientation="vertical"
     android:layout_height="match_parent">
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_height="wrap_content"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <include layout="@layout/progress"
         android:id="@+id/progressLayout"
         />
