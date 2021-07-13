@@ -88,7 +88,7 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
     private void deleteItem(String itemID, String canid){
         DeleteItemRequest deleteItemRequest = new DeleteItemRequest();
         deleteItemRequest.setAuthkey(Constants.AUTH_KEY);
-        deleteItemRequest.setAction(Constants.DELETE_EQUIPMENT_BYINSTALL);
+        deleteItemRequest.setAction(Constants.DELETE_ITEM_CONSUMPTIONBY_ID);
         deleteItemRequest.setItemId(itemID);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);

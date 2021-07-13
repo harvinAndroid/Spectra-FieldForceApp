@@ -121,7 +121,7 @@
     <string name="customer_account_id">Customer Account Id:</string>
     <string name="city">City</string>
     <string name="area_name">Area Name</string>
-    <string name="building_society">Building/Society Status</string>
+    <string name="building_society">Building/Society</string>
     <string name="provisioing">Provisioing</string>
     <string name="wcr_completed">WCR Completed</string>
     <string name="ir">IR</string>

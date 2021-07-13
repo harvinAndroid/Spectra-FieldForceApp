@@ -68,7 +68,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> holdCategoryId;
     private AlphaAnimation inAnimation,outAnimation;
     private ArrayList<String> QualityParam;
-
+    ArrayAdapter<String> adaptertype;
+    ArrayAdapter<String> adaptercpe;
     public IRFragment() {
 
     }
@@ -115,9 +116,9 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         IrType.add("Select IR Type");
         IrType.add("Yes");
         IrType.add("No");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.layoutGeneralDetails.spIrAttached.setAdapter(adapter);
+        adaptertype = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
+        adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
 
         binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
         binding.spHoldCategory.setOnItemSelectedListener(this);
@@ -198,12 +199,21 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         irCpeMac.add("Select CPE Type");
         irCpeMac.add("Completed");
         irCpeMacid.add("111260000");
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.layoutCpemac.spCpeMacShared.setAdapter(adapter1);
+        adaptercpe = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
+        adaptercpe.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.layoutCpemac.spCpeMacShared.setAdapter(adaptercpe);
 
         binding.tvResendOtp.setOnClickListener(v -> resendCode());
-        binding.layoutCpemac.tvCustSave.setOnClickListener(v -> updateCpeMac());
+        binding.layoutCpemac.tvCustSave.setOnClickListener(v -> {
+            String cpe = Objects.requireNonNull(binding.layoutGeneralDetails.etIrAttached.getText()).toString();
+            if(cpe.equals(" Select CPE Type")){
+                Toast.makeText(getContext(), "Please  Select CPE Type", Toast.LENGTH_LONG).show();
+            }else {
+                updateCpeMac();
+            }
+
+
+        });
 
         binding.tvIrComplete.setOnClickListener(v -> {
             String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
@@ -225,7 +235,14 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             updateHoldCategoryStatus();
         });
 
-        binding.layoutGeneralDetails.tvGeneralDetailsSave.setOnClickListener(v -> updateGeneralDetails());
+        binding.layoutGeneralDetails.tvGeneralDetailsSave.setOnClickListener(v -> {
+            String ipattach = Objects.requireNonNull(binding.layoutGeneralDetails.etIrAttached.getText()).toString();
+            if(ipattach.equals("Select IR Type")){
+                Toast.makeText(getContext(), "Please Select IR Type", Toast.LENGTH_LONG).show();
+            }else {
+                updateGeneralDetails(ipattach);
+            }
+        });
         binding.layoutEnggDetails.saveEnggDetails.setOnClickListener(v -> {
             String insta = binding.layoutEnggDetails.etInstallationCode.getText().toString();
             if(insta.isEmpty()){
@@ -466,12 +483,16 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         binding.layoutItemcousumption.rvIrItemlist.setHasFixedSize(true);
                         binding.layoutItemcousumption.rvIrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
                         if(itemConsumtions.size()!=0){
+                         //   straddition = installationItemLists.get(0).getItemType();
+                       /* if(strSegment.equals("Home")){
+                            if(straddition.equals("Additional")){
+                                binding.tvApproval.setVisibility(View.VISIBLE);
+                            }
+                        }*/
                             binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(),itemConsumtions));
                         }
-                      /*  straddition = installationItemLists.get(0).getItemType();
-                        if(straddition.equals("Additional")){
-                            binding.tvApproval.setVisibility(View.VISIBLE);
-                        }*/
+
+
                         installationItemLists = (ArrayList<IrInfoResponse.InstallationItemList>) response.body().getResponse().getInstallationItemList();
                         binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                         binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -481,32 +502,39 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         binding.layoutGeneralDetails.setGeneralDetails(response.body().getResponse().getGeneral());
                         binding.layoutEnggDetails.setEngineer(response.body().getResponse().getEngineer());
                         binding.setHold(response.body().getResponse().getEngineer());
+                        String cpe = response.body().getResponse().getIr().getMACShared();
+                      //  Toast.makeText(getContext(), cpe, Toast.LENGTH_LONG).show();
+                        if(cpe!=null&& !cpe.equals("")){
+                            irCpeMac = new ArrayList<String>();
+                            irCpeMacid = new ArrayList<String>();
+                            irCpeMac.add("Completed");
+                            irCpeMacid.add("111260000");
+                            irCpeMac.add("Select CPE Type");
+                            adaptercpe = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
+                            adaptercpe.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            binding.layoutCpemac.spCpeMacShared.setAdapter(adaptercpe);
+                        }
                         attach = response.body().getResponse().getGeneral().getIRAttached();
                         if(attach!=null){
-                            if(response.body().getResponse().getGeneral().getIRAttached().equals("0")){
-                                IrType.clear();
+                            if(response.body().getResponse().getGeneral().getIRAttached().equals("1")){
+                               // IrType.clear();
                                 IrType = new ArrayList<String>();
                                 IrType.add("Yes");
-                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
-                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutGeneralDetails.spIrAttached.setAdapter(adapter);
-                            }else  if(response.body().getResponse().getGeneral().getIRAttached().equals("1")){
-                                IrType.clear();
+                                IrType.add("Select IR Type");
+                                IrType.add("No");
+                                ArrayAdapter<String> adaptertype = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
+                                adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
+                            }else  if(response.body().getResponse().getGeneral().getIRAttached().equals("0")){
+                               // IrType.clear();
                                 IrType = new ArrayList<String>();
                                 IrType.add("No");
-                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
-                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutGeneralDetails.spIrAttached.setAdapter(adapter);
+                                IrType.add("Yes");
+                                IrType.add("Select IR Type");
+                                ArrayAdapter<String> adaptertype = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
+                                adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
                             }
-                            IrType = new ArrayList<String>();
-                            IrType.add("Select IR Type");
-                            IrType.add("Yes");
-                            IrType.add("No");
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            binding.layoutGeneralDetails.spIrAttached.setAdapter(adapter);
-                           // binding.layoutGeneralDetails.etIrAttached.setText(attach);
-                            //IrType.add(attach);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -703,17 +731,17 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
     }
 
-    public void updateGeneralDetails() {
+    public void updateGeneralDetails(String ipattach) {
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        String ir;
-        ir = binding.layoutGeneralDetails.etIrAttached.getText().toString();
-        if(ir.equals("Yes")){
-            ir = "1";
-        }else{
-            ir="0";
+        //String ir;
+      //  ir = binding.layoutGeneralDetails.etIrAttached.getText().toString();
+        if(ipattach.equals("Yes")){
+            ipattach = "1";
+        }else if(ipattach.equals("No")) {
+            ipattach="0";
         }
         UpdateGeneralDetails updateGeneralDetails = new UpdateGeneralDetails();
         updateGeneralDetails.setAuthkey(Constants.AUTH_KEY);
@@ -725,7 +753,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         updateGeneralDetails.setFirst(binding.layoutGeneralDetails.etFirstUsableIp.getText().toString());
         updateGeneralDetails.setGateway(binding.layoutGeneralDetails.etGateway.getText().toString());
         updateGeneralDetails.setIpAddress(binding.layoutGeneralDetails.etIpAddSubnet.getText().toString());
-        updateGeneralDetails.setIRAttached(ir);
+        updateGeneralDetails.setIRAttached(ipattach);
         updateGeneralDetails.setLast(binding.layoutGeneralDetails.etLastUsableIp.getText().toString());
         updateGeneralDetails.setPrimary(binding.layoutGeneralDetails.etPrimaryDns.getText().toString());
         updateGeneralDetails.setProvisionGuid(str_provisionId);

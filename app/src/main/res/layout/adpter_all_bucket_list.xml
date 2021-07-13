@@ -53,7 +53,7 @@
             android:id="@+id/order_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Order ID : ` + allBucketList.id}"
+            android:text="@{`Order ID : ` + allBucketList.ID}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -69,7 +69,7 @@
             android:id="@+id/pod_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`POD Name :  ` + allBucketList.podName}"
+            android:text="@{`Customer Number :  ` + allBucketList.contactNo}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -84,20 +84,13 @@
 
 
         <TextView
-            android:id="@+id/hold_category"
+            android:id="@+id/sla_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Hold Category :  ` + allBucketList.holdCategory}"
+            android:text="@{`Sla Status :  ` + allBucketList.slaStatus}"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
-        <TextView
-            android:id="@+id/hold_reason"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Hold Reason :  ` + allBucketList.holdReason}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp"  />
 
 
 
@@ -105,7 +98,14 @@
             android:id="@+id/ntwrk_tech"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Network Technology :  ` + allBucketList.networkTechnology}"
+            android:text="@{`Area Name :  ` + allBucketList.areaName}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+        <TextView
+            android:id="@+id/product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Product :  ` + allBucketList.product}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
             <TextView

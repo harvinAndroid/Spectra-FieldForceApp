@@ -2,6 +2,8 @@ package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +52,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,IrID;
-    private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID,OrderId,StatusOfReport,maxCap;
+    private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID,OrderId,StatusOfReport,maxCap,strItemname, StrSubItemName;
 
 
     public WcrEditEquipmentConsumption() {
@@ -106,6 +108,41 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
         binding.etSubitem.setOnClickListener(v -> getSubItemList(ItemId));
+
+        binding.etQuantity.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                System.out.println("Check string :" + binding.etQuantity.getText().toString());
+
+                if (!binding.etQuantity.getText().toString().isEmpty()) {
+                    int test = Integer.parseInt(binding.etQuantity.getText().toString());
+                    try {
+
+                        if (test <= Integer.parseInt(maxCap)) {
+                            System.out.println("Check string :allow ");
+                        } else {
+                            Toast.makeText(getActivity(), "Quantity Cannot be exceeded more than MAX Cap", Toast.LENGTH_LONG).show();
+                            binding.etQuantity.setText("");
+                        }
+                    }catch (Exception ex){
+                        ex.getMessage();
+                    }
+
+                }
+
+
+            }
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
+
+
+            }
+        });
     }
 
     private void Type() {
@@ -184,12 +221,18 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
             else strItemType = " ";
           //  Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
            // getSubItemList(strItemType);
-
+            strItemname = itemName.get(position);
         }else if(parent.getId() == R.id.sp_sub_item){
            binding.etSubitem.setText(subItemName.get(position));
             strsubItemId = subItemName.get(position);
             if (position != 0) strsubItemId = "" + subItemId.get(position - 1);
             else strsubItemId = " ";
+            strItemTypeData = consumptionItemType.get(position);
+            StrSubItemName = (subItemName.get(position));
+            String type = consumptionItemType.get(position);
+            if(type.equals("Default")){
+                getMaxCap(StrSubItemName,strItemname);
+            }
         }/*else if(parent.getId() == R.id.sp_item_type){
             binding.etItemType.setText(consumptionItemType.get(position));
             strItemTypeData = consumptionItemType.get(position);
@@ -243,7 +286,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
     public void getItemConsumptionDetailsById(String itemId) {
         ItemConsumptionById itemConsumptionById = new ItemConsumptionById();
         itemConsumptionById.setAuthkey(Constants.AUTH_KEY);
-        itemConsumptionById.setAction(Constants.GET_EQUIPMENT_BYINSTALL);
+        itemConsumptionById.setAction(Constants.GET_ITEM_CONSUMPTION_BY_ID);
         itemConsumptionById.setId(itemId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -277,16 +320,15 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
     private void updateItemConsumption(String strItemTypeData1){
         AddItemConsumption addItem_Consumption = new AddItemConsumption();
         addItem_Consumption.setAuthkey(Constants.AUTH_KEY);
-        addItem_Consumption.setAction(Constants.GET_EDITEQUIPMENT_BYINSTALL);
+        addItem_Consumption.setAction(Constants.EDIT_ITEM_CONSUMPTIONNAV);
         addItem_Consumption.setItem(strItemType);
         addItem_Consumption.setItemID(ItemId);
-      //  addItem_Consumption.setSubItem(strsubItemId);
         addItem_Consumption.setItemType(strItemTypeData1);
         addItem_Consumption.setConsumptionType("111260000");
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
-        addItem_Consumption.setWCRguidId(IrID);
+        addItem_Consumption.setWCRguidId(GuIID);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);

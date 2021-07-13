@@ -84,8 +84,8 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
            // Toast.makeText(context,"Already Assigned",Toast.LENGTH_LONG).show();
         }
         holder.binding.tvAdd.setOnClickListener(v -> {
-            AllBucketListAdapter.this.addItemToBucket(itemList.getId(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), itemList.getPodName(),
-                    itemList.getStatus(), itemList.getHoldCategory(), itemList.getHoldReason(),  itemList.getNetworkTechnology());
+            AllBucketListAdapter.this.addItemToBucket(itemList.getID(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), "",
+                    itemList.getStatus(), itemList.getHoldCategory(),"",  "");
 
             if(itemList.getOrderType().equals("WCR")){
                 updateEnginer("updateWCREngineer",  itemList.getWcrId());

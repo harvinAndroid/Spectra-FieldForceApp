@@ -145,7 +145,6 @@ public class ProvisioningScreenFragment extends Fragment implements AdapterView.
             if (position != 0) strModel = "" + modelId.get(position - 1);
             else strModel = " ";
             binding.tvProfileName.setText(strModel);
-
         }
     }
 

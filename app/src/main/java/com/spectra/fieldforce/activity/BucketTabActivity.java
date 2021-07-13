@@ -1,5 +1,6 @@
 package com.spectra.fieldforce.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.databinding.DataBindingUtil;
@@ -41,6 +42,11 @@ public class BucketTabActivity extends BaseActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onClick(View view) {

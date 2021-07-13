@@ -678,7 +678,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linea20">
+                    app:layout_constraintTop_toBottomOf="@+id/linear21">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"

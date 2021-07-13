@@ -1,14 +1,26 @@
 package com.spectra.fieldforce.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -17,13 +29,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.BucketTabActivity;
-import com.spectra.fieldforce.adapter.IrEquipmentConsumpAdapter;
 import com.spectra.fieldforce.adapter.WcrAddManholeAdapter;
 import com.spectra.fieldforce.adapter.WcrCompletteItemConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
@@ -47,7 +60,13 @@ import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
 import com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
+import com.spectra.fieldforce.utils.FilePath;
+import com.spectra.fieldforce.utils.FileUtils;
+import com.spectra.fieldforce.utils.PermissionUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +78,12 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.app.Activity.RESULT_OK;
+import static com.spectra.fieldforce.utils.AppConstants.PERMISSION_REQUEST_CODE_READ_WRITE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_ONE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_ONE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION;
 
 public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
     private WcrFragmentBinding binding;
@@ -78,7 +103,11 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private AlphaAnimation inAnimation,outAnimation;
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adaptersecond;
-    
+    private String filepath,filepath1,filepath2,filepath3,str_ext1="",str_ext2="",str_ext3="",str_ext4="",strSlotType,currentImagePath;
+    private Uri uri,uri1,uri2,uri3;
+    private Uri cameraFileUri;
+    private Bitmap bitmap1,bitmap2,bitmap3,bitmap4,bitmap5,bitmap6,bitmap7,bitmap8;
+
     public WcrFragment() {
 
     }
@@ -229,7 +258,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             t1.commit();
         });
         binding.tvWcrSave.setOnClickListener(v -> {
-                    String remark = binding.etRemarksText.getText().toString();
+                    String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
                     if (remark.isEmpty()) {
                         Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
                     } else {
@@ -256,6 +285,32 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     }
                 }
         );
+        //else alertSelectImage(REQUEST_CAMERA_PERMISSION_ONE,REQUEST_CODE_ONE);
+        binding.etAttach.setOnClickListener(view -> {
+            requestReadWriteCameraPermission();
+
+            Permission();
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            Fragment frag = this;
+            /** Pass your fragment reference **/
+            frag.startActivityForResult(intent, REQUEST_CAMERA_PERMISSION_ONE);
+           /* Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(cameraIntent.resolveActivity(getContext().getPackageManager())!=null) {
+                File imageFile = null;
+                try {
+                    imageFile = getImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (imageFile != null) {
+                    Uri imageUri = FileProvider.getUriForFile(getContext(),
+                            BuildConfig.APPLICATION_ID + ".provider", imageFile);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(cameraIntent, REQUEST_CAMERA_PERMISSION_ONE);
+                }
+            }*/
+            //alertSelectImage(REQUEST_CAMERA_PERMISSION_ONE,REQUEST_CODE_ONE);
+        });
         binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
             String insta = binding.layoutWcrEngrDetails.etInstallationCode.getText().toString();
 
@@ -494,6 +549,45 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_ONE) {
+                // Do something with imagePath
+
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+             //   imageview.setImageBitmap(photo);
+                // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+                Uri selectedImage = getImageUri(getActivity(), photo);
+                String realPath=getRealPathFromURI(selectedImage);
+                selectedImage = Uri.parse(realPath);
+                Toast.makeText(getContext(),String.valueOf(selectedImage),Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = getActivity().getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
     public void getFmsList() {
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -622,8 +716,22 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         else if(parent.getId() == R.id.sp_education_antivirus) {
             binding.layoutInstallationparam.etEducationAntivirus.setText(QualityParam.get(position));
         }
+       /* else if (parent.getId() == R.id.et_attach) {
+            requestReadWriteCameraPermission();
 
+            Permission();
+        } else alertSelectImage(REQUEST_CAMERA_PERMISSION_ONE,REQUEST_CODE_ONE);
+*/
     }
+    public boolean requestReadWriteCameraPermission() {
+        return ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED;
+    }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
@@ -661,6 +769,29 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             manHoleDetails = response.body().getResponse().getManHoleDetailsList();
                             binding.layoutAssociatedDetails.setAssociated(response.body().getResponse().getAssociated());
                             binding.layoutWcrFms.setFms(response.body().getResponse().getFMSDetails());
+                            String strfmsfirst = response.body().getResponse().getFMSDetails().getFmsfirst();
+                            if(strfmsfirst!=null){
+                                FmsType = new ArrayList<String>();
+                                FmsType.add(strfmsfirst);
+                                FmsType.add("Select Fms Type");
+                                FmsType.add("WallMount");
+                                FmsType.add("RackMount");
+                                FmsId = new ArrayList<String>();
+                                FmsId.add("569480000");
+                                FmsId.add("569480001");
+                                adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);
+                            }
+                            String strfmssec = response.body().getResponse().getFMSDetails().getFmssecond();
+                            if(strfmssec!=null){
+                              //  firstFmsID = new ArrayList<>();
+                                fmsName = new ArrayList<>();
+                                fmsName.add(strfmssec);
+                                adaptersecond = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fmsName);
+                                adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutWcrFms.spCustomerEndFmsSec.setAdapter(adaptersecond);
+                            }
                             binding.layoutWcrEngrDetails.setEngg(response.body().getResponse().getEngineerDetails());
                             binding.setHoldCategory(response.body().getResponse().getEngineerDetails());
                             binding.layoutCustomerNetwork.setCustomerNetwork(response.body().getResponse().getCusotmerNetwork());
@@ -1066,6 +1197,49 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE_READ_WRITE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // FileUtils.showFileChooser(Activity_Resolve.this);
+            }
+        }
+    }
+
+   /* @SuppressLint("SetTextI18n")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_ONE) {
+                try {
+                    uri = data.getData();
+                    filepath = FilePath.getPath(getContext(), uri);
+                    if (filepath != null) {
+                        if (FileUtils.checkExtension(getContext(), uri)) {
+                            Uri file = Uri.fromFile(new File(filepath));
+                            str_ext1 = MimeTypeMap.getFileExtensionFromUrl(file.toString());
+                            binding.etAttach.setText(filepath);
+                            try {
+                                bitmap1 = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                          //  displayToast(R.string.valid_formats);
+                        }
+                    } else {
+                        //displayToast(R.string.upload_files_message);
+                    }
+                } catch (Exception EX) {
+                    EX.getStackTrace();
+                }
+            }
+        }
+    }
+*/
     private void updateWcrEnginer(String insta){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -1111,6 +1285,59 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
         });
     }
+
+    private void Permission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA},
+                    REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION);
+        }
+    }
+
+   /* @SuppressLint("QueryPermissionsNeeded")
+    private void alertSelectImage(int requestCameraPermission, int requestCode) {
+        cameraFileUri = null;
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_select_image);
+        dialog.findViewById(R.id.from_gallery).setVisibility(View.GONE);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.findViewById(R.id.from_camera).setOnClickListener(v -> {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(cameraIntent.resolveActivity(getContext().getPackageManager())!=null) {
+                File imageFile = null;
+                try {
+                    imageFile = getImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (imageFile != null) {
+                    Uri imageUri = FileProvider.getUriForFile(getContext(),
+                            BuildConfig.APPLICATION_ID + ".provider", imageFile);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(cameraIntent, requestCameraPermission);
+                }
+            }
+            dialog.dismiss();
+        });
+     *//*   dialog.findViewById(R.id.from_gallery).setOnClickListener(v -> {
+            if (PermissionUtils.checkWritePermission(getActivity()))
+                FileUtils.showFileChooser(getActivity(),requestCode);
+            dialog.dismiss();
+        });*//*
+        dialog.getWindow().getAttributes().windowAnimations = R.style.SelectMediaDialogTheme;
+        dialog.show();
+    }*/
+    /*private File getImageFile() throws IOException {
+        // Create an image file name
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String mFileName = "jpg_"+timeStamp+ "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
+        currentImagePath = mFile.getAbsolutePath();
+        return mFile;
+    }*/
 
     private void SubmitApproval(String insta){
         inAnimation = new AlphaAnimation(0f, 1f);

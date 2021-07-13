@@ -137,6 +137,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
             day = calendar.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(context, this,year, month,day);
             datePickerDialog.show();
+           datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
            /* final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
@@ -167,7 +168,6 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                           //  Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -205,11 +205,9 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                             Fragment myFragment = new ProvisioningFragment();
                             myFragment.setArguments(b);
                             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
-
                             //  Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -289,17 +287,52 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
         myday = day;
         myMonth = month;
         Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR);
+        hour = c.get(Calendar.HOUR_OF_DAY);
         minute = c.get(Calendar.MINUTE);
+
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, this, hour, minute, DateFormat.is24HourFormat(context));
         timePickerDialog.show();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        myHour = hourOfDay;
+        Calendar c = Calendar.getInstance();
+
+        hour = hourOfDay;
+        minute = minute;
+
+        // set waking time into textview
+        StringBuilder sb = new StringBuilder();
+        if(hour>=12){
+            sb.append(hour-12).append( ":" ).append(minute).append(" PM");
+        }else{
+            sb.append(hour).append( ":" ).append(minute).append(" AM");
+        }
+        binding.etDate.setText(myYear + "-" + myMonth + "-" + myday + " " + sb);
+
+        // Assign hour set in the picker
+     /*   c.set( Calendar.HOUR, hourOfDay );
+        c.set( Calendar.MINUTE, minute );
+
+        // Have Calendar calculate the substraction of hours and minutes
+        c.add( Calendar.HOUR, hourOfDay );
+        c.add( Calendar.MINUTE, minute );
+
+        // Get the hour and the minute calculated
+        hour = c.get( Calendar.HOUR );
+        minute = c.get( Calendar.MINUTE );
+
+        StringBuilder sb2 = new StringBuilder();
+        if(hour>=12){
+            sb2.append(hour-12).append( ":" ).append(minute).append(" PM");
+        }else{
+            sb2.append(hour).append( ":" ).append(minute).append(" AM");
+        }
+        binding.etDate.setText(myYear + "-" + myMonth + "-" + myday + " " +sb2);*/
+       /* myHour = hourOfDay;
         myMinute = minute;
-        binding.etDate.setText(myYear + "-" + myMonth + "-" + myday + " " + myHour + ":" + myMinute);
+        binding.etDate.setText(myYear + "-" + myMonth + "-" + myday + " " + myHour + ":" + myMinute);*/
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
