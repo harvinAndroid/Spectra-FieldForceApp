@@ -1,9 +1,17 @@
 package com.spectra.fieldforce.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +24,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.spectra.fieldforce.activity.BucketTabActivity;
+import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.adapter.IRItemConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.IrEquipmentConsumpAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
@@ -70,6 +80,9 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> QualityParam;
     ArrayAdapter<String> adaptertype;
     ArrayAdapter<String> adaptercpe;
+    LocationManager locationManager;
+    String latitude, longitude;
+    private static final int REQUEST_LOCATION = 1;
     public IRFragment() {
 
     }
@@ -97,6 +110,9 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         getIrInfo();
         init();
         setType();
+        ActivityCompat.requestPermissions( getActivity(),
+                new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
     }
 
     private void init(){
@@ -220,12 +236,18 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             if(remark.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
             }else{
-                if (installationItemLists.size() == 0 || installationItemLists == null) {
-                    Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
-                } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
-                    Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    OnGPS();
                 } else {
-                    updateIR(remark);
+                    getLocation();
+                    if (installationItemLists.size() == 0 || installationItemLists == null) {
+                        Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
+                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                    } else {
+                        updateIR(remark,latitude,longitude);
+                    }
                 }
             }
         });
@@ -322,6 +344,42 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             }
         });
 
+    }
+
+    private void OnGPS() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new  DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (locationGPS != null) {
+                double lat = locationGPS.getLatitude();
+                double longi = locationGPS.getLongitude();
+                latitude = String.valueOf(lat);
+                longitude = String.valueOf(longi);
+
+                // showLocation.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
+            } else {
+                Toast.makeText(getActivity(), latitude+longitude, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
@@ -556,7 +614,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void nextScreen(){
-        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+       /* @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         ProvisioningFragment provisioningScreenFragment = new ProvisioningFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
@@ -564,7 +622,13 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         accountinfo.putString("OrderId", orderId);
         t.replace(R.id.frag_container, provisioningScreenFragment);
         provisioningScreenFragment.setArguments(accountinfo);
-        t.commit();
+        t.commit();*/
+        Intent i = new Intent(getActivity(), ProvisioningMainActivity.class);
+        i.putExtra("canId", strCanId);
+        i.putExtra("StatusofReport", strStatusofReport);
+        i.putExtra("OrderId", orderId);
+        startActivity(i);
+        getActivity().finish();
     }
 
 
@@ -892,7 +956,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
-    private void updateIR(String remark){
+    private void updateIR(String remark, String latitude, String longitude){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -905,6 +969,9 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         irCompleteRequest.setIshold(strholdId);
         irCompleteRequest.setMACShared("111260000");
         irCompleteRequest.setRemarks(remark);
+        irCompleteRequest.setLat(latitude);
+        irCompleteRequest.setLong(longitude);
+        irCompleteRequest.setSource("App");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateIR(irCompleteRequest);
         call.enqueue(new Callback<CommonClassResponse>() {

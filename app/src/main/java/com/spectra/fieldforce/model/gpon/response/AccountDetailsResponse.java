@@ -79,6 +79,12 @@ public class AccountDetailsResponse {
         public String address;
         @SerializedName("Productname")
         public String productname;
+        @SerializedName("ONTSerialNo")
+        public String oNTSerialNo;
+
+        public String getoNTSerialNo() {
+            return oNTSerialNo;
+        }
 
         public ArrayList<OnuProfile> getOnuProfile() {
             return onuProfile;

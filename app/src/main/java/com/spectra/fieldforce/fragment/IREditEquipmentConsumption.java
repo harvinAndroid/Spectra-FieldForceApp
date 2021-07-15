@@ -2,6 +2,8 @@ package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +51,7 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
     private List<GetSubItemListResponse.Datum> subItem;
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
-    private String strItemType,strItemTypeData,IrID;
+    private String strItemType,strItemTypeData,IrID,strItemname, StrSubItemName;
     private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID,OrderId,StatusOfReport,maxCap;
 
 
@@ -77,6 +79,41 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("IR");
         init();
+        binding.etQuantity.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                System.out.println("Check string :" + binding.etQuantity.getText().toString());
+
+                if (!binding.etQuantity.getText().toString().isEmpty()) {
+                    try {
+                        int test = Integer.parseInt(binding.etQuantity.getText().toString());
+
+
+                        if (test <= Integer.parseInt(maxCap)) {
+                            System.out.println("Check string :allow ");
+                        } else {
+                            Toast.makeText(getActivity(), "Quantity Cannot be exceeded more than MAX Cap", Toast.LENGTH_LONG).show();
+                            binding.etQuantity.setText("");
+                        }
+                    }catch (NumberFormatException ex){
+                        ex.getMessage();
+                    }
+
+                }
+
+
+            }
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
+
+
+            }
+        });
     }
 
     private void init(){
@@ -106,6 +143,7 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
         binding.etSubitem.setOnClickListener(v -> getSubItemList(ItemId));
+
     }
 
     private void getMaxCap(String strSubItemName,String ItemNa){
@@ -126,7 +164,7 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
                     try {
                         if(response.body().status.equals("Success")){
                             maxCap = response.body().response.data.maxCap;
-                            Toast.makeText(getContext(), response.body().response.data.maxCap,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"Quantity default max cap limit is: "+ maxCap,Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().response.message,Toast.LENGTH_LONG).show();
                         }
@@ -156,10 +194,10 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
         consumptionItemType = new ArrayList<String>();
         itemTypeData = new ArrayList<String>();
         consumptionItemType.add("Select Type");
-        consumptionItemType.add("Additional");
+       // consumptionItemType.add("Additional");
         consumptionItemType.add("Default");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
 
     }
@@ -219,6 +257,7 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
             strItemType = itemName.get(position);
             if (position != 0) strItemType = "" + itemId.get(position - 1);
             else strItemType = " ";
+            strItemname = itemName.get(position);
           //  Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
            // getSubItemList(strItemType);
 
@@ -227,12 +266,18 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
             strsubItemId = subItemName.get(position);
             if (position != 0) strsubItemId = "" + subItemId.get(position - 1);
             else strsubItemId = " ";
-        }/*else if(parent.getId() == R.id.sp_item_type){
+            StrSubItemName = (subItemName.get(position));
+        }else if(parent.getId() == R.id.sp_item_type){
             binding.etItemType.setText(consumptionItemType.get(position));
             strItemTypeData = consumptionItemType.get(position);
             if (position != 0) strItemTypeData = "" + itemTypeData.get(position - 1);
             else strItemTypeData = " ";
-        }*/
+
+            String type = consumptionItemType.get(position);
+            if(type.equals("Default")){
+                getMaxCap(StrSubItemName,strItemname);
+            }
+        }
     }
 
     @Override
@@ -260,6 +305,9 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
                         binding.etMacId.setText(response.body().response.macId);
                         binding.etQuantity.setText(response.body().response.quantity);
                         binding.etType.setText(response.body().response.consumptionType);
+                        strItemname = response.body().response.item;
+                        StrSubItemName = response.body().response.subItem;
+                        getMaxCap(StrSubItemName,strItemname);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

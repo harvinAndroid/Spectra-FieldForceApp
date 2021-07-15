@@ -79,6 +79,40 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("WCR");
         init();
+        binding.etQuantity.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                System.out.println("Check string :" + binding.etQuantity.getText().toString());
+                if (!binding.etQuantity.getText().toString().isEmpty()) {
+                    try {
+                        int test = Integer.parseInt(binding.etQuantity.getText().toString());
+
+
+                        if (test <= Integer.parseInt(maxCap)) {
+                            System.out.println("Check string :allow ");
+                        } else {
+                            Toast.makeText(getActivity(), "Quantity Cannot be exceeded more than MAX Cap", Toast.LENGTH_LONG).show();
+                            binding.etQuantity.setText("");
+                        }
+                    }catch (NumberFormatException ex){
+                        ex.getMessage();
+                    }
+
+                }
+
+
+            }
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
+
+
+            }
+        });
     }
 
     private void init(){
@@ -109,40 +143,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         binding.spItemType.setOnItemSelectedListener(this);
         binding.etSubitem.setOnClickListener(v -> getSubItemList(ItemId));
 
-        binding.etQuantity.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                System.out.println("Check string :" + binding.etQuantity.getText().toString());
 
-                if (!binding.etQuantity.getText().toString().isEmpty()) {
-                    int test = Integer.parseInt(binding.etQuantity.getText().toString());
-                    try {
-
-                        if (test <= Integer.parseInt(maxCap)) {
-                            System.out.println("Check string :allow ");
-                        } else {
-                            Toast.makeText(getActivity(), "Quantity Cannot be exceeded more than MAX Cap", Toast.LENGTH_LONG).show();
-                            binding.etQuantity.setText("");
-                        }
-                    }catch (Exception ex){
-                        ex.getMessage();
-                    }
-
-                }
-
-
-            }
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
-
-
-            }
-        });
     }
 
     private void Type() {
@@ -159,7 +160,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
        // consumptionItemType.add("Additional");
         consumptionItemType.add("Default");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
 
     }
@@ -264,7 +265,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
                     try {
                         if(response.body().status.equals("Success")){
                             maxCap = response.body().response.data.maxCap;
-                            Toast.makeText(getContext(), response.body().response.data.maxCap,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"Quantity default max cap limit is: "+ maxCap,Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().response.message,Toast.LENGTH_LONG).show();
                         }
@@ -303,6 +304,9 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
                         binding.etMacId.setText(response.body().response.macId);
                         binding.etQuantity.setText(response.body().response.quantity);
                         binding.etType.setText(response.body().response.consumptionType);
+                        strItemname = response.body().response.item;
+                        StrSubItemName = response.body().response.subItem;
+                        getMaxCap(StrSubItemName,strItemname);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -360,8 +364,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
 
     private void nextScreen(){
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-
-        IRFragment irFragment = new IRFragment();
+        WcrFragment irFragment = new WcrFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", CanId);
         accountinfo.putString("StatusofReport", StatusOfReport);

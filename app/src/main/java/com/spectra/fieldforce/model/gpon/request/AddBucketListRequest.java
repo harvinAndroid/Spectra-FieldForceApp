@@ -2,9 +2,17 @@ package com.spectra.fieldforce.model.gpon.request;
 
 public class AddBucketListRequest {
 
-   private String  Authkey,Action,Order_id,Order_type,WCRId,
-            IRId,CustomerID,CustomerName,PODName,CRM_status,HoldCategory,
-            HoldReason,EngineerName,EngineerID,NetworkTechnology,VendorCode;
+   private String  Authkey,Action,Order_id,Order_type,WCRId,IRId, CustomerID,CustomerName,CRM_status,HoldCategory,HoldReason,
+               EngineerName,EngineerID,VendorCode,VendorName,SlaStatus,AreaName,Product,ContactPerson,ContactNo,
+               OrderCreatedOn,AppointmentDate,WCRSlaClock,IRSlaClock;
+
+    public void setWCRSlaClock(String WCRSlaClock) {
+        this.WCRSlaClock = WCRSlaClock;
+    }
+
+    public void setIRSlaClock(String IRSlaClock) {
+        this.IRSlaClock = IRSlaClock;
+    }
 
     public void setAuthkey(String authkey) {
         Authkey = authkey;
@@ -38,10 +46,6 @@ public class AddBucketListRequest {
         CustomerName = customerName;
     }
 
-    public void setPODName(String PODName) {
-        this.PODName = PODName;
-    }
-
     public void setCRM_status(String CRM_status) {
         this.CRM_status = CRM_status;
     }
@@ -62,11 +66,39 @@ public class AddBucketListRequest {
         EngineerID = engineerID;
     }
 
-    public void setNetworkTechnology(String networkTechnology) {
-        NetworkTechnology = networkTechnology;
-    }
-
     public void setVendorCode(String vendorCode) {
         VendorCode = vendorCode;
+    }
+
+    public void setVendorName(String vendorName) {
+        VendorName = vendorName;
+    }
+
+    public void setSlaStatus(String slaStatus) {
+        SlaStatus = slaStatus;
+    }
+
+    public void setAreaName(String areaName) {
+        AreaName = areaName;
+    }
+
+    public void setProduct(String product) {
+        Product = product;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        ContactPerson = contactPerson;
+    }
+
+    public void setContactNo(String contactNo) {
+        ContactNo = contactNo;
+    }
+
+    public void setOrderCreatedOn(String orderCreatedOn) {
+        OrderCreatedOn = orderCreatedOn;
+    }
+
+    public void setAppointmentDate(String appointmentDate) {
+        AppointmentDate = appointmentDate;
     }
 }

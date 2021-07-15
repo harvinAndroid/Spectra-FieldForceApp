@@ -44,10 +44,7 @@ public class BucketTabActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+
 
     public void onClick(View view) {
         if (view.getId() == R.id.rl_back) {

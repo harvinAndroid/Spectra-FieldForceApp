@@ -12,6 +12,10 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.MainActivity;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final int REQUEST_CODE = 1;
     private static final int NOTIFICATION_ID = 6578;
@@ -21,10 +25,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NotNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        String title = remoteMessage.getNotification().getTitle();
+        String title = Objects.requireNonNull(remoteMessage.getNotification()).getTitle();
         String message = remoteMessage.getNotification().getBody();
         showNotifications(title, message);
     }

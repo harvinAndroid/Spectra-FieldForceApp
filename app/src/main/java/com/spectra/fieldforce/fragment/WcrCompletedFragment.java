@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.adapter.WcrAddManholeAdapter;
 import com.spectra.fieldforce.adapter.WcrCConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.WcrCompletteItemConsumptionListAdapter;
@@ -55,7 +57,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
     private ArrayList<String> firstFmsID;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private String strGuuId,strSegment, strfmsId,strSecFmsId,strCanId ,strholdId,strProductSegment;
+    private String strGuuId,strSegment, strfmsId,strSecFmsId,strCanId ,strholdId,strProductSegment,strStatusofReport,OrderId;
     private ArrayList<String> itemType;
     private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
@@ -86,7 +88,8 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("WCR");
         strCanId = requireArguments().getString("canId");
-        // strStatusofReport = requireArguments().getString("StatusofReport");
+        strStatusofReport = requireArguments().getString("StatusofReport");
+        OrderId = requireArguments().getString("OrderId");
         init();
         initOne();
         Lock();
@@ -490,13 +493,20 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
 
     private void nextScreen(){
 
-        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+     /*   @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
         ProvisioningFragment provisioningScreenFragment = new ProvisioningFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
         t.replace(R.id.frag_container, provisioningScreenFragment);
         provisioningScreenFragment.setArguments(accountinfo);
-        t.commit();
+        t.commit();*/
+        Intent i = new Intent(getActivity(), ProvisioningMainActivity.class);
+        i.putExtra("canId", strCanId);
+        i.putExtra("StatusofReport", strStatusofReport);
+        i.putExtra("OrderId", OrderId);
+        startActivity(i);
+        getActivity().finish();
+
     }
 
 

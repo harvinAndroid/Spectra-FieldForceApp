@@ -184,6 +184,15 @@ public class WcrResponse {
         private String portnocxend;
         @SerializedName("portnopodend")
         private String portnopodend;
+        private String fmsfirstValue,fmssecondValue;
+
+        public String getFmsfirstValue() {
+            return fmsfirstValue;
+        }
+
+        public String getFmssecondValue() {
+            return fmssecondValue;
+        }
 
         public String getFmsfirst() {
             return fmsfirst;

@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.BucketTabActivity;
+import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.ProvisionFragmentBinding;
@@ -190,13 +191,10 @@ public class ProvisioningScreenFragment extends Fragment implements AdapterView.
     }
 
     private void nextScreen(){
-        Bundle accountinfo = new Bundle();
-        accountinfo.putString("canId", strCanId);
-        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t11= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        ProvisioningFragment provisioningTabFragment = new ProvisioningFragment();
-        t11.replace(R.id.frag_container, provisioningTabFragment);
-        provisioningTabFragment.setArguments(accountinfo);
-        t11.commit();
+        Intent i = new Intent(getActivity(), ProvisioningMainActivity.class);
+        i.putExtra("canId", strCanId);
+        startActivity(i);
+        getActivity().finish();
     }
 
 

@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="@{`Status :  ` + allBucketList.crmStatus}"
+            android:text="@{`Status :  ` + allBucketList.crm_status}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -52,7 +52,7 @@
             android:id="@+id/order_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Order ID : ` + allBucketList.orderId}"
+            android:text="@{`Order ID : ` + allBucketList.order_id}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -60,7 +60,7 @@
             android:id="@+id/cust_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Customer Name :  ` + allBucketList.customerName}"
+            android:text="@{`Contact Person :  ` + allBucketList.contactPerson}"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
@@ -68,7 +68,7 @@
             android:id="@+id/pod_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`POD Name :  ` + allBucketList.podName}"
+            android:text="@{`Contact Number :  ` + allBucketList.contactNo}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -76,17 +76,23 @@
             android:id="@+id/order_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`OrderType :  ` + allBucketList.orderType}"
+            android:text="@{`OrderType :  ` + allBucketList.order_type}"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
-
+        <TextView
+            android:id="@+id/customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Customer Name :  ` + allBucketList.customerName}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
 
         <TextView
             android:id="@+id/hold_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Hold Category :  ` + allBucketList.holdCategory}"
+            android:text="@{`Sla Status :  ` + allBucketList.slaStatus}"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
@@ -94,9 +100,23 @@
             android:id="@+id/hold_reason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Hold Reason :  ` + allBucketList.holdReason}"
+            android:text="@{`Area Name :  ` + allBucketList.areaName}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
+        <TextView
+            android:id="@+id/product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Product :  ` + allBucketList.product}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Created date :  ` + allBucketList.orderCreatedOn}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
 
         <EditText
             android:id="@+id/et_date"
@@ -104,6 +124,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:focusable="false"
+            android:focusableInTouchMode="false"
             android:hint="@string/appointment_date"
             android:textSize="@dimen/_12sdp"  />
 

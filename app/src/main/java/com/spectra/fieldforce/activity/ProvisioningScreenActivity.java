@@ -242,16 +242,12 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
     }
 
     private void nextScreen(){
-        ProvisioningFragment newFragment = new ProvisioningFragment();
-        Bundle args = new Bundle();
-        args.putString("canId", strCanId);
-        args.putString("StatusofReport", statusReport);
-        args.putString("OrderId", orderId);
-        newFragment.setArguments(args);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frag_container, newFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        Intent i = new Intent(this, ProvisioningMainActivity.class);
+        i.putExtra("canId", strCanId);
+        i.putExtra("StatusofReport", statusReport);
+        i.putExtra("OrderId", orderId);
+        startActivity(i);
+        finish();
     }
 
 

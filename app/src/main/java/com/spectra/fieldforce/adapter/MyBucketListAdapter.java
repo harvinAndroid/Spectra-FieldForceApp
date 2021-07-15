@@ -30,6 +30,7 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.BucketTabActivity;
 import com.spectra.fieldforce.activity.DashBoardActivity;
 import com.spectra.fieldforce.activity.MainActivity;
+import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.activity.ProvisioningTabActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
@@ -100,16 +101,16 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
         if(appdate!=null){
             holder.binding.etDate.setText(appdate);
         }
-        String statusReport = itemList.getCrmStatus();
+        String statusReport = itemList.getCrm_status();
             holder.binding.tvRelease.setOnClickListener(v -> {
                 if(statusReport.equals("Installation On Hold")||statusReport.equals("hold")||statusReport.contains("hold")||statusReport.equals("Installation Hold")) {
                     holder.binding.tvRelease.setEnabled(false);
                     Toast.makeText(context,"Installation status is hold can't release ",Toast.LENGTH_LONG).show();
                 }   else{
-                    releaseBucketItem(itemList.getCustomerID(), itemList.getOrderId(), itemList.getOrderType());
-                    if(itemList.getOrderType().equals("WCR")){
+                    releaseBucketItem(itemList.getCustomerID(), itemList.getOrder_id(), itemList.getOrder_type());
+                    if(itemList.getOrder_type().equals("WCR")){
                         updateEnginer("updateWCREngineer",  itemList.getWcrId(),"");
-                    }else if(itemList.getOrderType().equals("IR")){
+                    }else if(itemList.getOrder_type().equals("IR")){
                         updateEnginer("updateIREngineer",itemList.getIrId(),"");
                     }
                 }
@@ -122,12 +123,12 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
             }else {
                 SharedPreferences sp1=context.getSharedPreferences("Login",0);
                 String enggName =sp1.getString("EnggName", null);
-                if(itemList.getOrderType().equals("WCR")){
+                if(itemList.getOrder_type().equals("WCR")){
                     updateEnginer("updateWCREngineer",  itemList.getWcrId(),enggName);
-                }else if(itemList.getOrderType().equals("IR")){
+                }else if(itemList.getOrder_type().equals("IR")){
                     updateEnginer("updateIREngineer",itemList.getIrId(),enggName);
                 }
-                updateEngineerDate(date,itemList.getOrderId(),itemList.getCustomerID());
+                updateEngineerDate(date,itemList.getOrder_id(),itemList.getCustomerID());
                }
         });
         holder.binding.etDate.setOnClickListener(view1 -> {
@@ -198,14 +199,20 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
-                            Bundle b = new Bundle();
+                          /*  Bundle b = new Bundle();
                             b.putString("canId", customerID);
                             b.putString("OrderId",orderId);
                             AppCompatActivity activity = (AppCompatActivity) context;
                             Fragment myFragment = new ProvisioningFragment();
                             myFragment.setArguments(b);
                             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
-                            //  Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+*/
+
+                            Intent i = new Intent(context, ProvisioningMainActivity.class);
+                            i.putExtra("canId", customerID);
+                         //   i.putExtra("StatusofReport", strStatusofReport);
+                            i.putExtra("OrderId", orderId);
+                            context.startActivity(i);
                         }else{
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -310,29 +317,6 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
             sb.append(hour).append( ":" ).append(minute).append(" AM");
         }
         binding.etDate.setText(myYear + "-" + myMonth + "-" + myday + " " + sb);
-
-        // Assign hour set in the picker
-     /*   c.set( Calendar.HOUR, hourOfDay );
-        c.set( Calendar.MINUTE, minute );
-
-        // Have Calendar calculate the substraction of hours and minutes
-        c.add( Calendar.HOUR, hourOfDay );
-        c.add( Calendar.MINUTE, minute );
-
-        // Get the hour and the minute calculated
-        hour = c.get( Calendar.HOUR );
-        minute = c.get( Calendar.MINUTE );
-
-        StringBuilder sb2 = new StringBuilder();
-        if(hour>=12){
-            sb2.append(hour-12).append( ":" ).append(minute).append(" PM");
-        }else{
-            sb2.append(hour).append( ":" ).append(minute).append(" AM");
-        }
-        binding.etDate.setText(myYear + "-" + myMonth + "-" + myday + " " +sb2);*/
-       /* myHour = hourOfDay;
-        myMinute = minute;
-        binding.etDate.setText(myYear + "-" + myMonth + "-" + myday + " " + myHour + ":" + myMinute);*/
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

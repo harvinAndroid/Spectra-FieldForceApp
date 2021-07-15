@@ -76,6 +76,39 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Add Equipment");
         init();
+        binding.etQuantity.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                System.out.println("Check string :" + binding.etQuantity.getText().toString());
+
+                if (!binding.etQuantity.getText().toString().isEmpty()) {
+                    try {
+                        int test = Integer.parseInt(binding.etQuantity.getText().toString());
+                        if (test <= Integer.parseInt(maxCap)) {
+                            System.out.println("Check string :allow ");
+                        } else {
+                            Toast.makeText(getActivity(), "Quantity Cannot be exceeded more than MAX Cap", Toast.LENGTH_LONG).show();
+                            binding.etQuantity.setText("");
+                        }
+                    }catch (NumberFormatException ex){
+                        ex.getMessage();
+                    }
+
+                }
+
+
+            }
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
+
+
+            }
+        });
     }
 
 
@@ -119,43 +152,10 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
         itemTypeData.add("111260001");
         itemTypeData.add("111260000");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
 
-        binding.etQuantity.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                System.out.println("Check string :" + binding.etQuantity.getText().toString());
 
-                if (!binding.etQuantity.getText().toString().isEmpty()) {
-                    int test = Integer.parseInt(binding.etQuantity.getText().toString());
-                    try {
-
-                        if (test <= Integer.parseInt(maxCap)) {
-                            System.out.println("Check string :allow ");
-                        } else {
-                            Toast.makeText(getActivity(), "Quantity Cannot be exceeded more than MAX Cap", Toast.LENGTH_LONG).show();
-                            binding.etQuantity.setText("");
-                        }
-                    }catch (Exception ex){
-                        ex.getMessage();
-                    }
-
-                }
-
-
-            }
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
-
-
-            }
-        });
 
     }
 
@@ -177,7 +177,7 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
                     try {
                         if(response.body().status.equals("Success")){
                             maxCap = response.body().response.data.maxCap;
-                            Toast.makeText(getContext(), response.body().response.data.maxCap,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"Quantity default max cap limit is: "+ maxCap,Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().response.message,Toast.LENGTH_LONG).show();
                         }
@@ -324,8 +324,6 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
     }
 
     private void updateItemConsumption(){
-
-
         AddItemConsumption addItem_Consumption = new AddItemConsumption();
         addItem_Consumption.setAuthkey(Constants.AUTH_KEY);
         addItem_Consumption.setAction(Constants.POST_ITEM_CONSUMPTIONS);

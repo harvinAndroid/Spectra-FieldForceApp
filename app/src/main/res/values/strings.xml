@@ -218,6 +218,8 @@
     <string name="dns">DNS</string>
     <string name="approval_to_nav">Approval to NAV</string>
     <string name="click_the_image">Click the Image</string>
+    <string name="complete_wcr">Complete WCR</string>
+    <string name="submit_for_appoval">Submit for Appoval</string>
 
 
     <!-- <string name="item_type">Item Type</string>-->

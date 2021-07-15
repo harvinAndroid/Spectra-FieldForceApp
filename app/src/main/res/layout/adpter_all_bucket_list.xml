@@ -61,7 +61,7 @@
             android:id="@+id/cust_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Customer Name :  ` + allBucketList.customerName}"
+            android:text="@{`Customer Person :  ` + allBucketList.contactPerson}"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
@@ -69,7 +69,15 @@
             android:id="@+id/pod_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Customer Number :  ` + allBucketList.contactNo}"
+            android:text="@{`Contact Number :  ` + allBucketList.contactNo}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
+            android:id="@+id/customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Customer Name :  ` + allBucketList.customerName}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -77,11 +85,19 @@
             android:id="@+id/order_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`OrderType :  ` + allBucketList.orderType}"
+            android:text="@{`Order Type :  ` + allBucketList.orderType}"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
 
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Created date :  ` + allBucketList.createdOn}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:id="@+id/sla_status"

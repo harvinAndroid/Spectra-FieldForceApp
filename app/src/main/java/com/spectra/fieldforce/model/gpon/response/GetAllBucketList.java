@@ -116,8 +116,21 @@ public class Response {
     private String product;
     private String contactPerson;
     private String contactNo;
+    private String createdOn;
+    private String wcrslaclock,irslaclock;
 
+    public String getWcrslaclock() {
+        return wcrslaclock;
     }
+
+    public String getIrslaclock() {
+        return irslaclock;
+    }
+
+    public String getCreatedOn() {
+        return createdOn;
+    }
+}
 
 }
 

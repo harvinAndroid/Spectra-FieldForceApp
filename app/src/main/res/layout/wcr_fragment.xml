@@ -733,7 +733,7 @@
                         android:id="@+id/tv_wcr_approval"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
-                        android:text="@string/approval_to_nav"
+                        android:text="@string/submit_for_appoval"
                         android:gravity="center"
                         android:visibility="gone"
                         android:layout_marginBottom="@dimen/_20sdp"

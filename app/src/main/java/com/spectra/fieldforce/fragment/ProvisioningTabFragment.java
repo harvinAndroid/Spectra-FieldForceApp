@@ -18,6 +18,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.spectra.fieldforce.activity.BucketTabActivity;
 import com.spectra.fieldforce.activity.MainActivity;
+import com.spectra.fieldforce.activity.ProvisioningMainActivity;
+import com.spectra.fieldforce.activity.ProvisioningScreenActivity;
 import com.spectra.fieldforce.databinding.ProvisionFaultTabScreenBinding;
 import com.spectra.fieldforce.databinding.ProvisioningTabScreenBinding;
 import com.spectra.fieldforce.databinding.WcrAddItemConsumptionBinding;
@@ -127,7 +129,7 @@ public class ProvisioningTabFragment extends Fragment implements View.OnClickLis
     }
 
     private void nextScreen(){
-        Bundle accountinfo = new Bundle();
+       /* Bundle accountinfo = new Bundle();
         accountinfo.putString("name", name);
         accountinfo.putString("canId", canId);
         accountinfo.putString("city", city);
@@ -139,7 +141,18 @@ public class ProvisioningTabFragment extends Fragment implements View.OnClickLis
         ProvisioningFragment provisioningFragment = new ProvisioningFragment();
         t11.replace(R.id.frag_container, provisioningFragment);
         provisioningFragment.setArguments(accountinfo);
-        t11.commit();
+        t11.commit();*/
+
+        Intent i = new Intent(getActivity(), ProvisioningMainActivity.class);
+        i.putExtra("name", name);
+        i.putExtra("canId", canId);
+        i.putExtra("city", city);
+        i.putExtra("area", area);
+        i.putExtra("building", building);
+        i.putExtra("segment",segment);
+        i.putExtra("statusReport",statusReport);
+        startActivity(i);
+        getActivity().finish();
     }
 
 

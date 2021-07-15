@@ -29,5 +29,11 @@ public class AccInfoResponse {
         public String statusofReport;
         @SerializedName("DOAFlag")
         public String dOAFlag;
+
+        private String Address;
+
+        public String getAddress() {
+            return Address;
+        }
     }
 }

@@ -171,7 +171,34 @@
         app:layout_constraintStart_toEndOf="@+id/tv_segment"
         app:layout_constraintTop_toBottomOf="@+id/tv_building_society" />
 
-    <TextView
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/address"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@+id/tv_customer_acc_id"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_segment_type" />
+
+        <TextView
+            android:id="@+id/tv_adress_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{provisioning.address}"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/tv_address"
+            app:layout_constraintTop_toBottomOf="@+id/tv_segment_type" />
+
+
+
+        <TextView
         android:id="@+id/tv_provisioning"
         android:layout_width="0dp"
         android:layout_height="30dp"
@@ -185,7 +212,7 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@+id/tv_segment_type" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_adress_detail" />
 
     <TextView
         android:id="@+id/tv_wcr"
@@ -230,7 +257,13 @@
         />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/frag_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-
+    <include layout="@layout/progress"
+        android:id="@+id/progressLayout"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

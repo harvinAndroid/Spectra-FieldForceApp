@@ -3,18 +3,23 @@ package com.spectra.fieldforce.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,6 +43,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.MainActivity;
+import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.adapter.WcrAddManholeAdapter;
 import com.spectra.fieldforce.adapter.WcrCompletteItemConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
@@ -72,6 +80,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -93,9 +102,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> fmsName;
     private ArrayList<String> firstFmsID;
     private ArrayList<String> QualityParam;
+    private ArrayList<String> QualityParam1;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private String strGuuId,strSegment, strfmsId,strSecFmsId,strCanId ,strholdId,strProductSegment,straddition,OrderId,StatusOfReport;
+    private String strGuuId,strSegment, strInsta,strfmsId,strSecFmsId,strCanId ,strholdId,strProductSegment,straddition,OrderId,StatusOfReport;
     private ArrayList<String> itemType;
     private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
@@ -107,7 +117,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private Uri uri,uri1,uri2,uri3;
     private Uri cameraFileUri;
     private Bitmap bitmap1,bitmap2,bitmap3,bitmap4,bitmap5,bitmap6,bitmap7,bitmap8;
-
+    LocationManager locationManager;
+    String latitude, longitude;
+    private static final int REQUEST_LOCATION = 1;
+    ArrayAdapter<String> adapterParam;
     public WcrFragment() {
 
     }
@@ -143,11 +156,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         getWcrInfo();
         getFmsList();
         Type();
+        ActivityCompat.requestPermissions( getActivity(),
+                new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
         QualityParam = new ArrayList<String>();
         QualityParam.add("Select Type");
         QualityParam.add("Yes");
         QualityParam.add("No");
-        ArrayAdapter<String> adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+         adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
         adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParam);
         binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParam);
@@ -179,20 +195,15 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             speedwifi = Objects.requireNonNull(binding.layoutCustomerNetwork.etSpeedWifi.getText()).toString();
             wifissd = Objects.requireNonNull(binding.layoutCustomerNetwork.etWifiSsd.getText()).toString();
             txpower = Objects.requireNonNull(binding.layoutCustomerNetwork.etTxPower.getText()).toString();
-            if(rxpower.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter RxPower",Toast.LENGTH_LONG).show();
-            }else if(speedlan.isEmpty()){
+           if(speedlan.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter SpeedLan",Toast.LENGTH_LONG).show();
             }   if(speedwifi.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Speed Wifi",Toast.LENGTH_LONG).show();
             }else if(wifissd.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Wifi SSD",Toast.LENGTH_LONG).show();
-            }else if(txpower.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter Tx Power",Toast.LENGTH_LONG).show();
             }else{
                 updateCustomerNetwork(rxpower,speedlan,speedwifi,wifissd,txpower);
             }
-
                 }
         );
 
@@ -257,31 +268,39 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             t1.replace(R.id.frag_container, wcrAddManholeFragment);
             t1.commit();
         });
+
         binding.tvWcrSave.setOnClickListener(v -> {
                     String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
                     if (remark.isEmpty()) {
                         Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
                     } else {
-
-
-                        if (strSegment.equals("Business")) {
-                            if (manHoleDetails.size() == 0 || manHoleDetails == null) {
-                                Toast.makeText(getContext(), "Please Add Manhole", Toast.LENGTH_LONG).show();
-                            } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
-                                Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                        try {
+                            locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                OnGPS();
                             } else {
-                                updateWcrComplete(remark);
+                                getLocation();
+                                if (strSegment.equals("Business")) {
+                                    if (manHoleDetails.size() == 0 || manHoleDetails == null) {
+                                        Toast.makeText(getContext(), "Please Add Manhole", Toast.LENGTH_LONG).show();
+                                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        updateWcrComplete(remark,latitude,longitude);
+                                    }
+                                } else if (strSegment.equals("Home")) {
+                                    if (equipmentDetailsLists.size() == 0 || equipmentDetailsLists == null) {
+                                        Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
+                                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        updateWcrComplete(remark,latitude,longitude);
+                                    }
+                                }
                             }
-                        } else if (strSegment.equals("Home")) {
-                            if (equipmentDetailsLists.size() == 0 || equipmentDetailsLists == null) {
-                                Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
-                            } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
-                                Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
-                            } else {
-                                updateWcrComplete(remark);
-                            }
+                        } catch (Exception e){
+                            e.printStackTrace();
                         }
-
                     }
                 }
         );
@@ -290,11 +309,11 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             requestReadWriteCameraPermission();
 
             Permission();
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+           /* Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             Fragment frag = this;
-            /** Pass your fragment reference **/
-            frag.startActivityForResult(intent, REQUEST_CAMERA_PERMISSION_ONE);
-           /* Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            *//** Pass your fragment reference **//*
+            frag.startActivityForResult(intent, REQUEST_CAMERA_PERMISSION_ONE);*/
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if(cameraIntent.resolveActivity(getContext().getPackageManager())!=null) {
                 File imageFile = null;
                 try {
@@ -308,19 +327,24 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                     startActivityForResult(cameraIntent, REQUEST_CAMERA_PERMISSION_ONE);
                 }
-            }*/
+            }
             //alertSelectImage(REQUEST_CAMERA_PERMISSION_ONE,REQUEST_CODE_ONE);
         });
         binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
-            String insta = binding.layoutWcrEngrDetails.etInstallationCode.getText().toString();
-
-            if(insta.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
-            }else{
-                updateWcrEnginer(insta);
+            strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
+            if (strSegment.equals("Business")) {
+                updateWcrEnginer(strInsta);
+            } else if (strSegment.equals("Home")) {
+                if(strInsta.isEmpty()){
+                    Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
+                }else{
+                    updateWcrEnginer(strInsta);
+                }
             }
 
+
         });
+        binding.tvWcrApproval.setOnClickListener(view -> SubmitApproval());
         binding.layoutInstallationparam.tvSaveQualityParam.setOnClickListener((View v) -> {
 
             String ont = Objects.requireNonNull(binding.layoutInstallationparam.etOntLogin.getText()).toString();
@@ -350,7 +374,41 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
+    private void OnGPS() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new  DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                getContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (locationGPS != null) {
+                double lat = locationGPS.getLatitude();
+                double longi = locationGPS.getLongitude();
+                latitude = String.valueOf(lat);
+                longitude = String.valueOf(longi);
 
+               // showLocation.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
+            } else {
+                Toast.makeText(getActivity(), latitude+longitude, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     private void init(){
         binding.layoutWcrFms.etCustomerEndFms.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFms.performClick());
@@ -534,6 +592,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomerNetwork.setVisibility(View.GONE);
             binding.linearInstallationParam.setVisibility(View.GONE);
             binding.linea20.setVisibility(View.VISIBLE);
+            binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.GONE);
         }else if(strSegment.equals("Home")){
             binding.linearFour.setVisibility(View.VISIBLE);
             binding.linea11.setVisibility(View.VISIBLE);
@@ -549,12 +608,11 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
     }
 
-    @Override
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_ONE) {
-                // Do something with imagePath
 
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
              //   imageview.setImageBitmap(photo);
@@ -566,8 +624,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
         }
     }
-
-    public String getRealPathFromURI(Uri contentUri) {
+*/
+  /*  public String getRealPathFromURI(Uri contentUri) {
         Cursor cursor = null;
         try {
             String[] proj = { MediaStore.Images.Media.DATA };
@@ -586,7 +644,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
-    }
+    }*/
 
     public void getFmsList() {
         inAnimation = new AlphaAnimation(0f, 1f);
@@ -770,21 +828,23 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutAssociatedDetails.setAssociated(response.body().getResponse().getAssociated());
                             binding.layoutWcrFms.setFms(response.body().getResponse().getFMSDetails());
                             String strfmsfirst = response.body().getResponse().getFMSDetails().getFmsfirst();
-                            if(strfmsfirst!=null){
+                            if(strfmsfirst!=null && !strfmsfirst.equals("0")){
                                 FmsType = new ArrayList<String>();
                                 FmsType.add(strfmsfirst);
-                                FmsType.add("Select Fms Type");
-                                FmsType.add("WallMount");
-                                FmsType.add("RackMount");
                                 FmsId = new ArrayList<String>();
-                                FmsId.add("569480000");
-                                FmsId.add("569480001");
+                                if(strfmsfirst.equals("Wall Mount")){
+                                    FmsId.add("569480000");
+                                    strfmsId ="569480000";
+                                }else if(strfmsfirst.equals("Rack Mount")){
+                                    FmsId.add("569480001");
+                                    strfmsId ="569480001";
+                                }
                                 adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
                                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);
                             }
                             String strfmssec = response.body().getResponse().getFMSDetails().getFmssecond();
-                            if(strfmssec!=null){
+                            if(strfmssec!=null && !strfmssec.equals("0")){
                               //  firstFmsID = new ArrayList<>();
                                 fmsName = new ArrayList<>();
                                 fmsName.add(strfmssec);
@@ -802,79 +862,100 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
                             binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
                             binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions));
-                          /*  straddition = equipmentDetailsLists.get(1).getItemType();
-                            if(straddition.equals("Additional")){
+                            straddition = itemConsumtions.get(0).getItemType();
+                            if(straddition.equals("Additional")&& strSegment.equals("Home")){
                                 binding.tvWcrApproval.setVisibility(View.VISIBLE);
-                            }*/
+                            }
                             equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
                             binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                             binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
                             if(equipmentDetailsLists.size()!=0){
                                 binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(),equipmentDetailsLists));
                             }
-                           /* if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("0")){
-                                binding.layoutInstallationparam.etEducationAntivirus.setText("Yes");
-                                QualityParam.clear();
+                           /* binding.layoutInstallationparam.setQuality(response.body().getResponse().getInstallationQuality());
+                            QualityParam = new ArrayList<String>();
+                            QualityParam1 = new ArrayList<String>();
+                            if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("Yes")){
+                                QualityParam1.add("Yes");
+                                ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam1);
+                                adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
+
+                            }else if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("No")){
+                                QualityParam1.add("No");
+                                ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam1);
+                                adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
+                            }
+                            if(response.body().getResponse().getInstallationQuality().getCable().equals("Yes")){
                                 QualityParam.add("Yes");
-                            }else if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("1")){
-                                binding.layoutInstallationparam.etEducationAntivirus.setText("No");
-                                QualityParam.clear();
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParam);
+
+                            }else  if(response.body().getResponse().getInstallationQuality().getCable().equals("No")){
                                 QualityParam.add("No");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParam);
+
                             }
-                            if(response.body().getResponse().getInstallationQuality().getCable().equals("0")){
-                                binding.layoutInstallationparam.etCableCrimped.setText("Yes");
-                                QualityParam.clear();
+                            if(response.body().getResponse().getInstallationQuality().getFace().equals("Yes")){
                                 QualityParam.add("Yes");
-
-                            }else  if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("1")){
-                                binding.layoutInstallationparam.etCableCrimped.setText("No");
-                                QualityParam.clear();
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParam);
+                            }else  if(response.body().getResponse().getInstallationQuality().getFace().equals("No")){
                                 QualityParam.add("No");
-
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParam);
                             }
-                            if(response.body().getResponse().getInstallationQuality().getFace().equals("0")){
-                                binding.layoutInstallationparam.etFacePlate.setText("Yes");
-                            }else  if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("1")){
-                                binding.layoutInstallationparam.etFacePlate.setText("No");
+                            if(response.body().getResponse().getInstallationQuality().getOnt().equals("Yes")){
+                                QualityParam.add("Yes");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParam);
+                            }else  if(response.body().getResponse().getInstallationQuality().getOnt().equals("No")){
+                                QualityParam.add("No");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParam);
                             }
-                            if(response.body().getResponse().getInstallationQuality().getOnt().equals("0")){
-                                binding.layoutInstallationparam.etOntLogin.setText("Yes");
-                            }else  if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("1")){
-                                binding.layoutInstallationparam.etOntLogin.setText("No");
+                            if(response.body().getResponse().getInstallationQuality().getSelfCare().equals("Yes")){
+                                QualityParam.add("Yes");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam);
+                            }else  if(response.body().getResponse().getInstallationQuality().getSelfCare().equals("No")){
+                                QualityParam.add("No");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam);
                             }
-                            if(response.body().getResponse().getInstallationQuality().getSelfCare().equals("0")){
-                                binding.layoutInstallationparam.etEducationCustomer.setText("Yes");
-                            }else  if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("1")){
-                                binding.layoutInstallationparam.etEducationCustomer.setText("No");
+                            if(response.body().getResponse().getInstallationQuality().getSpeed().equals("Yes")){
+                                QualityParam.add("Yes");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParam);
+                            }else  if(response.body().getResponse().getInstallationQuality().getSpeed().equals("No")){
+                                QualityParam.add("No");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParam);
                             }
-                            if(response.body().getResponse().getInstallationQuality().getSpeed().equals("0")){
-                                binding.layoutInstallationparam.etSpeedTest.setText("Yes");
-                            }else  if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("1")){
-                                binding.layoutInstallationparam.etSpeedTest.setText("No");
-                            }
-                            if(response.body().getResponse().getInstallationQuality().getWifi().equals("0")){
-                                binding.layoutInstallationparam.etWifiSsid.setText("Yes");
-                            }else  if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("1")){
-                                binding.layoutInstallationparam.etWifiSsid.setText("No");
-                            }
-                            if(equipmentDetailsLists.size()!=0){
-                                binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(),equipmentDetailsLists));
-                            }
-                            if(response.body().getResponse().getFMSDetails().getFmsfirst()!=null){
-                                FmsType = new ArrayList<String>();
-                                FmsType.add(response.body().getResponse().getFMSDetails().getFmsfirst());
-
-                               *//* adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
-                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);*//*
-                            }
-                            if(response.body().getResponse().getFMSDetails().getFmssecond()!=null){
-                                fmsName = new ArrayList<String>();
-                                fmsName.add(response.body().getResponse().getFMSDetails().getFmssecond());
-                               *//* adaptersecond = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fmsName);
-                                adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutWcrFms.spCustomerEndFmsSec.setAdapter(adaptersecond);*//*
+                            if(response.body().getResponse().getInstallationQuality().getWifi().equals("Yes")){
+                                QualityParam.add("Yes");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParam);
+                            }else  if(response.body().getResponse().getInstallationQuality().getWifi().equals("No")){
+                                QualityParam.add("No");
+                                adapterParam = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
+                                adapterParam.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParam);
                             }*/
+
                             listener();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
@@ -895,15 +976,12 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void nextScreen(){
-        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        ProvisioningFragment provisioningScreenFragment = new ProvisioningFragment();
-        Bundle accountinfo = new Bundle();
-        accountinfo.putString("canId", strCanId);
-        accountinfo.putString("StatusofReport", StatusOfReport);
-        accountinfo.putString("OrderId", OrderId);
-        t.replace(R.id.frag_container, provisioningScreenFragment);
-        provisioningScreenFragment.setArguments(accountinfo);
-        t.commit();
+        Intent i = new Intent(getActivity(), ProvisioningMainActivity.class);
+        i.putExtra("canId", strCanId);
+        i.putExtra("StatusofReport", StatusOfReport);
+        i.putExtra("OrderId", OrderId);
+        startActivity(i);
+        getActivity().finish();
     }
 
 
@@ -965,7 +1043,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
 
-    private void updateWcrComplete(String remark){
+    private void updateWcrComplete(String remark,String latitude,String longitude){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -978,6 +1056,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         wcrCompleteRequest.setSegment(strSegment);
         wcrCompleteRequest.setRemarks(remark);
         wcrCompleteRequest.setWCRguidId(strGuuId);
+        wcrCompleteRequest.setLat(latitude);
+        wcrCompleteRequest.setLong(longitude);
+        wcrCompleteRequest.setSource("App");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.wcrComplete(wcrCompleteRequest);
@@ -1207,7 +1288,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
     }
 
-   /* @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1239,7 +1320,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
         }
     }
-*/
     private void updateWcrEnginer(String insta){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -1329,7 +1409,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         dialog.getWindow().getAttributes().windowAnimations = R.style.SelectMediaDialogTheme;
         dialog.show();
     }*/
-    /*private File getImageFile() throws IOException {
+    private File getImageFile() throws IOException {
         // Create an image file name
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String mFileName = "jpg_"+timeStamp+ "_";
@@ -1337,9 +1417,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
         currentImagePath = mFile.getAbsolutePath();
         return mFile;
-    }*/
+    }
 
-    private void SubmitApproval(String insta){
+    private void SubmitApproval(){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -1347,8 +1427,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         SubmitApprovalRequest submitApprovalRequest = new SubmitApprovalRequest();
         submitApprovalRequest.setAuthkey(Constants.AUTH_KEY);
         submitApprovalRequest.setAction(Constants.SUBMIT_FOR_APPROVAL);
-        submitApprovalRequest.setItemId("");
-        submitApprovalRequest.setItemType("");
+        submitApprovalRequest.setItemId(strGuuId);
+        submitApprovalRequest.setItemType("WCR");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.submitApproval(submitApprovalRequest);

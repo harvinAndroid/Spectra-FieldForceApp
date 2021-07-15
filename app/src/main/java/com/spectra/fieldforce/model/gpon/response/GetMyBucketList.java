@@ -42,109 +42,102 @@ public class GetMyBucketList {
 
     public class Response {
 
-        @SerializedName("order_id")
-
-        private String orderId;
-        @SerializedName("order_type")
-
-        private String orderType;
-        @SerializedName("customerID")
-
+       private String  order_id;
+        private String order_type;
+        private String wcrId;
+        private String irId;
         private String customerID;
-        @SerializedName("customerName")
-
         private String customerName;
-        @SerializedName("podName")
-
-        private String podName;
-        @SerializedName("crm_status")
-
-        private String crmStatus;
-        @SerializedName("holdCategory")
-
+        private String appointmentDate;
+        private String crm_status;
         private String holdCategory;
-        @SerializedName("holdReason")
         private String holdReason;
+        private String vendorName;
+        private String slaStatus;
+        private String areaName;
+        private String product;
+        private String contactPerson;
+        private String contactNo;
 
-        public String getIrId() {
-            return irId;
+        public String getOrder_id() {
+            return order_id;
+        }
+
+        public String getOrder_type() {
+            return order_type;
         }
 
         public String getWcrId() {
             return wcrId;
         }
 
-        private String irId;
-        private String wcrId;
-        private String appointmentDate;
-
-        public String getAppointmentDate() {
-            return appointmentDate;
-        }
-
-        public String getOrderId() {
-            return orderId;
-        }
-
-        public void setOrderId(String orderId) {
-            this.orderId = orderId;
-        }
-
-        public String getOrderType() {
-            return orderType;
-        }
-
-        public void setOrderType(String orderType) {
-            this.orderType = orderType;
+        public String getIrId() {
+            return irId;
         }
 
         public String getCustomerID() {
             return customerID;
         }
 
-        public void setCustomerID(String customerID) {
-            this.customerID = customerID;
-        }
-
         public String getCustomerName() {
             return customerName;
         }
 
-        public void setCustomerName(String customerName) {
-            this.customerName = customerName;
+        public String getAppointmentDate() {
+            return appointmentDate;
         }
 
-        public String getPodName() {
-            return podName;
-        }
-
-        public void setPodName(String podName) {
-            this.podName = podName;
-        }
-
-        public String getCrmStatus() {
-            return crmStatus;
-        }
-
-        public void setCrmStatus(String crmStatus) {
-            this.crmStatus = crmStatus;
+        public String getCrm_status() {
+            return crm_status;
         }
 
         public String getHoldCategory() {
             return holdCategory;
         }
 
-        public void setHoldCategory(String holdCategory) {
-            this.holdCategory = holdCategory;
-        }
-
         public String getHoldReason() {
             return holdReason;
         }
 
-        public void setHoldReason(String holdReason) {
-            this.holdReason = holdReason;
+        public String getVendorName() {
+            return vendorName;
         }
+
+        public String getSlaStatus() {
+            return slaStatus;
+        }
+
+        public String getAreaName() {
+            return areaName;
+        }
+
+        public String getProduct() {
+            return product;
+        }
+
+        public String getContactPerson() {
+            return contactPerson;
+        }
+
+        public String getContactNo() {
+            return contactNo;
+        }
+
+        public String getOrderCreatedOn() {
+            return orderCreatedOn;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        private String orderCreatedOn;
+        private String longitude;
+        private String latitude;
 
     }
 

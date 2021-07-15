@@ -33,6 +33,20 @@ public class WcrCompleteRequest {
         CanId = canId;
     }
 
-    private String Authkey,Action,WCRguidId,Segment,IsHold,Remarks,productSegment,CanId;
+    private String Authkey,Action,WCRguidId,Segment,IsHold,Remarks,productSegment,CanId,Source,Lat,Long;
+
+    public void setSource(String source) {
+        Source = source;
+    }
+
+    public void setLat(String lat) {
+        Lat = lat;
+    }
+
+    public void setLong(String aLong) {
+        Long = aLong;
+    }
+
+    ;
 
 }

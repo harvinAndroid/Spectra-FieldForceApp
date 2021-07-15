@@ -1,4 +1,4 @@
-package com.spectra.fieldforce.fragment;
+package com.spectra.fieldforce.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,22 +7,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.animation.AlphaAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.BucketTabActivity;
-import com.spectra.fieldforce.activity.ProvisioningScreenActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.ProvisionFragmentBinding;
+import com.spectra.fieldforce.fragment.IRFragment;
+import com.spectra.fieldforce.fragment.ProvisioningFragment;
+import com.spectra.fieldforce.fragment.WcrCompletedFragment;
+import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.response.AccInfoResponse;
 import com.spectra.fieldforce.utils.Constants;
@@ -33,18 +34,33 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProvisioningFragment extends Fragment implements View.OnClickListener{
+public class ProvisioningMainActivity extends BaseActivity implements View.OnClickListener{
     private String strCanId,canId,city,area,building,segment,statusReport,orderId;
     private ProvisionFragmentBinding provisionFragmentBinding;
-    public ProvisioningFragment() {
+    private AlphaAnimation inAnimation;
+    private AlphaAnimation outAnimation;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        provisionFragmentBinding = DataBindingUtil.setContentView(this, R.layout.provision_fragment);
+        Bundle bundle=getIntent().getExtras();
+        String s=bundle.getString("name");
+        canId = bundle.getString("canId");
+        if(bundle!=null){
+            orderId = bundle.getString("OrderId");
+        }
+
+        getAccountDetails();
+
+        provisionFragmentBinding.searchtoolbar.rlBack.setOnClickListener(this);
+
+        init();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        provisionFragmentBinding = ProvisionFragmentBinding.inflate(inflater, container, false);
-        return provisionFragmentBinding.getRoot();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -55,31 +71,17 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
     }
 
     private void nextScreen(){
-        Intent i = new Intent(getActivity(), BucketTabActivity.class);
+        Intent i = new Intent(this, BucketTabActivity.class);
         startActivity(i);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        getActivity().finish();
-    }
-
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        canId = requireArguments().getString("canId");
-        if(getArguments()!=null){
-            orderId = requireArguments().getString("OrderId");
-        }
-
-        getAccountDetails();
-
-        provisionFragmentBinding.searchtoolbar.rlBack.setOnClickListener(this);
-
-        init();
-
+        finish();
     }
 
     public void getAccountDetails() {
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        provisionFragmentBinding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        provisionFragmentBinding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_ACCOUNT_INFO);
@@ -91,6 +93,10 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
             public void onResponse(Call<AccInfoResponse> call, Response<AccInfoResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     if(response.body().status.equals("Success")){
+                        outAnimation = new AlphaAnimation(1f, 0f);
+                        outAnimation.setDuration(200);
+                        provisionFragmentBinding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                        provisionFragmentBinding.progressLayout.progressOverlay.setVisibility(View.GONE);
                         try {
                             provisionFragmentBinding.setProvisioning(response.body().response);
                             segment = response.body().response.segment;
@@ -101,7 +107,7 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
                             e.printStackTrace();
                         }
                     }else if(response.body().status.equals("Failure")){
-                        Toast.makeText(getContext(),"Account Id (CAN Id) does not exist or Inactive.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProvisioningMainActivity.this,"Account Id (CAN Id) does not exist or Inactive.",Toast.LENGTH_LONG).show();
                         nextScreen();
                     }
 
@@ -111,6 +117,7 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
 
             @Override
             public void onFailure(Call<AccInfoResponse> call, Throwable t) {
+                provisionFragmentBinding.progressLayout.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -133,53 +140,57 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
         if(statusReport.equals("Installation Pending")||statusReport.equals("Pending")||statusReport.equals("Installation On Hold")){
             provisionFragmentBinding.tvWcr.setText("WCR");
             provisionFragmentBinding.tvWcr.setOnClickListener(v -> {
-                @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
                 WcrFragment wcrFragment = new WcrFragment();
                 Bundle accountinfo = new Bundle();
                 accountinfo.putString("StatusofReport",statusReport);
                 accountinfo.putString("canId", canId);
                 accountinfo.putString("OrderId",orderId);
-                t1.replace(R.id.frag_container, wcrFragment);
                 wcrFragment.setArguments(accountinfo);
-                t1.commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frag_container, wcrFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
             });
         }else if(statusReport.equals("Installation Completed")|| statusReport.equals("Completed")){
             provisionFragmentBinding.tvWcr.setText("WCR Completed");
             provisionFragmentBinding.tvWcr.setOnClickListener(v -> {
-                @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
                 WcrCompletedFragment wcrCompletedFragment = new WcrCompletedFragment();
-                Bundle accountinfo1 = new Bundle();
-                accountinfo1.putString("canId", canId);
-                accountinfo1.putString("StatusofReport",statusReport);
-                accountinfo1.putString("OrderId",orderId);
-                t.replace(R.id.frag_container, wcrCompletedFragment);
-                wcrCompletedFragment.setArguments(accountinfo1);
-                t.commit();
+                Bundle accountinfo = new Bundle();
+                accountinfo.putString("canId", canId);
+                accountinfo.putString("StatusofReport",statusReport);
+                accountinfo.putString("OrderId",orderId);
+                wcrCompletedFragment.setArguments(accountinfo);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frag_container, wcrCompletedFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             });
         }
     }
 
     private void init(){
         provisionFragmentBinding.tvProvisioning.setOnClickListener(v -> {
-            Intent i = new Intent(getActivity(), ProvisioningScreenActivity.class);
+            Intent i = new Intent(this, ProvisioningScreenActivity.class);
           //  i.putExtra("name", name);
             i.putExtra("canId", canId);
             i.putExtra("StatusofReport",statusReport);
             i.putExtra("OrderId",orderId);
             startActivity(i);
-            getActivity().finish();
+           finish();
         });
 
         provisionFragmentBinding.tvIr.setOnClickListener(v -> {
-            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
             IRFragment irFragment = new IRFragment();
             Bundle accountinfo = new Bundle();
             accountinfo.putString("canId", canId);
             accountinfo.putString("StatusofReport",statusReport);
             accountinfo.putString("OrderId",orderId);
-            t.replace(R.id.frag_container, irFragment);
             irFragment.setArguments(accountinfo);
-            t.commit();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frag_container, irFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
     }

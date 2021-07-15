@@ -98,6 +98,8 @@
         <activity android:name=".activity.SpectraFfaActivity"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".activity.ProvisioningMainActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

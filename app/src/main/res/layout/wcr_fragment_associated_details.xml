@@ -68,7 +68,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_1sdp"
                         android:backgroundTint="@color/color_light_blue"
-                        android:focusableInTouchMode="true"
                         android:hint="@string/link_budget"
                         android:text="@{associated.linkBudget}"
                         android:imeOptions="actionNext"

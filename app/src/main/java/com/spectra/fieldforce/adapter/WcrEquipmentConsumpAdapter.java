@@ -111,11 +111,9 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
                             Bundle b = new Bundle();
                             b.putString("canId", canid);
                             AppCompatActivity activity = (AppCompatActivity) context;
-                            Fragment myFragment = new IRFragment();
+                            Fragment myFragment = new WcrFragment();
                             myFragment.setArguments(b);
                             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
-
-
                         }
 
                     } catch (NumberFormatException e) {

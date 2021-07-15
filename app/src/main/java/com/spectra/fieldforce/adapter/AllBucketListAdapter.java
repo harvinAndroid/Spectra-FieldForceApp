@@ -48,6 +48,8 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     AdpterAllBucketListBinding binding;
     private AlphaAnimation inAnimation,outAnimation;
 
+ /*   contactPerson,contactNo*/
+
     public AllBucketListAdapter(FragmentActivity activity, List<GetAllBucketList.Response> allbucketlist) {
         this.context = activity;
         this.allbucketlist = allbucketlist;
@@ -84,8 +86,10 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
            // Toast.makeText(context,"Already Assigned",Toast.LENGTH_LONG).show();
         }
         holder.binding.tvAdd.setOnClickListener(v -> {
-            AllBucketListAdapter.this.addItemToBucket(itemList.getID(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), "",
-                    itemList.getStatus(), itemList.getHoldCategory(),"",  "");
+            AllBucketListAdapter.this.addItemToBucket(itemList.getID(),itemList.getOrderType(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), "",
+                    itemList.getStatus(), itemList.getHoldCategory(),"",  "",
+                    itemList.getAreaName(),itemList.getSlaStatus(),itemList.getVendorName(),itemList.getCreatedOn(),
+                    itemList.getProduct(),itemList.getContactPerson(),itemList.getContactNo(),itemList.getWcrslaclock(),itemList.getIrslaclock());
 
             if(itemList.getOrderType().equals("WCR")){
                 updateEnginer("updateWCREngineer",  itemList.getWcrId());
@@ -135,7 +139,8 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     }
 
 
-    private void addItemToBucket(String id, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String networkTechnology){
+    private void addItemToBucket(String id,String OrderType, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String networkTechnology,String AreaName
+    ,String Sla,String vendorName,String createOn,String Product,String cperson,String Num,String Wcrslaclock,String Irslaclock){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -144,22 +149,32 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         String vendor =sp1.getString("VenderCode", null);
         String enggId = sp1.getString("EnggId", null);
         String enggName =sp1.getString("EnggName", null);
+
         AddBucketListRequest addBucketListRequest = new AddBucketListRequest();
         addBucketListRequest.setAuthkey(Constants.AUTH_KEY);
         addBucketListRequest.setAction(Constants.ADD_ORDER_TOBUCKET);
         addBucketListRequest.setOrder_id(id);
+        addBucketListRequest.setOrder_type(OrderType);
         addBucketListRequest.setWCRId(wcrId);
         addBucketListRequest.setIRId(irId);
         addBucketListRequest.setCustomerID(canId);
         addBucketListRequest.setCustomerName(customerName);
-        addBucketListRequest.setPODName(podName);
         addBucketListRequest.setCRM_status(status);
         addBucketListRequest.setHoldCategory(holdCategory);
         addBucketListRequest.setHoldReason(holdReason);
         addBucketListRequest.setEngineerName(enggName);
-        addBucketListRequest.setNetworkTechnology(networkTechnology);
+        addBucketListRequest.setVendorName(vendorName);
+        addBucketListRequest.setSlaStatus(Sla);
+        addBucketListRequest.setAreaName(AreaName);
+        addBucketListRequest.setOrderCreatedOn(createOn);
+        addBucketListRequest.setAppointmentDate("");
+        addBucketListRequest.setProduct(Product);
+        addBucketListRequest.setContactPerson(cperson);
+        addBucketListRequest.setContactNo(Num);
         addBucketListRequest.setEngineerID(enggId);
         addBucketListRequest.setVendorCode(vendor);
+        addBucketListRequest.setWCRSlaClock(Wcrslaclock);
+        addBucketListRequest.setIRSlaClock(Irslaclock);
         addBucketListRequest.setOrder_type(orderType);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemToBucket(addBucketListRequest);
