@@ -29,6 +29,15 @@ public class AccInfoResponse {
         public String statusofReport;
         @SerializedName("DOAFlag")
         public String dOAFlag;
+      //  private Boolean WCRStatus,IRStatus;
+
+      /*  public Boolean getWCRStatus() {
+            return WCRStatus;
+        }
+
+        public Boolean getIRStatus() {
+            return IRStatus;
+        }*/
 
         private String Address;
 

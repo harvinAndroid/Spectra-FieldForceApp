@@ -37,7 +37,6 @@
             android:id="@+id/et_speed_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_1sdp"
             android:backgroundTint="@color/color_light_blue"
             android:drawableEnd="@drawable/ic_expand_down"
             android:focusable="false"

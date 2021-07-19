@@ -53,7 +53,7 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,strsubItemId,strGuIId,strCanId,maxCap,strItemname, StrSubItemName,OrderId,StatusOfReport;
-
+    private Boolean WcrStatus;
 
     public WcrEquipmentConsumption() {
 
@@ -73,6 +73,7 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
+        WcrStatus = requireArguments().getBoolean("WcrStatus");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Add Equipment");
         init();
@@ -370,6 +371,8 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
         bundle.putString("canId", strCanId);
         bundle.putString("StatusofReport", StatusOfReport);
         bundle.putString("OrderId", OrderId);
+        bundle.putBoolean("WcrStatus", WcrStatus);
+
         t1.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(bundle);
         t1.commit();

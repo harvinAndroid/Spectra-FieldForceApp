@@ -119,11 +119,11 @@ public class ItemConsumptionDetailAdapter extends RecyclerView.Adapter<ItemConsu
                 int status = Objects.requireNonNull(response.body()).getStatus();
                 if (status==1) {
                     Intent i = new Intent(context, MainActivity.class);
-                    Toast.makeText(context,"Item Deleted successfully",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                     context.startActivity(i);
                     ((Activity)context).finish();
                 }else{
-                    Toast.makeText(context,"Something went wrong...",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
 

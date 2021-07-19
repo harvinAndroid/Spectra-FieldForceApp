@@ -36,6 +36,7 @@ import retrofit2.Response;
 
 public class ProvisioningMainActivity extends BaseActivity implements View.OnClickListener{
     private String strCanId,canId,city,area,building,segment,statusReport,orderId;
+    private Boolean  IrStatus,WcrStatus;
     private ProvisionFragmentBinding provisionFragmentBinding;
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
@@ -49,9 +50,11 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
         canId = bundle.getString("canId");
         if(bundle!=null){
             orderId = bundle.getString("OrderId");
+
         }
 
         getAccountDetails();
+
 
         provisionFragmentBinding.searchtoolbar.rlBack.setOnClickListener(this);
 
@@ -101,6 +104,8 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
                             provisionFragmentBinding.setProvisioning(response.body().response);
                             segment = response.body().response.segment;
                             statusReport = response.body().response.statusofReport;
+                            IrStatus = response.body().response.iRStatus;
+                            WcrStatus = response.body().response.wCRStatus;
                             setDate();
                            // nextScreen();
                         } catch (Exception e) {
@@ -145,6 +150,7 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
                 accountinfo.putString("StatusofReport",statusReport);
                 accountinfo.putString("canId", canId);
                 accountinfo.putString("OrderId",orderId);
+                accountinfo.putBoolean("WcrStatus",WcrStatus);
                 wcrFragment.setArguments(accountinfo);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frag_container, wcrFragment);
@@ -160,6 +166,7 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
                 accountinfo.putString("canId", canId);
                 accountinfo.putString("StatusofReport",statusReport);
                 accountinfo.putString("OrderId",orderId);
+              //  accountinfo.putBoolean("IrStatus",IrStatus);
                 wcrCompletedFragment.setArguments(accountinfo);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frag_container, wcrCompletedFragment);
@@ -186,6 +193,8 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
             accountinfo.putString("canId", canId);
             accountinfo.putString("StatusofReport",statusReport);
             accountinfo.putString("OrderId",orderId);
+           // accountinfo.putBoolean("WcrStatus",WcrStatus);
+            accountinfo.putBoolean("IrStatus",IrStatus);
             irFragment.setArguments(accountinfo);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.frag_container, irFragment);

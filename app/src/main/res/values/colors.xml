@@ -14,4 +14,7 @@
     <color name="color_light_blue">#c0d4e7</color>
     <color name="colorPrimaryDark">#293A48</color>
     <color name="gray">#ededed</color>
+    <color name="green">#00FF00</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="col">#FFC200</color>
 </resources>

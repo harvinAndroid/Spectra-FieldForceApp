@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+        <variable
+            name="Ins"
+            type="com.spectra.fieldforce.model.gpon.response.GetInsResponse.Response" />
+
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include
+        android:id="@+id/searchtoolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:background="@color/colorButton"
+        android:layout_height="?attr/actionBarSize" />
+
+    <TextView
+        android:id="@+id/tv_customer_account"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:gravity="center|start"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_4sdp"
+        android:text="@string/can_id_ont_serial_no"
+        android:textSize="@dimen/_14sdp"
+        android:layout_margin="@dimen/_10sdp" />
+
+    <EditText
+        android:id="@+id/search_account_num"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_customer_account"
+        android:background="@drawable/textinputborder"
+        android:paddingStart="@dimen/_10sdp"
+        android:textSize="@dimen/_14sdp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center|start"
+        android:paddingEnd="@dimen/_10sdp"
+        android:layout_margin="@dimen/_10sdp"
+       />
+
+    <TextView
+        android:id="@+id/tv_get_profile_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_account_num"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:gravity="center"
+        android:text="@string/get_ins_info"
+        android:textSize="@dimen/_12sdp"
+        android:textAllCaps="true"
+        android:layout_marginStart="@dimen/_50sdp"
+        android:layout_marginEnd="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_background"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linear"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_get_profile_info"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/gray"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
+            android:weightSum="1"
+            android:layout_marginEnd="@dimen/_10sdp"
+
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Active Status: "
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_14sdp"  />
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Power level :"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Alarm Details  :"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_14sdp"  />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fibre Distance :"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="IP Address :"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_14sdp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{Ins.activeStatus}"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_14sdp"  />
+
+
+
+                <TextView
+                    android:id="@+id/tv_power"
+                    android:layout_width="match_parent"
+                    android:text="@{Ins.powerLevel}"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/alarm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{Ins.alarmsInfo}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_14sdp"  />
+
+                <TextView
+                    android:id="@+id/fibre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{Ins.fiberDistance}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/ip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{Ins.IPAddress}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_14sdp" />
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+        <include layout="@layout/progress"
+            android:id="@+id/progressLayout"
+            />
+
+    </LinearLayout>
+
+  <!--  <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/gray"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_get_profile_info"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@{`Active Status :  `+ Ins.activeStatus}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp"  />
+
+
+
+        <TextView
+            android:id="@+id/tv_power"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Power level :  `+Ins.powerLevel }"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/alarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Alarm Details  : ` +Ins.alarmsInfo}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp"  />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Fibre Distance :  ` + Ins.fiberDistance}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`IP Address :  ` + Ins.IPAddress}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />
+
+
+        <include layout="@layout/progress"
+            android:id="@+id/progressLayout"
+            />
+    </LinearLayout>-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

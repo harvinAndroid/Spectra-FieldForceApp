@@ -100,7 +100,7 @@ public class WcrAddManholeAdapter extends RecyclerView.Adapter<WcrAddManholeAdap
                         if (response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             AppCompatActivity activity1 = (AppCompatActivity) context;
-                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), SRDetailFragment.class.getSimpleName()).addToBackStack(null
+                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), WcrFragment.class.getSimpleName()).addToBackStack(null
                             ).commit();
                         }
 

@@ -94,6 +94,7 @@ public class Constants {
     public static final String UPDATE_IRINSTALLATION = "updateIRInstallation";
   public static final String HOLD_ORDER_INSTALLATION = "holdOrderInstallation";
   public static final String UPDATE_APPOINTMENT = "updateAppointment";
+  public static final String  GET_POWER_BYONT = "getPowerByONT";
 
 
 }

@@ -44,7 +44,7 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
     private ArrayList<String> ManholeType;
     private List<GetFibreCable.Datum> fibreCable;
     private String strCanId ,strFibre,strGuIId,OrderId,StatusOfReport;
-
+    private Boolean WcrStatus;
     public WcrAddManholeFragment() {
     }
 
@@ -62,6 +62,7 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
+        WcrStatus =  requireArguments().getBoolean("WcrStatus");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Add Manhole");
 
@@ -228,6 +229,7 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
         accountinfo.putString("canId", strCanId);
         accountinfo.putString("StatusofReport", StatusOfReport);
         accountinfo.putString("OrderId", OrderId);
+        accountinfo.putBoolean("WcrStatus", WcrStatus);
         t.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(accountinfo);
         t.commit();

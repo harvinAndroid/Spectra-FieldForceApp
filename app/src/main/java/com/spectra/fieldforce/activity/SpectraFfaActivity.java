@@ -241,7 +241,12 @@ public class SpectraFfaActivity extends BaseActivity implements NavigationView.O
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
                 //  activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
             });
-
+            TextView ins = dView.findViewById(R.id.nav_gpon_inas);
+            ins.setOnClickListener(v -> {
+                drawerLayout.closeDrawers();
+                switchActivity(GetInsActivity.class);
+                finish();
+            });
             TextView btnWiFi = dView.findViewById(R.id.nav_Wifi);
             btnWiFi.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();

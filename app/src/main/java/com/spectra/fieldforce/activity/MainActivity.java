@@ -248,6 +248,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 i.setData(Uri.parse(Constants.URL));
                 startActivity(i);
             });
+            TextView ins = dView.findViewById(R.id.nav_gpon_inas);
+            ins.setOnClickListener(v -> {
+                drawerLayout.closeDrawers();
+               switchActivity(GetInsActivity.class);
+               finish();
+            });
             TextView btnLogout = dView.findViewById(R.id.nav_logout);
             btnLogout.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();

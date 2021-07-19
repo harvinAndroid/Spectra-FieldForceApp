@@ -101,8 +101,8 @@
             android:background="@color/ColorLightGray"
             android:layout_height="@dimen/_1sdp"/>
 
-       <!-- <TextView
-            android:id="@+id/nav_gpon"
+        <TextView
+            android:id="@+id/nav_gpon_inas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -113,10 +113,10 @@
             android:drawableLeft="@drawable/dashboard"
             android:drawablePadding="@dimen/_20sdp"
             android:gravity="start|center"
-            android:text="@string/gpon"
+            android:text="@string/ins"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp" />-->
-       <!-- <View
+            android:textSize="18sp" />
+        <View
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_20sdp"
@@ -124,7 +124,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:background="@color/ColorLightGray"
-            android:layout_height="@dimen/_1sdp"/>-->
+            android:layout_height="@dimen/_1sdp"/>
 
         <TextView
             android:id="@+id/nav_logout"

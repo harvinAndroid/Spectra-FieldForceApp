@@ -81,6 +81,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     ArrayAdapter<String> adaptertype;
     ArrayAdapter<String> adaptercpe;
     LocationManager locationManager;
+    Boolean IrStatus;
     String latitude, longitude;
     private static final int REQUEST_LOCATION = 1;
     public IRFragment() {
@@ -103,10 +104,15 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         orderId = requireArguments().getString("OrderId");
         binding.tvIrStatus.setText("IR Status:"+ strStatusofReport);
 
-      /*  strStatusofReport = requireArguments().getString("StatusofReport");
-        binding.tvConsumptionStatus.setText("Consumption Status: " + strStatusofReport );*/
+        IrStatus = requireArguments().getBoolean("IrStatus");
+        String strIrStatus = String.valueOf(IrStatus);
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("IR");
+        if(strIrStatus.equals("true")){
+            binding.linea18.setVisibility(View.VISIBLE);
+        }else{
+            binding.linea18.setVisibility(View.GONE);
+        }
         getIrInfo();
         init();
         setType();
@@ -189,6 +195,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             bundle.putString("canId",strCanId);
             bundle.putString("StatusofReport", strStatusofReport);
             bundle.putString("OrderId",orderId);
+            bundle.putBoolean("IrStatus",IrStatus);
+
 
             t1.replace(R.id.frag_container, irEquipmentConsumption);
             irEquipmentConsumption.setArguments(bundle);
@@ -909,6 +917,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         accountinfo.putString("canId", strCanId);
        accountinfo.putString("StatusofReport",strStatusofReport);
        accountinfo.putString("OrderId",orderId);
+        accountinfo.putBoolean("IrStatus",IrStatus);
+
         t.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);
         t.commit();

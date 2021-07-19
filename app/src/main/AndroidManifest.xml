@@ -92,7 +92,11 @@
         <activity android:name=".activity.BucketTabActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activity.GetInsActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".activity.ProvisioningScreenActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.SpectraFfaActivity"

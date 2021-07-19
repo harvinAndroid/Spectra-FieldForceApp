@@ -54,7 +54,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,strsubItemId,strGuIId,strCanId,maxCap,strItemname, StrSubItemName,OrderId,StatusOfReport;
-
+    private Boolean IrStatus;
 
     public IREquipmentConsumption() {
 
@@ -74,6 +74,8 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
+        IrStatus = requireArguments().getBoolean("IrStatus");
+
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Add Equipment");
 
@@ -372,6 +374,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         bundle.putString("canId", strCanId);
         bundle.putString("StatusofReport", StatusOfReport);
         bundle.putString("OrderId", OrderId);
+        bundle.putBoolean("IrStatus", IrStatus);
         t1.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(bundle);
         t1.commit();

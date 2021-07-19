@@ -18,6 +18,7 @@ import com.spectra.fieldforce.model.gpon.request.AddProvisioningRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.BucketListRequest;
 import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
+import com.spectra.fieldforce.model.gpon.request.GetINSRequest;
 import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
 import com.spectra.fieldforce.model.gpon.request.IRCompleteRequest;
@@ -43,6 +44,7 @@ import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
 import com.spectra.fieldforce.model.gpon.response.GetFibreCable;
 import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetInsResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemConumptionByIdResponse;
 import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
 import com.spectra.fieldforce.model.gpon.response.GetManholeById;
@@ -285,5 +287,8 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<CommonClassResponse> updateAppointmentDate(@Body UpdateAppointmentRequest updateAppointmentRequest);
+
+    @POST ("index.php")
+    Call<GetInsResponse> getInsDetails(@Body GetINSRequest getINSRequest);
 
 }

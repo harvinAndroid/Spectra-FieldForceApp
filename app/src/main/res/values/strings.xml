@@ -220,6 +220,11 @@
     <string name="click_the_image">Click the Image</string>
     <string name="complete_wcr">Complete WCR</string>
     <string name="submit_for_appoval">Submit for Appoval</string>
+    <string name="ins">INS</string>
+    <string name="get_ins_info">Get INS Info</string>
+    <string name="can_id_ont_serial_no">CAN ID/ONT Serial No.</string>
+    <string name="check_ins">Check INS</string>
+    <string name="cancel">Cancel</string>
 
 
     <!-- <string name="item_type">Item Type</string>-->
