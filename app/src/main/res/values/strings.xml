@@ -220,10 +220,10 @@
     <string name="click_the_image">Click the Image</string>
     <string name="complete_wcr">Complete WCR</string>
     <string name="submit_for_appoval">Submit for Appoval</string>
-    <string name="ins">INS</string>
-    <string name="get_ins_info">Get INS Info</string>
+    <string name="ins">INAS Power</string>
+    <string name="get_ins_info">Get INAS Info</string>
     <string name="can_id_ont_serial_no">CAN ID/ONT Serial No.</string>
-    <string name="check_ins">Check INS</string>
+    <string name="check_ins">Check INAS</string>
     <string name="cancel">Cancel</string>
 
 

@@ -46,12 +46,13 @@ public class Response {
     private String activeStatus;
     @SerializedName("IPAddress")
     private String iPAddress;
-
-    public String getMessaage() {
-        return Messaage;
+    @SerializedName("Message")
+    private String Message;
+    public String getMessage() {
+        return Message;
     }
 
-    private String Messaage;
+
 
     public String getFiberDistance() {
         return fiberDistance;

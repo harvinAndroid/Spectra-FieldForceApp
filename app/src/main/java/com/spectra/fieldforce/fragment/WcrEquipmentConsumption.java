@@ -53,7 +53,7 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,strsubItemId,strGuIId,strCanId,maxCap,strItemname, StrSubItemName,OrderId,StatusOfReport;
-    private Boolean WcrStatus;
+
 
     public WcrEquipmentConsumption() {
 
@@ -73,7 +73,7 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
-        WcrStatus = requireArguments().getBoolean("WcrStatus");
+
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Add Equipment");
         init();
@@ -140,7 +140,7 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
-        itemType.add("WCR");
+            itemType.add("IR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spType.setAdapter(adapter);
@@ -331,7 +331,7 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
         addItem_Consumption.setItem(strItemType);
         addItem_Consumption.setSubItem(strsubItemId);
         addItem_Consumption.setItemType(strItemTypeData);
-        addItem_Consumption.setConsumptionType("111260000");
+        addItem_Consumption.setConsumptionType("111260001");
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
@@ -371,7 +371,6 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
         bundle.putString("canId", strCanId);
         bundle.putString("StatusofReport", StatusOfReport);
         bundle.putString("OrderId", OrderId);
-        bundle.putBoolean("WcrStatus", WcrStatus);
 
         t1.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(bundle);

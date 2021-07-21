@@ -134,7 +134,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
 
-        GetINSRequest getINSRequest = new GetINSRequest(Constants.GET_POWER_BYONT,Constants.AUTH_KEY,account);
+        GetINSRequest getINSRequest = new GetINSRequest(Constants.GET_POWER_BYONT,Constants.AUTH_KEY,account,account);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetInsResponse> call = apiService.getInsDetails(getINSRequest);
@@ -157,7 +157,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                             buttonInsDialog(Power,ActStatus,Alarm,ip,Distance);
 
                         } else if (response.body().getStatus().equals("Failure")) {
-                            Toast.makeText(ProvisioningScreenActivity.this, response.body().getResponse().getMessaage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProvisioningScreenActivity.this, response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -221,12 +221,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
         else if (Alarm.equals("dgi")) {
             alarm.setTextColor(getResources().getColor(R.color.yellow));
         }
-        tvcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
+        tvcancel.setOnClickListener(v -> alertDialog.dismiss());
 
 
     }

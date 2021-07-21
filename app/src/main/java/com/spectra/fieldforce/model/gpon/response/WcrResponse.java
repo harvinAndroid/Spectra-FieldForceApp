@@ -620,6 +620,18 @@ public class WcrResponse {
         @SerializedName("ProductSegment")
         private String productSegment;
 
+        public String getDOAFlag() {
+            return DOAFlag;
+        }
+
+        private String DOAFlag;
+
+        public String getShowHold() {
+            return ShowHold;
+        }
+
+        private String  ShowHold;
+
         public String getBusinessSegment() {
             return businessSegment;
         }

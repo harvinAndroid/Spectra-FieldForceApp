@@ -69,7 +69,7 @@ public class GetInsActivity extends BaseActivity implements View.OnClickListener
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
 
-        GetINSRequest getINSRequest = new GetINSRequest(Constants.GET_POWER_BYONT,Constants.AUTH_KEY,account);
+        GetINSRequest getINSRequest = new GetINSRequest(Constants.GET_POWER_BYONT,Constants.AUTH_KEY,account,account);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetInsResponse> call = apiService.getInsDetails(getINSRequest);
@@ -118,7 +118,8 @@ public class GetInsActivity extends BaseActivity implements View.OnClickListener
                             }
 
                         } else if (response.body().getStatus().equals("Failure")) {
-                          Toast.makeText(GetInsActivity.this, response.body().getResponse().getMessaage(), Toast.LENGTH_LONG).show();
+                            binding.linear.setVisibility(View.GONE);
+                            Toast.makeText(GetInsActivity.this, response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

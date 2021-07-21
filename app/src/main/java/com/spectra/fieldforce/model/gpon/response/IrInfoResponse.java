@@ -565,6 +565,17 @@ public class IrInfoResponse {
         @SerializedName("MACShared")
         @Expose
         private String mACShared;
+        public String getDOAFlag() {
+            return DOAFlag;
+        }
+
+        private String DOAFlag;
+
+        public String getShowHold() {
+            return ShowHold;
+        }
+
+        private String ShowHold;
 
         public String getBusinessSegment() {
             return businessSegment;

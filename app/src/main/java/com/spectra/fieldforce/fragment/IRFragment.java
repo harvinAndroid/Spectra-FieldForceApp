@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.spectra.fieldforce.activity.BucketTabActivity;
 import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.adapter.IRItemConsumptionListAdapter;
@@ -42,6 +48,7 @@ import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
 import com.spectra.fieldforce.model.gpon.request.IRCompleteRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendCodeIRRequest;
+import com.spectra.fieldforce.model.gpon.request.SubmitApprovalRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCpeMacRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateGeneralDetails;
 import com.spectra.fieldforce.model.gpon.request.UpdateIREngineer;
@@ -82,8 +89,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     ArrayAdapter<String> adaptercpe;
     LocationManager locationManager;
     Boolean IrStatus;
-    String latitude, longitude;
+    String latitude, longitude,doa;
     private static final int REQUEST_LOCATION = 1;
+    FusedLocationProviderClient mFusedLocationClient;
+    int PERMISSION_ID = 44;
     public IRFragment() {
 
     }
@@ -103,7 +112,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         strStatusofReport = requireArguments().getString("StatusofReport");
         orderId = requireArguments().getString("OrderId");
         binding.tvIrStatus.setText("IR Status:"+ strStatusofReport);
-
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         IrStatus = requireArguments().getBoolean("IrStatus");
         String strIrStatus = String.valueOf(IrStatus);
         binding.searchtoolbar.rlBack.setOnClickListener(this);
@@ -141,7 +150,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         adaptertype = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
         adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
-
+        binding.tvApproval.setOnClickListener(view -> SubmitApproval());
         binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
         binding.spHoldCategory.setOnItemSelectedListener(this);
 
@@ -183,6 +192,50 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.layoutInstallationparam.spDns.setOnItemSelectedListener(this);
         binding.layoutInstallationparam.etSelfcare.setOnClickListener(v-> binding.layoutInstallationparam.spSelfcare.performClick());
         binding.layoutInstallationparam.spSelfcare.setOnItemSelectedListener(this);
+    }
+
+    private void SubmitApproval(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        SubmitApprovalRequest submitApprovalRequest = new SubmitApprovalRequest();
+        submitApprovalRequest.setAuthkey(Constants.AUTH_KEY);
+        submitApprovalRequest.setAction(Constants.SUBMIT_FOR_APPROVAL);
+        submitApprovalRequest.setItemId(strGuiID);
+        submitApprovalRequest.setItemType("WCR");
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.submitApproval(submitApprovalRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
     }
 
 
@@ -244,11 +297,12 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             if(remark.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
             }else{
-                locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                getLastLocation();
+               /* locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
                 if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     OnGPS();
                 } else {
-                    getLocation();
+                    getLocation();*/
                     if (installationItemLists.size() == 0 || installationItemLists == null) {
                         Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
                     } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
@@ -256,7 +310,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                     } else {
                         updateIR(remark,latitude,longitude);
                     }
-                }
+             //   }
             }
         });
 
@@ -545,20 +599,26 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         strGuiID = response.body().getResponse().getIr().getIrguid();
                         strSegment = response.body().getResponse().getIr().getBusinessSegment();
                         str_provisionId = response.body().getResponse().getGeneral().getProvisionId();
+                        String strHold = response.body().getResponse().getIr().getShowHold();
+                        if(strHold.equals("true")){
+                            binding.linea18.setVisibility(View.VISIBLE);
+                        }else{
+                            binding.linea18.setVisibility(View.GONE);
+                        }
                         itemConsumtions = (ArrayList<IrInfoResponse.ItemConsumtion>) response.body().getResponse().getItemConsumtionList();
                         binding.layoutItemcousumption.rvIrItemlist.setHasFixedSize(true);
                         binding.layoutItemcousumption.rvIrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        straddition = itemConsumtions.get(0).getItemType();
+                        if(straddition.equals("Additional")&& strSegment.equals("Home")){
+                            binding.tvApproval.setVisibility(View.VISIBLE);
+                        }
+                        doa = response.body().getResponse().getIr().getDOAFlag();
+                        if(doa.equals("No")){
+                            binding.tvApproval.setVisibility(View.VISIBLE);
+                        }
                         if(itemConsumtions.size()!=0){
-                         //   straddition = installationItemLists.get(0).getItemType();
-                       /* if(strSegment.equals("Home")){
-                            if(straddition.equals("Additional")){
-                                binding.tvApproval.setVisibility(View.VISIBLE);
-                            }
-                        }*/
                             binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(),itemConsumtions));
                         }
-
-
                         installationItemLists = (ArrayList<IrInfoResponse.InstallationItemList>) response.body().getResponse().getInstallationItemList();
                         binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                         binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -569,7 +629,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         binding.layoutEnggDetails.setEngineer(response.body().getResponse().getEngineer());
                         binding.setHold(response.body().getResponse().getEngineer());
                         String cpe = response.body().getResponse().getIr().getMACShared();
-                      //  Toast.makeText(getContext(), cpe, Toast.LENGTH_LONG).show();
                         if(cpe!=null&& !cpe.equals("")){
                             irCpeMac = new ArrayList<String>();
                             irCpeMacid = new ArrayList<String>();
@@ -922,6 +981,111 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         t.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);
         t.commit();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
+        // check if permissions are given
+        if (checkPermissions()) {
+
+            // check if location is enabled
+            if (isLocationEnabled()) {
+
+                // getting last
+                // location from
+                // FusedLocationClient
+                // object
+                mFusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
+                    Location location = task.getResult();
+                    if (location == null) {
+                        requestNewLocationData();
+                    } else {
+                        latitude= String.valueOf(location.getLatitude());
+                        longitude = String.valueOf((location.getLongitude()));
+                    }
+                });
+            } else {
+                Toast.makeText(getActivity(), "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        } else {
+            // if permissions aren't available,
+            // request for permissions
+            requestPermissions();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void requestNewLocationData() {
+
+        // Initializing LocationRequest
+        // object with appropriate methods
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(2);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setNumUpdates(1);
+
+        // setting LocationRequest
+        // on FusedLocationClient
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+    }
+
+    private LocationCallback mLocationCallback = new LocationCallback() {
+
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Location mLastLocation = locationResult.getLastLocation();
+            latitude = String.valueOf(mLastLocation.getLatitude());
+            longitude = String.valueOf(mLastLocation.getLongitude());
+        }
+    };
+
+    // method to check for permissions
+    private boolean checkPermissions() {
+        return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+        // If we want background location
+        // on Android 10.0 and higher,
+        // use:
+        // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // method to request for permissions
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
+    }
+
+    // method to check
+    // if location is enabled
+    private boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    // If everything is alright then
+    @Override
+    public void
+    onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_ID) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (checkPermissions()) {
+            getLastLocation();
+        }
     }
 
     private void updateCpeMac(){

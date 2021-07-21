@@ -62,7 +62,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,strItemname;
     private  String strsubItemId,strGuIId,strCanId,OrderId,StatusOfReport,maxCap,StrSubItemName;
-    private Boolean WcrStatus;
 
     public WcrItemConsumption() {
 
@@ -82,7 +81,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
-        WcrStatus = requireArguments().getBoolean("WcrStatus");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText(AppConstants.ITEM_CONSUMPTION);
         init();
@@ -379,7 +377,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         accountinfo.putString("canId", strCanId);
         accountinfo.putString("StatusofReport", StatusOfReport);
         accountinfo.putString("OrderId", OrderId);
-        accountinfo.putBoolean("WcrStatus", WcrStatus);
         t1.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(accountinfo);
         t1.commit();

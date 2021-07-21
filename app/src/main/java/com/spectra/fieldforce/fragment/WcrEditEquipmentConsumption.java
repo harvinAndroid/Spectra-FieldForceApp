@@ -149,7 +149,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
-        itemType.add("WCR");
+        itemType.add("IR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spType.setAdapter(adapter);
@@ -328,7 +328,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         addItem_Consumption.setItem(strItemType);
         addItem_Consumption.setItemID(ItemId);
         addItem_Consumption.setItemType(strItemTypeData1);
-        addItem_Consumption.setConsumptionType("111260000");
+        addItem_Consumption.setConsumptionType("111260001");
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
