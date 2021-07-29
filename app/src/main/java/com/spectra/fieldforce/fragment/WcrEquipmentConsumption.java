@@ -149,9 +149,9 @@ public class WcrEquipmentConsumption extends Fragment implements AdapterView.OnI
         itemTypeData = new ArrayList<String>();
         consumptionItemType.add("Select Type");
         consumptionItemType.add("Additional");
-        consumptionItemType.add("Default");
+       // consumptionItemType.add("Default");
         itemTypeData.add("111260001");
-        itemTypeData.add("111260000");
+       // itemTypeData.add("111260000");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);

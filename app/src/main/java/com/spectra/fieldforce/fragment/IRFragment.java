@@ -80,7 +80,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> irCpeMac;
     private ArrayList<String> IrType;
     private ArrayList<String> irCpeMacid;
-    private String strCpe,strGuiID,strSegment,strCanId,str_provisionId,strholdId,strStatusofReport,straddition,attach,orderId;
+    private String strCpe,IrStatusReport,strGuiID,strSegment,strCanId,str_provisionId,strholdId,strStatusofReport,straddition,attach,orderId;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
     private AlphaAnimation inAnimation,outAnimation;
@@ -111,7 +111,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         strCanId = requireArguments().getString("canId");
         strStatusofReport = requireArguments().getString("StatusofReport");
         orderId = requireArguments().getString("OrderId");
-        binding.tvIrStatus.setText("IR Status:"+ strStatusofReport);
+        IrStatusReport = requireArguments().getString("IrStatusReport");
+        binding.tvIrStatus.setText("IR Status:"+ IrStatusReport);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         IrStatus = requireArguments().getBoolean("IrStatus");
         String strIrStatus = String.valueOf(IrStatus);
@@ -203,7 +204,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         submitApprovalRequest.setAuthkey(Constants.AUTH_KEY);
         submitApprovalRequest.setAction(Constants.SUBMIT_FOR_APPROVAL);
         submitApprovalRequest.setItemId(strGuiID);
-        submitApprovalRequest.setItemType("WCR");
+        submitApprovalRequest.setItemType("IR");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.submitApproval(submitApprovalRequest);
@@ -249,7 +250,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             bundle.putString("StatusofReport", strStatusofReport);
             bundle.putString("OrderId",orderId);
             bundle.putBoolean("IrStatus",IrStatus);
-
+            bundle.putString("IrStatusReport",IrStatusReport);
 
             t1.replace(R.id.frag_container, irEquipmentConsumption);
             irEquipmentConsumption.setArguments(bundle);
@@ -608,22 +609,23 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         itemConsumtions = (ArrayList<IrInfoResponse.ItemConsumtion>) response.body().getResponse().getItemConsumtionList();
                         binding.layoutItemcousumption.rvIrItemlist.setHasFixedSize(true);
                         binding.layoutItemcousumption.rvIrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        straddition = itemConsumtions.get(0).getItemType();
-                        if(straddition.equals("Additional")&& strSegment.equals("Home")){
-                            binding.tvApproval.setVisibility(View.VISIBLE);
-                        }
-                        doa = response.body().getResponse().getIr().getDOAFlag();
-                        if(doa.equals("No")){
-                            binding.tvApproval.setVisibility(View.VISIBLE);
-                        }
+
                         if(itemConsumtions.size()!=0){
-                            binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(),itemConsumtions));
+                            binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(),itemConsumtions,IrStatusReport));
                         }
                         installationItemLists = (ArrayList<IrInfoResponse.InstallationItemList>) response.body().getResponse().getInstallationItemList();
                         binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                         binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
                         if(installationItemLists.size()!=0){
-                            binding.layoutAddEquipment.rvAddEquipment.setAdapter(new IrEquipmentConsumpAdapter(getActivity(),installationItemLists));
+                            binding.layoutAddEquipment.rvAddEquipment.setAdapter(new IrEquipmentConsumpAdapter(getActivity(),installationItemLists,IrStatusReport));
+                        }
+                        straddition = installationItemLists.get(0).getItemType();
+                        if(straddition.equals("Additional")&& strSegment.equals("Home")){
+                            binding.tvApproval.setVisibility(View.VISIBLE);
+                        }
+                        doa = response.body().getResponse().getIr().getDOAFlag();
+                        if(doa.equals("No")&& straddition.equals("Additional")){
+                            binding.tvApproval.setVisibility(View.VISIBLE);
                         }
                         binding.layoutGeneralDetails.setGeneralDetails(response.body().getResponse().getGeneral());
                         binding.layoutEnggDetails.setEngineer(response.body().getResponse().getEngineer());
@@ -681,19 +683,12 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void nextScreen(){
-       /* @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        ProvisioningFragment provisioningScreenFragment = new ProvisioningFragment();
-        Bundle accountinfo = new Bundle();
-        accountinfo.putString("canId", strCanId);
-        accountinfo.putString("StatusofReport", strStatusofReport);
-        accountinfo.putString("OrderId", orderId);
-        t.replace(R.id.frag_container, provisioningScreenFragment);
-        provisioningScreenFragment.setArguments(accountinfo);
-        t.commit();*/
         Intent i = new Intent(getActivity(), ProvisioningMainActivity.class);
         i.putExtra("canId", strCanId);
         i.putExtra("StatusofReport", strStatusofReport);
         i.putExtra("OrderId", orderId);
+      //  i.putExtra("IrStatusReport",IrStatusReport);
+
         startActivity(i);
         getActivity().finish();
     }
@@ -977,6 +972,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
        accountinfo.putString("StatusofReport",strStatusofReport);
        accountinfo.putString("OrderId",orderId);
         accountinfo.putBoolean("IrStatus",IrStatus);
+        accountinfo.putString("IrStatusReport",IrStatusReport);
 
         t.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);

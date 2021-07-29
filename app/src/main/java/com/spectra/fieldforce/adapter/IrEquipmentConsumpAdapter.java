@@ -42,10 +42,12 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
     private Context context;
     private ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists;
         AdapterIrequipmentListBinding binding;
+        String IrStatusReport ;
 
-    public IrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists) {
+    public IrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists, String irStatusReport) {
         this.context = activity;
         this.equipmentDetailsLists = equipmentDetailsLists;
+        this.IrStatusReport = irStatusReport;
     }
 
     @NotNull
@@ -74,6 +76,7 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
             b.putString("ItemId", equipment.getItemID());
             b.putString("GuIID", equipment.getIRGUID());
             b.putString("canId", equipment.getCANID());
+            b.putString("IrStatusReport", IrStatusReport);
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new IREditEquipmentConsumption();
             myFragment.setArguments(b);

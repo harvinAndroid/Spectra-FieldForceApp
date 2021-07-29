@@ -52,7 +52,7 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,IrID,strItemname, StrSubItemName;
-    private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID,OrderId,StatusOfReport,maxCap;
+    private  String strsubItemId,IrStatusReport,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID,OrderId,StatusOfReport,maxCap;
 
 
     public IREditEquipmentConsumption() {
@@ -76,6 +76,7 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
         CanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
+        IrStatusReport = requireArguments().getString("IrStatusReport");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("IR");
         init();
@@ -372,6 +373,7 @@ public class IREditEquipmentConsumption extends Fragment implements AdapterView.
         accountinfo.putString("canId", CanId);
         accountinfo.putString("StatusofReport", StatusOfReport);
         accountinfo.putString("OrderId", OrderId);
+        accountinfo.putString("IrStatusReport", IrStatusReport);
         t1.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);
         t1.commit();

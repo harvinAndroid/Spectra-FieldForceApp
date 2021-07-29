@@ -109,7 +109,7 @@
             android:backgroundTint="@color/color_light_blue"
             android:hint="@string/speed_wi_fi"
             android:inputType="numberDecimal"
-
+            android:drawableEnd="@drawable/camera"
             android:imeOptions="actionNext"
             android:text="@{String.valueOf(customerNetwork.speedWifi)}"
             android:textColor="@color/colorPrimaryDark"
@@ -131,6 +131,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/color_light_blue"
             android:hint="@string/speed_lan"
+            android:drawableEnd="@drawable/camera"
             android:text="@{String.valueOf(customerNetwork.speedLan)}"
             android:imeOptions="actionNext"
             android:inputType="numberDecimal"

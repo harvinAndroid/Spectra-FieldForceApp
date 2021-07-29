@@ -139,6 +139,14 @@ public class GetMyBucketList {
         private String longitude;
         private String latitude;
 
+        public String getWcrSlaClock() {
+            return wcrSlaClock;
+        }
+
+        private String wcrSlaClock;
+
+
+
     }
 
 }

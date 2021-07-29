@@ -71,7 +71,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
     String appointdate;
     int day, month, year, hour, minute;
     int myday, myMonth, myYear, myHour, myMinute;
-  //  private int mYear, mMonth, mDay;
+
     public MyBucketListAdapter(FragmentActivity activity,  List<GetMyBucketList.Response> getBucketList) {
         this.context = activity;
         this.getBucketList = getBucketList;
@@ -105,7 +105,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
             holder.binding.tvRelease.setOnClickListener(v -> {
                 if(statusReport.equals("Installation On Hold")||statusReport.equals("hold")||statusReport.contains("hold")||statusReport.equals("Installation Hold")) {
                     holder.binding.tvRelease.setEnabled(false);
-                    Toast.makeText(context,"Installation status is hold can't release ",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"Installation status is hold can't Release ",Toast.LENGTH_LONG).show();
                 }   else{
                     releaseBucketItem(itemList.getCustomerID(), itemList.getOrder_id(), itemList.getOrder_type());
                     if(itemList.getOrder_type().equals("WCR")){
@@ -138,7 +138,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
             day = calendar.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(context, this,year, month,day);
             datePickerDialog.show();
-           datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
            /* final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
@@ -146,6 +146,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
             DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                     (view, year, monthOfYear, dayOfMonth) -> binding.etDate.setText(year  + "-" + (monthOfYear + 1) + "-" + dayOfMonth), mYear, mMonth, mDay);
             datePickerDialog.show();*/
+
         });
     }
 

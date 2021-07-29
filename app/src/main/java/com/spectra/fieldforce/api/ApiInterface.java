@@ -37,6 +37,7 @@ import com.spectra.fieldforce.model.gpon.request.UpdateManHoleRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamIRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
+import com.spectra.fieldforce.model.gpon.request.UploadWcrImgRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.AccInfoResponse;
 import com.spectra.fieldforce.model.gpon.response.AccountDetailsResponse;
@@ -290,5 +291,8 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<GetInsResponse> getInsDetails(@Body GetINSRequest getINSRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> UploadWcr(@Body UploadWcrImgRequest uploadWcrImgRequest);
 
 }

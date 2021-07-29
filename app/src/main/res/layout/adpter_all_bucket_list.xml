@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{`Can Id :  ` + allBucketList.canId}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{`contact Person :  ` + allBucketList.contactPerson}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{`Order Type :  ` + allBucketList.orderType}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
 
@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{`Created date :  ` + allBucketList.createdOn}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
@@ -105,9 +105,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{`Sla Status :  ` + allBucketList.slaStatus}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
-
+        <TextView
+            android:id="@+id/sla_clock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`Sla Clock :  ` + allBucketList.wcrslaclock}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp" />
 
 
 

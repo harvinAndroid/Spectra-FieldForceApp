@@ -1,41 +1,33 @@
 package com.spectra.fieldforce.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.ProvisionFragmentBinding;
+import com.spectra.fieldforce.fragment.CameraFragment;
 import com.spectra.fieldforce.fragment.IRFragment;
-import com.spectra.fieldforce.fragment.ProvisioningFragment;
 import com.spectra.fieldforce.fragment.WcrCompletedFragment;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.response.AccInfoResponse;
 import com.spectra.fieldforce.utils.Constants;
 
-import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProvisioningMainActivity extends BaseActivity implements View.OnClickListener{
-    private String strCanId,canId,city,area,building,segment,statusReport,orderId;
+    private String strCanId,canId,city,area,building,segment,statusReport,orderId,IrStatusReport;
     private Boolean  IrStatus,WcrStatus;
     private ProvisionFragmentBinding provisionFragmentBinding;
     private AlphaAnimation inAnimation;
@@ -61,10 +53,10 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
         init();
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
@@ -106,6 +98,7 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
                             statusReport = response.body().response.statusofReport;
                             IrStatus = response.body().response.iRStatus;
                             WcrStatus = response.body().response.wCRStatus;
+                            IrStatusReport = response.body().response.IRStatusofReport;
                             setDate();
                            // nextScreen();
                         } catch (Exception e) {
@@ -193,7 +186,7 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
             accountinfo.putString("canId", canId);
             accountinfo.putString("StatusofReport",statusReport);
             accountinfo.putString("OrderId",orderId);
-           // accountinfo.putBoolean("WcrStatus",WcrStatus);
+           accountinfo.putString("IrStatusReport",IrStatusReport);
             accountinfo.putBoolean("IrStatus",IrStatus);
             irFragment.setArguments(accountinfo);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

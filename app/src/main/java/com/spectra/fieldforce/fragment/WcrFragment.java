@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +51,10 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.JsonElement;
 import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.activity.MainActivity;
 import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.adapter.WcrAddManholeAdapter;
@@ -59,6 +63,7 @@ import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrFragmentBinding;
+import com.spectra.fieldforce.model.ArtifactRequest;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.ItemConsumption.NrgpDetails;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
@@ -69,6 +74,7 @@ import com.spectra.fieldforce.model.gpon.request.UpdateCustomerNetwork;
 import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
+import com.spectra.fieldforce.model.gpon.request.UploadWcrImgRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetFibreCable;
@@ -80,9 +86,12 @@ import com.spectra.fieldforce.utils.FilePath;
 import com.spectra.fieldforce.utils.FileUtils;
 import com.spectra.fieldforce.utils.PermissionUtils;
 
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,6 +108,7 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 import static com.spectra.fieldforce.utils.AppConstants.PERMISSION_REQUEST_CODE_READ_WRITE;
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_ONE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_TWO;
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_ONE;
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION;
 
@@ -127,7 +137,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private AlphaAnimation inAnimation,outAnimation;
     ArrayAdapter<String> adapter;
     ArrayAdapter<String> adaptersecond;
-    private String filepath,filepath1,filepath2,filepath3,str_ext1="",str_ext2="",str_ext3="",str_ext4="",strSlotType,currentImagePath;
+    private String str_ext1="",str_ext2="",str_ext3="",str_ext4="",strSlotType,currentImagePath,currentImagePath1;
     private Uri uri,uri1,uri2,uri3;
     private Uri cameraFileUri;
     private Bitmap bitmap1,bitmap2,bitmap3,bitmap4,bitmap5,bitmap6,bitmap7,bitmap8;
@@ -185,7 +195,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         Type();
         ActivityCompat.requestPermissions( getActivity(),
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-
         QualityParamCable = new ArrayList<String>();
         QualityParamLogin = new ArrayList<String>();
         QualityParamCustomer = new ArrayList<String>();
@@ -193,54 +202,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         QualityParamEducation = new ArrayList<String>();
         QualityParamWifi = new ArrayList<String>();
         QualityParamFace = new ArrayList<String>();
-      /*  QualityParamCable = new ArrayList<String>();
-        QualityParamCable.add("Select Type");
-        QualityParamCable.add("Yes");
-        QualityParamCable.add("No");
-        adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
-        adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        QualityParamLogin = new ArrayList<String>();
-        QualityParamLogin.add("Select Type");
-        QualityParamLogin.add("Yes");
-        QualityParamLogin.add("No");
-        adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
-        adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        QualityParamCustomer = new ArrayList<String>();
-        QualityParamCustomer.add("Select Type");
-        QualityParamCustomer.add("Yes");
-        QualityParamCustomer.add("No");
-        adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
-        adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        QualityParamSpeed = new ArrayList<String>();
-        QualityParamSpeed.add("Select Type");
-        QualityParamSpeed.add("Yes");
-        QualityParamSpeed.add("No");
-        adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
-        adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        QualityParamEducation = new ArrayList<String>();
-        QualityParamEducation.add("Select Type");
-        QualityParamEducation.add("Yes");
-        QualityParamEducation.add("No");
-        adapterParamEducation = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
-        adapterParamEducation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        QualityParamWifi = new ArrayList<String>();
-        QualityParamWifi.add("Select Type");
-        QualityParamWifi.add("Yes");
-        QualityParamWifi.add("No");
-        adapterParamWifi= new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
-        adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        QualityParamFace = new ArrayList<String>();
-        QualityParamFace.add("Select Type");
-        QualityParamFace.add("Yes");
-        QualityParamFace.add("No");
-        adapterParamFace= new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
-        adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
 
 
         binding.layoutItemConsumption.btnItemConsumption1.setOnClickListener(v -> {
@@ -264,14 +225,15 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             speedwifi = Objects.requireNonNull(binding.layoutCustomerNetwork.etSpeedWifi.getText()).toString();
             wifissd = Objects.requireNonNull(binding.layoutCustomerNetwork.etWifiSsd.getText()).toString();
             txpower = Objects.requireNonNull(binding.layoutCustomerNetwork.etTxPower.getText()).toString();
-           if(speedlan.isEmpty()){
+       /*    if(speedlan.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter SpeedLan",Toast.LENGTH_LONG).show();
             }   if(speedwifi.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Speed Wifi",Toast.LENGTH_LONG).show();
-            }else if(wifissd.isEmpty()){
+            }else*/ if(wifissd.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Wifi SSD",Toast.LENGTH_LONG).show();
             }else{
                 updateCustomerNetwork(rxpower,speedlan,speedwifi,wifissd,txpower);
+                uploadArtifacts();
             }
                 }
         );
@@ -299,7 +261,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             bundle.putString("canId",strCanId);
             bundle.putString("StatusofReport", StatusOfReport);
             bundle.putString("OrderId", OrderId);
-
             t1.replace(R.id.frag_container, wcrEquipmentConsumption);
             wcrEquipmentConsumption.setArguments(bundle);
             t1.commit();
@@ -325,6 +286,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     }
                 }
         );
+
         binding.layoutmanholDetails.btnAddManhole.setOnClickListener(v -> {
             @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
             WcrAddManholeFragment wcrAddManholeFragment = new WcrAddManholeFragment();
@@ -371,30 +333,16 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     }
                 }
         );
-        binding.etAttach.setOnClickListener(view -> {
-            requestReadWriteCameraPermission();
+        binding.layoutCustomerNetwork.etSpeedWifi.setOnClickListener(view -> {
+            checkPermission(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_ONE);
+           //myStoragePermission(REQUEST_CAMERA_PERMISSION_ONE);
 
-            Permission();
-           /* Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            Fragment frag = this;
-            *//** Pass your fragment reference **//*
-            frag.startActivityForResult(intent, REQUEST_CAMERA_PERMISSION_ONE);*/
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if(cameraIntent.resolveActivity(getContext().getPackageManager())!=null) {
-                File imageFile = null;
-                try {
-                    imageFile = getImageFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (imageFile != null) {
-                    Uri imageUri = FileProvider.getUriForFile(getContext(),
-                            BuildConfig.APPLICATION_ID + ".provider", imageFile);
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(cameraIntent, REQUEST_CAMERA_PERMISSION_ONE);
-                }
-            }
-            //alertSelectImage(REQUEST_CAMERA_PERMISSION_ONE,REQUEST_CODE_ONE);
+
+        });
+        binding.layoutCustomerNetwork.etSpeedLan.setOnClickListener(view -> {
+            checkPermission1(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_TWO);
+            //OpenCamera(REQUEST_CAMERA_PERMISSION_TWO);
+
         });
         binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
             strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
@@ -420,19 +368,19 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             String virus = Objects.requireNonNull(binding.layoutInstallationparam.etEducationAntivirus.getText()).toString();
             String cable = Objects.requireNonNull(binding.layoutInstallationparam.etCableCrimped.getText()).toString();
             String speed = Objects.requireNonNull(binding.layoutInstallationparam.etSpeedTest.getText()).toString();
-            if(ont.isEmpty()){
+            if(ont.isEmpty()||ont.equals("Select Type")){
                 Toast.makeText(getContext(), "Please Select  ONT login details shared with Customer", Toast.LENGTH_LONG).show();
-            }if(face.isEmpty()){
+            }else if(face.isEmpty()||face.equals("Select Type")){
                 Toast.makeText(getContext(), "Please Select  Face plate mount to the wall properly", Toast.LENGTH_LONG).show();
-            }if(wifi.isEmpty()){
+            }else if(wifi.isEmpty()||wifi.equals("Select Type")){
                 Toast.makeText(getContext(), "Please Select Wifi", Toast.LENGTH_LONG).show();
-            }if(selfcare.isEmpty()){
+            }else if(selfcare.isEmpty()||selfcare.equals("Select Type")){
                 Toast.makeText(getContext(), "Please Select  Education customer Regarding Selfcare Portal", Toast.LENGTH_LONG).show();
-            }if(virus.isEmpty()){
+            }else if(virus.isEmpty()||virus.equals("Select Type")){
                 Toast.makeText(getContext(), "Please Select Antivirus", Toast.LENGTH_LONG).show();
-            }if(cable.isEmpty()){
-                Toast.makeText(getContext(), "Please Select Cable_crimped to the wall properly", Toast.LENGTH_LONG).show();
-            }if(speed.isEmpty()){
+            }else if(cable.isEmpty()||cable.equals("Select Type")){
+                Toast.makeText(getContext(), "Please Select Cable crimped to the wall properly", Toast.LENGTH_LONG).show();
+            }else if(speed.isEmpty()||speed.equals("Select Type")){
                 Toast.makeText(getContext(), "Please Select Speed test results shown to coustomer", Toast.LENGTH_LONG).show();
             }else{
                 updateQualityParam(ont,face,wifi,selfcare,virus,cable,speed);
@@ -440,15 +388,73 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
+    private void myStoragePermission(int requestCameraPermissionOne) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            OpenCamera(requestCameraPermissionOne);
+        } else {
+            //changed here
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION);
+            }
+        }
+    }
 
+    public void checkPermission(String permission, int requestCode)
+    {
+        if (ContextCompat.checkSelfPermission(getActivity(), permission) == PackageManager.PERMISSION_DENIED) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(getActivity(), new String[] { permission }, requestCode);
+        }
+        else {
+            OpenCamera(REQUEST_CAMERA_PERMISSION_ONE);
+            Toast.makeText(getActivity(), "Permission already granted", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void checkPermission1(String permission, int requestCode)
+    {
+        if (ContextCompat.checkSelfPermission(getActivity(), permission) == PackageManager.PERMISSION_DENIED) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(getActivity(), new String[] { permission }, requestCode);
+        }
+        else {
+            OpenCamera(REQUEST_CAMERA_PERMISSION_TWO);
+            Toast.makeText(getActivity(), "Permission already granted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void OpenCamera(int requestCameraPermissionOne){
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(cameraIntent.resolveActivity(getActivity().getPackageManager())!=null) {
+            File imageFile = null;
+            try {
+                imageFile = getImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (imageFile != null) {
+                Uri imageUri = FileProvider.getUriForFile(getActivity(),
+                        BuildConfig.APPLICATION_ID + ".provider", imageFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(cameraIntent, requestCameraPermissionOne);
+            }
+        }
+    }
+
+    private File getImageFile() throws IOException {
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String mFileName = "jpg_"+timeStamp+ "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
+        currentImagePath = mFile.getAbsolutePath();
+        return mFile;
+    }
 
 
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
-        // check if permissions are given
         if (checkPermissions()) {
-
-            // check if location is enabled
             if (isLocationEnabled()) {
 
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
@@ -466,25 +472,17 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 startActivity(intent);
             }
         } else {
-            // if permissions aren't available,
-            // request for permissions
             requestPermissions();
         }
     }
 
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
-
-        // Initializing LocationRequest
-        // object with appropriate methods
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(5);
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
-
-        // setting LocationRequest
-        // on FusedLocationClient
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
@@ -499,27 +497,21 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
     };
 
-    // method to check for permissions
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
        }
 
-    // method to request for permissions
     private void requestPermissions() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
     }
-
-    // method to check
-    // if location is enabled
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    // If everything is alright then
     @Override
     public void
     onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -529,7 +521,47 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation();
             }
+        }else  if (requestCode == REQUEST_CAMERA_PERMISSION_ONE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
+            }
+            else {
+                Toast.makeText(getActivity(), "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
+            }
+
+        }else  if (requestCode == REQUEST_CAMERA_PERMISSION_TWO) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
+            }
+            else {
+                Toast.makeText(getActivity(), "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
+            }
+
         }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ( requestCode == REQUEST_CAMERA_PERMISSION_ONE) {
+            try {
+                bitmap1 = BitmapFactory.decodeFile(currentImagePath);
+                binding.layoutCustomerNetwork.etSpeedWifi.setText(currentImagePath);
+                str_ext1 = "SpeedWifi"+".jpg";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if ( requestCode == REQUEST_CAMERA_PERMISSION_TWO) {
+                try {
+                    bitmap2 = BitmapFactory.decodeFile(currentImagePath);
+                    binding.layoutCustomerNetwork.etSpeedLan.setText(currentImagePath);
+                    str_ext2 = "SpeedLan"+".jpg";
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
     }
 
     @Override
@@ -740,44 +772,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
     }
 
-   /* @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_ONE) {
-
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-             //   imageview.setImageBitmap(photo);
-                // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-                Uri selectedImage = getImageUri(getActivity(), photo);
-                String realPath=getRealPathFromURI(selectedImage);
-                selectedImage = Uri.parse(realPath);
-                Toast.makeText(getContext(),String.valueOf(selectedImage),Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-*/
-  /*  public String getRealPathFromURI(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = getActivity().getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }*/
-
     public void getFmsList() {
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -906,12 +900,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         else if(parent.getId() == R.id.sp_education_antivirus) {
             binding.layoutInstallationparam.etEducationAntivirus.setText(QualityParamEducation.get(position));
         }
-       /* else if (parent.getId() == R.id.et_attach) {
-            requestReadWriteCameraPermission();
 
-            Permission();
-        } else alertSelectImage(REQUEST_CAMERA_PERMISSION_ONE,REQUEST_CODE_ONE);
-*/
     }
     public boolean requestReadWriteCameraPermission() {
         return ActivityCompat.checkSelfPermission(getActivity(),
@@ -1023,6 +1012,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("Yes")){
                                 QualityParamEducation.clear();
                                 QualityParamEducation.add("Yes");
+                                QualityParamEducation.add("Select Type");
+                                QualityParamEducation.add("No");
                                 ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
                                 adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
@@ -1031,6 +1022,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
                                 QualityParamEducation.clear();
                                 QualityParamEducation.add("No");
+                                QualityParamEducation.add("Select Type");
+                                QualityParamEducation.add("Yes");
                                 ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
                                 adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
@@ -1046,6 +1039,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             if(response.body().getResponse().getInstallationQuality().getCable().equals("Yes")){
                                 QualityParamCable.clear();
                                 QualityParamCable.add("Yes");
+                                QualityParamCable.add("Select Type");
+                                QualityParamCable.add("No");
                                  adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
                                 adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
@@ -1053,6 +1048,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             }else  if(response.body().getResponse().getInstallationQuality().getCable().equals("No")){
                                 QualityParamCable.clear();
                                 QualityParamCable.add("No");
+                                QualityParamCable.add("Select Type");
+                                QualityParamCable.add("Yes");
                                 adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
                                 adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
@@ -1067,12 +1064,16 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             if(response.body().getResponse().getInstallationQuality().getFace().equals("Yes")){
                                 QualityParamFace.clear();
                                 QualityParamFace.add("Yes");
+                                QualityParamFace.add("Select Type");
+                                QualityParamFace.add("No");
                                 adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
                                 adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
                             }else  if(response.body().getResponse().getInstallationQuality().getFace().equals("No")){
                                 QualityParamFace.clear();
                                 QualityParamFace.add("No");
+                                QualityParamFace.add("Select Type");
+                                QualityParamFace.add("Yes");
                                 adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
                                 adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
@@ -1087,11 +1088,15 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             if(response.body().getResponse().getInstallationQuality().getOnt().equals("Yes")){
                                 QualityParamLogin.clear();
                                 QualityParamLogin.add("Yes");
+                                QualityParamLogin.add("Select Type");
+                                QualityParamLogin.add("No");
                                 adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
                                 adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
                             }else  if(response.body().getResponse().getInstallationQuality().getOnt().equals("No")){
                                 QualityParamLogin.add("No");
+                                QualityParamLogin.add("Select Type");
+                                QualityParamLogin.add("Yes");
                                 adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
                                 adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
@@ -1106,12 +1111,16 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             if(response.body().getResponse().getInstallationQuality().getSelfCare().equals("Yes")){
                                 QualityParamCustomer.clear();
                                 QualityParamCustomer.add("Yes");
+                                QualityParamCustomer.add("Select Type");
+                                QualityParamCustomer.add("Yes");
                                 adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
                                 adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
                             }else  if(response.body().getResponse().getInstallationQuality().getSelfCare().equals("No")){
                                 QualityParamCustomer.clear();
                                 QualityParamCustomer.add("No");
+                                QualityParamCustomer.add("Select Type");
+                                QualityParamCustomer.add("Yes");
                                 adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
                                 adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
@@ -1126,12 +1135,16 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             if(response.body().getResponse().getInstallationQuality().getSpeed().equals("Yes")){
                                 QualityParamSpeed.clear();
                                 QualityParamSpeed.add("Yes");
+                                QualityParamSpeed.add("Select Type");
+                                QualityParamSpeed.add("No");
                                 adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
                                 adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
                             }else  if(response.body().getResponse().getInstallationQuality().getSpeed().equals("No")){
                                 QualityParamSpeed.clear();
                                 QualityParamSpeed.add("No");
+                                QualityParamSpeed.add("Select Type");
+                                QualityParamSpeed.add("Yes");
                                 adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
                                 adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
@@ -1146,12 +1159,16 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             if(response.body().getResponse().getInstallationQuality().getWifi().equals("Yes")){
                                 QualityParamWifi.clear();
                                 QualityParamWifi.add("Yes");
+                                QualityParamWifi.add("Select Type");
+                                QualityParamWifi.add("No");
                                 adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
                                 adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
                             }else  if(response.body().getResponse().getInstallationQuality().getWifi().equals("No")){
                                 QualityParamWifi.clear();
                                 QualityParamWifi.add("No");
+                                QualityParamWifi.add("Select Type");
+                                QualityParamWifi.add("Yes");
                                 adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
                                 adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
@@ -1313,8 +1330,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         updateCustomerNetwork.setAuthkey(Constants.AUTH_KEY);
         updateCustomerNetwork.setAction(Constants.UPDATE_CUSTOMER_NETWORK);
         updateCustomerNetwork.setRxPower(rxpower);
-        updateCustomerNetwork.setSpeedLan(speedlan);
-        updateCustomerNetwork.setSpeedWifi(speedwifi);
+        updateCustomerNetwork.setSpeedLan("");
+        updateCustomerNetwork.setSpeedWifi("");
         updateCustomerNetwork.setWifiSSID(wifissd);
         updateCustomerNetwork.setTxPower(txpower);
         updateCustomerNetwork.setWCRguidId(strGuuId);
@@ -1489,48 +1506,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
     }
 
-  /*  @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE_READ_WRITE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // FileUtils.showFileChooser(Activity_Resolve.this);
-            }
-        }
-    }
-*/
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_CODE_ONE) {
-                try {
-                    uri = data.getData();
-                    filepath = FilePath.getPath(getContext(), uri);
-                    if (filepath != null) {
-                        if (FileUtils.checkExtension(getContext(), uri)) {
-                            Uri file = Uri.fromFile(new File(filepath));
-                            str_ext1 = MimeTypeMap.getFileExtensionFromUrl(file.toString());
-                            binding.etAttach.setText(filepath);
-                            try {
-                                bitmap1 = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(getContext(), "Failed!", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                          //  displayToast(R.string.valid_formats);
-                        }
-                    } else {
-                        //displayToast(R.string.upload_files_message);
-                    }
-                } catch (Exception EX) {
-                    EX.getStackTrace();
-                }
-            }
-        }
-    }
     private void updateWcrEnginer(String insta){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -1584,50 +1559,20 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.CAMERA},
                     REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION);
+        }else{
+            OpenCamera(REQUEST_CAMERA_PERMISSION_ONE);
         }
     }
-
-   /* @SuppressLint("QueryPermissionsNeeded")
-    private void alertSelectImage(int requestCameraPermission, int requestCode) {
-        cameraFileUri = null;
-        Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialog_select_image);
-        dialog.findViewById(R.id.from_gallery).setVisibility(View.GONE);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.findViewById(R.id.from_camera).setOnClickListener(v -> {
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if(cameraIntent.resolveActivity(getContext().getPackageManager())!=null) {
-                File imageFile = null;
-                try {
-                    imageFile = getImageFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (imageFile != null) {
-                    Uri imageUri = FileProvider.getUriForFile(getContext(),
-                            BuildConfig.APPLICATION_ID + ".provider", imageFile);
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(cameraIntent, requestCameraPermission);
-                }
-            }
-            dialog.dismiss();
-        });
-     *//*   dialog.findViewById(R.id.from_gallery).setOnClickListener(v -> {
-            if (PermissionUtils.checkWritePermission(getActivity()))
-                FileUtils.showFileChooser(getActivity(),requestCode);
-            dialog.dismiss();
-        });*//*
-        dialog.getWindow().getAttributes().windowAnimations = R.style.SelectMediaDialogTheme;
-        dialog.show();
-    }*/
-    private File getImageFile() throws IOException {
-        // Create an image file name
-        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String mFileName = "jpg_"+timeStamp+ "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
-        currentImagePath = mFile.getAbsolutePath();
-        return mFile;
+    private void Permission1(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA},
+                    REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION);
+        }else{
+            OpenCamera(REQUEST_CAMERA_PERMISSION_ONE);
+        }
     }
 
     private void SubmitApproval(){
@@ -1764,5 +1709,48 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
         });
 
+    }
+
+    private void uploadArtifacts()  {
+        String encodedImage="",encodedImage1="";
+
+        try {
+          if(str_ext1!=null && bitmap1!=null){
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap1.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream);
+                byte[] imageInByte = byteArrayOutputStream.toByteArray();
+                encodedImage =  Base64.encodeToString(imageInByte,Base64.NO_WRAP);
+            }
+
+          if(str_ext2!=null && bitmap2!=null){
+                ByteArrayOutputStream byteArrayOutputStream1 = new ByteArrayOutputStream();
+                bitmap2.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream1);
+                byte[] imageInByte1 = byteArrayOutputStream1.toByteArray();
+                encodedImage1 =  Base64.encodeToString(imageInByte1,Base64.NO_WRAP);
+            }
+
+            UploadWcrImgRequest uploadWcrImgRequest = new UploadWcrImgRequest(Constants.UPLOAD_WCRDOC,Constants.AUTH_KEY,strGuuId,encodedImage,str_ext1,encodedImage1,str_ext2);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<CommonClassResponse> call = apiService.UploadWcr(uploadWcrImgRequest);
+            call.enqueue(new Callback<CommonClassResponse>() {
+                @Override
+                public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                    try {
+                        if (response.isSuccessful()) {
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                    Log.e("RetroError", t.toString());
+                }
+            });
+        }catch (Exception ex){
+            ex.getMessage();
+        }
     }
 }

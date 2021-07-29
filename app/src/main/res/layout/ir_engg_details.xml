@@ -42,8 +42,7 @@
             android:id="@+id/et_installation_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/installation_date"
-            android:text="@{engineer.installationDate}"
+            android:hint="@string/installation_code"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:lines="1"
@@ -52,9 +51,6 @@
             android:textSize="@dimen/_12sdp" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -66,8 +62,8 @@
             android:id="@+id/et_created_on"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/installation_code"
-            android:text="@{engineer.otp}"
+            android:hint="@string/installation_date"
+            android:text="@{engineer.installationDate}"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:lines="1"

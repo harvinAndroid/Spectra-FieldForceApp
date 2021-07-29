@@ -169,27 +169,13 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
 
                             Log.e("ffalogin", String.valueOf(sp));
 
-
-                          /*  SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",this.MODE_PRIVATE);
-                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                            myEdit.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
-                            myEdit.putString("FFA", response.body().getResponse().getFfaAuth());
-                            myEdit.commit();*/
-                          /*  SharedPreferences sp = getSharedPreferences("Login", 0);
-                            SharedPreferences.Editor Ed = sp.edit();
-                            Ed.putString("VenderCode", response.body().getResponse().getVendorCode());
-                            Ed.putString("EnggId", response.body().getResponse().getUserID());
-                            Ed.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
-                            Ed.putString("FFA", response.body().getResponse().getFfaAuth());
-                            Ed.apply();*/
-                            // MainActivity.prefConfig.writeLoginStatus(false);
-                            // PrefConfig.saveLoginDetails(loginResponse);
                             Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());
                             // }
                             getSaveToken();
                         } else {
                             message = "Login Failed..Please try again...";
                             binding.errortxt.setText(message);
+
                         }
                        }
                  //   }

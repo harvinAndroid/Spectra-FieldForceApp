@@ -53,7 +53,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
     private List<GetSubItemListResponse.Datum> subItem;
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
-    private String strItemType,strItemTypeData,strsubItemId,strGuIId,strCanId,maxCap,strItemname, StrSubItemName,OrderId,StatusOfReport;
+    private String strItemType,IrStatusReport,strItemTypeData,strsubItemId,strGuIId,strCanId,maxCap,strItemname, StrSubItemName,OrderId,StatusOfReport;
     private Boolean IrStatus;
 
     public IREquipmentConsumption() {
@@ -75,6 +75,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
         IrStatus = requireArguments().getBoolean("IrStatus");
+        IrStatusReport = requireArguments().getString("IrStatusReport");
 
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Add Equipment");
@@ -191,9 +192,9 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         itemTypeData = new ArrayList<String>();
         consumptionItemType.add("Select Type");
         consumptionItemType.add("Additional");
-        consumptionItemType.add("Default");
+      //  consumptionItemType.add("Default");
         itemTypeData.add("111260001");
-        itemTypeData.add("111260000");
+       // itemTypeData.add("111260000");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
@@ -375,6 +376,8 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
         bundle.putString("StatusofReport", StatusOfReport);
         bundle.putString("OrderId", OrderId);
         bundle.putBoolean("IrStatus", IrStatus);
+        bundle.putString("IrStatusReport", IrStatusReport);
+
         t1.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(bundle);
         t1.commit();

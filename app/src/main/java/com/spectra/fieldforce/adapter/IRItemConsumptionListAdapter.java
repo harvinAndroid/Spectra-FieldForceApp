@@ -45,10 +45,12 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
     private Context context;
     private ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions;
     IrItemCousumptionBinding binding;
+    private String IrStatusReport;
 
-    public IRItemConsumptionListAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions) {
+    public IRItemConsumptionListAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions, String irStatusReport) {
         this.context = activity;
         this.itemConsumtions = itemConsumtions;
+        this.IrStatusReport = irStatusReport;
     }
 
     @NotNull
@@ -75,6 +77,7 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
             b.putString("ItemId", item.getItemID());
             b.putString("IrID", item.getIrguid());
             b.putString("canId",item.getCanid());
+            b.putString("IrStatusReport",IrStatusReport);
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new IREditItemConsumption();
             myFragment.setArguments(b);
@@ -89,7 +92,7 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
         DeleteItemRequest deleteItemRequest = new DeleteItemRequest();
         deleteItemRequest.setAuthkey(Constants.AUTH_KEY);
         deleteItemRequest.setAction(Constants.DELETE_ITEM_CONSUMPTIONBY_ID);
-        deleteItemRequest.setItemId(itemID);
+        deleteItemRequest.setItemId(id);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.deleteItemById(deleteItemRequest);
@@ -103,7 +106,7 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
 
                             Bundle b = new Bundle();
-                            b.putString("canId", id);
+                            b.putString("canId", itemID);
                             AppCompatActivity activity = (AppCompatActivity) context;
                             Fragment myFragment = new IRFragment();
                             myFragment.setArguments(b);

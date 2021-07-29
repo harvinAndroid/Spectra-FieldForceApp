@@ -666,41 +666,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linearattach"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_height="0dp"
-                    android:visibility="gone"
-                    android:background="@color/gray"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear21">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColorHint="@color/colorPrimary"
-                        app:hintTextAppearance="@style/AppearanceText">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_attach"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/click_the_image"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textColorHighlight="@color/colorPrimary"
-                            android:textSize="@dimen/_12sdp" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linear22"
