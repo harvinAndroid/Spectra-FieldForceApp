@@ -52,6 +52,7 @@ import com.spectra.fieldforce.model.gpon.response.GetManholeById;
 import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
 import com.spectra.fieldforce.model.gpon.response.GetMyBucketList;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
+import com.spectra.fieldforce.model.gpon.response.HoldReasonResponse;
 import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
 import com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse;
 import com.spectra.fieldforce.model.ItemConsumption.DeleteItemConsumption;
@@ -294,5 +295,9 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<CommonClassResponse> UploadWcr(@Body UploadWcrImgRequest uploadWcrImgRequest);
+
+    @POST ("index.php")
+    Call<HoldReasonResponse> getHoldReason(@Body AccountInfoRequest accountInfoRequest);
+
 
 }

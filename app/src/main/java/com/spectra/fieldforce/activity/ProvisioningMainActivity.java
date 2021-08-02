@@ -14,7 +14,6 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.ProvisionFragmentBinding;
-import com.spectra.fieldforce.fragment.CameraFragment;
 import com.spectra.fieldforce.fragment.IRFragment;
 import com.spectra.fieldforce.fragment.WcrCompletedFragment;
 import com.spectra.fieldforce.fragment.WcrFragment;

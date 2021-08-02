@@ -3,11 +3,15 @@ package com.spectra.fieldforce.fragment;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -28,19 +32,21 @@ import com.spectra.fieldforce.model.gpon.request.BucketListRequest;
 import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
 import com.spectra.fieldforce.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GetAllBucketListFragment extends Fragment {
+public class GetAllBucketListFragment extends Fragment implements AdapterView.OnItemSelectedListener{
     ActivityAllBucketListBinding binding;
     private List<GetAllBucketList.Response> getBucketList;
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
-
-
+    AllBucketListAdapter allBucketListAdapter;
+    private ArrayList<String> statusType;
+    ArrayAdapter<String> adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,6 +69,72 @@ public class GetAllBucketListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getallBucketList();
+        Type();
+
+        binding.search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Search(String.valueOf(editable));
+            }
+        });
+    }
+
+    private void Type() {
+        binding.etSearch.setOnClickListener(v-> binding.spSearch.performClick());
+        binding.spSearch.setOnItemSelectedListener(this);
+
+        statusType = new ArrayList<String>();
+        statusType.add("Select Status Type");
+        statusType.add("Installation Pending");
+        statusType.add("hold");
+        statusType.add("Assigned");
+        statusType.add("UnAssigned");
+        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, statusType);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spSearch.setAdapter(adapter);
+    }
+
+
+        public void Search(String search){
+        List<GetAllBucketList.Response> getBucketListItem;
+        getBucketListItem = new ArrayList<>();
+        for(GetAllBucketList.Response obj:this.getBucketList){
+            if(obj.getCanId().toLowerCase().contains(search)){
+                getBucketListItem.add(obj);
+            }else if(obj.getID().toLowerCase().contains(search)){
+                getBucketListItem.add(obj);
+            }else if(obj.getStatus().contains(search)){
+                getBucketListItem.add(obj);
+            }else if(search.contains("UnAssigned")){
+                if(obj.getEngineerName()==null|| obj.getEngineerName().isEmpty()){
+                    getBucketListItem.add(obj);
+                }
+            }else if(search.contains("Assigned")){
+                if(obj.getEngineerName()!=null){
+                    String name = obj.getEngineerName();
+                    if(name.isEmpty()){
+
+                    }else{
+                        getBucketListItem.add(obj);
+                    }
+
+                }
+            }
+        }
+            binding.tvCount.setVisibility(View.VISIBLE);
+            String size = String.valueOf(getBucketListItem.size());
+            binding.tvCount.setText(size);
+        this.allBucketListAdapter.Filter(getBucketListItem);
     }
 
     public void getallBucketList() {
@@ -91,11 +163,14 @@ public class GetAllBucketListFragment extends Fragment {
                         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                         binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                         if(response.body().getStatus().equals("Success")){
+                            binding.tvCount.setVisibility(View.GONE);
                             binding.rvAllBucketList.setHasFixedSize(true);
                             binding.rvAllBucketList.setLayoutManager(new LinearLayoutManager(getContext()));
                             binding.rvAllBucketList.setNestedScrollingEnabled(false);
-                            binding.rvAllBucketList.setAdapter(new AllBucketListAdapter(getActivity(),getBucketList));
-
+                            allBucketListAdapter = new AllBucketListAdapter(getActivity(),getBucketList);
+                           /* String size = String.valueOf(getBucketList.size());
+                            binding.tvCount.setText(size);*/
+                            binding.rvAllBucketList.setAdapter(allBucketListAdapter);
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
                         }else{
@@ -113,5 +188,24 @@ public class GetAllBucketListFragment extends Fragment {
                 Log.e("RetroError", t.toString());
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.sp_search) {
+            binding.etSearch.setText(statusType.get(position));
+            String status = statusType.get(position);
+            if(status.equals("Select Status Type")){
+
+            }else{
+                Search(status);
+            }
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

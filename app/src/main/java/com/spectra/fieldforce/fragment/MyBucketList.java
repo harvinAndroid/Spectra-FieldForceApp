@@ -3,11 +3,15 @@ package com.spectra.fieldforce.fragment;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -16,26 +20,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.adapter.AllBucketListAdapter;
 import com.spectra.fieldforce.adapter.MyBucketListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.FragmentMyBucketListBinding;
 import com.spectra.fieldforce.model.gpon.request.BucketListRequest;
+import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
 import com.spectra.fieldforce.model.gpon.response.GetMyBucketList;
 import com.spectra.fieldforce.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyBucketList extends Fragment {
+public class MyBucketList extends Fragment implements AdapterView.OnItemSelectedListener{
     FragmentMyBucketListBinding binding;
     private List<GetMyBucketList.Response> getBucketList;
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
-
+    MyBucketListAdapter myBucketListAdapter;
+    private ArrayList<String> statusType;
+    ArrayAdapter<String> adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,8 +59,55 @@ public class MyBucketList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getallBucketList();
         init();
+        binding.tvCount.setVisibility(View.GONE);
+        Type();
+        binding.search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Search(String.valueOf(editable));
+            }
+        });
+    }
+    private void Type() {
+        binding.etSearch.setOnClickListener(v-> binding.spSearch.performClick());
+        binding.spSearch.setOnItemSelectedListener(this);
+
+        statusType = new ArrayList<String>();
+        statusType.add("Select Status Type");
+        statusType.add("Installation Pending");
+        statusType.add("hold");
+        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, statusType);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spSearch.setAdapter(adapter);
     }
 
+    public void Search(String search){
+        List<GetMyBucketList.Response> getBucketListItem;
+        getBucketListItem = new ArrayList<>();
+        for(GetMyBucketList.Response obj:this.getBucketList){
+            if(obj.getCustomerID().toLowerCase().contains(search)){
+                getBucketListItem.add(obj);
+            }else if(obj.getOrder_id().toLowerCase().contains(search)){
+                getBucketListItem.add(obj);
+            }else if(obj.getCrm_status().contains(search)){
+                getBucketListItem.add(obj);
+            }
+        }
+        binding.tvCount.setVisibility(View.VISIBLE);
+        String size = String.valueOf(getBucketListItem.size());
+        binding.tvCount.setText(size);
+        this.myBucketListAdapter.Filter(getBucketListItem);
+    }
     private void init(){
         binding.swipeRefreshLayout.setEnabled(true);
         binding.swipeRefreshLayout.setRefreshing(true);
@@ -87,9 +144,12 @@ public class MyBucketList extends Fragment {
                         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                         binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                         if(response.body().getStatus().equals("Success")){
+
                             binding.rvMybucket.setHasFixedSize(true);
                             binding.rvMybucket.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            binding.rvMybucket.setAdapter(new MyBucketListAdapter(getActivity(), getBucketList));
+                            myBucketListAdapter = new MyBucketListAdapter(getActivity(),getBucketList);
+                            binding.rvMybucket.setAdapter(myBucketListAdapter);
+
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
                         }else{
@@ -112,4 +172,22 @@ public class MyBucketList extends Fragment {
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.sp_search) {
+            binding.etSearch.setText(statusType.get(position));
+            String status = statusType.get(position);
+            if(status.equals("Select Status Type")){
+
+            }else{
+                Search(status);
+            }
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

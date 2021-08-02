@@ -86,7 +86,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/tv_resend_service"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="@dimen/_25sdp"
             android:text="@string/resend_service_activation_code"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +104,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/tv_resend_installation"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="@dimen/_25sdp"
             android:text="@string/resend_installation_code"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"

@@ -96,6 +96,7 @@ public class Constants {
   public static final String UPDATE_APPOINTMENT = "updateAppointment";
   public static final String  GET_POWER_BYONT = "getPowerByONT";
   public static final String UPLOAD_WCRDOC = "uploadWCRDoc";
+  public static final String WCR_HOLD_CATEGORY= "WCRholdCategories";
 
 
 }

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_10sdp"
         android:text="@string/item_consumption"
-        android:layout_margin="@dimen/_8sdp"/>
+        android:layout_margin="@dimen/_4sdp"/>
 </LinearLayout>

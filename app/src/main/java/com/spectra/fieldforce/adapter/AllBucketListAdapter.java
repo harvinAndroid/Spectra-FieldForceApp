@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdapter.MyViewHolder> {
+public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdapter.MyViewHolder>  {
     private Context context;
     private List<GetAllBucketList.Response> allbucketlist;
     AdpterAllBucketListBinding binding;
@@ -225,6 +227,8 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         return allbucketlist.size();
     }
 
+
+
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         AdpterAllBucketListBinding binding;
@@ -232,6 +236,11 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             super(binding.getRoot());
            this.binding = binding;
         }
+    }
+
+    public void Filter(List<GetAllBucketList.Response> allbucketlist){
+       this.allbucketlist   = allbucketlist;
+       notifyDataSetChanged();
     }
 
 }

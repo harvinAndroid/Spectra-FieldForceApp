@@ -20,16 +20,15 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -57,17 +56,17 @@ import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
+import com.spectra.fieldforce.model.gpon.response.HoldReasonResponse;
 import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
-
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -89,10 +88,14 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     ArrayAdapter<String> adaptercpe;
     LocationManager locationManager;
     Boolean IrStatus;
+    private List<HoldReasonResponse.WCRHoldCategory> holdList;
     String latitude, longitude,doa;
     private static final int REQUEST_LOCATION = 1;
     FusedLocationProviderClient mFusedLocationClient;
     int PERMISSION_ID = 44;
+     int day,month,year;
+    private Calendar mcalendar;
+
     public IRFragment() {
 
     }
@@ -126,8 +129,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         getIrInfo();
         init();
         setType();
+      //  getHoldReason();
         ActivityCompat.requestPermissions( getActivity(),
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
 
     }
 
@@ -154,8 +159,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.tvApproval.setOnClickListener(view -> SubmitApproval());
         binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
         binding.spHoldCategory.setOnItemSelectedListener(this);
+        getHoldReason();
+      // binding.layoutEnggDetails.etCreatedOn.setOnClickListener(view -> DateDialog());
 
-        holdCategory = new ArrayList<String>();
+      /*  holdCategory = new ArrayList<String>();
         holdCategory.add("Hold Category");
         holdCategory.add("Customer Not Available");
         holdCategory.add("Server Room not available");
@@ -179,7 +186,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         holdCategoryId.add("569480009");
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spHoldCategory.setAdapter(adapter2);
+        binding.spHoldCategory.setAdapter(adapter2);*/
 
         binding.layoutInstallationparam.etSpeedTest.setOnClickListener(v-> binding.layoutInstallationparam.spSpeedTest.performClick());
         binding.layoutInstallationparam.spSpeedTest.setOnItemSelectedListener(this);
@@ -194,6 +201,20 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.layoutInstallationparam.etSelfcare.setOnClickListener(v-> binding.layoutInstallationparam.spSelfcare.performClick());
         binding.layoutInstallationparam.spSelfcare.setOnItemSelectedListener(this);
     }
+
+    public void DateDialog(){
+
+        DatePickerDialog.OnDateSetListener listener=new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+            {
+                binding.layoutEnggDetails.etCreatedOn.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+            }};
+        DatePickerDialog dpDialog=new DatePickerDialog(getActivity(), listener, year, month, day);
+        dpDialog.show();
+        dpDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+    }
+
 
     private void SubmitApproval(){
         inAnimation = new AlphaAnimation(0f, 1f);
@@ -241,6 +262,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
 
     private void setData(){
+
         binding.layoutAddEquipment.btnItemEqipment.setOnClickListener(v -> {
             @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
             IREquipmentConsumption irEquipmentConsumption = new IREquipmentConsumption();
@@ -409,40 +431,50 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
     }
 
-    private void OnGPS() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new  DialogInterface.OnClickListener() {
+    public void getHoldReason() {
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
+        accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
+        accountInfoRequest.setAction(Constants.WCR_HOLD_CATEGORY);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<HoldReasonResponse> call = apiService.getHoldReason(accountInfoRequest);
+        call.enqueue(new Callback<HoldReasonResponse>() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            public void onResponse(Call<HoldReasonResponse> call, Response<HoldReasonResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        holdList = response.body().getResponse().getWCRHoldCategory();
+                        holdCategoryId = new ArrayList<>();
+                        holdCategory = new ArrayList<>();
+                        holdCategory.add("Hold Category");
+                        for (HoldReasonResponse.WCRHoldCategory fms : holdList)
+                            holdCategory.add(fms.getCategory());
+                        for (HoldReasonResponse.WCRHoldCategory fms : holdList)
+                            holdCategoryId.add(fms.getId());
+                        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
+                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spHoldCategory.setAdapter(adapter2);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onFailure(Call<HoldReasonResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
             }
         });
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
-            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (locationGPS != null) {
-                double lat = locationGPS.getLatitude();
-                double longi = locationGPS.getLongitude();
-                latitude = String.valueOf(lat);
-                longitude = String.valueOf(longi);
-
-                // showLocation.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
-            } else {
-                Toast.makeText(getActivity(), latitude+longitude, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
 

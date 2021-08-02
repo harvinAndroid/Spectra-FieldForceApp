@@ -330,4 +330,9 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
 
     }
 
+    public void Filter(List<GetMyBucketList.Response> getBucketList){
+        this.getBucketList  = getBucketList;
+        notifyDataSetChanged();
+    }
+
 }

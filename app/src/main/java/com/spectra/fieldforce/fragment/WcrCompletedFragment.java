@@ -32,6 +32,7 @@ import com.spectra.fieldforce.databinding.WcrFragmentBinding;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
+import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
@@ -123,18 +124,24 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
     private void initOne(){
         getWcrInfo();
         binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
+        binding.tvResendService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resendService("Activation");
+            }
+        });
+        binding.tvResendInstallation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resendService("Installation");
+            }
+        });
     }
 
 
 
     private void init(){
-      /*  binding.layoutWcrFms.etCustomerEndFms.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFms.performClick());
-        binding.layoutWcrFms.spCustomerEndFms.setOnItemSelectedListener(this);
-        binding.layoutWcrFms.etCustomerEndFmsSec.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFmsSec.performClick());
-        binding.layoutWcrFms.spCustomerEndFmsSec.setOnItemSelectedListener(this);*/
 
-     /*   binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
-        binding.spHoldCategory.setOnItemSelectedListener(this);*/
         binding.linearFive.setVisibility(View.VISIBLE);
         binding.linearFour.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.VISIBLE);
@@ -509,6 +516,95 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
 
     }
 
+    private void resendService(String type){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
+        resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
+        resendActivationCodeRequest.setAction(Constants.RESEND_CODE);
+        resendActivationCodeRequest.setType(type);
+        resendActivationCodeRequest.setIsIR("false");
+        resendActivationCodeRequest.setGUID(strGuuId);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.resendCodeWcr(resendActivationCodeRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            // moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+    private void resendInstallation(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
+        resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
+        resendActivationCodeRequest.setAction(Constants.RESEND_CODE);
+        resendActivationCodeRequest.setType("Activation");
+        resendActivationCodeRequest.setIsIR("false");
+        resendActivationCodeRequest.setGUID(strGuuId);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.resendCodeWcr(resendActivationCodeRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            // moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
 
 
   /*  private void moveNext(){

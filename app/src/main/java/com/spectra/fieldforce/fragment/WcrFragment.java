@@ -79,6 +79,7 @@ import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetFibreCable;
 import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
+import com.spectra.fieldforce.model.gpon.response.HoldReasonResponse;
 import com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
@@ -117,6 +118,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> FmsType;
     private ArrayList<String> FmsId;
     private List<GetFmsListResponse.Fms> fmsList;
+    private List<HoldReasonResponse.WCRHoldCategory> holdList;
     private ArrayList<String> fmsName;
     private ArrayList<String> firstFmsID;
     private ArrayList<String> QualityParam;
@@ -193,6 +195,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         getWcrInfo();
         getFmsList();
         Type();
+        getHoldReason();
         ActivityCompat.requestPermissions( getActivity(),
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         QualityParamCable = new ArrayList<String>();
@@ -388,16 +391,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
-    private void myStoragePermission(int requestCameraPermissionOne) {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            OpenCamera(requestCameraPermissionOne);
-        } else {
-            //changed here
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION);
-            }
-        }
-    }
+
 
     public void checkPermission(String permission, int requestCode)
     {
@@ -818,6 +812,52 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
+    public void getHoldReason() {
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
+        accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
+        accountInfoRequest.setAction(Constants.WCR_HOLD_CATEGORY);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<HoldReasonResponse> call = apiService.getHoldReason(accountInfoRequest);
+        call.enqueue(new Callback<HoldReasonResponse>() {
+            @Override
+            public void onResponse(Call<HoldReasonResponse> call, Response<HoldReasonResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        holdList = response.body().getResponse().getWCRHoldCategory();
+                        holdCategoryId = new ArrayList<>();
+                        holdCategory = new ArrayList<>();
+                        holdCategory.add("Hold Category");
+                        for (HoldReasonResponse.WCRHoldCategory fms : holdList)
+                            holdCategory.add(fms.getCategory());
+                        for (HoldReasonResponse.WCRHoldCategory fms : holdList)
+                            holdCategoryId.add(fms.getId());
+                        adaptersecond = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
+                        adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spHoldCategory.setAdapter(adaptersecond);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<HoldReasonResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
 
 
     private void Type() {
@@ -832,7 +872,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);
 
-        holdCategory = new ArrayList<String>();
+       /* holdCategory = new ArrayList<String>();
         holdCategory.add("Hold Category");
         holdCategory.add("Building Permission Issue");
         holdCategory.add("Customer Site Not Ready");
@@ -850,7 +890,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spHoldCategory.setAdapter(adapter2);
-
+*/
         binding.saveHold.setOnClickListener(v -> {
             if (binding.spHoldCategory.getSelectedItem().toString().equals("Hold Category")) {
                 Toast.makeText(getContext(), "Please Select Hold Category", Toast.LENGTH_LONG).show();
@@ -1009,178 +1049,181 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             }
                             binding.layoutInstallationparam.setQuality(response.body().getResponse().getInstallationQuality());
 
-                            if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("Yes")){
-                                QualityParamEducation.clear();
-                                QualityParamEducation.add("Yes");
-                                QualityParamEducation.add("Select Type");
-                                QualityParamEducation.add("No");
-                                ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
-                                adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
+                            try {
 
-                            }else if(response.body().getResponse().getInstallationQuality().getAntiVirus().equals("No")){
+                                if (response.body().getResponse().getInstallationQuality().getAntiVirus().equals("Yes")) {
+                                    QualityParamEducation.clear();
+                                    QualityParamEducation.add("Yes");
+                                    QualityParamEducation.add("Select Type");
+                                    QualityParamEducation.add("No");
+                                    ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
+                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
 
-                                QualityParamEducation.clear();
-                                QualityParamEducation.add("No");
-                                QualityParamEducation.add("Select Type");
-                                QualityParamEducation.add("Yes");
-                                ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
-                                adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
-                            }
-                            else {
-                                QualityParamEducation.add("Select Type");
-                                QualityParamEducation.add("Yes");
-                                QualityParamEducation.add("No");
-                                ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
-                                adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
-                            }
-                            if(response.body().getResponse().getInstallationQuality().getCable().equals("Yes")){
-                                QualityParamCable.clear();
-                                QualityParamCable.add("Yes");
-                                QualityParamCable.add("Select Type");
-                                QualityParamCable.add("No");
-                                 adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
-                                adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
+                                } else if (response.body().getResponse().getInstallationQuality().getAntiVirus().equals("No")) {
 
-                            }else  if(response.body().getResponse().getInstallationQuality().getCable().equals("No")){
-                                QualityParamCable.clear();
-                                QualityParamCable.add("No");
-                                QualityParamCable.add("Select Type");
-                                QualityParamCable.add("Yes");
-                                adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
-                                adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
-                            }else {
-                                QualityParamCable.add("Select Type");
-                                QualityParamCable.add("Yes");
-                                QualityParamCable.add("No");
-                                adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
-                                adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
-                            }
-                            if(response.body().getResponse().getInstallationQuality().getFace().equals("Yes")){
-                                QualityParamFace.clear();
-                                QualityParamFace.add("Yes");
-                                QualityParamFace.add("Select Type");
-                                QualityParamFace.add("No");
-                                adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
-                                adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
-                            }else  if(response.body().getResponse().getInstallationQuality().getFace().equals("No")){
-                                QualityParamFace.clear();
-                                QualityParamFace.add("No");
-                                QualityParamFace.add("Select Type");
-                                QualityParamFace.add("Yes");
-                                adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
-                                adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
-                            }else{
-                                QualityParamFace.add("Select Type");
-                                QualityParamFace.add("Yes");
-                                QualityParamFace.add("No");
-                                adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
-                                adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
-                            }
-                            if(response.body().getResponse().getInstallationQuality().getOnt().equals("Yes")){
-                                QualityParamLogin.clear();
-                                QualityParamLogin.add("Yes");
-                                QualityParamLogin.add("Select Type");
-                                QualityParamLogin.add("No");
-                                adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
-                                adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
-                            }else  if(response.body().getResponse().getInstallationQuality().getOnt().equals("No")){
-                                QualityParamLogin.add("No");
-                                QualityParamLogin.add("Select Type");
-                                QualityParamLogin.add("Yes");
-                                adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
-                                adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
-                            }else {
-                                QualityParamLogin.add("Select Type");
-                                QualityParamLogin.add("Yes");
-                                QualityParamLogin.add("No");
-                                adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
-                                adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
-                            }
-                            if(response.body().getResponse().getInstallationQuality().getSelfCare().equals("Yes")){
-                                QualityParamCustomer.clear();
-                                QualityParamCustomer.add("Yes");
-                                QualityParamCustomer.add("Select Type");
-                                QualityParamCustomer.add("Yes");
-                                adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
-                                adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
-                            }else  if(response.body().getResponse().getInstallationQuality().getSelfCare().equals("No")){
-                                QualityParamCustomer.clear();
-                                QualityParamCustomer.add("No");
-                                QualityParamCustomer.add("Select Type");
-                                QualityParamCustomer.add("Yes");
-                                adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
-                                adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
-                            }else{
-                                QualityParamCustomer.add("Select Type");
-                                QualityParamCustomer.add("Yes");
-                                QualityParamCustomer.add("No");
-                                adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
-                                adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
-                            }
-                            if(response.body().getResponse().getInstallationQuality().getSpeed().equals("Yes")){
-                                QualityParamSpeed.clear();
-                                QualityParamSpeed.add("Yes");
-                                QualityParamSpeed.add("Select Type");
-                                QualityParamSpeed.add("No");
-                                adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
-                                adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
-                            }else  if(response.body().getResponse().getInstallationQuality().getSpeed().equals("No")){
-                                QualityParamSpeed.clear();
-                                QualityParamSpeed.add("No");
-                                QualityParamSpeed.add("Select Type");
-                                QualityParamSpeed.add("Yes");
-                                adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
-                                adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
-                            }else {
-                                QualityParamSpeed.add("Select Type");
-                                QualityParamSpeed.add("Yes");
-                                QualityParamSpeed.add("No");
-                                adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
-                                adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
-                            }
-                            if(response.body().getResponse().getInstallationQuality().getWifi().equals("Yes")){
-                                QualityParamWifi.clear();
-                                QualityParamWifi.add("Yes");
-                                QualityParamWifi.add("Select Type");
-                                QualityParamWifi.add("No");
-                                adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
-                                adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
-                            }else  if(response.body().getResponse().getInstallationQuality().getWifi().equals("No")){
-                                QualityParamWifi.clear();
-                                QualityParamWifi.add("No");
-                                QualityParamWifi.add("Select Type");
-                                QualityParamWifi.add("Yes");
-                                adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
-                                adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
-                            }else {
-                                QualityParamWifi.add("Select Type");
-                                QualityParamWifi.add("Yes");
-                                QualityParamWifi.add("No");
-                                adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
-                                adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
-                            }
+                                    QualityParamEducation.clear();
+                                    QualityParamEducation.add("No");
+                                    QualityParamEducation.add("Select Type");
+                                    QualityParamEducation.add("Yes");
+                                    ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
+                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
+                                } else {
+                                    QualityParamEducation.add("Select Type");
+                                    QualityParamEducation.add("Yes");
+                                    QualityParamEducation.add("No");
+                                    ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
+                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getCable().equals("Yes")) {
+                                    QualityParamCable.clear();
+                                    QualityParamCable.add("Yes");
+                                    QualityParamCable.add("Select Type");
+                                    QualityParamCable.add("No");
+                                    adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
+                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
 
+                                } else if (response.body().getResponse().getInstallationQuality().getCable().equals("No")) {
+                                    QualityParamCable.clear();
+                                    QualityParamCable.add("No");
+                                    QualityParamCable.add("Select Type");
+                                    QualityParamCable.add("Yes");
+                                    adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
+                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
+                                } else {
+                                    QualityParamCable.add("Select Type");
+                                    QualityParamCable.add("Yes");
+                                    QualityParamCable.add("No");
+                                    adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
+                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getFace().equals("Yes")) {
+                                    QualityParamFace.clear();
+                                    QualityParamFace.add("Yes");
+                                    QualityParamFace.add("Select Type");
+                                    QualityParamFace.add("No");
+                                    adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
+                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
+                                } else if (response.body().getResponse().getInstallationQuality().getFace().equals("No")) {
+                                    QualityParamFace.clear();
+                                    QualityParamFace.add("No");
+                                    QualityParamFace.add("Select Type");
+                                    QualityParamFace.add("Yes");
+                                    adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
+                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
+                                } else {
+                                    QualityParamFace.add("Select Type");
+                                    QualityParamFace.add("Yes");
+                                    QualityParamFace.add("No");
+                                    adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
+                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getOnt().equals("Yes")) {
+                                    QualityParamLogin.clear();
+                                    QualityParamLogin.add("Yes");
+                                    QualityParamLogin.add("Select Type");
+                                    QualityParamLogin.add("No");
+                                    adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
+                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
+                                } else if (response.body().getResponse().getInstallationQuality().getOnt().equals("No")) {
+                                    QualityParamLogin.add("No");
+                                    QualityParamLogin.add("Select Type");
+                                    QualityParamLogin.add("Yes");
+                                    adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
+                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
+                                } else {
+                                    QualityParamLogin.add("Select Type");
+                                    QualityParamLogin.add("Yes");
+                                    QualityParamLogin.add("No");
+                                    adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
+                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getSelfCare().equals("Yes")) {
+                                    QualityParamCustomer.clear();
+                                    QualityParamCustomer.add("Yes");
+                                    QualityParamCustomer.add("Select Type");
+                                    QualityParamCustomer.add("Yes");
+                                    adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
+                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
+                                } else if (response.body().getResponse().getInstallationQuality().getSelfCare().equals("No")) {
+                                    QualityParamCustomer.clear();
+                                    QualityParamCustomer.add("No");
+                                    QualityParamCustomer.add("Select Type");
+                                    QualityParamCustomer.add("Yes");
+                                    adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
+                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
+                                } else {
+                                    QualityParamCustomer.add("Select Type");
+                                    QualityParamCustomer.add("Yes");
+                                    QualityParamCustomer.add("No");
+                                    adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
+                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getSpeed().equals("Yes")) {
+                                    QualityParamSpeed.clear();
+                                    QualityParamSpeed.add("Yes");
+                                    QualityParamSpeed.add("Select Type");
+                                    QualityParamSpeed.add("No");
+                                    adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
+                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
+                                } else if (response.body().getResponse().getInstallationQuality().getSpeed().equals("No")) {
+                                    QualityParamSpeed.clear();
+                                    QualityParamSpeed.add("No");
+                                    QualityParamSpeed.add("Select Type");
+                                    QualityParamSpeed.add("Yes");
+                                    adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
+                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
+                                } else {
+                                    QualityParamSpeed.add("Select Type");
+                                    QualityParamSpeed.add("Yes");
+                                    QualityParamSpeed.add("No");
+                                    adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
+                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getWifi().equals("Yes")) {
+                                    QualityParamWifi.clear();
+                                    QualityParamWifi.add("Yes");
+                                    QualityParamWifi.add("Select Type");
+                                    QualityParamWifi.add("No");
+                                    adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
+                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
+                                } else if (response.body().getResponse().getInstallationQuality().getWifi().equals("No")) {
+                                    QualityParamWifi.clear();
+                                    QualityParamWifi.add("No");
+                                    QualityParamWifi.add("Select Type");
+                                    QualityParamWifi.add("Yes");
+                                    adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
+                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
+                                } else {
+                                    QualityParamWifi.add("Select Type");
+                                    QualityParamWifi.add("Yes");
+                                    QualityParamWifi.add("No");
+                                    adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
+                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
+                                }
+                            }catch (Exception ex){
+                                ex.getMessage();
+                            }
 
                             listener();
                         } catch (NumberFormatException e) {
@@ -1552,28 +1595,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
-    private void Permission(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA},
-                    REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION);
-        }else{
-            OpenCamera(REQUEST_CAMERA_PERMISSION_ONE);
-        }
-    }
-    private void Permission1(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA},
-                    REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION);
-        }else{
-            OpenCamera(REQUEST_CAMERA_PERMISSION_ONE);
-        }
-    }
+
 
     private void SubmitApproval(){
         inAnimation = new AlphaAnimation(0f, 1f);

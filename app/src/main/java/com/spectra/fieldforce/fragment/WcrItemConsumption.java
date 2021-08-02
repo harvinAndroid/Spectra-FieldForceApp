@@ -280,7 +280,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
             if(type.equals("Default")){
                 getMaxCap(StrSubItemName,strItemname);
             }
-
         }
     }
 
