@@ -224,18 +224,22 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                 else strItem = " ";
                 et_subitem.setText(subItem.get(position));
                 if(strItem!=null){
-                    if (position != 0) strSubItem = "" + SubItemID.get(position - 1);
-                    else strSubItem = " ";
-                    et_subitem.setText(subItem.get(position));
-                    if (position != 0) maxCap = "" + MaxCap.get(position - 1);
-                    else maxCap = " ";
-                    et_item_type.setText(ItemType.get(position));
-                    if (position != 0) str_itemType = "" + ItemType.get(position);
-                    else str_itemType = " ";
-                    et_nrgp.setText(NRGP.get(position));
-                    strNrgp = NRGP.get(position);
-                    if (position != 0) strTemplateId = "" + TemplateId.get(position - 1);
-                    else strTemplateId = " ";
+                    try {
+                        if (position != 0) strSubItem = "" + SubItemID.get(position - 1);
+                        else strSubItem = " ";
+                        et_subitem.setText(subItem.get(position));
+                        if (position != 0) maxCap = "" + MaxCap.get(position - 1);
+                        else maxCap = " ";
+                        et_item_type.setText(ItemType.get(position));
+                        if (position != 0) str_itemType = "" + ItemType.get(position);
+                        else str_itemType = " ";
+                        et_nrgp.setText(NRGP.get(position));
+                        strNrgp = NRGP.get(position);
+                        if (position != 0) strTemplateId = "" + TemplateId.get(position - 1);
+                        else strTemplateId = " ";
+                    }catch (Exception ex){
+                        ex.getMessage();
+                    }
                 }
                 break;
             case R.id.sp_nrgp_item:
@@ -342,22 +346,32 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
             public void onResponse(@NonNull Call<NrgpDetails> call, @NonNull Response<NrgpDetails> response) {
                 int status = Objects.requireNonNull(response.body()).getStatus();
                 if (status==1) {
-                    NrgpDetailsList = response.body().getResponse();
-                    NrgpDetailsItem = new ArrayList<>();
-                    NrgpDetailsSubItem = new ArrayList<>();
-                    NrgpSubbItemName = new ArrayList<>();
-                    NrgpDetailsItem.add("Select NRGP Item");
-                    NrgpSubbItemName.add("Select NRGP SubItem");
-                    for (NrgpDetails.Response nrgplist : NrgpDetailsList)
-                        NrgpDetailsItem.add(nrgplist.getItemName());
-                    for(NrgpDetails.Response nrgpSubItem : NrgpDetailsList)
-                        NrgpDetailsSubItem.add(nrgpSubItem.getSubItemCode());
-                    for(NrgpDetails.Response nrgpSubItem : NrgpDetailsList)
-                        NrgpSubbItemName.add(nrgpSubItem.getSubItemName());
+                    try {
+                        NrgpDetailsList = response.body().getResponse();
+                        if (NrgpDetailsItem != null) {
+                            NrgpDetailsItem = new ArrayList<>();
+                            NrgpDetailsSubItem = new ArrayList<>();
+                            NrgpSubbItemName = new ArrayList<>();
+                            NrgpDetailsItem.add("Select NRGP Item");
+                            NrgpSubbItemName.add("Select NRGP SubItem");
+                            for (NrgpDetails.Response nrgplist : NrgpDetailsList)
+                                NrgpDetailsItem.add(nrgplist.getItemName());
+                            for (NrgpDetails.Response nrgpSubItem : NrgpDetailsList)
+                                NrgpDetailsSubItem.add(nrgpSubItem.getSubItemCode());
+                            for (NrgpDetails.Response nrgpSubItem : NrgpDetailsList)
+                                NrgpSubbItemName.add(nrgpSubItem.getSubItemName());
+                        }
+                    }catch (Exception ex){
+                        ex.getMessage();
+                    }
                 }
+                try{
                 if(getActivity()!=null) {
                     SpinnerAdapter spinnerAdapter11 = new SpinnerAdapter(requireActivity(), R.layout.spinner_item, R.id.tv_item_name, NrgpDetailsItem);
                     sp_nrgp_item.setAdapter(spinnerAdapter11);
+                }
+                }catch (Exception ex){
+                    ex.getMessage();
                 }
             }
 
@@ -388,61 +402,67 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                         if (status==1) {
                             itemlist = response.body().getResponse().getItem();
                             equipmentresponselist = response.body().getResponse().getEquipment();
-                            item = new ArrayList<>();
-                            subItem = new ArrayList<>();
-                            ItemID = new ArrayList<>();
-                            SubItemID = new ArrayList<>();
-                            MaxCap = new ArrayList<>();
-                            ItemType = new ArrayList<>();
-                            NRGP = new ArrayList<>();
-                            TemplateId = new ArrayList<>();
-                            item.add("Select Item");
-                            subItem.add("Select Sub Item");
-                            ItemType.add("Select Item Type");
-                            if(strType.equals("Item")) {
-                                if (itemlist != null) {
-                                    for (ItemConsumptionDetails.Item itemName : itemlist)
-                                        item.add(itemName.getItemName());
-                                    for (ItemConsumptionDetails.Item sub_item : itemlist)
-                                        subItem.add(sub_item.getSub_item_name());
-                                    for (ItemConsumptionDetails.Item itemId : itemlist)
-                                        ItemID.add(itemId.getItemCode());
-                                    for (ItemConsumptionDetails.Item sub_itemId : itemlist)
-                                        SubItemID.add(sub_itemId.getSubItemCode());
-                                    for (ItemConsumptionDetails.Item maxacapp : itemlist)
-                                        MaxCap.add(maxacapp.getMaxcap());
-                                    for(ItemConsumptionDetails.Item itemType: itemlist)
-                                        ItemType.add(itemType.getItemType());
-                                    for(ItemConsumptionDetails.Item itemType: itemlist)
-                                        NRGP.add(itemType.getNRGP());
-                                    for(ItemConsumptionDetails.Item templateId : itemlist)
-                                        TemplateId.add(templateId.getTemplateId());
-                                }
-                            }else{
-                                if(equipmentresponselist!=null) {
-                                    for (ItemConsumptionDetails.Equipment itemName : equipmentresponselist)
-                                        item.add(itemName.getItemName());
-                                    for (ItemConsumptionDetails.Equipment sub_item : equipmentresponselist)
-                                        subItem.add(sub_item.getSub_item_name());
-                                    for (ItemConsumptionDetails.Equipment itemId : equipmentresponselist)
-                                        ItemID.add(itemId.getItemCode());
-                                    for (ItemConsumptionDetails.Equipment sub_itemId : equipmentresponselist)
-                                        SubItemID.add(sub_itemId.getSubItemCode());
-                                    for (ItemConsumptionDetails.Equipment maxxcapp : equipmentresponselist)
-                                        MaxCap.add(maxxcapp.getMaxcap());
-                                    for(ItemConsumptionDetails.Equipment itemType1: equipmentresponselist)
-                                        ItemType.add(itemType1.getItemType());
-                                    for(ItemConsumptionDetails.Equipment nrgp : equipmentresponselist)
-                                        NRGP.add(nrgp.getNRGP());
-                                    for(ItemConsumptionDetails.Equipment templateId : equipmentresponselist)
-                                        TemplateId.add(templateId.getTemplateId());
-                                }
+                            try {
+                                    item = new ArrayList<>();
+                                    subItem = new ArrayList<>();
+                                    ItemID = new ArrayList<>();
+                                    SubItemID = new ArrayList<>();
+                                    MaxCap = new ArrayList<>();
+                                    ItemType = new ArrayList<>();
+                                    NRGP = new ArrayList<>();
+                                    TemplateId = new ArrayList<>();
+                                    item.add("Select Item");
+                                    subItem.add("Select Sub Item");
+                                    ItemType.add("Select Item Type");
+                                    if (strType.equals("Item")) {
+                                        if (itemlist != null || itemlist.size()!=0) {
+                                            for (ItemConsumptionDetails.Item itemName : itemlist)
+                                                item.add(itemName.getItemName());
+                                            for (ItemConsumptionDetails.Item sub_item : itemlist)
+                                                subItem.add(sub_item.getSub_item_name());
+                                            for (ItemConsumptionDetails.Item itemId : itemlist)
+                                                ItemID.add(itemId.getItemCode());
+                                            for (ItemConsumptionDetails.Item sub_itemId : itemlist)
+                                                SubItemID.add(sub_itemId.getSubItemCode());
+                                            for (ItemConsumptionDetails.Item maxacapp : itemlist)
+                                                MaxCap.add(maxacapp.getMaxcap());
+                                            for (ItemConsumptionDetails.Item itemType : itemlist)
+                                                ItemType.add(itemType.getItemType());
+                                            for (ItemConsumptionDetails.Item itemType : itemlist)
+                                                NRGP.add(itemType.getNRGP());
+                                            for (ItemConsumptionDetails.Item templateId : itemlist)
+                                                TemplateId.add(templateId.getTemplateId());
+                                        }
+                                    } else {
+                                        if (equipmentresponselist != null || equipmentresponselist.size()!=0) {
+                                            for (ItemConsumptionDetails.Equipment itemName : equipmentresponselist)
+                                                item.add(itemName.getItemName());
+                                            for (ItemConsumptionDetails.Equipment sub_item : equipmentresponselist)
+                                                subItem.add(sub_item.getSub_item_name());
+                                            for (ItemConsumptionDetails.Equipment itemId : equipmentresponselist)
+                                                ItemID.add(itemId.getItemCode());
+                                            for (ItemConsumptionDetails.Equipment sub_itemId : equipmentresponselist)
+                                                SubItemID.add(sub_itemId.getSubItemCode());
+                                            for (ItemConsumptionDetails.Equipment maxxcapp : equipmentresponselist)
+                                                MaxCap.add(maxxcapp.getMaxcap());
+                                            for (ItemConsumptionDetails.Equipment itemType1 : equipmentresponselist)
+                                                ItemType.add(itemType1.getItemType());
+                                            for (ItemConsumptionDetails.Equipment nrgp : equipmentresponselist)
+                                                NRGP.add(nrgp.getNRGP());
+                                            for (ItemConsumptionDetails.Equipment templateId : equipmentresponselist)
+                                                TemplateId.add(templateId.getTemplateId());
+                                        }
+
+                                    }
+                                    if (getActivity() != null) {
+                                        SpinnerAdapter spinnerAdapter1 = new SpinnerAdapter(requireActivity(), R.layout.spinner_item, R.id.tv_item_name, item);
+                                        sp_item.setAdapter(spinnerAdapter1);
+                                    }
+                                    getItemNrgpDetails();
+
+                            }catch (Exception ex){
+                                ex.getMessage();
                             }
-                            if(getActivity()!=null) {
-                                SpinnerAdapter spinnerAdapter1 = new SpinnerAdapter(requireActivity(), R.layout.spinner_item, R.id.tv_item_name, item);
-                                sp_item.setAdapter(spinnerAdapter1);
-                            }
-                            getItemNrgpDetails();
                         }
 
                     } catch (Exception e) {

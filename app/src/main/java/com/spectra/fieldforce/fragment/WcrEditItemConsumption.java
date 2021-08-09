@@ -139,7 +139,7 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
         itemType.add("Select Consumption Type");
         itemType.add("WCR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spType.setAdapter(adapter);
 
         consumptionItemType = new ArrayList<String>();
@@ -150,7 +150,7 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
       //  itemTypeData.add("111260001");
         itemTypeData.add("111260000");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spItemType.setAdapter(adapter1);
 
 
@@ -217,7 +217,7 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
                         for (GetSubItemListResponse.Datum data : subItem)
                             subItemId.add(data.getSubItemId());
                         ArrayAdapter<String> adapter12 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemName);
-                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.spSubItem.setAdapter(adapter12);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -254,10 +254,11 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
             strItemTypeData = consumptionItemType.get(position);
             if (position != 0) strItemTypeData = "" + itemTypeData.get(position - 1);
             else strItemTypeData = " ";
-            String type = consumptionItemType.get(position);
+            getMaxCap(StrSubItemName,strItemname);
+           /* String type = consumptionItemType.get(position);
             if(type.equals("Default")){
                 getMaxCap(StrSubItemName,strItemname);
-            }
+            }*/
         }
     }
 

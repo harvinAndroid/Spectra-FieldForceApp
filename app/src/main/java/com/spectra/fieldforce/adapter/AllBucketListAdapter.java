@@ -38,6 +38,8 @@ import com.spectra.fieldforce.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -49,7 +51,10 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     private List<GetAllBucketList.Response> allbucketlist;
     AdpterAllBucketListBinding binding;
     private AlphaAnimation inAnimation,outAnimation;
-
+    Calendar calendar;
+    SimpleDateFormat simpleDateFormat;
+    private Calendar mCalendar;
+    String dateTime;
  /*   contactPerson,contactNo*/
 
     public AllBucketListAdapter(FragmentActivity activity, List<GetAllBucketList.Response> allbucketlist) {
@@ -79,6 +84,15 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         holder.binding.enggNm.setText("Engineer Name: " +itemList.getEngineerName());
         String enggName = holder.binding.enggNm.getText().toString();
        //String enggName = itemList.getEngineerName();
+        try {
+            calendar = Calendar.getInstance();
+            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss aaa z");
+            dateTime = simpleDateFormat.format(itemList.getWcrslaclock()).toString();
+            holder.binding.slaClock.setText(dateTime);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(enggName.isEmpty()||enggName.equals("Engineer Name: ")){
             binding.tvAdd.setText("ADD");
             // binding.tvAdd.setBackgroundColor(context.getResources().getColor(android.R.color.secondary_text_light));
@@ -91,7 +105,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             AllBucketListAdapter.this.addItemToBucket(itemList.getID(),itemList.getOrderType(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), "",
                     itemList.getStatus(), itemList.getHoldCategory(),"",  "",
                     itemList.getAreaName(),itemList.getSlaStatus(),itemList.getVendorName(),itemList.getCreatedOn(),
-                    itemList.getProduct(),itemList.getContactPerson(),itemList.getContactNo(),itemList.getWcrslaclock(),itemList.getIrslaclock());
+                    itemList.getProduct(),itemList.getContactPerson(),itemList.getContactNo(),itemList.getWcrslaclock(),itemList.getIrslaclock(),itemList.getBusinessSegment(),itemList.getCityId(),itemList.getAddress());
 
             if(itemList.getOrderType().equals("WCR")){
                 updateEnginer("updateWCREngineer",  itemList.getWcrId());
@@ -141,8 +155,8 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     }
 
 
-    private void addItemToBucket(String id,String OrderType, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String networkTechnology,String AreaName
-    ,String Sla,String vendorName,String createOn,String Product,String cperson,String Num,String Wcrslaclock,String Irslaclock){
+    private void addItemToBucket(String id, String OrderType, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String networkTechnology, String AreaName
+            , String Sla, String vendorName, String createOn, String Product, String cperson, String Num, String Wcrslaclock, String Irslaclock, String businessSegment, String cityId, String address){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -178,6 +192,9 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         addBucketListRequest.setWCRSlaClock(Wcrslaclock);
         addBucketListRequest.setIRSlaClock(Irslaclock);
         addBucketListRequest.setOrder_type(orderType);
+        addBucketListRequest.setSegment(businessSegment);
+        addBucketListRequest.setCustomerAddress(address);
+        addBucketListRequest.setCustomerCityId(cityId);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemToBucket(addBucketListRequest);
         call.enqueue(new Callback<CommonClassResponse>() {

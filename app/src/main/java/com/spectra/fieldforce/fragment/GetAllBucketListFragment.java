@@ -45,8 +45,11 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
     AllBucketListAdapter allBucketListAdapter;
-    private ArrayList<String> statusType;
+   // private ArrayList<String> statusType;
     ArrayAdapter<String> adapter;
+    ArrayAdapter aa;
+    String[] statusType = { "Select Status Type", "Installation Pending", "Installation On Hold", "Assigned", "UnAssigned"};
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,51 +93,61 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
     }
 
     private void Type() {
-        binding.etSearch.setOnClickListener(v-> binding.spSearch.performClick());
+       // binding.etSearch.setOnClickListener(v-> binding.spSearch.performClick());
         binding.spSearch.setOnItemSelectedListener(this);
-
-        statusType = new ArrayList<String>();
+         aa = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,statusType);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        //Setting the ArrayAdapter data on the Spinner
+        binding.spSearch.setAdapter(aa);
+      /*  statusType = new ArrayList<String>();
+      simple_spinner_item
         statusType.add("Select Status Type");
         statusType.add("Installation Pending");
-        statusType.add("hold");
+        statusType.add("Installation On Hold");
         statusType.add("Assigned");
         statusType.add("UnAssigned");
         adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, statusType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spSearch.setAdapter(adapter);
+        binding.spSearch.setAdapter(adapter);*/
     }
 
 
         public void Search(String search){
+        try{
         List<GetAllBucketList.Response> getBucketListItem;
         getBucketListItem = new ArrayList<>();
-        for(GetAllBucketList.Response obj:this.getBucketList){
-            if(obj.getCanId().toLowerCase().contains(search)){
+        for(GetAllBucketList.Response obj:this.getBucketList) {
+            if (obj.getCanId().toLowerCase().contains(search)) {
                 getBucketListItem.add(obj);
-            }else if(obj.getID().toLowerCase().contains(search)){
+            } else if (obj.getID().toLowerCase().contains(search.toLowerCase())) {
                 getBucketListItem.add(obj);
-            }else if(obj.getStatus().contains(search)){
+            } else if (obj.getStatus().contains(search)) {
                 getBucketListItem.add(obj);
-            }else if(search.contains("UnAssigned")){
-                if(obj.getEngineerName()==null|| obj.getEngineerName().isEmpty()){
+            } else if (obj.getCustomerName().toLowerCase().contains(search.toLowerCase())) {
+                getBucketListItem.add(obj);
+            } else if (search.contains("UnAssigned")) {
+                if (obj.getEngineerName() == null || obj.getEngineerName().isEmpty()) {
                     getBucketListItem.add(obj);
                 }
-            }else if(search.contains("Assigned")){
-                if(obj.getEngineerName()!=null){
+            } else if (search.contains("Assigned")) {
+                if (obj.getEngineerName() != null) {
                     String name = obj.getEngineerName();
-                    if(name.isEmpty()){
+                    if (name.isEmpty()) {
 
-                    }else{
+                    } else {
                         getBucketListItem.add(obj);
                     }
-
                 }
             }
         }
+
             binding.tvCount.setVisibility(View.VISIBLE);
             String size = String.valueOf(getBucketListItem.size());
             binding.tvCount.setText(size);
-        this.allBucketListAdapter.Filter(getBucketListItem);
+            this.allBucketListAdapter.Filter(getBucketListItem);
+        }catch (Exception ex){
+            ex.getMessage();
+        }
     }
 
     public void getallBucketList() {
@@ -163,13 +176,13 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
                         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                         binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                         if(response.body().getStatus().equals("Success")){
-                            binding.tvCount.setVisibility(View.GONE);
                             binding.rvAllBucketList.setHasFixedSize(true);
                             binding.rvAllBucketList.setLayoutManager(new LinearLayoutManager(getContext()));
                             binding.rvAllBucketList.setNestedScrollingEnabled(false);
                             allBucketListAdapter = new AllBucketListAdapter(getActivity(),getBucketList);
-                           /* String size = String.valueOf(getBucketList.size());
-                            binding.tvCount.setText(size);*/
+                            binding.tvCount.setVisibility(View.VISIBLE);
+                            String size = String.valueOf(getBucketList.size());
+                            binding.tvCount.setText(size);
                             binding.rvAllBucketList.setAdapter(allBucketListAdapter);
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
@@ -193,8 +206,8 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.sp_search) {
-            binding.etSearch.setText(statusType.get(position));
-            String status = statusType.get(position);
+          //  binding.etSearch.setText(statusType.get(position));
+            String status = statusType[position] ;
             if(status.equals("Select Status Type")){
 
             }else{

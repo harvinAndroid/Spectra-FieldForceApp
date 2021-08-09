@@ -51,11 +51,13 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
     private Context context;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
     WcrItemsconsumptionListBinding binding;
+    String add;
 
 
-    public WcrCompletteItemConsumptionListAdapter(FragmentActivity activity, ArrayList<WcrResponse.ItemConsumtion> itemConsumtions) {
+    public WcrCompletteItemConsumptionListAdapter(FragmentActivity activity, ArrayList<WcrResponse.ItemConsumtion> itemConsumtions, String add) {
         this.context = activity;
         this.itemConsumtions = itemConsumtions;
+        this.add = add;
     }
 
     @NotNull
@@ -77,7 +79,13 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         WcrResponse.ItemConsumtion item = itemConsumtions.get(position);
         holder.binding.setItemConsumption(item);
-
+        if(add.equals("1")){
+            holder.binding.delete.setVisibility(View.VISIBLE);
+            holder.binding.edit.setVisibility(View.VISIBLE);
+        }else{
+            holder.binding.delete.setVisibility(View.GONE);
+            holder.binding.edit.setVisibility(View.GONE);
+        }
         holder.binding.delete.setOnClickListener(v -> {
             deleteItem(item.getItemID(),item.getCanid());
         });
@@ -124,8 +132,6 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
                                 Fragment myFragment = new WcrFragment();
                                 myFragment.setArguments(b);
                                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
-
-
                             }
 
                         } catch (NumberFormatException e) {

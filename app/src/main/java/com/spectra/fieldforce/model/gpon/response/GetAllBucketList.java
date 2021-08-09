@@ -118,6 +118,19 @@ public class Response {
     private String contactNo;
     private String createdOn;
     private String wcrslaclock,irslaclock;
+    private String appointmentDate,cityId,address;
+
+    public String getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
 
     public String getWcrslaclock() {
         return wcrslaclock;

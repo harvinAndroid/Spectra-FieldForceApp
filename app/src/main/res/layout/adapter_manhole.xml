@@ -22,7 +22,8 @@
         android:id="@+id/et_ite1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`FiberNoRunningNoWise :  ` + equipment.fiberNoRunningNoWise}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"  />
@@ -31,6 +32,8 @@
         android:id="@+id/et_ite2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`FiberTube :  ` + equipment.fiberTube}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
@@ -39,8 +42,9 @@
         android:id="@+id/et_ite3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`Distance :  ` + equipment.distance}"
-        android:layout_marginTop="@dimen/_10sdp"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"  />
 
@@ -48,7 +52,8 @@
         android:id="@+id/et_ite4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`ManHoleType :  ` + equipment.manHoleType}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
@@ -66,7 +71,8 @@
         android:id="@+id/et_ite6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`FiberCable :  ` + equipment.fiberCable}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"  />
@@ -74,7 +80,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`LocationLandmark :  ` + equipment.locationLandmark}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"  />
@@ -82,7 +89,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`CANID :  ` + equipment.canid}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />

@@ -75,6 +75,7 @@ public class WcrAddManholeAdapter extends RecyclerView.Adapter<WcrAddManholeAdap
             Bundle b = new Bundle();
             b.putString("canId", manHoleDetails1.getCanid());
             b.putString("GuIID", manHoleDetails1.getWcrguidid());
+            b.putString("ItemId",manHoleDetails1.getItemID());
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new WcrEditManholeFragment();
             myFragment.setArguments(b);

@@ -6,6 +6,20 @@ public class AddBucketListRequest {
                EngineerName,EngineerID,VendorCode,VendorName,SlaStatus,AreaName,Product,ContactPerson,ContactNo,
                OrderCreatedOn,AppointmentDate,WCRSlaClock,IRSlaClock;
 
+   private String Segment,CustomerAddress,CustomerCityId;
+
+    public void setSegment(String segment) {
+        Segment = segment;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        CustomerAddress = customerAddress;
+    }
+
+    public void setCustomerCityId(String customerCityId) {
+        CustomerCityId = customerCityId;
+    }
+
     public void setWCRSlaClock(String WCRSlaClock) {
         this.WCRSlaClock = WCRSlaClock;
     }

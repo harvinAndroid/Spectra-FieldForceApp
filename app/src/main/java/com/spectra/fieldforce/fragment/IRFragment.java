@@ -47,6 +47,7 @@ import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
 import com.spectra.fieldforce.model.gpon.request.IRCompleteRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendCodeIRRequest;
+import com.spectra.fieldforce.model.gpon.request.ResendNavRequest;
 import com.spectra.fieldforce.model.gpon.request.SubmitApprovalRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCpeMacRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateGeneralDetails;
@@ -63,6 +64,8 @@ import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -88,6 +91,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     ArrayAdapter<String> adaptercpe;
     LocationManager locationManager;
     Boolean IrStatus;
+    private String add;
     private List<HoldReasonResponse.WCRHoldCategory> holdList;
     String latitude, longitude,doa;
     private static final int REQUEST_LOCATION = 1;
@@ -95,6 +99,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     int PERMISSION_ID = 44;
      int day,month,year;
     private Calendar mcalendar;
+    private Calendar mCalendar;
+    private String fromDateString = "";
 
     public IRFragment() {
 
@@ -121,6 +127,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         String strIrStatus = String.valueOf(IrStatus);
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("IR");
+
         if(strIrStatus.equals("true")){
             binding.linea18.setVisibility(View.VISIBLE);
         }else{
@@ -159,34 +166,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.tvApproval.setOnClickListener(view -> SubmitApproval());
         binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
         binding.spHoldCategory.setOnItemSelectedListener(this);
-        getHoldReason();
-      // binding.layoutEnggDetails.etCreatedOn.setOnClickListener(view -> DateDialog());
-
-      /*  holdCategory = new ArrayList<String>();
-        holdCategory.add("Hold Category");
-        holdCategory.add("Customer Not Available");
-        holdCategory.add("Server Room not available");
-        holdCategory.add("Client IT infrastructure not ready");
-        holdCategory.add("IT Person not available");
-        holdCategory.add("Power Not available");
-        holdCategory.add("Building ID incorrectly updated");
-        holdCategory.add("Wrong commitment from Sales team");
-        holdCategory.add("CRM related issues");
-        holdCategory.add("Duplicate order");
-        holdCategoryId = new ArrayList<String>();
-        holdCategoryId.add("569480000");
-        holdCategoryId.add("569480001");
-        holdCategoryId.add("569480002");
-        holdCategoryId.add("569480003");
-        holdCategoryId.add("569480004");
-        holdCategoryId.add("569480005");
-        holdCategoryId.add("569480006");
-        holdCategoryId.add("569480007");
-        holdCategoryId.add("569480008");
-        holdCategoryId.add("569480009");
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spHoldCategory.setAdapter(adapter2);*/
 
         binding.layoutInstallationparam.etSpeedTest.setOnClickListener(v-> binding.layoutInstallationparam.spSpeedTest.performClick());
         binding.layoutInstallationparam.spSpeedTest.setOnItemSelectedListener(this);
@@ -200,19 +179,34 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.layoutInstallationparam.spDns.setOnItemSelectedListener(this);
         binding.layoutInstallationparam.etSelfcare.setOnClickListener(v-> binding.layoutInstallationparam.spSelfcare.performClick());
         binding.layoutInstallationparam.spSelfcare.setOnItemSelectedListener(this);
-    }
 
-    public void DateDialog(){
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sendDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+        @SuppressLint("SetTextI18n")
+        final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, monthOfYear);
+            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            fromDateString = sendDateFormat.format(mCalendar.getTime());
+            binding.layoutEnggDetails.etCreatedOn.setText("" + fromDateString);
+        };
 
-        DatePickerDialog.OnDateSetListener listener=new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                binding.layoutEnggDetails.etCreatedOn.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
-            }};
-        DatePickerDialog dpDialog=new DatePickerDialog(getActivity(), listener, year, month, day);
-        dpDialog.show();
-        dpDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        binding.layoutEnggDetails.etCreatedOn.setOnClickListener(view -> {
+            try {
+                final DatePickerDialog fromPickerDialog = new DatePickerDialog(
+                        getActivity(), android.R.style.Theme_Material_Light_Dialog_Alert,
+                        mFromDateSetListener,
+                        mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH));
+                fromPickerDialog.show();
+                fromPickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            } catch (Exception ex) {
+
+            }
+        });
+        mCalendar = Calendar.getInstance();
+        fromDateString = sendDateFormat.format(mCalendar.getTime());
     }
 
 
@@ -243,7 +237,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -284,7 +277,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         QualityParam.add("Yes");
         QualityParam.add("No");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.layoutInstallationparam.spDns.setAdapter(adapter);
         binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapter);
         binding.layoutInstallationparam.spIp.setAdapter(adapter);
@@ -300,7 +293,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         irCpeMac.add("Completed");
         irCpeMacid.add("111260000");
         adaptercpe = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
-        adaptercpe.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adaptercpe.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.layoutCpemac.spCpeMacShared.setAdapter(adaptercpe);
 
         binding.tvResendOtp.setOnClickListener(v -> resendCode());
@@ -311,8 +304,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             }else {
                 updateCpeMac();
             }
-
-
         });
 
         binding.tvIrComplete.setOnClickListener(v -> {
@@ -321,11 +312,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
             }else{
                 getLastLocation();
-               /* locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    OnGPS();
-                } else {
-                    getLocation();*/
+
                     if (installationItemLists.size() == 0 || installationItemLists == null) {
                         Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
                     } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
@@ -341,6 +328,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             updateHoldCategory();
             updateHoldCategoryStatus();
         });
+
+        binding.tvResendNav.setOnClickListener(view -> resendNav());
 
         binding.layoutGeneralDetails.tvGeneralDetailsSave.setOnClickListener(v -> {
             String ipattach = Objects.requireNonNull(binding.layoutGeneralDetails.etIrAttached.getText()).toString();
@@ -455,12 +444,12 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         holdCategoryId = new ArrayList<>();
                         holdCategory = new ArrayList<>();
                         holdCategory.add("Hold Category");
-                        for (HoldReasonResponse.WCRHoldCategory fms : holdList)
-                            holdCategory.add(fms.getCategory());
-                        for (HoldReasonResponse.WCRHoldCategory fms : holdList)
-                            holdCategoryId.add(fms.getId());
+                        for (HoldReasonResponse.WCRHoldCategory hold : holdList)
+                            holdCategory.add(hold.getCategory());
+                        for (HoldReasonResponse.WCRHoldCategory holdId : holdList)
+                            holdCategoryId.add(holdId.getId());
                         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
-                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.spHoldCategory.setAdapter(adapter2);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -629,36 +618,62 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                     try {
                         binding.layoutCustomerDetails.setCustomerDetails(response.body().getResponse().getIr());
                         binding.setIR(response.body().getResponse().getIr());
+                        String consumptionStatus = response.body().getResponse().getIr().getConsumptionStatus();
+                        if (consumptionStatus.equals("Material not available")) {
+                            binding.tvResendNav.setVisibility(View.VISIBLE);
+                        }
+                        add="0";
                         strGuiID = response.body().getResponse().getIr().getIrguid();
                         strSegment = response.body().getResponse().getIr().getBusinessSegment();
                         str_provisionId = response.body().getResponse().getGeneral().getProvisionId();
                         String strHold = response.body().getResponse().getIr().getShowHold();
-                        if(strHold.equals("true")){
+                        if (strHold.equals("true")) {
                             binding.linea18.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             binding.linea18.setVisibility(View.GONE);
                         }
                         itemConsumtions = (ArrayList<IrInfoResponse.ItemConsumtion>) response.body().getResponse().getItemConsumtionList();
                         binding.layoutItemcousumption.rvIrItemlist.setHasFixedSize(true);
                         binding.layoutItemcousumption.rvIrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-                        if(itemConsumtions.size()!=0){
-                            binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(),itemConsumtions,IrStatusReport));
+                        if (itemConsumtions.size() != 0) {
+                            binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(), itemConsumtions, IrStatusReport));
+                        }
+                        if ((strSegment.equals("Home")) || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))) {
+                            binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                            add = "1";
                         }
                         installationItemLists = (ArrayList<IrInfoResponse.InstallationItemList>) response.body().getResponse().getInstallationItemList();
                         binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                         binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        if(installationItemLists.size()!=0){
-                            binding.layoutAddEquipment.rvAddEquipment.setAdapter(new IrEquipmentConsumpAdapter(getActivity(),installationItemLists,IrStatusReport));
+                        if (installationItemLists.size() != 0) {
+                            binding.layoutAddEquipment.rvAddEquipment.setAdapter(new IrEquipmentConsumpAdapter(getActivity(), installationItemLists, IrStatusReport, add));
                         }
+
                         straddition = installationItemLists.get(0).getItemType();
-                        if(straddition.equals("Additional")&& strSegment.equals("Home")){
-                            binding.tvApproval.setVisibility(View.VISIBLE);
+
+                        if (straddition != null) {
+                            if (straddition.equals("Additional") && strSegment.equals("Home")) {
+                                if (consumptionStatus.equals("Waiting for approval")) {
+                                    binding.tvApproval.setVisibility(View.GONE);
+                                    binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
+                                    add = "0";
+                                } else {
+                                    binding.tvApproval.setVisibility(View.VISIBLE);
+                                    binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                    add = "1";
+                                }
+                            }
                         }
+
                         doa = response.body().getResponse().getIr().getDOAFlag();
-                        if(doa.equals("No")&& straddition.equals("Additional")){
-                            binding.tvApproval.setVisibility(View.VISIBLE);
+                        if(doa!=null){
+                            if(doa.equals("No") && straddition.equals("Additional")){
+                                binding.tvApproval.setVisibility(View.VISIBLE);
+                                add="0";
+                            }
                         }
+
                         binding.layoutGeneralDetails.setGeneralDetails(response.body().getResponse().getGeneral());
                         binding.layoutEnggDetails.setEngineer(response.body().getResponse().getEngineer());
                         binding.setHold(response.body().getResponse().getEngineer());
@@ -670,7 +685,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             irCpeMacid.add("111260000");
                             irCpeMac.add("Select CPE Type");
                             adaptercpe = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
-                            adaptercpe.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            adaptercpe.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.layoutCpemac.spCpeMacShared.setAdapter(adaptercpe);
                         }
                         attach = response.body().getResponse().getGeneral().getIRAttached();
@@ -691,10 +706,13 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                                 IrType.add("Yes");
                                 IrType.add("Select IR Type");
                                 ArrayAdapter<String> adaptertype = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
-                                adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                 binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
                             }
+
+
                         }
+                        getHoldReason();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -714,12 +732,51 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
+    private void resendNav(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVIR,strGuiID,"Business","");
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.submitNavWcr(resendNavRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
     private void nextScreen(){
         Intent i = new Intent(getActivity(), ProvisioningMainActivity.class);
         i.putExtra("canId", strCanId);
         i.putExtra("StatusofReport", strStatusofReport);
         i.putExtra("OrderId", orderId);
-      //  i.putExtra("IrStatusReport",IrStatusReport);
 
         startActivity(i);
         getActivity().finish();

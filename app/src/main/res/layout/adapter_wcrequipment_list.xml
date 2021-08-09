@@ -22,7 +22,8 @@
         android:id="@+id/et_ite1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`Item :  ` + equipment.item}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
@@ -31,9 +32,10 @@
         android:id="@+id/et_ite2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`SubItem :  ` + equipment.subItem}"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 
     <TextView
@@ -41,7 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{`ItemType :  ` + equipment.itemType}"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 
@@ -49,16 +52,18 @@
         android:id="@+id/et_ite4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`ItemCode :  ` + equipment.itemCode}"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/et_ite5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`Serial No.:/Lot no. :  ` + equipment.serialNumber}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"  />
@@ -67,9 +72,10 @@
         android:id="@+id/et_ite6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:text="@{`Quantity :  ` + equipment.quantity}"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"  />
 
     <LinearLayout
@@ -81,27 +87,40 @@
         <TextView
             android:id="@+id/tv_edit"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="@dimen/_25sdp"
             android:background="@drawable/button_background"
             android:text="@string/edit"
+            android:visibility="gone"
             android:layout_weight=".5"
             android:gravity="center"
             android:textColor="@android:color/white"
-            android:layout_margin="@dimen/_10sdp" />
+            android:layout_margin="@dimen/_5sdp" />
 
         <TextView
             android:id="@+id/tv_delete"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:padding="4dp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_weight=".5"
             android:text="@string/delete"
-            android:layout_margin="@dimen/_10sdp"
+            android:visibility="gone"
+            android:layout_margin="@dimen/_5sdp"
             android:textColor="@android:color/white"
             android:background="@drawable/button_black"
             android:gravity="center"/>
 
 
     </LinearLayout>
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/color_light_blue"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
+        />
 </LinearLayout>
 </layout>

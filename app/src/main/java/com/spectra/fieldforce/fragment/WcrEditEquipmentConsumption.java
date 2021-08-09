@@ -230,16 +230,12 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
             else strsubItemId = " ";
             strItemTypeData = consumptionItemType.get(position);
             StrSubItemName = (subItemName.get(position));
-            String type = consumptionItemType.get(position);
+            getMaxCap(StrSubItemName,strItemname);
+            /*String type = consumptionItemType.get(position);
             if(type.equals("Default")){
                 getMaxCap(StrSubItemName,strItemname);
-            }
-        }/*else if(parent.getId() == R.id.sp_item_type){
-            binding.etItemType.setText(consumptionItemType.get(position));
-            strItemTypeData = consumptionItemType.get(position);
-            if (position != 0) strItemTypeData = "" + itemTypeData.get(position - 1);
-            else strItemTypeData = " ";
-        }*/
+            }*/
+        }
     }
 
     @Override

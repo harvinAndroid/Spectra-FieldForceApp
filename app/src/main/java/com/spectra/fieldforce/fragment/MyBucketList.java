@@ -44,14 +44,16 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
     MyBucketListAdapter myBucketListAdapter;
-    private ArrayList<String> statusType;
+  //  private ArrayList<String> statusType;
     ArrayAdapter<String> adapter;
+    ArrayAdapter aa;
+    String[] statusType = { "Select Status Type", "Installation Pending", "Installation On Hold"};
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMyBucketListBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
@@ -59,7 +61,6 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
         super.onViewCreated(view, savedInstanceState);
         getallBucketList();
         init();
-        binding.tvCount.setVisibility(View.GONE);
         Type();
         binding.search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -79,41 +80,47 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
         });
     }
     private void Type() {
-        binding.etSearch.setOnClickListener(v-> binding.spSearch.performClick());
+       // binding.etSearch.setOnClickListener(v-> binding.spSearch.performClick());
         binding.spSearch.setOnItemSelectedListener(this);
+        aa = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,statusType);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        //Setting the ArrayAdapter data on the Spinner
+        binding.spSearch.setAdapter(aa);
 
-        statusType = new ArrayList<String>();
-        statusType.add("Select Status Type");
-        statusType.add("Installation Pending");
-        statusType.add("hold");
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, statusType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spSearch.setAdapter(adapter);
     }
 
     public void Search(String search){
-        List<GetMyBucketList.Response> getBucketListItem;
-        getBucketListItem = new ArrayList<>();
-        for(GetMyBucketList.Response obj:this.getBucketList){
-            if(obj.getCustomerID().toLowerCase().contains(search)){
-                getBucketListItem.add(obj);
-            }else if(obj.getOrder_id().toLowerCase().contains(search)){
-                getBucketListItem.add(obj);
-            }else if(obj.getCrm_status().contains(search)){
-                getBucketListItem.add(obj);
+        try {
+            List<GetMyBucketList.Response> getBucketListItem;
+            getBucketListItem = new ArrayList<>();
+            for (GetMyBucketList.Response obj : this.getBucketList) {
+                if (obj.getCustomerID().toLowerCase().contains(search)) {
+                    getBucketListItem.add(obj);
+                } else if (obj.getOrder_id().toLowerCase().contains(search.toLowerCase())) {
+                    getBucketListItem.add(obj);
+                } else if (obj.getCustomerName().toLowerCase().contains(search.toLowerCase())) {
+                    getBucketListItem.add(obj);
+                } else if (obj.getCrm_status().contains(search)) {
+                    getBucketListItem.add(obj);
+                }
             }
+            binding.tvCount.setVisibility(View.VISIBLE);
+            String size = String.valueOf(getBucketListItem.size());
+            binding.tvCount.setText(size);
+            this.myBucketListAdapter.Filter(getBucketListItem);
+        }catch (Exception ex){
+            ex.getMessage();
         }
-        binding.tvCount.setVisibility(View.VISIBLE);
-        String size = String.valueOf(getBucketListItem.size());
-        binding.tvCount.setText(size);
-        this.myBucketListAdapter.Filter(getBucketListItem);
     }
     private void init(){
         binding.swipeRefreshLayout.setEnabled(true);
         binding.swipeRefreshLayout.setRefreshing(true);
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
             binding.swipeRefreshLayout.setRefreshing(true);
-           getallBucketList();
+            getallBucketList();
+            binding.search.setText("");
+            String size = String.valueOf(getBucketList.size());
+            binding.tvCount.setText(size);
         });
     }
 
@@ -148,14 +155,16 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
                             binding.rvMybucket.setHasFixedSize(true);
                             binding.rvMybucket.setLayoutManager(new LinearLayoutManager(getActivity()));
                             myBucketListAdapter = new MyBucketListAdapter(getActivity(),getBucketList);
+                            String size = String.valueOf(getBucketList.size());
+                            binding.tvCount.setText(size);
                             binding.rvMybucket.setAdapter(myBucketListAdapter);
+
 
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),"Something went wrong..",Toast.LENGTH_LONG).show();
                         }
-
 
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -175,8 +184,7 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.sp_search) {
-            binding.etSearch.setText(statusType.get(position));
-            String status = statusType.get(position);
+            String status = statusType[position] ;
             if(status.equals("Select Status Type")){
 
             }else{

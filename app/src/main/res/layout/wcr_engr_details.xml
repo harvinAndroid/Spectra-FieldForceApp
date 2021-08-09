@@ -29,6 +29,7 @@
             android:backgroundTint="@color/color_light_blue"
             android:hint="@string/engineer_name"
             android:imeOptions="actionNext"
+            android:layout_marginStart="@dimen/_5sdp"
             android:inputType="text"
             android:text="@{Engg.engName}"
             android:textColor="@color/colorPrimaryDark"
@@ -50,8 +51,11 @@
             android:layout_height="wrap_content"
             android:hint="@string/installation_code"
             android:imeOptions="actionNext"
-            android:inputType="text"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:inputType="number"
             android:lines="1"
+            android:maxEms="6"
+            android:maxLength="6"
             android:text="@{Engg.instCode}"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
@@ -59,26 +63,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
- <!--   <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/colorPrimary"
-        app:hintTextAppearance="@style/AppearanceText">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_otp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/installation_code"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
-            android:text="@{Engg.instCode}"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHighlight="@color/colorPrimary"
-            android:textSize="@dimen/_12sdp" />
-
-    </com.google.android.material.textfield.TextInputLayout>-->
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -94,6 +79,7 @@
             android:hint="@string/created_on"
             android:imeOptions="actionNext"
             android:lines="1"
+            android:layout_marginStart="@dimen/_5sdp"
             android:text="@{Engg.WCRCreatedon}"
             android:focusable="false"
             android:focusableInTouchMode="false"

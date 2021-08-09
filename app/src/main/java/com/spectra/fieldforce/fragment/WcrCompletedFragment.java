@@ -49,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WcrCompletedFragment extends Fragment implements View.OnClickListener{
+public class WcrCompletedFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
     private WcrCompleteFragmentBinding binding;
     private ArrayList<String> FmsType;
     private ArrayList<String> FmsId;
@@ -64,7 +64,20 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
     private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
     private AlphaAnimation inAnimation,outAnimation;
-
+    private ArrayList<String> QualityParamCable;
+    private ArrayList<String> QualityParamLogin;
+    private ArrayList<String> QualityParamCustomer;
+    private ArrayList<String> QualityParamSpeed;
+    private ArrayList<String> QualityParamEducation;
+    private ArrayList<String> QualityParamWifi;
+    private ArrayList<String> QualityParamFace;
+    ArrayAdapter<String> adapterParamCable;
+    ArrayAdapter<String> adapterParamLogin;
+    ArrayAdapter<String> adapterParamCustomer;
+    ArrayAdapter<String> adapterParamSpeed;
+    ArrayAdapter<String> adapterParamEducation;
+    ArrayAdapter<String> adapterParamWifi;
+    ArrayAdapter<String> adapterParamFace;
     public WcrCompletedFragment() {
 
     }
@@ -94,6 +107,13 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
         init();
         initOne();
         Lock();
+        QualityParamCable = new ArrayList<String>();
+        QualityParamLogin = new ArrayList<String>();
+        QualityParamCustomer = new ArrayList<String>();
+        QualityParamSpeed = new ArrayList<String>();
+        QualityParamEducation = new ArrayList<String>();
+        QualityParamWifi = new ArrayList<String>();
+        QualityParamFace = new ArrayList<String>();
     }
     private void Lock(){
         binding.layoutCustomerNetwork.tvCustSave.setVisibility(View.GONE);
@@ -136,6 +156,22 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
                 resendService("Installation");
             }
         });
+
+        binding.layoutInstallationparam.etOntLogin.setOnClickListener(v-> binding.layoutInstallationparam.spOntLogin.performClick());
+        binding.layoutInstallationparam.spOntLogin.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etFacePlate.setOnClickListener(v-> binding.layoutInstallationparam.spFacePlate.performClick());
+        binding.layoutInstallationparam.spFacePlate.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etWifiSsid.setOnClickListener(v-> binding.layoutInstallationparam.spWifiSsid.performClick());
+        binding.layoutInstallationparam.spWifiSsid.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etSpeedTest.setOnClickListener(v-> binding.layoutInstallationparam.spSpeedTest.performClick());
+        binding.layoutInstallationparam.spSpeedTest.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etEducationAntivirus.setOnClickListener(v-> binding.layoutInstallationparam.spEducationAntivirus.performClick());
+        binding.layoutInstallationparam.spEducationAntivirus.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etCableCrimped.setOnClickListener(v-> binding.layoutInstallationparam.spCableCrimped.performClick());
+        binding.layoutInstallationparam.spCableCrimped.setOnItemSelectedListener(this);
+        binding.layoutInstallationparam.etEducationCustomer.setOnClickListener(v-> binding.layoutInstallationparam.spEducationCustomer.performClick());
+        binding.layoutInstallationparam.spEducationCustomer.setOnItemSelectedListener(this);
+
     }
 
 
@@ -459,6 +495,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
                         try {
                             binding.tvWcrStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
                             binding.layoutWcrcustomerDetails.setCustomerDetails(response.body().getResponse().getWcr());
+                            binding.layoutCustomerNetwork.setCustomerNetwork(response.body().getResponse().getCusotmerNetwork());
                             strGuuId = response.body().getResponse().getWcr().getWcrguidid();
                             strProductSegment = response.body().getResponse().getWcr().getProductSegment();
                             strSegment = response.body().getResponse().getWcr().getBusinessSegment();
@@ -481,6 +518,91 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
                             listener();
                             binding.layoutWcrFms.etCustomerEndFms.setText(response.body().getResponse().getFMSDetails().getFmsfirst());
                             binding.layoutWcrFms.etCustomerEndFmsSec.setText(response.body().getResponse().getFMSDetails().getFmssecond());
+                            binding.layoutInstallationparam.setQuality(response.body().getResponse().getInstallationQuality());
+
+                          //  try {
+                                if (response.body().getResponse().getInstallationQuality().getAntiVirus().equals("Yes")) {
+                                    QualityParamEducation.add("Yes");
+                                    ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
+                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
+
+                                } else if (response.body().getResponse().getInstallationQuality().getAntiVirus().equals("No")) {
+                                    QualityParamEducation.add("No");
+                                    ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
+                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getCable().equals("Yes")) {
+                                    QualityParamCable.add("Yes");
+                                    adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
+                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
+
+                                } else if (response.body().getResponse().getInstallationQuality().getCable().equals("No")) {
+                                    QualityParamCable.add("No");
+                                    adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
+                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getFace().equals("Yes")) {
+                                    QualityParamFace.add("Yes");
+                                    adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
+                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
+                                } else if (response.body().getResponse().getInstallationQuality().getFace().equals("No")) {
+                                    QualityParamFace.add("No");
+                                    adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
+                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getOnt().equals("Yes")) {
+                                    QualityParamLogin.add("Yes");
+                                    adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
+                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
+                                } else if (response.body().getResponse().getInstallationQuality().getOnt().equals("No")) {
+                                    QualityParamLogin.add("No");
+                                    adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
+                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getSelfCare().equals("Yes")) {
+                                    QualityParamCustomer.add("Yes");
+                                    adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
+                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
+                                } else if (response.body().getResponse().getInstallationQuality().getSelfCare().equals("No")) {
+                                    QualityParamCustomer.add("No");
+                                    adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
+                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getSpeed().equals("Yes")) {
+                                    QualityParamSpeed.add("Yes");
+                                    adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
+                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
+                                } else if (response.body().getResponse().getInstallationQuality().getSpeed().equals("No")) {
+                                    QualityParamSpeed.add("No");
+                                    adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
+                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
+                                }
+                                if (response.body().getResponse().getInstallationQuality().getWifi().equals("Yes")) {
+                                    QualityParamWifi.add("Yes");
+                                    adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
+                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
+                                } else if (response.body().getResponse().getInstallationQuality().getWifi().equals("No")) {
+                                    QualityParamWifi.add("No");
+                                    adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
+                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
+                                }
+                           /* }catch (Exception ex){
+                                ex.getMessage();
+                            }*/
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
@@ -604,6 +726,37 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
                 Log.e("RetroError", t.toString());
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+        if(parent.getId() == R.id.sp_speed_test) {
+            binding.layoutInstallationparam.etSpeedTest.setText(QualityParamSpeed.get(position));
+        }
+        else if(parent.getId() == R.id.sp_cable_crimped) {
+            binding.layoutInstallationparam.etCableCrimped.setText(QualityParamCable.get(position));
+        }
+        else if(parent.getId() == R.id.sp_face_plate) {
+            binding.layoutInstallationparam.etFacePlate.setText(QualityParamFace.get(position));
+        }
+        else if(parent.getId() == R.id.sp_ont_login) {
+            binding.layoutInstallationparam.etOntLogin.setText(QualityParamLogin.get(position));
+        }
+        else if(parent.getId() == R.id.sp_wifi_ssid) {
+            binding.layoutInstallationparam.etWifiSsid.setText(QualityParamWifi.get(position));
+        }
+        else if(parent.getId() == R.id.sp_education_customer) {
+            binding.layoutInstallationparam.etEducationCustomer.setText(QualityParamCustomer.get(position));
+        }
+        else if(parent.getId() == R.id.sp_education_antivirus) {
+            binding.layoutInstallationparam.etEducationAntivirus.setText(QualityParamEducation.get(position));
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
 

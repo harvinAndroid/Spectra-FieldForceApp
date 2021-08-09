@@ -37,9 +37,7 @@ public class Response {
         return wCRHoldCategory;
     }
 
-    public void setWCRHoldCategory(List<WCRHoldCategory> wCRHoldCategory) {
-        this.wCRHoldCategory = wCRHoldCategory;
-    }
+
 
 }
 
@@ -62,9 +60,6 @@ public class WCRHoldCategory {
         return category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }
 
 }

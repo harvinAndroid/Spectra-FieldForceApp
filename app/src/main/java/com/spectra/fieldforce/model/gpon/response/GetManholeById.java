@@ -28,15 +28,15 @@ public class GetManholeById {
     public class Response {
 
         @SerializedName("FiberNoRunningNoWise")
-        private Integer fiberNoRunningNoWise;
+        private String fiberNoRunningNoWise;
         @SerializedName("FiberTube")
-        private Integer fiberTube;
+        private String fiberTube;
         @SerializedName("Distance")
         private String distance;
         @SerializedName("ManHoleType")
         private String manHoleType;
         @SerializedName("FiberNoTubeWise")
-        private Integer fiberNoTubeWise;
+        private String fiberNoTubeWise;
         @SerializedName("FiberCable")
         private String fiberCable;
         @SerializedName("LocationLandmark")
@@ -48,19 +48,19 @@ public class GetManholeById {
         @SerializedName("CANID")
         private String canid;
 
-        public Integer getFiberNoRunningNoWise() {
+        public String getFiberNoRunningNoWise() {
             return fiberNoRunningNoWise;
         }
 
-        public void setFiberNoRunningNoWise(Integer fiberNoRunningNoWise) {
+        public void setFiberNoRunningNoWise(String fiberNoRunningNoWise) {
             this.fiberNoRunningNoWise = fiberNoRunningNoWise;
         }
 
-        public Integer getFiberTube() {
+        public String getFiberTube() {
             return fiberTube;
         }
 
-        public void setFiberTube(Integer fiberTube) {
+        public void setFiberTube(String fiberTube) {
             this.fiberTube = fiberTube;
         }
 
@@ -80,11 +80,11 @@ public class GetManholeById {
             this.manHoleType = manHoleType;
         }
 
-        public Integer getFiberNoTubeWise() {
+        public String getFiberNoTubeWise() {
             return fiberNoTubeWise;
         }
 
-        public void setFiberNoTubeWise(Integer fiberNoTubeWise) {
+        public void setFiberNoTubeWise(String fiberNoTubeWise) {
             this.fiberNoTubeWise = fiberNoTubeWise;
         }
 

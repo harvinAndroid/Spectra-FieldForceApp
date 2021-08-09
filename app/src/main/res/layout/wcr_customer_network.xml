@@ -19,9 +19,9 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_15sdp"
-    android:layout_marginStart="@dimen/_20sdp"
-    android:layout_marginEnd="@dimen/_20sdp">
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp">
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -147,11 +147,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_30sdp"
         android:text="@string/save"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_45sdp"
+        android:layout_marginEnd="@dimen/_45sdp"
         android:background="@drawable/button_background"
         android:textSize="@dimen/_16sdp"
         android:textColor="@android:color/white"

@@ -26,6 +26,7 @@ import com.spectra.fieldforce.model.gpon.request.ItemConsumptionById;
 import com.spectra.fieldforce.model.gpon.request.ReleaseMyBucket;
 import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendCodeIRRequest;
+import com.spectra.fieldforce.model.gpon.request.ResendNavRequest;
 import com.spectra.fieldforce.model.gpon.request.SubmitApprovalRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateAppointmentRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCpeMacRequest;
@@ -298,6 +299,9 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<HoldReasonResponse> getHoldReason(@Body AccountInfoRequest accountInfoRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> submitNavWcr(@Body ResendNavRequest resendNavRequest);
 
 
 }

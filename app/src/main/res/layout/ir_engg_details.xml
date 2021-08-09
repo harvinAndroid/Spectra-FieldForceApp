@@ -25,6 +25,8 @@
             android:imeOptions="actionNext"
             android:inputType="text"
             android:lines="1"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -46,6 +48,8 @@
             android:imeOptions="actionNext"
             android:inputType="text"
             android:lines="1"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
@@ -67,6 +71,8 @@
             android:imeOptions="actionNext"
             android:inputType="text"
             android:lines="1"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />

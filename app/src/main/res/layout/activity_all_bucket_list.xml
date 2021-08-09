@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
    <!-- <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
         android:textColor="@color/colorPrimary"
         android:layout_width="match_parent"
         android:hint="@string/search"
+        android:inputType="textCapWords"
         android:layout_margin="@dimen/_8sdp"
         android:background="@color/colorWhite"
         android:singleLine="true"
@@ -41,24 +42,88 @@
         android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+
+       <View
+           android:layout_width="match_parent"
+           android:background="@color/colorBlack"
+           android:layout_weight=".3"
+           android:layout_marginStart="@dimen/_10sdp"
+           android:layout_marginTop="@dimen/_5sdp"
+           android:layout_height="1dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:text="OR"
+            android:textColor="@color/colorBlack"
+            android:layout_weight=".4"
+            android:gravity="center"
+            android:layout_height="wrap_content"/>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorBlack"
+            android:layout_weight=".3"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="1dp"/>
+
+
+    </LinearLayout>
+
+<!--<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/colorPrimary"
-        app:hintTextAppearance="@style/AppearanceText">
+        app:hintTextAppearance="@style/AppearanceText">-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+       android:layout_margin="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+
+
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:spinnerMode="dropdown"
+            android:dropDownVerticalOffset="50dp"
+            android:layout_weight=".2"
+            android:overlapAnchor="false"
+            android:padding="0dp"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_expand_down"
+            android:visibility="visible" />
 
-        <com.google.android.material.textfield.TextInputEditText
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/gray"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_height="1dp"/>
+
+      <!--  <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_1sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:backgroundTint="@color/color_light_blue"
             android:drawableEnd="@drawable/ic_expand_down"
             android:focusable="false"
@@ -70,13 +135,13 @@
             android:textColorHighlight="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
+    </com.google.android.material.textfield.TextInputLayout>-->
+<!--</LinearLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_all_bucket_list"
-        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
   <!--  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->

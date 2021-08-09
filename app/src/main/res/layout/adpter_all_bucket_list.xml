@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:text="@{`Status :  ` + allBucketList.status}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
@@ -39,6 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
@@ -46,7 +49,9 @@
             android:id="@+id/tv_can_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Can Id :  ` + allBucketList.canId}"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`CAN ID :  ` + allBucketList.canId}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
@@ -54,31 +59,9 @@
             android:id="@+id/order_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:text="@{`Order ID : ` + allBucketList.ID}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp"  />
-
-        <TextView
-            android:id="@+id/cust_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`contact Person :  ` + allBucketList.contactPerson}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp" />
-
-        <TextView
-            android:id="@+id/pod_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Contact Number :  ` + allBucketList.contactNo}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp"  />
-
-        <TextView
-            android:id="@+id/customer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Customer Name :  ` + allBucketList.customerName}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -86,62 +69,115 @@
             android:id="@+id/order_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:text="@{`Order Type :  ` + allBucketList.orderType}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
-
-
 
         <TextView
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Created date :  ` + allBucketList.createdOn}"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`Created Date :  ` + allBucketList.createdOn}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
-            android:id="@+id/sla_status"
+            android:id="@+id/customer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Sla Status :  ` + allBucketList.slaStatus}"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`Customer Name :  ` + allBucketList.customerName}"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp" />
-        <TextView
-            android:id="@+id/sla_clock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Sla Clock :  ` + allBucketList.wcrslaclock}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp" />
-
-
+            android:textSize="@dimen/_12sdp"  />
 
         <TextView
             android:id="@+id/ntwrk_tech"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Area Name :  ` + allBucketList.areaName}"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`Area :  ` + allBucketList.areaName}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
+
         <TextView
             android:id="@+id/product"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:text="@{`Product :  ` + allBucketList.product}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
+
+        <TextView
+            android:id="@+id/sla_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`SLA Status :  ` + allBucketList.slaStatus}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/sla_clock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`SLA Clock :  ` + allBucketList.wcrslaclock}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp" />
+
+
+        <TextView
+            android:id="@+id/cust_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`Contact Person :  ` + allBucketList.contactPerson}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/pod_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`Contact Number :  ` + allBucketList.contactNo}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
+            android:id="@+id/appoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`Appointment date: ` + allBucketList.appointmentDate}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+
             <TextView
                 android:id="@+id/tv_add"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:background="@drawable/button_black"
                 android:text="@string/add"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:layout_marginEnd="@dimen/_70sdp"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:textColor="@android:color/white"
                  />
 
@@ -152,7 +188,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@color/color_light_blue"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"

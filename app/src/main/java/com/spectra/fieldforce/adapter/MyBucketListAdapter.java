@@ -58,25 +58,30 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapter.MyViewHolder> implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapter.MyViewHolder> /*implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener*/ {
     private Context context;
     private List<GetMyBucketList.Response> getBucketList;
     AdpterMyBucketListBinding binding;
     private AlphaAnimation inAnimation,outAnimation;
     String appointdate;
-    int day, month, year, hour, minute;
-    int myday, myMonth, myYear, myHour, myMinute;
+    private String fromDateString = "";
+    String dateTime;
+    Calendar calendar;
+    SimpleDateFormat simpleDateFormat;
+    private Calendar mCalendar;
+
 
     public MyBucketListAdapter(FragmentActivity activity,  List<GetMyBucketList.Response> getBucketList) {
         this.context = activity;
         this.getBucketList = getBucketList;
     }
-    
 
     @NotNull
     @Override
@@ -92,15 +97,59 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
 
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         GetMyBucketList.Response itemList = getBucketList.get(position);
         holder.binding.setAllBucketList(itemList);
+
+        try {
+            calendar = Calendar.getInstance();
+            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss aaa z");
+            dateTime = simpleDateFormat.format(itemList.getWcrSlaClock()).toString();
+            holder.binding.slaClock.setText(dateTime);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String appdate = itemList.getAppointmentDate();
         if(appdate!=null){
             holder.binding.etDate.setText(appdate);
         }
+        holder.binding.tvNext.setOnClickListener((View v) -> {
+            String date = holder.binding.etDate.getText().toString();
+            if(date.isEmpty()){
+                Toast.makeText(context,"Select Appointment date",Toast.LENGTH_LONG).show();
+            }else {
+                SharedPreferences sp1=context.getSharedPreferences("Login",0);
+                String enggName =sp1.getString("EnggName", null);
+                if(itemList.getOrder_type().equals("WCR")){
+                    updateEnginer("updateWCREngineer",  itemList.getWcrId(),enggName,date);
+                }else if(itemList.getOrder_type().equals("IR")){
+                    updateEnginer("updateIREngineer",itemList.getIrId(),enggName,date);
+                }
+                updateEngineerDate(date,itemList.getOrder_id(),itemList.getCustomerID());
+            }
+        });
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sendDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm a");
+        @SuppressLint("SetTextI18n")
+        final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, monthOfYear);
+            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            fromDateString = sendDateFormat.format(mCalendar.getTime());
+            holder.binding.etDate.setText("" + fromDateString);
+        };
+
+        @SuppressLint("SetTextI18n")
+        final TimePickerDialog.OnTimeSetListener mTimeDateSetListener = (view, hourOfDay, minuteOfHour) -> {
+            mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mCalendar.set(Calendar.MINUTE, minuteOfHour);
+            fromDateString = sendDateFormat.format(mCalendar.getTime());
+            holder.binding.etDate.setText("" + fromDateString);
+        };
+
         String statusReport = itemList.getCrm_status();
             holder.binding.tvRelease.setOnClickListener(v -> {
                 if(statusReport.equals("Installation On Hold")||statusReport.equals("hold")||statusReport.contains("hold")||statusReport.equals("Installation Hold")) {
@@ -109,55 +158,47 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                 }   else{
                     releaseBucketItem(itemList.getCustomerID(), itemList.getOrder_id(), itemList.getOrder_type());
                     if(itemList.getOrder_type().equals("WCR")){
-                        updateEnginer("updateWCREngineer",  itemList.getWcrId(),"");
+                        updateEnginer("updateWCREngineer",  itemList.getWcrId(),"","");
                     }else if(itemList.getOrder_type().equals("IR")){
-                        updateEnginer("updateIREngineer",itemList.getIrId(),"");
+                        updateEnginer("updateIREngineer",itemList.getIrId(),"","");
                     }
                 }
         });
 
-        holder.binding.tvNext.setOnClickListener((View v) -> {
-            String date = binding.etDate.getText().toString();
-            if(date.isEmpty()){
-                Toast.makeText(context,"Select Appointment date",Toast.LENGTH_LONG).show();
-            }else {
-                SharedPreferences sp1=context.getSharedPreferences("Login",0);
-                String enggName =sp1.getString("EnggName", null);
-                if(itemList.getOrder_type().equals("WCR")){
-                    updateEnginer("updateWCREngineer",  itemList.getWcrId(),enggName);
-                }else if(itemList.getOrder_type().equals("IR")){
-                    updateEnginer("updateIREngineer",itemList.getIrId(),enggName);
-                }
-                updateEngineerDate(date,itemList.getOrder_id(),itemList.getCustomerID());
-               }
-        });
-        holder.binding.etDate.setOnClickListener(view1 -> {
-            Calendar calendar = Calendar.getInstance();
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH);
-            day = calendar.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePickerDialog = new DatePickerDialog(context, this,year, month,day);
-            datePickerDialog.show();
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-           /* final Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                    (view, year, monthOfYear, dayOfMonth) -> binding.etDate.setText(year  + "-" + (monthOfYear + 1) + "-" + dayOfMonth), mYear, mMonth, mDay);
-            datePickerDialog.show();*/
 
+        holder.binding.etDate.setOnClickListener(view -> {
+            try {
+                final TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        context, mTimeDateSetListener,
+                        mCalendar.get(Calendar.HOUR_OF_DAY),
+                        mCalendar.get(Calendar.MINUTE),
+                        DateFormat.is24HourFormat(context));
+
+                timePickerDialog.show();
+                final DatePickerDialog fromPickerDialog = new DatePickerDialog(
+                        context, android.R.style.Theme_Material_Light_Dialog_Alert,
+                        mFromDateSetListener,
+                        mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH));
+                fromPickerDialog.show();
+                fromPickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            } catch (Exception ex) {
+
+            }
         });
+        mCalendar = Calendar.getInstance();
+        fromDateString = sendDateFormat.format(mCalendar.getTime());
     }
 
-    private void updateEnginer(String updateWCREngineer,  String wcrId,String enggName){
+    private void updateEnginer(String updateWCREngineer,  String wcrId,String enggName,String date){
         UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
         updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
         updateWcrEnggRequest.setAction(updateWCREngineer);
         updateWcrEnggRequest.setEngName(enggName);
         updateWcrEnggRequest.setInstcode("");
         updateWcrEnggRequest.setWCRguidId(wcrId);
-        updateWcrEnggRequest.setAppointmentDate(binding.etDate.getText().toString());
+        updateWcrEnggRequest.setAppointmentDate(date);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateWcrEng(updateWcrEnggRequest);
@@ -200,18 +241,9 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
                         if(response.body().getResponse().getStatusCode()==200){
-                          /*  Bundle b = new Bundle();
-                            b.putString("canId", customerID);
-                            b.putString("OrderId",orderId);
-                            AppCompatActivity activity = (AppCompatActivity) context;
-                            Fragment myFragment = new ProvisioningFragment();
-                            myFragment.setArguments(b);
-                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
-*/
 
                             Intent i = new Intent(context, ProvisioningMainActivity.class);
                             i.putExtra("canId", customerID);
-                         //   i.putExtra("StatusofReport", strStatusofReport);
                             i.putExtra("OrderId", orderId);
                             context.startActivity(i);
                         }else{
@@ -258,14 +290,8 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                             Intent i = new Intent(context, BucketTabActivity.class);
                             context.startActivity(i);
-
-
-                            /*AppCompatActivity activity1 = (AppCompatActivity) context;
-                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new Buc(), MyBucketList.class.getSimpleName()).addToBackStack(null
-                            ).commit();*/
                         }else{
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
 
                     } catch (NumberFormatException e) {
@@ -289,36 +315,6 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
         return getBucketList.size();
     }
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        myYear = year;
-        myday = day;
-        myMonth = month;
-        Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(context, this, hour, minute, DateFormat.is24HourFormat(context));
-        timePickerDialog.show();
-    }
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Calendar c = Calendar.getInstance();
-
-        hour = hourOfDay;
-        minute = minute;
-
-        // set waking time into textview
-        StringBuilder sb = new StringBuilder();
-        if(hour>=12){
-            sb.append(hour-12).append( ":" ).append(minute).append(" PM");
-        }else{
-            sb.append(hour).append( ":" ).append(minute).append(" AM");
-        }
-        binding.etDate.setText(myYear + "-" + myMonth + "-" + myday + " " + sb);
-    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 

@@ -29,13 +29,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchtoolbar"
         >
+        <LinearLayout
+            android:id="@+id/linear_top"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content">
 
+
+        <LinearLayout
+            android:id="@+id/linarrrr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="left"
+            android:weightSum="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:orientation="horizontal">
     <TextView
         android:id="@+id/tv_cust_account_id"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
         android:text="@string/customer_account_id"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".6"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@+id/tv_customer_acc_id"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -44,22 +63,36 @@
 
     <TextView
         android:id="@+id/tv_customer_acc_id"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/_10sdp"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".4"
         android:text="@{provisioning.cANID}"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/tv_cust_account_id"
         app:layout_constraintStart_toEndOf="@+id/tv_cust_account_id"
         app:layout_constraintTop_toTopOf="@+id/tv_cust_account_id" />
-
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/inearrrr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="left"
+            android:weightSum="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tv_cust_name"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/customer_name"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".6"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@+id/tv_customer_acc_id"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -68,22 +101,36 @@
 
     <TextView
         android:id="@+id/tv_customer_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{provisioning.name}"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_weight=".4"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/tv_cust_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_cust_account_id" />
 
-
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="left"
+            android:weightSum="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:orientation="horizontal">
     <TextView
         android:id="@+id/tv_city_name"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/city"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".6"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@+id/tv_customer_acc_id"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -92,21 +139,35 @@
 
     <TextView
         android:id="@+id/tv_city"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{provisioning.city}"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_weight=".4"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/tv_city_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_customer_name" />
-
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linerrrr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="left"
+            android:weightSum="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:orientation="horizontal">
     <TextView
         android:id="@+id/tv_area_name"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:text="@string/area_name"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="@string/area_name_colun"
+        android:layout_weight=".6"
+        android:textSize="@dimen/_12sdp"
         android:textColor="@color/colorBlack"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,22 +175,36 @@
 
     <TextView
         android:id="@+id/tv_area"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{provisioning.area}"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".4"
+        android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/tv_city_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_city" />
 
-
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/liearrrr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="left"
+            android:weightSum="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:orientation="horizontal">
     <TextView
         android:id="@+id/tv_building"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:text="@string/building_society"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="@string/building_society_colun"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".6"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@+id/tv_customer_acc_id"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -138,22 +213,36 @@
 
     <TextView
         android:id="@+id/tv_building_society"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{provisioning.society}"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".4"
+        android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/tv_city_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_area" />
 
-
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearrrr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="left"
+            android:weightSum="1"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:orientation="horizontal">
     <TextView
         android:id="@+id/tv_segment"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/segment"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".6"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@+id/tv_customer_acc_id"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -162,34 +251,36 @@
 
     <TextView
         android:id="@+id/tv_segment_type"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{provisioning.segment}"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_12sdp"
+        android:layout_weight=".4"
+        android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/tv_segment"
         app:layout_constraintTop_toBottomOf="@+id/tv_building_society" />
+        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearrrr"
+            android:id="@+id/linearrr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/tv_customer_acc_id"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             android:gravity="left"
             android:weightSum="1"
             android:layout_marginEnd="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_segment_type"
             android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:text="@string/address"
+            android:textSize="@dimen/_12sdp"
             android:layout_weight=".6"
             android:textColor="@color/colorBlack"
           />
@@ -200,8 +291,9 @@
             android:layout_height="wrap_content"
             android:gravity="right|start"
             android:layout_weight=".4"
+            android:textSize="@dimen/_12sdp"
             android:text="@{provisioning.address}"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:textColor="@color/colorPrimary"
@@ -209,7 +301,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_segment_type" />
 
         </LinearLayout>
-
+        </LinearLayout>
         <TextView
         android:id="@+id/tv_provisioning"
         android:layout_width="0dp"
@@ -220,11 +312,12 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
+        android:textSize="@dimen/_12sdp"
         android:background="@drawable/button_background"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@+id/linearrrr" />
+        app:layout_constraintTop_toBottomOf="@+id/linear_top" />
 
     <TextView
         android:id="@+id/tv_wcr"
@@ -234,10 +327,11 @@
         android:gravity="center"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
+        android:textSize="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_35sdp"
         android:textColor="@android:color/white"
         android:background="@drawable/button_purple"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_provisioning"
+        app:layout_constraintTop_toBottomOf="@+id/linear_top"
         app:layout_constraintEnd_toStartOf="@+id/tv_ir"
         app:layout_constraintStart_toEndOf="@+id/tv_provisioning" />
 
@@ -246,27 +340,17 @@
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:text="@string/ir"
+        android:textSize="@dimen/_12sdp"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:layout_marginTop="@dimen/_35sdp"
         android:background="@drawable/button_black"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_wcr"
+        app:layout_constraintTop_toBottomOf="@+id/linear_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_wcr" />
 
 
-   <!-- <TextView
-        android:id="@+id/tv_wcr_completed"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:text="@string/wcr_completed"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:gravity="center"
-        android:background="@drawable/button_black"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintTop_toBottomOf="@+id/tv_provisioning"
-        />-->
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <FrameLayout

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -42,12 +43,13 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
     private Context context;
     private ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists;
         AdapterIrequipmentListBinding binding;
-        String IrStatusReport ;
+        String IrStatusReport,add ;
 
-    public IrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists, String irStatusReport) {
+    public IrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists,String irStatusReport,String add) {
         this.context = activity;
         this.equipmentDetailsLists = equipmentDetailsLists;
         this.IrStatusReport = irStatusReport;
+        this.add = add;
     }
 
     @NotNull
@@ -67,6 +69,10 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         IrInfoResponse.InstallationItemList equipment = equipmentDetailsLists.get(position);
        holder.binding.setEquipment(equipment);
+        if(add.equals("1")){
+            holder.binding.tvDelete.setVisibility(View.VISIBLE);
+            holder.binding.tvEdit.setVisibility(View.VISIBLE);
+        }
         holder.binding.tvDelete.setOnClickListener(v -> {
             deleteItem(equipment.getItemID(),equipment.getCANID());
         });

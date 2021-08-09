@@ -12,6 +12,7 @@
             type="com.spectra.fieldforce.model.gpon.response.GetMyBucketList.Response" />
 
     </data>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -44,7 +45,8 @@
             android:id="@+id/tv_can_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Can Id :  ` + allBucketList.customerID}"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`CAN ID :  ` + allBucketList.customerID}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
@@ -52,23 +54,8 @@
             android:id="@+id/order_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
             android:text="@{`Order ID : ` + allBucketList.order_id}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp"  />
-
-        <TextView
-            android:id="@+id/cust_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Contact Person :  ` + allBucketList.contactPerson}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp" />
-
-        <TextView
-            android:id="@+id/pod_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Contact Number :  ` + allBucketList.contactNo}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -76,7 +63,17 @@
             android:id="@+id/order_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
             android:text="@{`OrderType :  ` + allBucketList.order_type}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`Created Date :  ` + allBucketList.orderCreatedOn}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
@@ -84,7 +81,26 @@
             android:id="@+id/customer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
             android:text="@{`Customer Name :  ` + allBucketList.customerName}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
+            android:id="@+id/hold_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`Area : ` + allBucketList.areaName}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
+            android:id="@+id/product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`Product : ` + allBucketList.product}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
@@ -92,39 +108,37 @@
             android:id="@+id/hold_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Sla Status :  ` + allBucketList.slaStatus}"
-            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`SLA Status : ` + allBucketList.slaStatus}"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:id="@+id/sla_clock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Sla Clock :  ` + allBucketList.wcrSlaClock}"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`SLA Clock : ` + allBucketList.wcrSlaClock}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
-            android:id="@+id/hold_reason"
+            android:id="@+id/cust_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{`Area Name :  ` + allBucketList.areaName}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp"  />
-        <TextView
-            android:id="@+id/product"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Product :  ` + allBucketList.product}"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp"  />
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{`Created date :  ` + allBucketList.orderCreatedOn}"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`Contact Person : ` + allBucketList.contactPerson}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/pod_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`Contact Number : ` + allBucketList.contactNo}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
 
         <TextView
             android:id="@+id/apdate"
@@ -144,29 +158,6 @@
             android:hint="@string/select_appointmentdate"
             android:layout_height="@dimen/_30sdp"
             android:importantForAutofill="no" />
-
-
-
-
-       <!-- <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            app:hintTextAppearance="@style/AppearanceText">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/appointment_date"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:imeOptions="actionNext"
-                android:textColor="@color/colorBlack"
-                android:textColorHighlight="@color/colorBlack"
-                android:textSize="@dimen/_12sdp" />
-
-        </com.google.android.material.textfield.TextInputLayout>-->
 
 
 
@@ -215,9 +206,11 @@
             android:layout_marginEnd="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
             />
+
         <include layout="@layout/progress"
             android:id="@+id/progressLayout"
             />
+
     </LinearLayout>
 
 </LinearLayout>

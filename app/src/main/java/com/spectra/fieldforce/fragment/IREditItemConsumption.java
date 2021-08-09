@@ -151,7 +151,7 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         itemType.add("Select Consumption Type");
         itemType.add("WCR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spType.setAdapter(adapter);
 
         consumptionItemType = new ArrayList<String>();
@@ -159,7 +159,7 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         consumptionItemType.add("Select Type");
         consumptionItemType.add("Default");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spItemType.setAdapter(adapter1);
 
     }
@@ -274,12 +274,12 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
                 strItemTypeData = consumptionItemType.get(position);
                 if (position != 0) strItemTypeData = "" + itemTypeData.get(position - 1);
                 else strItemTypeData = " ";
+                getMaxCap(StrSubItemName,strItemname);
 
-
-                String type = consumptionItemType.get(position);
+                /*String type = consumptionItemType.get(position);
                 if (type.equals("Default")) {
                     getMaxCap(StrSubItemName, strItemname);
-                }
+                }*/
             }catch (Exception ex){
                 ex.getMessage();
             }

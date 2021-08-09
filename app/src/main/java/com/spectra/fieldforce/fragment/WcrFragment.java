@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +71,7 @@ import com.spectra.fieldforce.model.ItemConsumption.NrgpDetails;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
+import com.spectra.fieldforce.model.gpon.request.ResendNavRequest;
 import com.spectra.fieldforce.model.gpon.request.SubmitApprovalRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCustomerNetwork;
 import com.spectra.fieldforce.model.gpon.request.UpdateFmsRequest;
@@ -137,7 +140,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
     private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
     private AlphaAnimation inAnimation,outAnimation;
-    ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapterfms;
     ArrayAdapter<String> adaptersecond;
     private String str_ext1="",str_ext2="",str_ext3="",str_ext4="",strSlotType,currentImagePath,currentImagePath1;
     private Uri uri,uri1,uri2,uri3;
@@ -156,7 +159,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     ArrayAdapter<String> adapterParamFace;
     FusedLocationProviderClient mFusedLocationClient;
     int PERMISSION_ID = 44;
-
+    private Calendar mCalendar;
+    private String add;
+    private String fromDateString = "";
     public WcrFragment() {
 
     }
@@ -193,9 +198,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
     private void initOne(){
         getWcrInfo();
-        getFmsList();
-        Type();
-        getHoldReason();
+
         ActivityCompat.requestPermissions( getActivity(),
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         QualityParamCable = new ArrayList<String>();
@@ -352,7 +355,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             if (strSegment.equals("Business")) {
                 updateWcrEnginer(strInsta);
             } else if (strSegment.equals("Home")) {
-                if(strInsta.isEmpty()){
+                if(strInsta.isEmpty()|| strInsta.equals("Installation Code")){
                     Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
                 }else{
                     updateWcrEnginer(strInsta);
@@ -362,6 +365,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
         });
         binding.tvWcrApproval.setOnClickListener(view -> SubmitApproval());
+
+        binding.tvResendNav.setOnClickListener(view -> resendNav());
+
         binding.layoutInstallationparam.tvSaveQualityParam.setOnClickListener((View v) -> {
 
             String ont = Objects.requireNonNull(binding.layoutInstallationparam.etOntLogin.getText()).toString();
@@ -795,7 +801,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                         for (GetFmsListResponse.Fms fmss : fmsList)
                             firstFmsID.add(fmss.getId());
                         adaptersecond = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fmsName);
-                        adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.layoutWcrFms.spCustomerEndFmsSec.setAdapter(adaptersecond);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -841,7 +847,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                         for (HoldReasonResponse.WCRHoldCategory fms : holdList)
                             holdCategoryId.add(fms.getId());
                         adaptersecond = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
-                        adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.spHoldCategory.setAdapter(adaptersecond);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -861,36 +867,31 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
 
     private void Type() {
-        FmsType = new ArrayList<String>();
-        FmsType.add("Select Fms Type");
-        FmsType.add("WallMount");
-        FmsType.add("RackMount");
-        FmsId = new ArrayList<String>();
-        FmsId.add("569480000");
-        FmsId.add("569480001");
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);
+        try {
+            FmsType = new ArrayList<String>();
+            FmsType.add("Select Fms Type");
+            FmsType.add("WallMount");
+            FmsType.add("RackMount");
+            FmsId = new ArrayList<String>();
+            FmsId.add("569480000");
+            FmsId.add("569480001");
+            adapterfms = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
+            adapterfms.setDropDownViewResource(android.R.layout.simple_spinner_item);
+            binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapterfms);
+        }catch (Exception ex){
+            ex.getMessage();
+        }
 
-       /* holdCategory = new ArrayList<String>();
-        holdCategory.add("Hold Category");
-        holdCategory.add("Building Permission Issue");
-        holdCategory.add("Customer Site Not Ready");
-        holdCategory.add("Delayed By Customer");
-        holdCategory.add("Installation Report Pending To Sign");
-        holdCategory.add("Local Permission Issue");
-        holdCategory.add("Network Constraint");
-        holdCategoryId = new ArrayList<String>();
-        holdCategoryId.add("1");
-        holdCategoryId.add("2");
-        holdCategoryId.add("3");
-        holdCategoryId.add("4");
-        holdCategoryId.add("5");
-        holdCategoryId.add("6");
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spHoldCategory.setAdapter(adapter2);
-*/
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sendDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+        @SuppressLint("SetTextI18n")
+        final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, monthOfYear);
+            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            fromDateString = sendDateFormat.format(mCalendar.getTime());
+            binding.layoutWcrEngrDetails.etCreatedOn.setText("" + fromDateString);
+        };
         binding.saveHold.setOnClickListener(v -> {
             if (binding.spHoldCategory.getSelectedItem().toString().equals("Hold Category")) {
                 Toast.makeText(getContext(), "Please Select Hold Category", Toast.LENGTH_LONG).show();
@@ -902,6 +903,24 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
           }
         );
+
+        binding.layoutWcrEngrDetails.etCreatedOn.setOnClickListener(view -> {
+            try {
+                final DatePickerDialog fromPickerDialog = new DatePickerDialog(
+                        getActivity(), android.R.style.Theme_Material_Light_Dialog_Alert,
+                        mFromDateSetListener,
+                        mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH));
+                fromPickerDialog.show();
+                fromPickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            } catch (Exception ex) {
+
+            }
+        });
+        mCalendar = Calendar.getInstance();
+        fromDateString = sendDateFormat.format(mCalendar.getTime());
+
     }
 
 
@@ -981,6 +1000,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     if(response.body().getStatus().equals("Success")) {
                         try {
                             binding.tvWcrStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
+                            String consumptionStatus = response.body().getResponse().getWcr().getWCRConsumptionStatus();
+                            if(consumptionStatus.equals("Material not available")){
+                                binding.tvResendNav.setVisibility(View.VISIBLE);
+                            }
                             binding.layoutWcrFragmentCustomerDetails.setCustomer(response.body().getResponse().getWcr());
                             strGuuId = response.body().getResponse().getWcr().getWcrguidid();
                             strHold = response.body().getResponse().getWcr().getShowHold();
@@ -989,8 +1012,20 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             }else{
                                 binding.linea18.setVisibility(View.GONE);
                             }
+                            add="0";
                             strProductSegment = response.body().getResponse().getWcr().getProductSegment();
                             strSegment = response.body().getResponse().getWcr().getBusinessSegment();
+                            if (((consumptionStatus.equals("false")) && strSegment.equals("Business")) || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))){
+                                binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
+                                binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                add="1";
+                            }
+                            if ((strSegment.equals("Home")) || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))){
+                                binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
+                                binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                add="1";
+                            }
+
                             manHoleDetails = response.body().getResponse().getManHoleDetailsList();
                             binding.layoutAssociatedDetails.setAssociated(response.body().getResponse().getAssociated());
                             binding.layoutWcrFms.setFms(response.body().getResponse().getFMSDetails());
@@ -1006,9 +1041,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     FmsId.add("569480001");
                                     strfmsId ="569480001";
                                 }
-                                adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
-                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);
+                                adapterfms = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
+                                adapterfms.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapterfms);
                             }
                             String strfmssec = response.body().getResponse().getFMSDetails().getFmssecond();
                             if(strfmssec!=null && !strfmssec.equals("0")){
@@ -1016,7 +1051,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                 fmsName = new ArrayList<>();
                                 fmsName.add(strfmssec);
                                 adaptersecond = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fmsName);
-                                adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                adaptersecond.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                 binding.layoutWcrFms.spCustomerEndFmsSec.setAdapter(adaptersecond);
                             }
                             binding.layoutWcrEngrDetails.setEngg(response.body().getResponse().getEngineerDetails());
@@ -1026,26 +1061,67 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutmanholDetails.rvAddManhole.setLayoutManager(new LinearLayoutManager(getActivity()));
                             binding.layoutmanholDetails.rvAddManhole.setAdapter(new WcrAddManholeAdapter(getActivity(), manHoleDetails));
                             itemConsumtions = response.body().getResponse().getItemConsumtionList();
-                            binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
-                            binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions));
-                            straddition = itemConsumtions.get(0).getItemType();
-                            if(straddition.equals("Additional")&& strSegment.equals("Home")){
-                                binding.tvWcrApproval.setVisibility(View.VISIBLE);
+                             straddition = itemConsumtions.get(0).getItemType();
+
+                            if(straddition!=null){
+                                if(straddition.equals("Additional")&& strSegment.equals("Home")){
+                                    if(consumptionStatus.equals("Waiting for approval")){
+                                        binding.tvWcrApproval.setVisibility(View.GONE);
+                                        binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
+                                        binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
+                                        add="0";
+                                    }else{
+                                        binding.tvWcrApproval.setVisibility(View.VISIBLE);
+                                        binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
+                                        binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                        add="1";
+                                    }
+
+                                }
+
                             }
+
                             doa = response.body().getResponse().getWcr().getDOAFlag();
                             if(doa!=null){
                                 if(doa.equals("No") && straddition.equals("Additional")){
                                     binding.tvWcrApproval.setVisibility(View.VISIBLE);
+                                    add="0";
                                 }
                             }
+                            if(straddition!=null){
+                                if(straddition.equals("Additional")&& strSegment.equals("Home")){
+                                    if(consumptionStatus.equals("Waiting for approval")){
+                                        binding.tvWcrApproval.setVisibility(View.GONE);
+                                        binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
+                                        binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
+                                        add="0";
+                                    }else{
+                                        binding.tvWcrApproval.setVisibility(View.VISIBLE);
+                                        binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
+                                        binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                        add="1";
+                                    }
 
+                                }
+
+                            }
+
+                            doa = response.body().getResponse().getWcr().getDOAFlag();
+                            if(doa!=null){
+                                if(doa.equals("No") && straddition.equals("Additional")){
+                                    binding.tvWcrApproval.setVisibility(View.VISIBLE);
+                                    add="1";
+                                }
+                            }
+                            binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
+                            binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions,add));
 
                             equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
                             binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                             binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
                             if(equipmentDetailsLists.size()!=0){
-                                binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(),equipmentDetailsLists));
+                                binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(),equipmentDetailsLists,add));
                             }
                             binding.layoutInstallationparam.setQuality(response.body().getResponse().getInstallationQuality());
 
@@ -1057,7 +1133,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamEducation.add("Select Type");
                                     QualityParamEducation.add("No");
                                     ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
-                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
 
                                 } else if (response.body().getResponse().getInstallationQuality().getAntiVirus().equals("No")) {
@@ -1067,14 +1143,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamEducation.add("Select Type");
                                     QualityParamEducation.add("Yes");
                                     ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
-                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
                                 } else {
                                     QualityParamEducation.add("Select Type");
                                     QualityParamEducation.add("Yes");
                                     QualityParamEducation.add("No");
                                     ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
-                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
                                 }
                                 if (response.body().getResponse().getInstallationQuality().getCable().equals("Yes")) {
@@ -1083,7 +1159,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamCable.add("Select Type");
                                     QualityParamCable.add("No");
                                     adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
-                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
 
                                 } else if (response.body().getResponse().getInstallationQuality().getCable().equals("No")) {
@@ -1092,14 +1168,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamCable.add("Select Type");
                                     QualityParamCable.add("Yes");
                                     adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
-                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
                                 } else {
                                     QualityParamCable.add("Select Type");
                                     QualityParamCable.add("Yes");
                                     QualityParamCable.add("No");
                                     adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
-                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
                                 }
                                 if (response.body().getResponse().getInstallationQuality().getFace().equals("Yes")) {
@@ -1108,7 +1184,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamFace.add("Select Type");
                                     QualityParamFace.add("No");
                                     adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
-                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
                                 } else if (response.body().getResponse().getInstallationQuality().getFace().equals("No")) {
                                     QualityParamFace.clear();
@@ -1116,14 +1192,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamFace.add("Select Type");
                                     QualityParamFace.add("Yes");
                                     adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
-                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
                                 } else {
                                     QualityParamFace.add("Select Type");
                                     QualityParamFace.add("Yes");
                                     QualityParamFace.add("No");
                                     adapterParamFace = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamFace);
-                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamFace.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spFacePlate.setAdapter(adapterParamFace);
                                 }
                                 if (response.body().getResponse().getInstallationQuality().getOnt().equals("Yes")) {
@@ -1132,30 +1208,30 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamLogin.add("Select Type");
                                     QualityParamLogin.add("No");
                                     adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
-                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
                                 } else if (response.body().getResponse().getInstallationQuality().getOnt().equals("No")) {
                                     QualityParamLogin.add("No");
                                     QualityParamLogin.add("Select Type");
                                     QualityParamLogin.add("Yes");
                                     adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
-                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
                                 } else {
                                     QualityParamLogin.add("Select Type");
                                     QualityParamLogin.add("Yes");
                                     QualityParamLogin.add("No");
                                     adapterParamLogin = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamLogin);
-                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamLogin.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spOntLogin.setAdapter(adapterParamLogin);
                                 }
                                 if (response.body().getResponse().getInstallationQuality().getSelfCare().equals("Yes")) {
                                     QualityParamCustomer.clear();
                                     QualityParamCustomer.add("Yes");
                                     QualityParamCustomer.add("Select Type");
-                                    QualityParamCustomer.add("Yes");
+                                    QualityParamCustomer.add("No");
                                     adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
-                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
                                 } else if (response.body().getResponse().getInstallationQuality().getSelfCare().equals("No")) {
                                     QualityParamCustomer.clear();
@@ -1163,14 +1239,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamCustomer.add("Select Type");
                                     QualityParamCustomer.add("Yes");
                                     adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
-                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
                                 } else {
                                     QualityParamCustomer.add("Select Type");
                                     QualityParamCustomer.add("Yes");
                                     QualityParamCustomer.add("No");
                                     adapterParamCustomer = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCustomer);
-                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamCustomer.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spEducationCustomer.setAdapter(adapterParamCustomer);
                                 }
                                 if (response.body().getResponse().getInstallationQuality().getSpeed().equals("Yes")) {
@@ -1179,7 +1255,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamSpeed.add("Select Type");
                                     QualityParamSpeed.add("No");
                                     adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
-                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
                                 } else if (response.body().getResponse().getInstallationQuality().getSpeed().equals("No")) {
                                     QualityParamSpeed.clear();
@@ -1187,14 +1263,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamSpeed.add("Select Type");
                                     QualityParamSpeed.add("Yes");
                                     adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
-                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
                                 } else {
                                     QualityParamSpeed.add("Select Type");
                                     QualityParamSpeed.add("Yes");
                                     QualityParamSpeed.add("No");
                                     adapterParamSpeed = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
-                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamSpeed.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spSpeedTest.setAdapter(adapterParamSpeed);
                                 }
                                 if (response.body().getResponse().getInstallationQuality().getWifi().equals("Yes")) {
@@ -1203,7 +1279,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamWifi.add("Select Type");
                                     QualityParamWifi.add("No");
                                     adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
-                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
                                 } else if (response.body().getResponse().getInstallationQuality().getWifi().equals("No")) {
                                     QualityParamWifi.clear();
@@ -1211,14 +1287,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     QualityParamWifi.add("Select Type");
                                     QualityParamWifi.add("Yes");
                                     adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
-                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
                                 } else {
                                     QualityParamWifi.add("Select Type");
                                     QualityParamWifi.add("Yes");
                                     QualityParamWifi.add("No");
                                     adapterParamWifi = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamWifi);
-                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
                                 }
                             }catch (Exception ex){
@@ -1226,6 +1302,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             }
 
                             listener();
+                            getFmsList();
+                            getHoldReason();
+                            Type();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
@@ -1610,6 +1689,47 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.submitApproval(submitApprovalRequest);
+        call.enqueue(new Callback<CommonClassResponse>() {
+            @Override
+            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatus().equals("Success")){
+                            moveNext();
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
+    private void resendNav(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVWCR,strGuuId,"Business","");
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonClassResponse> call = apiService.submitNavWcr(resendNavRequest);
         call.enqueue(new Callback<CommonClassResponse>() {
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {

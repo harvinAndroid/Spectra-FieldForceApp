@@ -45,7 +45,7 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
     private ArrayList<String> fibreValue;
     private ArrayList<String> ManholeType;
     private List<GetFibreCable.Datum> fibreCable;
-    private String strCanId ,GuIID,strFibre,OrderId,StatusOfReport;
+    private String strCanId ,GuIID,strFibre,OrderId,StatusOfReport,ItemId;
 
     public WcrEditManholeFragment() {
     }
@@ -63,6 +63,7 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
         super.onViewCreated(view, savedInstanceState);
         strCanId = requireArguments().getString("canId");
         GuIID = requireArguments().getString("GuIID");
+        ItemId = requireArguments().getString("ItemId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
         binding.btAddmanholeSubmit.setText("UPDATE");
@@ -85,7 +86,7 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
         ManholeType.add("In");
         ManholeType.add("Out");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, ManholeType);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spManholeType.setAdapter(adapter1);
         binding.btAddmanholeSubmit.setOnClickListener(v -> updateManhole());
     }
@@ -128,7 +129,7 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
                         for (GetFibreCable.Datum data : fibreCable)
                             fibreValue.add(data.value);
                         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fibreType);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.spFibreCable.setAdapter(adapter1);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -149,7 +150,7 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
         UpdateManHoleRequest updateManHoleRequest = new UpdateManHoleRequest();
         updateManHoleRequest.setAuthkey(Constants.AUTH_KEY);
         updateManHoleRequest.setAction(Constants.GET_MANHOLE_BYID);
-        updateManHoleRequest.setWCRguidId(GuIID);
+        updateManHoleRequest.setWCRguidId(ItemId);
 
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -201,7 +202,7 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
         updateManHoleRequest.setFiberCable(strFibre);
         updateManHoleRequest.setFiberNoRunningNoWise(binding.etFiberNoRunn.getText().toString());
         updateManHoleRequest.setFiberNoTubeWise(binding.etFibreNo.getText().toString());
-        updateManHoleRequest.setItemID("");
+        updateManHoleRequest.setItemID(ItemId);
         updateManHoleRequest.setManHoleType(strManhole);
         updateManHoleRequest.setWCRguidId(GuIID);
         updateManHoleRequest.setFiberTube(binding.etFiberTube.getText().toString());

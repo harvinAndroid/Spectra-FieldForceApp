@@ -52,11 +52,6 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
         init();
     }
 
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }*/
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rl_back) {

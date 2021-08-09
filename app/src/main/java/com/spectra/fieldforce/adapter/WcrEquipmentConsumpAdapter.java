@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -44,10 +45,12 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
     private Context context;
     private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
     AdapterWcrequipmentListBinding binding;
+    String add;
 
-    public WcrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists) {
+    public WcrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists, String add) {
         this.context = activity;
         this.equipmentDetailsLists = equipmentDetailsLists;
+        this.add = add;
     }
 
     @NotNull
@@ -67,7 +70,10 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         WcrResponse.EquipmentDetailsList equipment = equipmentDetailsLists.get(position);
        holder.binding.setEquipment(equipment);
-
+        if(add.equals("1")){
+            holder.binding.tvDelete.setVisibility(View.VISIBLE);
+            holder.binding.tvEdit.setVisibility(View.VISIBLE);
+        }
         holder.binding.tvDelete.setOnClickListener(v -> {
             deleteItem(equipment.getItemID(),equipment.getCANID());
         });

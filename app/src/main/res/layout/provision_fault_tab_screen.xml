@@ -24,8 +24,10 @@
         android:layout_below="@+id/searchtoolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="#fff"
+        app:tabIndicatorColor="@color/colorBlack"
         app:tabTextColor="#fff"
+        app:tabBackground="@color/colorButton"
+        app:tabSelectedTextColor="@color/colorBlack"
         android:background="@color/colorButton">
 
     </com.google.android.material.tabs.TabLayout>
