@@ -43,7 +43,7 @@ public class GetInsActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.ins_activity);
         binding.searchtoolbar.rlBack.setOnClickListener(this);
-        binding.searchtoolbar.tvLang.setText("INS");
+        binding.searchtoolbar.tvLang.setText("INAS");
         init();
     }
 
@@ -68,7 +68,6 @@ public class GetInsActivity extends BaseActivity implements View.OnClickListener
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-
         GetINSRequest getINSRequest = new GetINSRequest(Constants.GET_POWER_BYONT,Constants.AUTH_KEY,account,account);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);

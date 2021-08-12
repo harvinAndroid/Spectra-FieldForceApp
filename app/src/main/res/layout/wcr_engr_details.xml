@@ -31,6 +31,8 @@
             android:imeOptions="actionNext"
             android:layout_marginStart="@dimen/_5sdp"
             android:inputType="text"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
             android:text="@{Engg.engName}"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimary"

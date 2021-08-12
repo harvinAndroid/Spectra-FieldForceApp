@@ -6,8 +6,8 @@ public class GetINSRequest {
     public GetINSRequest(String action, String authkey, String ONTSerialNo, String CanId) {
         Action = action;
         Authkey = authkey;
-        CanId = CanId;
         this.ONTSerialNo = ONTSerialNo;
+        this.CanId = CanId;
 
     }
 }

@@ -24,7 +24,7 @@
        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_5sdp"
         android:text="@{`Customer business segment :  ` + customer.businessSegment}"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"/>
 
 
@@ -35,7 +35,7 @@
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginStart="@dimen/_5sdp"
         android:text="@{`POD :  ` + customer.pod}"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"/>
 
     <TextView
@@ -65,7 +65,7 @@
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginStart="@dimen/_5sdp"
         android:text="@{`Rack required :  ` + customer.rack}"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 
     <TextView

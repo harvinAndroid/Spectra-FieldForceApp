@@ -99,38 +99,6 @@
         android:layout_marginTop="@dimen/_1sdp"
         android:layout_height="1dp"/>
 
-  <!--  <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/colorPrimary"
-        app:hintTextAppearance="@style/AppearanceText">
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:visibility="invisible" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:backgroundTint="@color/color_light_blue"
-            android:drawableEnd="@drawable/ic_expand_down"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:lines="1"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHighlight="@color/colorPrimary"
-            android:textSize="@dimen/_12sdp" />
-
-    </com.google.android.material.textfield.TextInputLayout>-->
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"

@@ -53,24 +53,33 @@ public class DashboardFragment extends Fragment {
 
 
             linear_gpon.setOnClickListener(v -> {
-                if(installationAuth.equals("Y")){
-                Intent i = new Intent(getActivity(), BucketTabActivity.class);
-                startActivity(i);
-                getActivity().finish();
-                }else if(installationAuth.equals("N")){
-                    Toast.makeText(getActivity(),"Permission Required",Toast.LENGTH_LONG).show();
+                if(installationAuth!=null) {
+                    if (installationAuth.equals("Y")) {
+                        Intent i = new Intent(getActivity(), BucketTabActivity.class);
+                        startActivity(i);
+                        getActivity().finish();
+                    } else if (installationAuth.equals("N")) {
+                        Toast.makeText(getActivity(), "Permission Required", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_LONG).show();
+
                 }
             });
 
 
 
             linear_ffa.setOnClickListener(v -> {
+                if(ffa!=null){
                 if(ffa.equals("Y")) {
                     Intent i = new Intent(getActivity(), SpectraFfaActivity.class);
                     startActivity(i);
                     getActivity().finish();
                 }else if(ffa.equals("N")){
                     Toast.makeText(getActivity(),"Permission Required",Toast.LENGTH_LONG).show();
+                }}else{
+                    Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_LONG).show();
+
                 }
             });
 

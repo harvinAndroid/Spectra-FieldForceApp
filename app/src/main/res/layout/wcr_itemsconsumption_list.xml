@@ -35,7 +35,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_4sdp"
            android:visibility="gone"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="@{`ItemType :  ` + itemConsumption.itemType}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
@@ -75,7 +75,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="@{`Serial Num :  ` + itemConsumption.serialNumber}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 
         <TextView
@@ -85,7 +85,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="@{`Quantity :  ` + itemConsumption.quantity}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView

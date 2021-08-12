@@ -37,7 +37,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:textSize="@dimen/_12sdp"
             android:visibility="gone"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
           />
 
         <TextView
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
 
             android:text="@{`ItemType :  ` + itemConsumption.itemType}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:textSize="@dimen/_12sdp"/>
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{`Serial Num :  ` + itemConsumption.serialNumber}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:textSize="@dimen/_12sdp" />

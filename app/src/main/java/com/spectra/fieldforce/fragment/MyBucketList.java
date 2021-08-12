@@ -116,11 +116,17 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
         binding.swipeRefreshLayout.setEnabled(true);
         binding.swipeRefreshLayout.setRefreshing(true);
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
-            binding.swipeRefreshLayout.setRefreshing(true);
-            getallBucketList();
-            binding.search.setText("");
-            String size = String.valueOf(getBucketList.size());
-            binding.tvCount.setText(size);
+            try {
+                binding.swipeRefreshLayout.setRefreshing(true);
+                getallBucketList();
+                binding.search.setText("");
+                String size = String.valueOf(getBucketList.size());
+                if (size != null) {
+                    binding.tvCount.setText(size);
+                }
+            }catch (Exception ex){
+                ex.getMessage();
+            }
         });
     }
 
@@ -158,14 +164,11 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
                             String size = String.valueOf(getBucketList.size());
                             binding.tvCount.setText(size);
                             binding.rvMybucket.setAdapter(myBucketListAdapter);
-
-
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),"Something went wrong..",Toast.LENGTH_LONG).show();
                         }
-
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
