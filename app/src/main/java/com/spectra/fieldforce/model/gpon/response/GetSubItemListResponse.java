@@ -6,20 +6,10 @@ import java.util.List;
 
 public class GetSubItemListResponse {
 
-    @SerializedName("StatusCode")
-    private Integer statusCode;
     @SerializedName("Status")
     private String status;
     @SerializedName("Response")
     private Response response;
-
-    public Integer getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(Integer statusCode) {
-        this.statusCode = statusCode;
-    }
 
     public String getStatus() {
         return status;

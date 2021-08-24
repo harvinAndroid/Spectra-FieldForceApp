@@ -99,10 +99,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
                     }catch (NumberFormatException ex){
                         ex.getMessage();
                     }
-
                 }
-
-
             }
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
@@ -132,14 +129,7 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
                 updateItemConsumption());
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
-        binding.etSubitem.setOnClickListener(v -> {
-            if(strItemType==null || strItemType.equals("")){
 
-            }else{
-                getSubItemList(strItemType);
-            }
-
-        });
     }
 
     private void getMaxCap(String strSubItemName,String ItemNa){
@@ -219,16 +209,16 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
                             subItem = response.body().getResponse().getData();
                             subItemName = new ArrayList<>();
                             subItemId = new ArrayList<>();
-                            itemName.add("Select SubItem");
+                            subItemName.add("Select SubItem");
                             for (GetSubItemListResponse.Datum datum : subItem)
                                 subItemName.add(datum.getSubItemName());
                             for (GetSubItemListResponse.Datum data : subItem)
                                 subItemId.add(data.getSubItemId());
-                            ArrayAdapter<String> adapter12 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemName);
+                            ArrayAdapter<String> adapter12 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, subItemName);
                             adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.spSubItem.setAdapter(adapter12);
                         }else{
-                            Toast.makeText(getActivity(),"No Data",Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getActivity(),"No Data",Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -261,12 +251,11 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
             if (position != 0) strItemType = "" + itemId.get(position - 1);
             else strItemType = " ";
             strItemname = itemName.get(position);
-            //Toast.makeText(getContext(), strItemType, Toast.LENGTH_SHORT).show();
-            // getSubItemList(strItemType);
+            getSubItemList(strItemType);
 
         }else if(parent.getId() == R.id.sp_sub_item){
             binding.etSubitem.setText(subItemName.get(position));
-            strsubItemId = subItemId.get(position);
+            strsubItemId = subItemName.get(position);
             if (position != 0) strsubItemId = "" + subItemId.get(position - 1);
             StrSubItemName = (subItemName.get(position));
             //   else strsubItemId = " ";
@@ -276,10 +265,6 @@ public class IREquipmentConsumption extends Fragment implements AdapterView.OnIt
             if (position != 0) strItemTypeData = "" + itemTypeData.get(position - 1);
             else strItemTypeData = " ";
             getMaxCap(StrSubItemName,strItemname);
-           /* String type = consumptionItemType.get(position);
-            if(type.equals("Default")){
-                getMaxCap(StrSubItemName,strItemname);
-            }*/
         }
     }
 

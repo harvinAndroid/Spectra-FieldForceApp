@@ -176,7 +176,7 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
     private void buttonInsDialog(float Power, String ActStatus, String Alarm, String ip, String distance) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
-        builder.setTitle("INS");
+        builder.setTitle("INAS Power");
         final AlertDialog alertDialog;
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.ins_dialog, null);
         builder.setView(dialogView);

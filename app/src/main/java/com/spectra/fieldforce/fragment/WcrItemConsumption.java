@@ -113,8 +113,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
-
-
             }
         });
     }
@@ -133,7 +131,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
                 updateItemConsumption());
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
-        binding.etSubitem.setOnClickListener(v -> {
+       /* binding.etSubitem.setOnClickListener(v -> {
             if(strItemType==null || strItemType.equals("")){
                // Toast.makeText(getContext(),response.body().response.message,Toast.LENGTH_LONG).show();
 
@@ -141,7 +139,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
                 getSubItemList(strItemType);
             }
 
-        });
+        });*/
     }
 
 
@@ -158,9 +156,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         itemTypeData = new ArrayList<String>();
         consumptionItemType.add("Select Type");
         consumptionItemType.add("Additional");
-       // consumptionItemType.add("Default");
         itemTypeData.add("111260001");
-      //  itemTypeData.add("111260000");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spItemType.setAdapter(adapter1);
@@ -177,7 +173,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         getMaxCap.setCanId(strCanId);
         getMaxCap.setItemName(ItemNa);
         getMaxCap.setSubItemName(strSubItemName);
-
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetMaxCapResponse> call = apiService.getMaxCapValue(getMaxCap);
@@ -225,16 +220,16 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
                             subItem = response.body().getResponse().getData();
                             subItemName = new ArrayList<>();
                             subItemId = new ArrayList<>();
-                            itemName.add("Select SubItem");
+                            subItemName.add("Select SubItem");
                             for (GetSubItemListResponse.Datum datum : subItem)
                                 subItemName.add(datum.getSubItemName());
                             for (GetSubItemListResponse.Datum data : subItem)
                                 subItemId.add(data.getSubItemId());
-                            ArrayAdapter<String> adapter12 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemName);
+                            ArrayAdapter<String> adapter12 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, subItemName);
                             adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.spSubItem.setAdapter(adapter12);
                         }else{
-                            Toast.makeText(getActivity(),"No Data",Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getActivity(),"No Data",Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -265,12 +260,12 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
             if (position != 0) strItemType = "" + itemId.get(position - 1);
             else strItemType = " ";
             strItemname = itemName.get(position);
+            getSubItemList(strItemType);
         }else if(parent.getId() == R.id.sp_sub_item){
-           binding.etSubitem.setText(subItemName.get(position));
-            strsubItemId = subItemId.get(position);
+            binding.etSubitem.setText(subItemName.get(position));
+            strsubItemId = subItemName.get(position);
             if (position != 0) strsubItemId = "" + subItemId.get(position - 1);
             StrSubItemName = (subItemName.get(position));
-
         }else if(parent.getId() == R.id.sp_item_type){
             binding.etItemType.setText(consumptionItemType.get(position));
             strItemTypeData = consumptionItemType.get(position);
@@ -313,6 +308,7 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
                         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemName);
                         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.spItem.setAdapter(adapter1);
+
 
                     } catch (Exception e) {
                         e.printStackTrace();

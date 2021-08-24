@@ -114,8 +114,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Power level :"
-                    android:textColor="@color/colorPrimary"
+                    android:text="Power Level :"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_14sdp" />
 
                 <TextView
@@ -129,14 +129,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Fibre Distance :"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_14sdp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="IP Address :"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_14sdp" />
 
 
