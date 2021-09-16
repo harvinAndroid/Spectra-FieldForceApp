@@ -11,8 +11,8 @@ android {
         applicationId "com.spectra.fieldforce"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 36
-        versionName "3.6"
+        versionCode 38
+        versionName "3.8"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

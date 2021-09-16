@@ -118,7 +118,15 @@ public class Response {
     private String contactNo;
     private String createdOn;
     private String wcrslaclock,irslaclock;
-    private String appointmentDate,cityId,address;
+    private String appointmentDate;
+    private String cityId;
+    private String address;
+
+    public String getActivationOTP() {
+        return activationOTP;
+    }
+
+    private String activationOTP;
 
     public String getAppointmentDate() {
         return appointmentDate;

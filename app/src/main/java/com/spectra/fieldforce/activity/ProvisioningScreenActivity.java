@@ -264,9 +264,12 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                                     modelName.add(onuProfile.getModelName());
                                 for (AccountDetailsResponse.OnuProfile id : onuProfile)
                                     modelId.add(id.getProfileName());
-                                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(ProvisioningScreenActivity.this, android.R.layout.simple_spinner_item, modelName);
-                                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                binding.spModel.setAdapter(adapter1);
+                                if(modelName!=null) {
+                                    ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(ProvisioningScreenActivity.this, android.R.layout.simple_spinner_item, modelName);
+                                    adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    binding.spModel.setAdapter(adapter1);
+                                }
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

@@ -52,6 +52,7 @@ import com.spectra.fieldforce.model.gpon.response.GetItemListResponse;
 import com.spectra.fieldforce.model.gpon.response.GetManholeById;
 import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
 import com.spectra.fieldforce.model.gpon.response.GetMyBucketList;
+import com.spectra.fieldforce.model.gpon.response.GetServiceResponse;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
 import com.spectra.fieldforce.model.gpon.response.HoldReasonResponse;
 import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
@@ -302,6 +303,9 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<CommonClassResponse> submitNavWcr(@Body ResendNavRequest resendNavRequest);
+
+    @POST ("index.php")
+    Call<GetServiceResponse> getServiceSubItem(@Body ItemConsumptionById itemConsumptionById);
 
 
 }

@@ -105,7 +105,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             AllBucketListAdapter.this.addItemToBucket(itemList.getID(),itemList.getOrderType(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), "",
                     itemList.getStatus(), itemList.getHoldCategory(),"",  "",
                     itemList.getAreaName(),itemList.getSlaStatus(),itemList.getVendorName(),itemList.getCreatedOn(),
-                    itemList.getProduct(),itemList.getContactPerson(),itemList.getContactNo(),itemList.getWcrslaclock(),itemList.getIrslaclock(),itemList.getBusinessSegment(),itemList.getCityId(),itemList.getAddress());
+                    itemList.getProduct(),itemList.getContactPerson(),itemList.getContactNo(),itemList.getWcrslaclock(),itemList.getIrslaclock(),itemList.getBusinessSegment(),itemList.getCityId(),itemList.getAddress(),itemList.getActivationOTP());
 
             if(itemList.getOrderType().equals("WCR")){
                 updateEnginer("updateWCREngineer",  itemList.getWcrId());
@@ -156,7 +156,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
 
 
     private void addItemToBucket(String id, String OrderType, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String networkTechnology, String AreaName
-            , String Sla, String vendorName, String createOn, String Product, String cperson, String Num, String Wcrslaclock, String Irslaclock, String businessSegment, String cityId, String address){
+            , String Sla, String vendorName, String createOn, String Product, String cperson, String Num, String Wcrslaclock, String Irslaclock, String businessSegment, String cityId, String address, String activationOTP){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -195,6 +195,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         addBucketListRequest.setSegment(businessSegment);
         addBucketListRequest.setCustomerAddress(address);
         addBucketListRequest.setCustomerCityId(cityId);
+        addBucketListRequest.setActivationOTP(activationOTP);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemToBucket(addBucketListRequest);
         call.enqueue(new Callback<CommonClassResponse>() {

@@ -298,7 +298,7 @@
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/serial_no_lot_no"
                         android:imeOptions="actionNext"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
@@ -329,7 +329,7 @@
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/mac_id"
                         android:imeOptions="actionNext"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />

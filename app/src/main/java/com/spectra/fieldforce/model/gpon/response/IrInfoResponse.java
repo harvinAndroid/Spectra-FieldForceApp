@@ -186,6 +186,11 @@ public class IrInfoResponse {
         @SerializedName("InstallationQty")
         @Expose
         private InstallationQty installationQty;
+        private List<ServiceConsumtionList> serviceConsumtionList;
+
+        public List<ServiceConsumtionList> getServiceConsumtionList() {
+            return serviceConsumtionList;
+        }
 
         public Ir getIr() {
             return ir;
@@ -235,6 +240,41 @@ public class IrInfoResponse {
             this.installationQty = installationQty;
         }
 
+    }
+    public class ServiceConsumtionList {
+        private  String  Item,SubItem,ItemType,Quantity,ItemID,WCRGUIDID,CANID,ItemCode;
+
+        public String getItem() {
+            return Item;
+        }
+
+        public String getSubItem() {
+            return SubItem;
+        }
+
+        public String getItemType() {
+            return ItemType;
+        }
+
+        public String getQuantity() {
+            return Quantity;
+        }
+
+        public String getItemID() {
+            return ItemID;
+        }
+
+        public String getWCRGUIDID() {
+            return WCRGUIDID;
+        }
+
+        public String getCANID() {
+            return CANID;
+        }
+
+        public String getItemCode() {
+            return ItemCode;
+        }
     }
 
     public class InstallationItemList{

@@ -26,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProvisioningMainActivity extends BaseActivity implements View.OnClickListener{
-    private String strCanId,canId,city,area,building,segment,statusReport,orderId,IrStatusReport;
+    private String strCanId,canId,city,area,building,segment,statusReport,orderId,IrStatusReport,provButton;
     private Boolean  IrStatus,WcrStatus;
     private ProvisionFragmentBinding provisionFragmentBinding;
     private AlphaAnimation inAnimation;
@@ -93,6 +93,7 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
                             IrStatus = response.body().response.iRStatus;
                             WcrStatus = response.body().response.wCRStatus;
                             IrStatusReport = response.body().response.IRStatusofReport;
+                            provButton = response.body().response.IsProShow;
                             setDate();
                            // nextScreen();
                         } catch (Exception e) {
@@ -117,16 +118,20 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
 
     private void setDate(){
         if(segment.equals("Home")){
-            provisionFragmentBinding.tvIr.setVisibility(View.INVISIBLE);
+            provisionFragmentBinding.tvIr.setVisibility(View.GONE);
         }else if(statusReport.equals("Installation Completed")|| statusReport.equals("Completed")){
             if(segment.equals("Business")){
                 provisionFragmentBinding.tvIr.setVisibility(View.VISIBLE);
             }else{
-                provisionFragmentBinding.tvIr.setVisibility(View.INVISIBLE);
+                provisionFragmentBinding.tvIr.setVisibility(View.GONE);
             }
-
         }else{
-            provisionFragmentBinding.tvIr.setVisibility(View.INVISIBLE);
+            provisionFragmentBinding.tvIr.setVisibility(View.GONE);
+        }
+        if(provButton.equals("true")){
+            provisionFragmentBinding.tvProvisioning.setVisibility(View.VISIBLE);
+        }else{
+            provisionFragmentBinding.tvProvisioning.setVisibility(View.GONE);
         }
         provisionFragmentBinding.searchtoolbar.tvLang.setText("Provisioning");
         if(statusReport.equals("Installation Pending")||statusReport.equals("Pending")||statusReport.equals("Installation On Hold")){

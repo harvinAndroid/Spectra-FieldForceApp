@@ -37,7 +37,9 @@ import com.google.android.gms.location.LocationServices;
 import com.spectra.fieldforce.activity.BucketTabActivity;
 import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.adapter.IRItemConsumptionListAdapter;
+import com.spectra.fieldforce.adapter.IRServiceConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.IrEquipmentConsumpAdapter;
+import com.spectra.fieldforce.adapter.IrServiceListAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
 import com.spectra.fieldforce.databinding.IrFragmentBinding;
 import com.spectra.fieldforce.databinding.WcrFragmentBinding;
@@ -79,6 +81,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     IrFragmentBinding binding;
     private ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions;
      ArrayList<IrInfoResponse.InstallationItemList> installationItemLists;
+    ArrayList<IrInfoResponse.ServiceConsumtionList> serviceConsumtionLists;
     private ArrayList<String> irCpeMac;
     private ArrayList<String> IrType;
     private ArrayList<String> irCpeMacid;
@@ -87,6 +90,12 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> holdCategoryId;
     private AlphaAnimation inAnimation,outAnimation;
     private ArrayList<String> QualityParam;
+    private ArrayList<String> QualityParamSpeed;
+    private ArrayList<String> QualityParamDns;
+    private ArrayList<String> QualityParamAntivirus;
+    private ArrayList<String> QualityParamSelfCare;
+    private ArrayList<String> QualityParamMrtg;
+    private ArrayList<String> QualityParamIP;
     ArrayAdapter<String> adaptertype;
     ArrayAdapter<String> adaptercpe;
     LocationManager locationManager;
@@ -181,7 +190,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.layoutInstallationparam.spSelfcare.setOnItemSelectedListener(this);
 
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sendDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+        SimpleDateFormat sendDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
         @SuppressLint("SetTextI18n")
         final DatePickerDialog.OnDateSetListener mFromDateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
             mCalendar.set(Calendar.YEAR, year);
@@ -272,18 +281,19 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             t1.commit();
         });
 
-        QualityParam = new ArrayList<String>();
-        QualityParam.add("Select Type");
-        QualityParam.add("Yes");
-        QualityParam.add("No");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParam);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        binding.layoutInstallationparam.spDns.setAdapter(adapter);
-        binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapter);
-        binding.layoutInstallationparam.spIp.setAdapter(adapter);
-        binding.layoutInstallationparam.spMrtg.setAdapter(adapter);
-        binding.layoutInstallationparam.spSpeedTest.setAdapter(adapter);
-        binding.layoutInstallationparam.spSelfcare.setAdapter(adapter);
+        binding.layoutServiceDetails.btnAddService.setOnClickListener(v -> {
+            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+            IrServiceConsumption wcrEquipmentConsumption = new IrServiceConsumption();
+            Bundle bundle = new Bundle();
+            bundle.putString("strGuuId", strGuiID);
+            bundle.putString("canId",strCanId);
+            bundle.putString("StatusofReport", strStatusofReport);
+            bundle.putString("OrderId", orderId);
+            t1.replace(R.id.frag_container, wcrEquipmentConsumption);
+            wcrEquipmentConsumption.setArguments(bundle);
+            t1.commit();
+        });
+
 
         binding.layoutCpemac.etCpeMacShared.setOnClickListener(v->  binding.layoutCpemac.spCpeMacShared.performClick());
         binding.layoutCpemac.spCpeMacShared.setOnItemSelectedListener(this);
@@ -357,18 +367,18 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             String mrtg = Objects.requireNonNull(binding.layoutInstallationparam.etMrtg.getText()).toString();
             String speed = Objects.requireNonNull(binding.layoutInstallationparam.etSpeedTest.getText()).toString();
             String selfcare = Objects.requireNonNull(binding.layoutInstallationparam.etSelfcare.getText()).toString();
-            if(dns.isEmpty()){
+            if(dns.equals("Please Select  DNS")){
                 Toast.makeText(getContext(), "Please Select  DNS", Toast.LENGTH_LONG).show();
-            }if(virus.isEmpty()){
+            }else if(virus.equals("Please Select  Virus")){
                 Toast.makeText(getContext(), "Please Select  Virus", Toast.LENGTH_LONG).show();
-            }if(ip.isEmpty()){
+            }else if(ip.equals("Please Select IP")){
                 Toast.makeText(getContext(), "Please Select IP", Toast.LENGTH_LONG).show();
-            }if(mrtg.isEmpty()){
+            }else if(mrtg.equals("Please Select  MRTG")){
                 Toast.makeText(getContext(), "Please Select  MRTG", Toast.LENGTH_LONG).show();
-            }if(speed.isEmpty()){
-                Toast.makeText(getContext(), "Please Select Speed test results shown to coustomer", Toast.LENGTH_LONG).show();
-            }if(selfcare.isEmpty()){
-                Toast.makeText(getContext(), "Please Select Education customer Regarding Selfcare Portal", Toast.LENGTH_LONG).show();
+            }else if(speed.equals("Please Select Speed test")){
+                Toast.makeText(getContext(), "Please Select Speed test", Toast.LENGTH_LONG).show();
+            }else if(selfcare.equals("Please Select Education customer")){
+                Toast.makeText(getContext(), "Please Select Education customer", Toast.LENGTH_LONG).show();
             }else{
                 updateQualityParam(dns,virus,mrtg,ip,speed,selfcare);
             }
@@ -635,7 +645,9 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         itemConsumtions = (ArrayList<IrInfoResponse.ItemConsumtion>) response.body().getResponse().getItemConsumtionList();
                         binding.layoutItemcousumption.rvIrItemlist.setHasFixedSize(true);
                         binding.layoutItemcousumption.rvIrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+                        binding.layoutInstallationparam.etSelfcare.setText(response.body().getResponse().getInstallationQty().getSelfCare());
+                        binding.layoutInstallationparam.etDns.setText(response.body().getResponse().getInstallationQty().getDns());
+                        binding.layoutInstallationparam.etEducationAntivirus.setText(response.body().getResponse().getInstallationQty().getAntiVirus());
                         if (itemConsumtions.size() != 0) {
                             binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(), itemConsumtions, IrStatusReport));
                         }
@@ -648,6 +660,13 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
                         if (installationItemLists.size() != 0) {
                             binding.layoutAddEquipment.rvAddEquipment.setAdapter(new IrEquipmentConsumpAdapter(getActivity(), installationItemLists, IrStatusReport, add));
+                        }
+
+                        serviceConsumtionLists = (ArrayList<IrInfoResponse.ServiceConsumtionList>) response.body().getResponse().getServiceConsumtionList();
+                        binding.layoutServiceDetails.rvAddService.setHasFixedSize(true);
+                        binding.layoutServiceDetails.rvAddService.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        if (serviceConsumtionLists.size() != 0) {
+                            binding.layoutServiceDetails.rvAddService.setAdapter(new IRServiceConsumptionListAdapter(getActivity(), serviceConsumtionLists, IrStatusReport, add));
                         }
 
                         straddition = installationItemLists.get(0).getItemType();
@@ -690,8 +709,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         }
                         attach = response.body().getResponse().getGeneral().getIRAttached();
                         if(attach!=null){
-                            if(response.body().getResponse().getGeneral().getIRAttached().equals("1")){
-                               // IrType.clear();
+                            if(response.body().getResponse().getGeneral().getIRAttached().equals("Yes")){
                                 IrType = new ArrayList<String>();
                                 IrType.add("Yes");
                                 IrType.add("Select IR Type");
@@ -699,8 +717,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                                 ArrayAdapter<String> adaptertype = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
                                 adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
-                            }else  if(response.body().getResponse().getGeneral().getIRAttached().equals("0")){
-                               // IrType.clear();
+                            }else  if(response.body().getResponse().getGeneral().getIRAttached().equals("No")){
                                 IrType = new ArrayList<String>();
                                 IrType.add("No");
                                 IrType.add("Yes");
@@ -709,7 +726,168 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                                 adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                 binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
                             }
+                        }
+                        String test = response.body().getResponse().getInstallationQty().getSpeed();
+                        if(test.equals("Yes")){
+                            QualityParamSpeed = new ArrayList<String>();
+                            QualityParamSpeed.add("Yes");
+                            QualityParamSpeed.add("No");
+                            QualityParamSpeed.add("Please Select Speed test results shown to coustomer");
+                            ArrayAdapter<String> adapter11 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
+                            adapter11.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spSpeedTest.setAdapter(adapter11);
+                        }else if(test.equals("No")){
+                            QualityParamSpeed = new ArrayList<String>();
+                            QualityParamSpeed.add("No");
+                            QualityParamSpeed.add("Yes");
+                            QualityParamSpeed.add("Please Select Speed test");
+                            ArrayAdapter<String> adapter11 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
+                            adapter11.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spSpeedTest.setAdapter(adapter11);
+                        }else {
+                            QualityParamSpeed = new ArrayList<String>();
+                            QualityParamSpeed.add("Please Select Speed test");
+                            QualityParamSpeed.add("Yes");
+                            QualityParamSpeed.add("No");
+                            ArrayAdapter<String> adapter11 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
+                            adapter11.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spSpeedTest.setAdapter(adapter11);
 
+                        }
+                        String dns = response.body().getResponse().getInstallationQty().getDns();
+                        if(dns.equals("Yes")){
+                            QualityParamDns = new ArrayList<String>();
+                            QualityParamDns.add("Yes");
+                            QualityParamDns.add("No");
+                            QualityParamDns.add("Please Select  DNS");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamDns);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spDns.setAdapter(adapter);
+                        }else if(dns.equals("No")){
+                            QualityParamDns = new ArrayList<String>();
+                            QualityParamDns.add("No");
+                            QualityParamDns.add("Yes");
+                            QualityParamDns.add("Please Select  DNS");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamDns);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spDns.setAdapter(adapter);
+                        }
+                        else {
+                            QualityParamDns = new ArrayList<String>();
+                            QualityParamDns.add("Please Select  DNS");
+                            QualityParamDns.add("Yes");
+                            QualityParamDns.add("No");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamDns);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spDns.setAdapter(adapter);
+
+                        }
+                        String antivirus = response.body().getResponse().getInstallationQty().getAntiVirus();
+                        if(antivirus.equals("Yes")){
+                            QualityParamAntivirus = new ArrayList<String>();
+                            QualityParamAntivirus.add("Yes");
+                            QualityParamAntivirus.add("No");
+                            QualityParamAntivirus.add("Please Select  Virus");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamAntivirus);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapter);
+                        }else if(antivirus.equals("No")){
+                            QualityParamAntivirus = new ArrayList<String>();
+                            QualityParamAntivirus.add("No");
+                            QualityParamAntivirus.add("Yes");
+                            QualityParamAntivirus.add("Please Select  Virus");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamAntivirus);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapter);
+                        }else {
+                            QualityParamAntivirus = new ArrayList<String>();
+                            QualityParamAntivirus.add("Please Select  Virus");
+                            QualityParamAntivirus.add("Yes");
+                            QualityParamAntivirus.add("No");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamAntivirus);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapter);
+
+                        }
+                        String mrtg = response.body().getResponse().getInstallationQty().getMrtg();
+                        if(mrtg.equals("Yes")){
+                            QualityParamMrtg = new ArrayList<String>();
+                            QualityParamMrtg.add("Yes");
+                            QualityParamMrtg.add("No");
+                            QualityParamMrtg.add("Please Select  MRTG");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamMrtg);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spMrtg.setAdapter(adapter);
+                        }else if(mrtg.equals("No")){
+                            QualityParamMrtg = new ArrayList<String>();
+                            QualityParamMrtg.add("No");
+                            QualityParamMrtg.add("Yes");
+                            QualityParamMrtg.add("Please Select  MRTG");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamMrtg);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spMrtg.setAdapter(adapter);
+                        }else {
+                            QualityParamMrtg = new ArrayList<String>();
+                            QualityParamMrtg.add("Please Select  MRTG");
+                            QualityParamMrtg.add("Yes");
+                            QualityParamMrtg.add("No");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamMrtg);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spMrtg.setAdapter(adapter);
+
+                        }
+                        String ip = response.body().getResponse().getInstallationQty().getIp();
+                        if(ip.equals("Yes")){
+                            QualityParamIP = new ArrayList<String>();
+                            QualityParamIP.add("Yes");
+                            QualityParamIP.add("No");
+                            QualityParamIP.add("Please Select IP");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamIP);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spIp.setAdapter(adapter);
+                        }else if(ip.equals("No")){
+                            QualityParamIP = new ArrayList<String>();
+                            QualityParamIP.add("No");
+                            QualityParamIP.add("Yes");
+                            QualityParamIP.add("Please Select IP");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamIP);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spIp.setAdapter(adapter);
+                        }else {
+                            QualityParamIP = new ArrayList<String>();
+                            QualityParamIP.add("Please Select IP");
+                            QualityParamIP.add("Yes");
+                            QualityParamIP.add("No");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamIP);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spIp.setAdapter(adapter);
+
+                        }
+                        String selfCare = response.body().getResponse().getInstallationQty().getSelfCare();
+                        if(selfCare.equals("Yes")){
+                            QualityParamSelfCare = new ArrayList<String>();
+                            QualityParamSelfCare.add("Yes");
+                            QualityParamSelfCare.add("No");
+                            QualityParamSelfCare.add("Please Select Education customer");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSelfCare);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spSelfcare.setAdapter(adapter);
+                        }else if(selfCare.equals("No")){
+                            QualityParamSelfCare = new ArrayList<String>();
+                            QualityParamSelfCare.add("No");
+                            QualityParamSelfCare.add("Yes");
+                            QualityParamSelfCare.add("Please Select Education customer");
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSelfCare);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spSelfcare.setAdapter(adapter);
+                        }else {
+                            QualityParamSelfCare = new ArrayList<String>();
+                            QualityParamSelfCare.add("Please Select Education customer");
+                            QualityParamSelfCare.add("Yes");
+                            QualityParamSelfCare.add("No");
+                            ArrayAdapter<String> adapter11 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSelfCare);
+                            adapter11.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spSelfcare.setAdapter(adapter11);
 
                         }
                         getHoldReason();
@@ -797,6 +975,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 binding.linear19.setVisibility(View.GONE);
                 binding.linear21.setVisibility(View.GONE);
                 binding.linearInstallationParamDetails.setVisibility(View.GONE);
+                binding.linearservicedeatils.setVisibility(View.GONE);
 
             });
         binding.linearNine.setOnClickListener(v -> {
@@ -809,6 +988,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
 
         });
         binding.linearSix.setOnClickListener(v -> {
@@ -821,6 +1001,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
 
         });
         binding.linearFour.setOnClickListener(v -> {
@@ -833,6 +1014,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
 
         });
         binding.linea11.setOnClickListener(v -> {
@@ -845,6 +1027,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
 
         });
         binding.linea13.setOnClickListener(v -> {
@@ -857,6 +1040,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea15.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -868,6 +1052,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
 
         });
         binding.linea18.setOnClickListener(v -> {
@@ -880,6 +1065,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.VISIBLE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
 
         });
         binding.linea20.setOnClickListener(v -> {
@@ -891,6 +1077,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear16.setVisibility(View.GONE);
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.VISIBLE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linearInstallationParam.setOnClickListener(v -> {
@@ -903,6 +1090,19 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear19.setVisibility(View.GONE);
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.VISIBLE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
+        });
+        binding.linearService.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.VISIBLE);
         });
     }
 
@@ -917,28 +1117,25 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             if (position != 0) strholdId = "" + holdCategoryId.get(position - 1);
             else strholdId = " ";
         }else if(parent.getId() == R.id.sp_speed_test) {
-            binding.layoutInstallationparam.etSpeedTest.setText(QualityParam.get(position));
+            binding.layoutInstallationparam.etSpeedTest.setText(QualityParamSpeed.get(position));
         }
         else if(parent.getId() == R.id.sp_education_antivirus) {
-            binding.layoutInstallationparam.etEducationAntivirus.setText(QualityParam.get(position));
+            binding.layoutInstallationparam.etEducationAntivirus.setText(QualityParamAntivirus.get(position));
         }
         else if(parent.getId() == R.id.sp_selfcare) {
-            binding.layoutInstallationparam.etSelfcare.setText(QualityParam.get(position));
+            binding.layoutInstallationparam.etSelfcare.setText(QualityParamSelfCare.get(position));
         }
         else if(parent.getId() == R.id.sp_dns) {
-            binding.layoutInstallationparam.etDns.setText(QualityParam.get(position));
+            binding.layoutInstallationparam.etDns.setText(QualityParamDns.get(position));
         }
         else if(parent.getId() == R.id.sp_mrtg) {
-            binding.layoutInstallationparam.etMrtg.setText(QualityParam.get(position));
+            binding.layoutInstallationparam.etMrtg.setText(QualityParamMrtg.get(position));
         }
         else if(parent.getId() == R.id.sp_ip) {
-            binding.layoutInstallationparam.etIp.setText(QualityParam.get(position));
+            binding.layoutInstallationparam.etIp.setText(QualityParamIP.get(position));
         }  else if(parent.getId() == R.id.sp_ir_attached) {
             binding.layoutGeneralDetails.etIrAttached.setText(IrType.get(position));
         }
-
-
-
     }
 
     @Override
@@ -951,8 +1148,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        //String ir;
-      //  ir = binding.layoutGeneralDetails.etIrAttached.getText().toString();
         if(ipattach.equals("Yes")){
             ipattach = "1";
         }else if(ipattach.equals("No")) {
@@ -1008,6 +1203,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateIrEnginer(String insta){
+        String input = binding.layoutEnggDetails.etCreatedOn.getText().toString();
+        String date = input.substring(0, 10);
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -1016,11 +1213,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         updateIREngineer.setAuthkey(Constants.AUTH_KEY);
         updateIREngineer.setAction(Constants.ENGINER_UPDATE);
         updateIREngineer.setEngName(binding.layoutEnggDetails.etEnggName.getText().toString());
-        updateIREngineer.setInstattionDate(insta);
+        updateIREngineer.setInstattionDate(date);
         updateIREngineer.setIRguid(strGuiID);
-        updateIREngineer.setInstattionDate("");
         updateIREngineer.setOTP(binding.layoutEnggDetails.etInstallationCode.getText().toString());
-        updateIREngineer.setAppointmentDate("");
+        updateIREngineer.setAppointmentDate(binding.layoutEnggDetails.etCreatedOn.getText().toString());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateIrEnginer(updateIREngineer);
         call.enqueue(new Callback<CommonClassResponse>() {
@@ -1103,17 +1299,11 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
-
-        // Initializing LocationRequest
-        // object with appropriate methods
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(2);
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
-
-        // setting LocationRequest
-        // on FusedLocationClient
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }

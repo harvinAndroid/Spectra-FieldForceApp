@@ -6,7 +6,15 @@ public class AddBucketListRequest {
                EngineerName,EngineerID,VendorCode,VendorName,SlaStatus,AreaName,Product,ContactPerson,ContactNo,
                OrderCreatedOn,AppointmentDate,WCRSlaClock,IRSlaClock;
 
-   private String Segment,CustomerAddress,CustomerCityId;
+   private String Segment;
+    private String CustomerAddress;
+    private String CustomerCityId;
+
+    public void setActivationOTP(String activationOTP) {
+        ActivationOTP = activationOTP;
+    }
+
+    private String ActivationOTP;
 
     public void setSegment(String segment) {
         Segment = segment;

@@ -47,7 +47,7 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
   //  private ArrayList<String> statusType;
     ArrayAdapter<String> adapter;
     ArrayAdapter aa;
-    String[] statusType = { "Select Status Type", "Installation Pending", "Installation On Hold"};
+    String[] statusType = { "Select Status Type", "Installation Pending", "Installation On Hold","Consumption Pending","Consumption Approved"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

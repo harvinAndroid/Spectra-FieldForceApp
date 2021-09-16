@@ -2,43 +2,32 @@ package com.spectra.fieldforce.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -51,23 +40,16 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.gson.JsonElement;
 import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.Activity_Resolve;
-import com.spectra.fieldforce.activity.MainActivity;
 import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.adapter.WcrAddManholeAdapter;
 import com.spectra.fieldforce.adapter.WcrCompletteItemConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
+import com.spectra.fieldforce.adapter.WcrServiceConsumptionListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrFragmentBinding;
-import com.spectra.fieldforce.model.ArtifactRequest;
-import com.spectra.fieldforce.model.CommonResponse;
-import com.spectra.fieldforce.model.ItemConsumption.NrgpDetails;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
@@ -80,28 +62,18 @@ import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.request.UploadWcrImgRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
-import com.spectra.fieldforce.model.gpon.response.GetFibreCable;
 import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
 import com.spectra.fieldforce.model.gpon.response.HoldReasonResponse;
-import com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
-import com.spectra.fieldforce.utils.FilePath;
-import com.spectra.fieldforce.utils.FileUtils;
-import com.spectra.fieldforce.utils.PermissionUtils;
-
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -109,12 +81,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.app.Activity.RESULT_OK;
-import static com.spectra.fieldforce.utils.AppConstants.PERMISSION_REQUEST_CODE_READ_WRITE;
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_ONE;
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_TWO;
-import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_ONE;
-import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_READ_WRITE_CAMERA_PERMISSION;
 
 public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
     private WcrFragmentBinding binding;
@@ -134,11 +102,12 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> QualityParamFace;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private String strGuuId,strSegment, strHold,doa,strInsta,strfmsId,strSecFmsId,strCanId ,strholdId,strProductSegment,straddition,OrderId,StatusOfReport;
+    private String strGuuId,strSegment, strHold,doa,strInsta,strfmsId,strSecFmsId,strCanId ,strholdId="",strProductSegment,straddition,OrderId,StatusOfReport;
     private ArrayList<String> itemType;
     private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
     private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
+    private ArrayList<WcrResponse.ServiceConsumtion> serviceConsumtions;
     private AlphaAnimation inAnimation,outAnimation;
     ArrayAdapter<String> adapterfms;
     ArrayAdapter<String> adaptersecond;
@@ -188,8 +157,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
-
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         init();
@@ -220,6 +187,19 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             bundle.putString("OrderId", OrderId);
             t1.replace(R.id.frag_container, wcrItemConsumption);
             wcrItemConsumption.setArguments(bundle);
+            t1.commit();
+        });
+
+        binding.layoutServiceDetails.btnAddService.setOnClickListener(v -> {
+            @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
+            WcrServiceConsumption wcrServiceConsumption = new WcrServiceConsumption();
+            Bundle bundle = new Bundle();
+            bundle.putString("canId", strCanId);
+            bundle.putString("strGuuId", strGuuId);
+            bundle.putString("StatusofReport", StatusOfReport);
+            bundle.putString("OrderId", OrderId);
+            t1.replace(R.id.frag_container, wcrServiceConsumption);
+            wcrServiceConsumption.setArguments(bundle);
             t1.commit();
         });
 
@@ -309,9 +289,13 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
         binding.tvWcrSave.setOnClickListener(v -> {
                     String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
+                    String misc = Objects.requireNonNull(binding.etMisc.getText()).toString();
                     if (remark.isEmpty()) {
                         Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
-                    } else {
+                    }else if (misc.isEmpty()) {
+                Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
+            }
+                    else {
                         try {
                                 getLastLocation();
 
@@ -321,7 +305,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
                                         Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
                                     } else {
-                                        updateWcrComplete(remark,latitude,longitude);
+                                        updateWcrComplete(remark,latitude,longitude, misc);
                                     }
                                 } else if (strSegment.equals("Home")) {
                                     if (equipmentDetailsLists.size() == 0 || equipmentDetailsLists == null) {
@@ -329,7 +313,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
                                         Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
                                     } else {
-                                        updateWcrComplete(remark,latitude,longitude);
+                                        updateWcrComplete(remark,latitude,longitude,misc);
                                     }
                                 }
                            // }
@@ -608,6 +592,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearNine.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -621,6 +606,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearSix.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -634,6 +620,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea11.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -647,6 +634,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea13.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -660,6 +648,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea15.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -673,6 +662,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea18.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -686,6 +676,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea20.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -698,6 +689,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear21.setVisibility(View.VISIBLE);
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
         binding.linearEquipment.setOnClickListener(v -> {
@@ -712,6 +704,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.VISIBLE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearCustomerNetwork.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -725,6 +718,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.VISIBLE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearInstallationParam.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -738,6 +732,21 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.VISIBLE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
+        });
+        binding.linearService.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.VISIBLE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
     }
 
@@ -749,6 +758,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linea11.setVisibility(View.VISIBLE);
             binding.linea13.setVisibility(View.VISIBLE);
             binding.linea15.setVisibility(View.VISIBLE);
+            binding.linearService.setVisibility(View.VISIBLE);
             binding.linea18.setVisibility(View.GONE);
             binding.tvWcrApproval.setVisibility(View.GONE);
             binding.tvWcrApproval.setVisibility(View.GONE);
@@ -769,6 +779,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linea15.setVisibility(View.VISIBLE);
             //binding.linea18.setVisibility(View.VISIBLE);
             binding.linea20.setVisibility(View.VISIBLE);
+            binding.linearService.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1116,7 +1127,10 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
                             binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
                             binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions,add));
-
+                            serviceConsumtions = response.body().getResponse().getServiceConsumtionList();
+                            binding.layoutServiceDetails.rvAddService.setHasFixedSize(true);
+                            binding.layoutServiceDetails.rvAddService.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutServiceDetails.rvAddService.setAdapter(new WcrServiceConsumptionListAdapter(getActivity(), serviceConsumtions));
                             equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
                             binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                             binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -1393,7 +1407,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
 
-    private void updateWcrComplete(String remark,String latitude,String longitude){
+    private void updateWcrComplete(String remark, String latitude, String longitude, String misc){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -1404,11 +1418,13 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         wcrCompleteRequest.setIsHold(strholdId);
         wcrCompleteRequest.setProductSegment(strProductSegment);
         wcrCompleteRequest.setSegment(strSegment);
+        wcrCompleteRequest.setMiscWorkCost(misc);
         wcrCompleteRequest.setRemarks(remark);
         wcrCompleteRequest.setWCRguidId(strGuuId);
         wcrCompleteRequest.setLat(latitude);
         wcrCompleteRequest.setLong(longitude);
         wcrCompleteRequest.setSource("App");
+        wcrCompleteRequest.setCanId(strCanId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.wcrComplete(wcrCompleteRequest);

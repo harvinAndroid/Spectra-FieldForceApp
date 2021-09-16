@@ -145,6 +145,12 @@ public class GetMyBucketList {
 
         private String wcrSlaClock;
 
+        public String getActivationOTP() {
+            return activationOTP;
+        }
+
+        private String activationOTP;
+
 
 
     }

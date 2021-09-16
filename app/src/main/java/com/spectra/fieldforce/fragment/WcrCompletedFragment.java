@@ -25,6 +25,8 @@ import com.spectra.fieldforce.adapter.WcrCConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.WcrCompletteItemConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentAdapter;
 import com.spectra.fieldforce.adapter.WcrManholeAdapter;
+import com.spectra.fieldforce.adapter.WcrServiceConsumptionListAdapter;
+import com.spectra.fieldforce.adapter.WcrServiceListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrCompleteFragmentBinding;
@@ -63,6 +65,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
     private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
     private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
+    private ArrayList<WcrResponse.ServiceConsumtion> serviceConsumtions;
     private AlphaAnimation inAnimation,outAnimation;
     private ArrayList<String> QualityParamCable;
     private ArrayList<String> QualityParamLogin;
@@ -103,6 +106,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
         binding.searchtoolbar.tvLang.setText("WCR");
         strCanId = requireArguments().getString("canId");
         strStatusofReport = requireArguments().getString("StatusofReport");
+        binding.tvWcrStatus.setText(strStatusofReport);
         OrderId = requireArguments().getString("OrderId");
         init();
         initOne();
@@ -139,6 +143,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
         binding.layoutWcrEngrDetails.saveEnggDetails.setVisibility(View.GONE);
         binding.saveHold.setVisibility(View.GONE);
         binding.etHoldReason.setFocusable(false);
+        binding.layoutServiceDetails.btnAddService.setVisibility(View.GONE);
     }
 
     private void initOne(){
@@ -191,6 +196,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearNine.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -204,6 +210,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearSix.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -217,6 +224,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea11.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -230,6 +238,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea13.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -243,6 +252,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea15.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -256,6 +266,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea18.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -269,6 +280,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linea20.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -282,6 +294,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearEquipment.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -295,6 +308,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.VISIBLE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearCustomerNetwork.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -308,6 +322,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.VISIBLE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
         });
         binding.linearInstallationParam.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -321,6 +336,21 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearEqipmentdetails.setVisibility(View.GONE);
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.VISIBLE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
+        });
+        binding.linearService.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.VISIBLE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
     }
 
@@ -333,6 +363,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linea13.setVisibility(View.VISIBLE);
             binding.linea15.setVisibility(View.VISIBLE);
             binding.linea18.setVisibility(View.GONE);
+            binding.linearService.setVisibility(View.VISIBLE);
             binding.linearEquipment.setVisibility(View.GONE);
             binding.linearCustomerNetwork.setVisibility(View.GONE);
             binding.linearInstallationParam.setVisibility(View.GONE);
@@ -346,130 +377,13 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             binding.linearNine.setVisibility(View.GONE);
             binding.linearSix.setVisibility(View.GONE);
             binding.linea13.setVisibility(View.GONE);
+            binding.linearService.setVisibility(View.VISIBLE);
             binding.linea15.setVisibility(View.VISIBLE);
             binding.linea18.setVisibility(View.VISIBLE);
             binding.linea20.setVisibility(View.VISIBLE);
         }
     }
 
-    /*public void getFmsList() {
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
-        accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
-        accountInfoRequest.setAction(Constants.GET_FMS_LIST);
-        // accountInfoRequest.setCanId("221373");
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<GetFmsListResponse> call = apiService.getFmsList(accountInfoRequest);
-        call.enqueue(new Callback<GetFmsListResponse>() {
-            @Override
-            public void onResponse(Call<GetFmsListResponse> call, Response<GetFmsListResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        fmsList = response.body().getResponse().getFMSList();
-                        firstFmsID = new ArrayList<>();
-                        fmsName = new ArrayList<>();
-                        fmsName.add("Select Customer End FMS(Second Level)");
-                        for (GetFmsListResponse.Fms fms : fmsList)
-                            fmsName.add(fms.getFms());
-                        for (GetFmsListResponse.Fms fmss : fmsList)
-                            firstFmsID.add(fmss.getId());
-                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fmsName);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.layoutWcrFms.spCustomerEndFmsSec.setAdapter(adapter1);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<GetFmsListResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }*/
-
-
-
-   /* private void Type() {
-        FmsType = new ArrayList<String>();
-        FmsType.add("Select Fms Type");
-        FmsType.add("WallMount");
-        FmsType.add("RackMount");
-        FmsId = new ArrayList<String>();
-        FmsId.add("569480000");
-        FmsId.add("569480001");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapter);
-
-
-        holdCategory = new ArrayList<String>();
-        holdCategory.add("Hold Category");
-        holdCategory.add("Building Permission Issue");
-        holdCategory.add("Customer Site Not Ready");
-        holdCategory.add("Delayed By Customer");
-        holdCategory.add("Installation Report Pending To Sign");
-        holdCategory.add("Local Permission Issue");
-        holdCategory.add("Network Constraint");
-        holdCategoryId = new ArrayList<String>();
-        holdCategoryId.add("1");
-        holdCategoryId.add("2");
-        holdCategoryId.add("3");
-        holdCategoryId.add("4");
-        holdCategoryId.add("5");
-        holdCategoryId.add("6");
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdCategory);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spHoldCategory.setAdapter(adapter2);
-
-        binding.saveHold.setOnClickListener(v -> {
-                    if (binding.spHoldCategory.getSelectedItem().toString().equals("Hold Category")) {
-                        Toast.makeText(getContext(), "Please Select Hold Category", Toast.LENGTH_LONG).show();
-                    } else if (Objects.requireNonNull(binding.etHoldReason.getText()).toString().equals("Hold Reason:")) {
-                        Toast.makeText(getContext(), "Please Enter Hold Reason", Toast.LENGTH_LONG).show();
-                    }else {
-                        updateHoldCategory();
-                    }
-                }
-        );
-    }
-
-*/
-   /* @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (parent.getId() == R.id.sp_customer_end_fms) {
-            binding.layoutWcrFms.etCustomerEndFms.setText(FmsType.get(position));
-            if (position != 0) strfmsId = "" + FmsId.get(position - 1);
-            else strfmsId = " ";
-        }else if(parent.getId() == R.id.sp_customer_end_fms_sec){
-            binding.layoutWcrFms.etCustomerEndFmsSec.setText(fmsName.get(position));
-            if (position != 0) strSecFmsId = "" + firstFmsID.get(position - 1);
-            else strSecFmsId = " ";
-        }else if(parent.getId() == R.id.sp_hold_category){
-            binding.etHoldCategory.setText(holdCategory.get(position));
-            if (position != 0) strholdId = "" + holdCategoryId.get(position - 1);
-            else strholdId = " ";
-        }
-
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-*/
     public void getWcrInfo() {
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -493,7 +407,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     if(response.body().getStatus().equals("Success")) {
                         try {
-                            binding.tvWcrStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
+                            binding.tvConsumptionStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
                             binding.layoutWcrcustomerDetails.setCustomerDetails(response.body().getResponse().getWcr());
                             binding.layoutCustomerNetwork.setCustomerNetwork(response.body().getResponse().getCusotmerNetwork());
                             strGuuId = response.body().getResponse().getWcr().getWcrguidid();
@@ -516,6 +430,11 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
                             binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
                             binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentAdapter(getActivity(), equipmentDetailsLists));
                             listener();
+                            serviceConsumtions = response.body().getResponse().getServiceConsumtionList();
+                            binding.layoutServiceDetails.rvAddService.setHasFixedSize(true);
+                            binding.layoutServiceDetails.rvAddService.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            binding.layoutServiceDetails.rvAddService.setAdapter(new WcrServiceListAdapter(getActivity(), serviceConsumtions));
+
                             binding.layoutWcrFms.etCustomerEndFms.setText(response.body().getResponse().getFMSDetails().getFmsfirst());
                             binding.layoutWcrFms.etCustomerEndFmsSec.setText(response.body().getResponse().getFMSDetails().getFmssecond());
                             binding.layoutInstallationparam.setQuality(response.body().getResponse().getInstallationQuality());
@@ -622,13 +541,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
 
     private void nextScreen(){
 
-     /*   @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        ProvisioningFragment provisioningScreenFragment = new ProvisioningFragment();
-        Bundle accountinfo = new Bundle();
-        accountinfo.putString("canId", strCanId);
-        t.replace(R.id.frag_container, provisioningScreenFragment);
-        provisioningScreenFragment.setArguments(accountinfo);
-        t.commit();*/
+
         Intent i = new Intent(getActivity(), ProvisioningMainActivity.class);
         i.putExtra("canId", strCanId);
         i.putExtra("StatusofReport", strStatusofReport);
@@ -760,251 +673,5 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
     }
 
 
-  /*  private void moveNext(){
 
-        @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        WcrComplete wcrFragment = new WcrComplete();
-        Bundle accountinfo = new Bundle();
-        accountinfo.putString("canId", strCanId);
-        t.replace(R.id.frag_container, wcrFragment);
-        wcrFragment.setArguments(accountinfo);
-        t.commit();
-    }*/
-
-   /* private void updateAssociateDetails(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        AssociatedResquest associatedResquest = new AssociatedResquest();
-        associatedResquest.setAuthkey(Constants.AUTH_KEY);
-        associatedResquest.setAction(Constants.UPDATE_ASSOCIATE);
-        associatedResquest.setIdb(binding.layoutAssociatedDetails.etIdbLength.getText().toString());
-        associatedResquest.setLink(binding.layoutAssociatedDetails.etLinkBudget.getText().toString());
-        associatedResquest.setWCRguidId(strGuuId);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.updateAssociateDetails(associatedResquest);
-        call.enqueue(new Callback<CommonClassResponse>() {
-            @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        if(response.body().getStatus().equals("Success")){
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                            //moveNext();
-                        }else{
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-
-    }
-
-
-    private void updateWcrComplete(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        WcrCompleteRequest wcrCompleteRequest = new WcrCompleteRequest();
-        wcrCompleteRequest.setAuthkey(Constants.AUTH_KEY);
-        wcrCompleteRequest.setAction(Constants.WCR_COMPLETE);
-        wcrCompleteRequest.setIsHold(strholdId);
-        wcrCompleteRequest.setProductSegment(strProductSegment);
-        wcrCompleteRequest.setSegment(strSegment);
-        wcrCompleteRequest.setRemarks(binding.etRemarksText.getText().toString());
-        wcrCompleteRequest.setWCRguidId(strGuuId);
-
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.wcrComplete(wcrCompleteRequest);
-        call.enqueue(new Callback<CommonClassResponse>() {
-            @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        if(response.body().getStatus().equals("Success")){
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                            nextScreen();
-                        }else{
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-
-    }
-
-    private void updateFmsDetails(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        UpdateFmsRequest updateFmsRequest = new UpdateFmsRequest();
-        updateFmsRequest.setAuthkey(Constants.AUTH_KEY);
-        updateFmsRequest.setAction(Constants.UPDATE_FMS_DETAILS);
-        updateFmsRequest.setFmsFirst(strfmsId);
-        updateFmsRequest.setFmsSecond(strSecFmsId);
-        updateFmsRequest.setWCRguidId(strGuuId);
-        updateFmsRequest.setFmsPODno(binding.layoutWcrFms.etPodEnd.getText().toString());
-        updateFmsRequest.setFmsPortCX(binding.layoutWcrFms.etPortNumCx.getText().toString());
-        updateFmsRequest.setFmsPortPOD(binding.layoutWcrFms.etPortnumEnd.getText().toString());
-
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.updsteFmsDetails(updateFmsRequest);
-        call.enqueue(new Callback<CommonClassResponse>() {
-            @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        if(response.body().getStatus().equals("Success")){
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                           // moveNext();
-                        }else{
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-
-    }
-
-    private void updateWcrEnginer(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
-        updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
-        updateWcrEnggRequest.setAction(Constants.UPDATE_WCR_ENGINER);
-        updateWcrEnggRequest.setEngName(binding.layoutWcrEngrDetails.etEnggName.getText().toString());
-        updateWcrEnggRequest.setInstcode(binding.layoutWcrEngrDetails.etInstallationCode.getText().toString());
-        updateWcrEnggRequest.setAppointmentDate(binding.layoutWcrEngrDetails.etAppointmentDate.getText().toString());
-        updateWcrEnggRequest.setWCRguidId(strGuuId);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.updateWcrEng(updateWcrEnggRequest);
-        call.enqueue(new Callback<CommonClassResponse>() {
-            @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        if(response.body().getStatus().equals("Success")){
-                           // moveNext();
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-    }
-
-    private void updateHoldCategory(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
-        holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
-        holdWcrRequest.setAction(Constants.HOLD_WCR);
-        holdWcrRequest.setCategory(strholdId);
-        holdWcrRequest.setReason(binding.etHoldReason.getText().toString());
-        holdWcrRequest.setWCRguidId(strGuuId);
-        holdWcrRequest.setSegment(strSegment);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommonClassResponse> call = apiService.updateHoldCategory(holdWcrRequest);
-        call.enqueue(new Callback<CommonClassResponse>() {
-            @Override
-            public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                    try {
-                        if(response.body().getStatus().equals("Success")){
-                          //  moveNext();
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonClassResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
-                Log.e("RetroError", t.toString());
-            }
-        });
-
-    }*/
 }

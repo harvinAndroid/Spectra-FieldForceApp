@@ -157,12 +157,23 @@
             android:textSize="@dimen/_12sdp"  />
 
         <TextView
+            android:id="@+id/otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:visibility="gone"
+            android:text="@{`Activation OTP :  ` + allBucketList.activationOTP}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
             android:id="@+id/appoint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp"
-            android:text="@{`Appointment date: ` + allBucketList.appointmentDate}"
+            android:text="@{`Appointment Date : ` + allBucketList.appointmentDate}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
 

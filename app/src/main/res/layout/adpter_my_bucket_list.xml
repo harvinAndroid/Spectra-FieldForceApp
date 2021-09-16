@@ -141,6 +141,15 @@
             android:textSize="@dimen/_12sdp"  />
 
         <TextView
+            android:id="@+id/activation_otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`Activation OTP : ` + allBucketList.activationOTP}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
             android:id="@+id/apdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -30,6 +30,12 @@ public class AccInfoResponse {
         @SerializedName("DOAFlag")
         public String dOAFlag;
 
+        public String getIsProShow() {
+            return IsProShow;
+        }
+
+        public String IsProShow;
+
         public String getIRStatusofReport() {
             return IRStatusofReport;
         }

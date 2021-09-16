@@ -3,12 +3,12 @@ package com.spectra.fieldforce.utils;
 public class Constants {
 
    /* PRODUCATION URL*/
-    public static final String BASE_URL="https://ffamwapi.spectra.co";
-    public static final String BASE_URL1="https://custappmw.spectra.co";
+   /* public static final String BASE_URL="https://ffamwapi.spectra.co";
+    public static final String BASE_URL1="https://custappmw.spectra.co";*/
 
   /*  Local URL */
-  /*  public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
-    public static final String BASE_URL1="https://custappmwuat.spectra.co/";*/
+    public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
+    public static final String BASE_URL1="https://custappmwuat.spectra.co/";
 
     public static final String AUTH_KEY ="ac7b51de9d888e1458dd53d8aJAN3ba6f";
     public static final String GET_ACTION_CODEMST  ="getActioncodeMst";
@@ -16,13 +16,13 @@ public class Constants {
     public static final String ASSIGNED = "Assigned";
     public static final String ASSIGNMENT = "assignment";
     public static final String ACKNOWLEDGE_SR= "AcknowledgeSR";
-    public static final String ACTION_SAVEQUESTIONARE="saveQuestionerdetails";
-    public static final String ACTION_GETSAVEQUESTIONARE="getQuestBySrNo";
+    public static final String ACTION_SAVEQUESTIONARE= "saveQuestionerdetails";
+    public static final String ACTION_GETSAVEQUESTIONARE= "getQuestBySrNo";
     public static final String URL = "http://fiber.spectra.co/";
    // public static final String NOC = "https://cs.spectra.co/nocportal/index.php?account_no_bil=9063188";
 
-    public static final String GET_QUESTIONARE_LIST ="getQuestBySrNo";
-    public static final String APP="FFA App";
+    public static final String GET_QUESTIONARE_LIST = "getQuestBySrNo";
+    public static final String APP= "FFA App";
     public static final String ACTION_AUTHENTICATION = "authentication";
     public static final String User = "User";
     public static final String SAVE_DEVICE_TOKEN = "saveDeviceToken";
@@ -98,6 +98,6 @@ public class Constants {
     public static final String UPLOAD_WCRDOC = "uploadWCRDoc";
     public static final String WCR_HOLD_CATEGORY= "WCRholdCategories";
     public static final String RESEND_NAVWCR= "resendNavWCR";
-
+    public static final String GET_SERVICE_LIST = "getServiceList";
 
 }

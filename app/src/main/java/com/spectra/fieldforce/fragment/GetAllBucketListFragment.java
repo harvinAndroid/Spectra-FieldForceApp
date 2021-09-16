@@ -48,7 +48,7 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
    // private ArrayList<String> statusType;
     ArrayAdapter<String> adapter;
     ArrayAdapter aa;
-    String[] statusType = { "Select Status Type", "Installation Pending", "Installation On Hold", "Assigned", "UnAssigned"};
+    String[] statusType = { "Select Status Type", "Installation Pending", "Installation On Hold", "Assigned", "UnAssigned","Consumption Pending","Consumption Approved"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

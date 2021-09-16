@@ -42,10 +42,16 @@ public class WcrResponse {
         @SerializedName("FMSDetails")
         private FMSDetails fMSDetails;
 
+        @SerializedName("serviceConsumtionList")
+        private ArrayList<ServiceConsumtion> serviceConsumtionList;
+
         public Wcr getWcr() {
             return wcr;
         }
 
+        public ArrayList<ServiceConsumtion> getServiceConsumtionList() {
+            return serviceConsumtionList;
+        }
 
         public CusotmerNetwork getCusotmerNetwork() {
             return cusotmerNetwork;
@@ -90,6 +96,99 @@ public class WcrResponse {
             return fMSDetails;
         }
 
+
+    }
+
+    public class ServiceConsumtion {
+
+        @SerializedName("Item")
+        @Expose
+        private String item;
+        @SerializedName("SubItem")
+        @Expose
+        private String subItem;
+        @SerializedName("ItemType")
+        @Expose
+        private String itemType;
+        @SerializedName("Quantity")
+        @Expose
+        private String quantity;
+        @SerializedName("ItemID")
+        @Expose
+        private String itemID;
+        @SerializedName("WCRGUIDID")
+        @Expose
+        private String wcrguidid;
+        @SerializedName("CANID")
+        @Expose
+        private String canid;
+        @SerializedName("ItemCode")
+        @Expose
+        private String itemCode;
+
+        public String getItem() {
+            return item;
+        }
+
+        public void setItem(String item) {
+            this.item = item;
+        }
+
+        public String getSubItem() {
+            return subItem;
+        }
+
+        public void setSubItem(String subItem) {
+            this.subItem = subItem;
+        }
+
+        public String getItemType() {
+            return itemType;
+        }
+
+        public void setItemType(String itemType) {
+            this.itemType = itemType;
+        }
+
+        public String getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(String quantity) {
+            this.quantity = quantity;
+        }
+
+        public String getItemID() {
+            return itemID;
+        }
+
+        public void setItemID(String itemID) {
+            this.itemID = itemID;
+        }
+
+        public String getWcrguidid() {
+            return wcrguidid;
+        }
+
+        public void setWcrguidid(String wcrguidid) {
+            this.wcrguidid = wcrguidid;
+        }
+
+        public String getCanid() {
+            return canid;
+        }
+
+        public void setCanid(String canid) {
+            this.canid = canid;
+        }
+
+        public String getItemCode() {
+            return itemCode;
+        }
+
+        public void setItemCode(String itemCode) {
+            this.itemCode = itemCode;
+        }
 
     }
 
@@ -619,6 +718,13 @@ public class WcrResponse {
         private String wCRConsumptionStatus;
         @SerializedName("ProductSegment")
         private String productSegment;
+
+        public String getMiscWorkCost() {
+            return miscWorkCost;
+        }
+
+        @SerializedName("MiscWorkCost")
+        private String miscWorkCost;
 
         public String getDOAFlag() {
             return DOAFlag;

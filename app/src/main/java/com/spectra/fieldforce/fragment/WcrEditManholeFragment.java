@@ -168,7 +168,6 @@ public class WcrEditManholeFragment extends Fragment implements AdapterView.OnIt
                                 binding.etDistance.setText(response.body().getResponse().getDistance());
                                 binding.etFibreNo.setText(response.body().getResponse().getFiberNoTubeWise());
                                 binding.etManholeType.setText(response.body().getResponse().getManHoleType());
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

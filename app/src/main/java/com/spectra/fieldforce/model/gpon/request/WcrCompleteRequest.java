@@ -33,7 +33,23 @@ public class WcrCompleteRequest {
         CanId = canId;
     }
 
-    private String Authkey,Action,WCRguidId,Segment,IsHold,Remarks,productSegment,CanId,Source,Lat,Long;
+    private String Authkey;
+    private String Action;
+    private String WCRguidId;
+    private String Segment;
+    private String IsHold;
+    private String Remarks;
+    private String productSegment;
+    private String CanId;
+    private String Source;
+    private String Lat;
+    private String Long;
+
+    public void setMiscWorkCost(String miscWorkCost) {
+        MiscWorkCost = miscWorkCost;
+    }
+
+    private String MiscWorkCost;
 
     public void setSource(String source) {
         Source = source;
