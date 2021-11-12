@@ -95,6 +95,16 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
         return new MyBucketListAdapter.MyViewHolder(binding);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
 
     @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
@@ -327,8 +337,10 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
     }
 
     public void Filter(List<GetMyBucketList.Response> getBucketList){
-        this.getBucketList  = getBucketList;
         notifyDataSetChanged();
-    }
+        this.getBucketList  = getBucketList;
+        context.notifyAll();
+    }  
+
 
 }

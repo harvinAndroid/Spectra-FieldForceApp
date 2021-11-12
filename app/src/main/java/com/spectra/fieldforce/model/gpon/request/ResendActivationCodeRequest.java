@@ -6,6 +6,12 @@ public class ResendActivationCodeRequest {
     private String IsIR;
     private String GUID;
 
+    public void setId(String id) {
+        Id = id;
+    }
+
+    private String Id;
+
     public void setAuthkey(String authkey) {
         Authkey = authkey;
     }

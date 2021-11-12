@@ -75,6 +75,25 @@
 
 
     </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear_sales"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/_20sdp"
+            android:background="@drawable/round_corner"
+            android:layout_height="@dimen/_100sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sales_app"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_16sdp"
+                />
+
+        </LinearLayout>
         <FrameLayout
             android:id="@+id/fregment"
             android:layout_width="match_parent"

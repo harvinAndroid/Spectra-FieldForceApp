@@ -51,12 +51,11 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
     private List<GetSubItemListResponse.Datum> subItem;
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
-    private String strItemType,strItemTypeData,IrID,strItemname, StrSubItemName;
+    private String strItemType,strItemTypeData,IrID,strItemname, StrSubItemName,wcrguid;
     private  String strsubItemId,IrStatusReport,strFibre,ItemId,StrSubItem,OrderId,StatusOfReport,ItemType,quantity,Serial,CanId,GuIID,maxCap;
 
 
     public IREditItemConsumption() {
-
     }
 
 
@@ -76,6 +75,8 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
         IrStatusReport = requireArguments().getString("IrStatusReport");
+        wcrguid = requireArguments().getString("wcrguid");
+
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("IR");
         init();
@@ -86,8 +87,6 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
                 if (!binding.etQuantity.getText().toString().isEmpty()) {
                     try {
                         int test = Integer.parseInt(binding.etQuantity.getText().toString());
-
-
                         if (test <= Integer.parseInt(maxCap)) {
                             System.out.println("Check string :allow ");
                         } else {
@@ -97,21 +96,15 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
                     }catch (NumberFormatException ex){
                         ex.getMessage();
                     }
-
                 }
-
-
             }
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
-
             }
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
-
-
             }
         });
     }
@@ -340,7 +333,8 @@ public class IREditItemConsumption extends Fragment implements AdapterView.OnIte
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
-        addItem_Consumption.setWCRguidId(IrID);
+        addItem_Consumption.setIRguid(IrID);
+        addItem_Consumption.setWCRguidId(wcrguid);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);

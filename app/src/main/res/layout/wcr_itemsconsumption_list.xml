@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_4sdp"
-           android:visibility="gone"
+            android:visibility="gone"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
@@ -79,12 +79,11 @@
             android:textSize="@dimen/_12sdp"  />
 
         <TextView
-            android:id="@+id/et_i"
+            android:id="@+id/et_quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_4sdp"
-            android:text="@{`Quantity :  ` + itemConsumption.quantity}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 

@@ -36,5 +36,12 @@ public interface AppConstants {
     String ENGINEER_BUCKET = "My Bucket";
     String VERSION_NAME= "Build Version";
     String ITEM_CONSUMPTION= "Item Consumption";
+    String SERVICE_CONSUMPTION= "Service Consumption";
+
+    String PLEASE_ENTER_USERNAME="Please Enter UserName";
+    String PLEASE_ENTER_PASSWORD = "Please Enter Password";
+
+    String SUCCESS = "Success";
+    String LEAD_DETAILS= "Lead Details";
 
 }

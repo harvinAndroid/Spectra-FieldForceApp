@@ -4,6 +4,9 @@
     package="com.spectra.fieldforce"
     android:installLocation="auto">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -107,6 +110,8 @@
             android:screenOrientation="portrait"
             />
         <activity android:name=".activity.ProvisioningMainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".salesapp.activity.SalesDashboard"
             android:screenOrientation="portrait"/>
 
         <provider

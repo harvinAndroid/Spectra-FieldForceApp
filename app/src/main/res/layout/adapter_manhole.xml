@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{`FiberNoRunningNoWise :  ` + equipment.fiberNoRunningNoWise}"
+        android:text="@{`Fiber No Running No Wise :  ` + equipment.fiberNoRunningNoWise}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"  />
 
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{`FiberTube :  ` + equipment.fiberTube}"
+        android:text="@{`Fiber Tube :  ` + equipment.fiberTube}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{`ManHoleType :  ` + equipment.manHoleType}"
+        android:text="@{`ManHole Type :  ` + equipment.manHoleType}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp" />
 
@@ -63,7 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="@{`FiberNoTubeWise :  ` + equipment.fiberNoTubeWise}"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:text="@{`Fiber No Tube Wise :  ` + equipment.fiberNoTubeWise}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"  />
 
@@ -73,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{`FiberCable :  ` + equipment.fiberCable}"
+        android:text="@{`Fiber Cable :  ` + equipment.fiberCable}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"  />
 
@@ -82,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{`LocationLandmark :  ` + equipment.locationLandmark}"
+        android:text="@{`Location Landmark :  ` + equipment.locationLandmark}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"  />
 

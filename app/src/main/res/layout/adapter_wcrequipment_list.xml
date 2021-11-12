@@ -74,7 +74,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{`Quantity :  ` + equipment.quantity}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp"  />
 

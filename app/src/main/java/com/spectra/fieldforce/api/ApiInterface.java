@@ -8,6 +8,7 @@ import com.spectra.fieldforce.model.CanIdRequest;
 import com.spectra.fieldforce.model.CanIdResponse;
 import com.spectra.fieldforce.model.ChangeBinRequest;
 import com.spectra.fieldforce.model.ChangeBinResponse;
+import com.spectra.fieldforce.model.CommonMessageResponse;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.EndtimeRequest;
 import com.spectra.fieldforce.model.LoginResponse;
@@ -308,4 +309,6 @@ public interface ApiInterface {
     Call<GetServiceResponse> getServiceSubItem(@Body ItemConsumptionById itemConsumptionById);
 
 
+    @POST ("index.php")
+    Call<CommonMessageResponse> getItemCodeStatus(@Body ResendActivationCodeRequest resendActivationCodeRequest);
 }

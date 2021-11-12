@@ -122,6 +122,32 @@ public class Response {
     private String cityId;
     private String address;
 
+    public String getAddAssign() {
+        return addAssign;
+    }
+
+    public void setAddAssign(String addAssign) {
+        this.addAssign = addAssign;
+    }
+
+    private String addAssign;
+    public String getConsumptionStatus() {
+        return consumptionStatus;
+    }
+
+    private String consumptionStatus;
+    private String wcrStatus;
+
+    public String getWcrStatus() {
+        return wcrStatus;
+    }
+
+    public String getIrStatus() {
+        return irStatus;
+    }
+
+    private String irStatus;
+
     public String getActivationOTP() {
         return activationOTP;
     }

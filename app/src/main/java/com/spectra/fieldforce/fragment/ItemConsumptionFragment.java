@@ -64,7 +64,6 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
     private String strConsumption,strItem,strSubItem,strTemplateId,strType,str_itemType,strNrgp,strNrgpSerial,strNrgpItem;
     ArrayList<String> consumptionType;
     ArrayList<String> itemListType;
-  //  private BaseActivity baseActivity;
     private String  macId,quantity,serialNumber,maxCap,strNrgpItemType,customerNetworkTech;
     @Override
     public void onCreate(Bundle savedInstanceState) {

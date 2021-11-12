@@ -30,6 +30,7 @@ import com.spectra.fieldforce.databinding.ActivityAllBucketListBinding;
 import com.spectra.fieldforce.databinding.IrFragmentBinding;
 import com.spectra.fieldforce.model.gpon.request.BucketListRequest;
 import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
+import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
 import com.spectra.fieldforce.utils.Constants;
 
 import java.util.ArrayList;
@@ -42,13 +43,14 @@ import retrofit2.Response;
 public class GetAllBucketListFragment extends Fragment implements AdapterView.OnItemSelectedListener{
     ActivityAllBucketListBinding binding;
     private List<GetAllBucketList.Response> getBucketList;
+    private List<GetAllBucketList.Response> finalgetBucketList;
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
     AllBucketListAdapter allBucketListAdapter;
    // private ArrayList<String> statusType;
     ArrayAdapter<String> adapter;
     ArrayAdapter aa;
-    String[] statusType = { "Select Status Type", "Installation Pending", "Installation On Hold", "Assigned", "UnAssigned","Consumption Pending","Consumption Approved"};
+    String[] statusType = {"Select Status Type", "Installation Pending","hold", "Assigned", "UnAssigned","Consumption Pending","Consumption Approved","Installation Completed"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,16 +101,6 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
         aa.setDropDownViewResource(android.R.layout.simple_spinner_item);
         //Setting the ArrayAdapter data on the Spinner
         binding.spSearch.setAdapter(aa);
-      /*  statusType = new ArrayList<String>();
-      simple_spinner_item
-        statusType.add("Select Status Type");
-        statusType.add("Installation Pending");
-        statusType.add("Installation On Hold");
-        statusType.add("Assigned");
-        statusType.add("UnAssigned");
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, statusType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spSearch.setAdapter(adapter);*/
     }
 
 
@@ -117,13 +109,24 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
         List<GetAllBucketList.Response> getBucketListItem;
         getBucketListItem = new ArrayList<>();
         for(GetAllBucketList.Response obj:this.getBucketList) {
+
             if (obj.getCanId().toLowerCase().contains(search)) {
                 getBucketListItem.add(obj);
             } else if (obj.getID().toLowerCase().contains(search.toLowerCase())) {
                 getBucketListItem.add(obj);
             } else if (obj.getStatus().contains(search)) {
                 getBucketListItem.add(obj);
-            } else if (obj.getCustomerName().toLowerCase().contains(search.toLowerCase())) {
+            }
+            else if (search.contains("Consumption Pending")) {
+            if (obj.getConsumptionStatus().equals("Waiting for approval")||obj.getConsumptionStatus().equals("Material not Available")||obj.getConsumptionStatus().equals("Pending")) {
+                getBucketListItem.add(obj);
+            }
+            } else if (search.contains("Consumption Approved")) {
+            if (obj.getConsumptionStatus().equals("Approved")) {
+                    getBucketListItem.add(obj);
+            }
+            }
+            else if (obj.getCustomerName().toLowerCase().contains(search.toLowerCase())) {
                 getBucketListItem.add(obj);
             } else if (search.contains("UnAssigned")) {
                 if (obj.getEngineerName() == null || obj.getEngineerName().isEmpty()) {
@@ -141,10 +144,12 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
             }
         }
 
+
             binding.tvCount.setVisibility(View.VISIBLE);
             String size = String.valueOf(getBucketListItem.size());
             binding.tvCount.setText(size);
             this.allBucketListAdapter.Filter(getBucketListItem);
+            this.allBucketListAdapter.notifyDataSetChanged();
         }catch (Exception ex){
             ex.getMessage();
         }
@@ -170,7 +175,7 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
             public void onResponse(Call<GetAllBucketList> call, Response<GetAllBucketList> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        getBucketList = response.body().getResponse();
+                        finalgetBucketList = response.body().getResponse();
                         outAnimation = new AlphaAnimation(1f, 0f);
                         outAnimation.setDuration(200);
                         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
@@ -179,15 +184,28 @@ public class GetAllBucketListFragment extends Fragment implements AdapterView.On
                             binding.rvAllBucketList.setHasFixedSize(true);
                             binding.rvAllBucketList.setLayoutManager(new LinearLayoutManager(getContext()));
                             binding.rvAllBucketList.setNestedScrollingEnabled(false);
+                            getBucketList = new ArrayList<>();
+                            for (GetAllBucketList.Response item : finalgetBucketList)
+                            {
+                                if(item.getEngineerName().isEmpty()){
+                                    item.setAddAssign("Add");
+                                }else{
+                                    item.setAddAssign("Assigned");
+                                }
+                                getBucketList.add(item);
+                            }
+
                             allBucketListAdapter = new AllBucketListAdapter(getActivity(),getBucketList);
                             binding.tvCount.setVisibility(View.VISIBLE);
                             String size = String.valueOf(getBucketList.size());
                             binding.tvCount.setText(size);
+                            allBucketListAdapter.notifyDataSetChanged();
                             binding.rvAllBucketList.setAdapter(allBucketListAdapter);
+
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();
                         }else{
-                            Toast.makeText(getContext(),"Something went wrong..",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"Something went wrong...",Toast.LENGTH_LONG).show();
                         }
 
                     } catch (NumberFormatException e) {

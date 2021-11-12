@@ -51,24 +51,23 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
     private Context context;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
     WcrItemsconsumptionListBinding binding;
-    String add;
+    String add,OrderId;
 
 
-    public WcrCompletteItemConsumptionListAdapter(FragmentActivity activity, ArrayList<WcrResponse.ItemConsumtion> itemConsumtions, String add) {
+    public WcrCompletteItemConsumptionListAdapter(FragmentActivity activity, ArrayList<WcrResponse.ItemConsumtion> itemConsumtions, String add,String orderId ) {
         this.context = activity;
         this.itemConsumtions = itemConsumtions;
         this.add = add;
+        this.OrderId = orderId;
     }
 
     @NotNull
     @Override
     public WcrCompletteItemConsumptionListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                                                   int viewType) {
-
          binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.wcr_itemsconsumption_list, parent, false);
-
         return new WcrCompletteItemConsumptionListAdapter.MyViewHolder(binding);
     }
 
@@ -79,6 +78,7 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         WcrResponse.ItemConsumtion item = itemConsumtions.get(position);
         holder.binding.setItemConsumption(item);
+        holder.binding.etQuantity.setText("Quantity: "+item.getQuantity().toString());
         if(add.equals("1")){
             holder.binding.delete.setVisibility(View.VISIBLE);
             holder.binding.edit.setVisibility(View.VISIBLE);
@@ -95,6 +95,7 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
             b.putString("ItemId", item.getItemID());
             b.putString("GuIID", item.getWcrguidid());
             b.putString("canId", item.getCanid());
+            b.putString("OrderId",OrderId);
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new WcrEditItemConsumption();
             myFragment.setArguments(b);
@@ -128,6 +129,7 @@ public class WcrCompletteItemConsumptionListAdapter extends RecyclerView.Adapter
 
                                 Bundle b = new Bundle();
                                 b.putString("canId", canid);
+                                b.putString("OrderId",OrderId);
                                 AppCompatActivity activity = (AppCompatActivity) context;
                                 Fragment myFragment = new WcrFragment();
                                 myFragment.setArguments(b);

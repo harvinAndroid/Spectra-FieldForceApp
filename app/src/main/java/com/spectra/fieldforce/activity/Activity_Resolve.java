@@ -29,11 +29,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
 import com.spectra.fieldforce.BuildConfig;
+import com.spectra.fieldforce.databinding.ResolveBinding;
 import com.spectra.fieldforce.model.ArtifactRequest;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.QuestionList.QuestionListRequest;
@@ -84,40 +86,28 @@ import static com.spectra.fieldforce.utils.AppConstants.TRUE;
 import static com.spectra.fieldforce.utils.AppConstants.YES;
 
 public class Activity_Resolve extends BaseActivity implements View.OnClickListener ,QuestionAnswerAdapter.Test{
-
-    private Button btnResolveSubmit, btnUnifySession,btnUploadArtifacts;
-    private TextView sessionStatus;
-    private ImageView img;
-    private EditText rfo;
-    private TextView  speed_on_wifi, other_in_ml, speed_on_lan, router_position;
-    private Spinner rc1, rc2, rc3, resolveContacted;
-    private RecyclerView question_recyler_view;
+    private ResolveBinding binding;
     private ArrayList<String> rc1Code;
     private ArrayList<String> rc1Name;
     private ArrayList<String> rc2Code;
     private ArrayList<String> rc2Name;
     private ArrayList<String> rc3Code;
     private ArrayList<String> rc3Name;
-    private FrameLayout progressOverlay;
     private ArrayList<QuestionAnswerList.Response> questionareResponse;
     private List<ArrayList<String>> itemlist = new ArrayList<ArrayList<String>>();
-    private String srNumber, customerId,customerNetworkTech;
-    private String status;
+    private String srNumber, customerId,customerNetworkTech,status,StrSubSubType,selectedMediaPath;
     private JSONArray result;
     private String mFilepaths;
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
     private boolean startFlag, endFlag;
-   // private  ArrayList<Answer> item;
     private String filepath,filepath1,filepath2,filepath3,str_ext1="",str_ext2="",str_ext3="",str_ext4="",strSlotType;
     private Uri uri,uri1,uri2,uri3;
     private Bitmap bitmap1,bitmap2,bitmap3,bitmap4,bitmap5,bitmap6,bitmap7,bitmap8;
     private ArrayList<String> itemlist1 = new ArrayList<>();
-    private String StrSubSubType;
      private int IntCount;
      private ImageView image;
     private Uri cameraFileUri;
-    private String selectedMediaPath;
     private BaseActivity baseActivity;
     private HashMap<Integer,Answer> questionmap = new HashMap<Integer,Answer>();
     private String currentImagePath,currentImagePath1,currentImagePath2,currentImagePath3= null;
@@ -126,7 +116,8 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.resolve);
+        binding = DataBindingUtil.setContentView(this, R.layout.resolve);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             customerId = extras.getString("CustomerId");
@@ -135,10 +126,8 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             StrSubSubType = extras.getString("SubSubType");
             customerNetworkTech = extras.getString("customerNetworkTech");
         }
-        //item = new  ArrayList<Answer>();
         baseActivity = ((BaseActivity) this);
         init();
-       //getSaveQuestionList();
         getRC1();
         getQuestionList();
         resolveButton();
@@ -148,30 +137,11 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
 
     private void init() {
-        btnResolveSubmit = findViewById(R.id.btnResolveSubmit);
-        btnUnifySession = findViewById(R.id.btnUnifySession);
-        sessionStatus = findViewById(R.id.sessionStatus);
-        btnUnifySession = findViewById(R.id.btnUnifySession);
-        progressOverlay = findViewById(R.id.progress_overlay);
-        question_recyler_view =  findViewById(R.id.question_recyler_view);
-        resolveContacted = findViewById(R.id.resolveContacted);
-        speed_on_wifi = findViewById(R.id.speed_on_wifi);
-        other_in_ml = findViewById(R.id.other_in_ml);
-        speed_on_lan = findViewById(R.id.speed_on_lan);
-        router_position = findViewById(R.id.router_position);
-        btnUploadArtifacts = findViewById(R.id.btnUploadArtifacts);
-        image = findViewById(R.id.image);
-      //  img = findViewById(R.id.img);
-        rfo = findViewById(R.id.rfo);
-        rc1 = findViewById(R.id.rc1);
-        rc2 = findViewById(R.id.rc2);
-        rc3 = findViewById(R.id.rc3);
-        progressOverlay = (FrameLayout) findViewById(R.id.progress_overlay);
-        btnUploadArtifacts.setOnClickListener(this);
-        speed_on_wifi.setOnClickListener(Activity_Resolve.this);
-        other_in_ml.setOnClickListener(Activity_Resolve.this);
-        speed_on_lan.setOnClickListener(Activity_Resolve.this);
-        router_position.setOnClickListener(Activity_Resolve.this);
+        binding.btnUploadArtifacts.setOnClickListener(this);
+        binding.speedOnWifi.setOnClickListener(Activity_Resolve.this);
+        binding.otherInMl.setOnClickListener(Activity_Resolve.this);
+        binding.speedOnLan.setOnClickListener(Activity_Resolve.this);
+        binding.routerPosition.setOnClickListener(Activity_Resolve.this);
     }
 
     private void bindContacted() {
@@ -181,7 +151,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         contact.add(NO);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, contact);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        resolveContacted.setAdapter(adapter);
+        binding.resolveContacted.setAdapter(adapter);
     }
 
 
@@ -223,7 +193,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, rc2Name);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        rc2.setAdapter(adapter);
+                        binding.rc2.setAdapter(adapter);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -238,10 +208,10 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     }
 
     private void listener() {
-        rc1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.rc1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int itemPosition = rc1.getSelectedItemPosition();
+                int itemPosition = binding.rc1.getSelectedItemPosition();
                 String rc1Id = rc1Code.get(itemPosition).toString();
                 getRC2(rc1Id);
             }
@@ -252,10 +222,10 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             }
         });
 
-        rc2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.rc2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int itemPosition = rc2.getSelectedItemPosition();
+                int itemPosition = binding.rc2.getSelectedItemPosition();
                 String rc2Id = rc2Code.get(itemPosition).toString();
                 getRC3(rc2Id);
             }
@@ -265,7 +235,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
             }
         });
-        btnUnifySession.setOnClickListener(v ->
+        binding.btnUnifySession.setOnClickListener(v ->
                 getUnifySession());
     }
 
@@ -294,7 +264,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         if (FileUtils.checkExtension(Activity_Resolve.this, uri)) {
                             Uri file = Uri.fromFile(new File(filepath));
                             str_ext1 = MimeTypeMap.getFileExtensionFromUrl(file.toString());
-                            speed_on_wifi.setText(filepath);
+                            binding.speedOnWifi.setText(filepath);
                             try {
                                 bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                             } catch (IOException e) {
@@ -320,7 +290,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                             if (FileUtils.checkExtension(Activity_Resolve.this, uri1)) {
                                 Uri file = Uri.fromFile(new File(filepath1));
                                 str_ext2 = MimeTypeMap.getFileExtensionFromUrl(file.toString());
-                                other_in_ml.setText(filepath1);
+                                binding.otherInMl.setText(filepath1);
                                 try {
 
                                     bitmap2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri1);
@@ -347,7 +317,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                             if (FileUtils.checkExtension(Activity_Resolve.this, uri2)) {
                                 Uri file = Uri.fromFile(new File(filepath2));
                                 str_ext3 = MimeTypeMap.getFileExtensionFromUrl(file.toString());
-                                speed_on_lan.setText(filepath2);
+                                binding.speedOnLan.setText(filepath2);
                                 try {
                                     bitmap3 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri2);
 
@@ -374,7 +344,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                             if (FileUtils.checkExtension(Activity_Resolve.this, uri3)) {
                                 Uri file = Uri.fromFile(new File(filepath3));
                                 str_ext4 = MimeTypeMap.getFileExtensionFromUrl(file.toString());
-                                router_position.setText(filepath3);
+                                binding.routerPosition.setText(filepath3);
                                 try {
                                     bitmap4 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri3);
                                 } catch (IOException e) {
@@ -395,7 +365,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                     try {
                         bitmap5 = BitmapFactory.decodeFile(currentImagePath);
                      //   Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
-                        speed_on_wifi.setText(currentImagePath);
+                        binding.speedOnWifi.setText(currentImagePath);
                         str_ext1 = "jpg";
                         image.setImageBitmap(bitmap5);
               } catch (Exception e) {
@@ -405,7 +375,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                     try {
                         bitmap6 = BitmapFactory.decodeFile(currentImagePath);
                        // Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
-                        other_in_ml.setText(currentImagePath);
+                        binding.otherInMl.setText(currentImagePath);
                         str_ext2 = "jpg";
                         image.setImageBitmap(bitmap6);
                     } catch (Exception e) {
@@ -415,7 +385,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                     try {
                         bitmap7 = BitmapFactory.decodeFile(currentImagePath);
                        // Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
-                        speed_on_lan.setText(currentImagePath);
+                        binding.speedOnLan.setText(currentImagePath);
                         str_ext3 = "jpg";
                         image.setImageBitmap(bitmap7);
                     } catch (Exception e) {
@@ -426,7 +396,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                     try {
                         bitmap8 = BitmapFactory.decodeFile(currentImagePath);
                       //  Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
-                        router_position.setText(currentImagePath);
+                        binding.routerPosition.setText(currentImagePath);
                         str_ext4 = "jpg";
                         image.setImageBitmap(bitmap8);
                     } catch (Exception e) {
@@ -451,13 +421,13 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                             } else if (response.body().getStatus()==1) {
                                 try {
                                     if (response.body() != null) {
-                                        question_recyler_view.setVisibility(View.VISIBLE);
+                                        binding.questionRecylerView.setVisibility(View.VISIBLE);
                                         questionareResponse = response.body().getResponse();
                                         IntCount = response.body().getCount();
                                         QuestionAnswerAdapter adapter = new QuestionAnswerAdapter(Activity_Resolve.this, questionareResponse, /*myClickListener,*/Activity_Resolve.this);
-                                        question_recyler_view.setHasFixedSize(true);
-                                        question_recyler_view.setLayoutManager(new LinearLayoutManager(Activity_Resolve.this));
-                                        question_recyler_view.setAdapter(adapter);
+                                        binding.questionRecylerView.setHasFixedSize(true);
+                                        binding.questionRecylerView.setLayoutManager(new LinearLayoutManager(Activity_Resolve.this));
+                                        binding.questionRecylerView.setAdapter(adapter);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -476,14 +446,6 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             }
         });
     }
-
-
-   /* private OnItemClickListener myClickListener = (pos,answer) -> {
-        item.clear();
-        item.add(answer);
-        questionmap.put(pos,item);
-      //  item.clear();
-    };*/
 
 
 
@@ -521,7 +483,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                                 e.printStackTrace();
                             }
                         }
-                        sessionStatus.setText(bytesin);
+                        binding.sessionStatus.setText(bytesin);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -576,7 +538,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, rc3Name);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        rc3.setAdapter(adapter);
+                        binding.rc3.setAdapter(adapter);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -626,7 +588,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                                     }
                                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, rc1Name);
                                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                    rc1.setAdapter(adapter);
+                                    binding.rc1.setAdapter(adapter);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -647,25 +609,25 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
 
     private void resolveButton() {
-        btnResolveSubmit.setOnClickListener(v -> {
+        binding.btnResolveSubmit.setOnClickListener(v -> {
             boolean isValid = true;
             endFlag = true;
             itemlist1 = new ArrayList<>();
 
 
-            if (rc1.getSelectedItem().toString().equals("Select Resolution Code 1")) {
+            if (binding.rc1.getSelectedItem().toString().equals("Select Resolution Code 1")) {
                 isValid = false;
                 Toast.makeText(Activity_Resolve.this, "Please select Resolution Code 1", Toast.LENGTH_LONG).show();
-            } else if (rc2.getSelectedItem().toString().equals("Select Resolution Code 2")) {
+            } else if (binding.rc2.getSelectedItem().toString().equals("Select Resolution Code 2")) {
                 isValid = false;
                 Toast.makeText(Activity_Resolve.this, "Please select Resolution Code 2", Toast.LENGTH_LONG).show();
-            } else if (rc3.getSelectedItem().toString().equals("Select Resolution Code 3")) {
+            } else if (binding.rc3.getSelectedItem().toString().equals("Select Resolution Code 3")) {
                 isValid = false;
                 Toast.makeText(Activity_Resolve.this, "Please select Resolution Code 3", Toast.LENGTH_LONG).show();
-            } else if (resolveContacted.getSelectedItem().toString().equals("Select Status")) {
+            } else if (binding.resolveContacted.getSelectedItem().toString().equals("Select Status")) {
                 isValid = false;
                 Toast.makeText(Activity_Resolve.this, "Please select Customer contacted or not", Toast.LENGTH_LONG).show();
-            } else if (rfo.getText().toString().equals("")) {
+            } else if (binding.rfo.getText().toString().equals("")) {
                 isValid = false;
                 Toast.makeText(Activity_Resolve.this, "Please enter RFO", Toast.LENGTH_LONG).show();
             }else if(questionmap.size()!=IntCount){
@@ -717,13 +679,13 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
 
     private void submitOnResolve() {
-        int itemPosition = rc1.getSelectedItemPosition();
+        int itemPosition = binding.rc1.getSelectedItemPosition();
         String rc1Id = rc1Code.get(itemPosition).toString();
-        itemPosition = rc2.getSelectedItemPosition();
+        itemPosition = binding.rc2.getSelectedItemPosition();
         String rc2Id = rc2Code.get(itemPosition).toString();
-        itemPosition = rc3.getSelectedItemPosition();
+        itemPosition = binding.rc3.getSelectedItemPosition();
         String rc3Id = rc3Code.get(itemPosition).toString();
-        String isContacted = resolveContacted.getSelectedItem().toString();
+        String isContacted = binding.resolveContacted.getSelectedItem().toString();
 
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(Constants.AUTH_KEY);
@@ -733,7 +695,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         srRequest.setRConeId(rc1Id);
         srRequest.setRCtwoId(rc2Id);
         srRequest.setRCthirdId(rc3Id);
-        srRequest.setReasonOf(rfo.getText().toString());
+        srRequest.setReasonOf(binding.rfo.getText().toString());
         srRequest.setCustomerID(customerId);
         srRequest.setNetworkType(customerNetworkTech);
         if (isContacted.equals(YES)) {
@@ -743,20 +705,12 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         }
         srRequest.setSource(Constants.APP);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-       /* inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        progressOverlay.setAnimation(inAnimation);
-        progressOverlay.setVisibility(View.VISIBLE);*/
-        btnResolveSubmit.setEnabled(false);
+        binding.btnResolveSubmit.setEnabled(false);
         Call<JsonElement> call = apiService.getSRDetail(srRequest);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-               /* outAnimation = new AlphaAnimation(1f, 0f);
-                outAnimation.setDuration(200);
-                progressOverlay.setAnimation(outAnimation);
-                progressOverlay.setVisibility(View.GONE);*/
-                try {
+                  try {
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
                         status = jsonObject.getString("Status");
@@ -776,14 +730,14 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         }
                     }
                 } catch (Exception e) {
-                    btnResolveSubmit.setEnabled(true);
+                    binding.btnResolveSubmit.setEnabled(true);
                     e.printStackTrace();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-                btnResolveSubmit.setEnabled(true);
+                binding.btnResolveSubmit.setEnabled(true);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -879,8 +833,8 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     private void uploadArtifacts()  {
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
-        progressOverlay.setAnimation(inAnimation);
-        progressOverlay.setVisibility(View.VISIBLE);
+        binding.progress.progressOverlay.setAnimation(inAnimation);
+        binding.progress.progressOverlay.setVisibility(View.VISIBLE);
         String encodedImage="",encodedImage2="",encodedImage3="", encodedImage1="";
 
         try {
@@ -975,15 +929,15 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                     if (response.isSuccessful()) {
                         outAnimation = new AlphaAnimation(1f, 0f);
                         outAnimation.setDuration(200);
-                        progressOverlay.setAnimation(outAnimation);
-                        progressOverlay.setVisibility(View.GONE);
+                        binding.progress.progressOverlay.setAnimation(outAnimation);
+                        binding.progress.progressOverlay.setVisibility(View.GONE);
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
                         status = jsonObject.getString("Status");
                         if (status.equals("Failure")) {
                             Log.d("Failure", "error");
                         } else if (status.equals("1")) {
-                            btnUploadArtifacts.setEnabled(false);
-                            btnUploadArtifacts.setBackgroundDrawable(Activity_Resolve.this.getResources().getDrawable(R.drawable.gray_background));
+                            binding.btnUploadArtifacts.setEnabled(false);
+                            binding.btnUploadArtifacts.setBackgroundDrawable(Activity_Resolve.this.getResources().getDrawable(R.drawable.gray_background));
                            Toast.makeText(Activity_Resolve.this,"Artifacts Submitted Successfully",Toast.LENGTH_LONG).show();
                         }
                     }
@@ -994,7 +948,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-                progressOverlay.setVisibility(View.GONE);
+                binding.progress.progressOverlay.setVisibility(View.GONE);
                 Log.e("RetroError", t.toString());
             }
         });
@@ -1009,3 +963,4 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             questionmap.put(pos, answer);
     }
 }
+//1012

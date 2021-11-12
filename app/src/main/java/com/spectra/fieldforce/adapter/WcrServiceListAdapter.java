@@ -6,19 +6,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.databinding.WcrConsumptionListBinding;
 import com.spectra.fieldforce.databinding.WcrServiceListBinding;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 
 public class WcrServiceListAdapter extends RecyclerView.Adapter<WcrServiceListAdapter.MyViewHolder> {
@@ -40,7 +35,6 @@ public class WcrServiceListAdapter extends RecyclerView.Adapter<WcrServiceListAd
          binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.wcr_service_list, parent, false);
-
         return new WcrServiceListAdapter.MyViewHolder(binding);
     }
 
@@ -59,7 +53,6 @@ public class WcrServiceListAdapter extends RecyclerView.Adapter<WcrServiceListAd
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
         WcrServiceListBinding binding;
         MyViewHolder( WcrServiceListBinding binding) {
             super(binding.getRoot());

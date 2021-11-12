@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -281,6 +282,9 @@
     </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/progress" />
+    <include layout="@layout/progress"
+        android:id="@+id/progress"
+        />
 
 </FrameLayout>
+</layout>

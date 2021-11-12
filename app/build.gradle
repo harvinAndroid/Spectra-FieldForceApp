@@ -5,19 +5,18 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.2"
     defaultConfig {
         applicationId "com.spectra.fieldforce"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 38
-        versionName "3.8"
+        targetSdkVersion 31
+        versionCode 48
+        versionName "4.3.3"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
-
         dataBinding true
         viewBinding = true
     }

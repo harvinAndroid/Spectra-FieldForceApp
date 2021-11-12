@@ -491,7 +491,7 @@ public class IrInfoResponse {
         private String serialNumber;
         @SerializedName("Quantity")
         @Expose
-        private Integer quantity;
+        private String quantity;
         @SerializedName("ItemID")
         @Expose
         private String itemID;
@@ -537,11 +537,11 @@ public class IrInfoResponse {
             this.serialNumber = serialNumber;
         }
 
-        public Integer getQuantity() {
+        public String getQuantity() {
             return quantity;
         }
 
-        public void setQuantity(Integer quantity) {
+        public void setQuantity(String quantity) {
             this.quantity = quantity;
         }
 
@@ -605,6 +605,18 @@ public class IrInfoResponse {
         @SerializedName("MACShared")
         @Expose
         private String mACShared;
+
+        public String getProductSegment() {
+            return ProductSegment;
+        }
+
+        private String ProductSegment;
+
+        public String getWcrGuid() {
+            return wcrGuid;
+        }
+
+        private String wcrGuid;
         public String getDOAFlag() {
             return DOAFlag;
         }

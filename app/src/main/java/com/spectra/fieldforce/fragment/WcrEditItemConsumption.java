@@ -75,6 +75,7 @@ public class WcrEditItemConsumption extends Fragment implements AdapterView.OnIt
         ItemId = requireArguments().getString("ItemId");
         GuIID = requireArguments().getString("GuIID");
         CanId = requireArguments().getString("canId");
+        OrderId = requireArguments().getString("OrderId");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("WCR");
         init();

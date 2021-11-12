@@ -66,7 +66,20 @@
                     android:gravity="center"
                     />
 
-
+                <TextView
+                    android:id="@+id/tv_wcr_item_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Item Status"
+                    android:visibility="gone"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/colorButton"
+                    android:gravity="center"
+                    />
 
 
                 <View
@@ -79,7 +92,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_wcr_status"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_wcr_item_status"
                     />
 
 
@@ -512,7 +525,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableEnd="@drawable/ic_expand_down"
-                        android:text="Service Details"
+                        android:text="@string/service_consumption"
                         android:textColor="@color/colorPrimary"
                         android:textColorHighlight="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
@@ -706,6 +719,29 @@
 
                 </LinearLayout>
 
+                  <LinearLayout
+                    android:id="@+id/linmisc"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear21"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/misc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:text="@string/misc_work_cost"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
 
 
                 <LinearLayout
@@ -714,12 +750,13 @@
                     android:orientation="vertical"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
                     android:background="@color/gray"
                     android:layout_marginTop="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear21">
+                    app:layout_constraintTop_toBottomOf="@+id/linmisc">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -731,10 +768,10 @@
                             android:id="@+id/et_misc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Misc WorkCost"
+                            android:hint="@string/misc_work_cost"
                             android:text="@{wcrinfo.miscWorkCost}"
                             android:imeOptions="actionNext"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:lines="1"
                             android:textColor="@color/colorPrimaryDark"
                             android:textColorHighlight="@color/colorPrimary"
@@ -743,6 +780,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/linear22"
                     android:layout_width="match_parent"

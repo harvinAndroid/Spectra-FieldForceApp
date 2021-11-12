@@ -57,12 +57,26 @@
                 android:id="@+id/tv_consumption_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{`Consumption Status:` + IR.consumptionStatus}"
+                android:text="@{`Consumption Status : ` + IR.consumptionStatus}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_ir_status"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
+                android:textColor="@color/colorButton"
+                android:gravity="center"
+                />
+            <TextView
+                android:id="@+id/tv_wcr_item_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item Status"
+                android:visibility="gone"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_consumption_status"
+                android:textSize="@dimen/_12sdp"
                 android:textColor="@color/colorButton"
                 android:gravity="center"
                 />
@@ -75,7 +89,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:background="@color/color_light_blue"
                 android:layout_margin="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/tv_consumption_status"
+                app:layout_constraintTop_toBottomOf="@+id/tv_wcr_item_status"
                 />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -454,7 +468,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorPrimary"
                     android:drawableEnd="@drawable/ic_expand_down"
-                    android:text="Service Details"
+                    android:text="@string/service_consumption"
                     android:textColor="@color/colorPrimary"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />

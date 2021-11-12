@@ -44,7 +44,7 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
     private ArrayList<String> ManholeType;
     private List<GetFibreCable.Datum> fibreCable;
     private String strCanId ,strFibre,strGuIId,OrderId,StatusOfReport;
-
+    private Boolean strWcrStatus;
     public WcrAddManholeFragment() {
     }
 
@@ -62,7 +62,7 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
-
+        strWcrStatus = requireArguments().getBoolean("WcrStatus");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText("Add Manhole");
 
@@ -81,17 +81,17 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
         ManholeType.add("In");
         ManholeType.add("Out");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, ManholeType);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spManholeType.setAdapter(adapter1);
         binding.btAddmanholeSubmit.setOnClickListener(v -> {
 
-            String manhole = binding.etManholeType.getText().toString();
+            String manhole = Objects.requireNonNull(binding.etManholeType.getText()).toString();
+            String distance = Objects.requireNonNull(binding.etDistance.getText()).toString();
+            String fibreRun = Objects.requireNonNull(binding.etFiberNoRunn.getText()).toString();
+            String fibreNo = Objects.requireNonNull(binding.etFibreNo.getText()).toString();
+            String fibreTube = Objects.requireNonNull(binding.etFiberTube.getText()).toString();
+            String Location = Objects.requireNonNull(binding.etLocation.getText()).toString();
 
-            String distance = binding.etDistance.getText().toString();
-            String fibreRun = binding.etFiberNoRunn.getText().toString();
-            String fibreNo = binding.etFibreNo.getText().toString();
-            String fibreTube = binding.etFiberTube.getText().toString();
-            String Location = binding.etLocation.getText().toString();
             if(Location.equals("Location with Landmark")||Location.isEmpty()){
                 Toast.makeText(getContext(), "Please Enter Location with Landmark", Toast.LENGTH_LONG).show();
             }else if(distance.equals("Distance")||distance.isEmpty()){
@@ -102,13 +102,11 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
                 Toast.makeText(getContext(), "Please Enter Fiber No. Tube Wise", Toast.LENGTH_LONG).show();
             }else  if(fibreTube.equals("Fiber Tube")||fibreTube.isEmpty()){
                 Toast.makeText(getContext(), "Please Enter Fiber Tube", Toast.LENGTH_LONG).show();
-            }
-              else  if(manhole.equals(AppConstants.SELECT_MANHOLE_TYPE)||manhole.isEmpty()){
+            }else  if(manhole.equals(AppConstants.SELECT_MANHOLE_TYPE)||manhole.isEmpty()){
                 Toast.makeText(getContext(), "Please Select Manhole Type", Toast.LENGTH_LONG).show();
-            } else  if(strFibre.equals(AppConstants.SELECT_FIBRE_TYPE)||strFibre.isEmpty()){
+            }else  if(strFibre.equals(AppConstants.SELECT_FIBRE_TYPE)||strFibre.isEmpty()){
                 Toast.makeText(getContext(), "Please Select Fibre Type", Toast.LENGTH_LONG).show();
-            }
-            else {
+            }else {
                 String strManhole="";
                 if(manhole.equals("In")){
                     strManhole = "0";
@@ -117,8 +115,6 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
                 }
                 addMahole(distance,fibreRun,fibreNo,fibreTube,Location,strManhole);
             }
-
-
         });
     }
 
@@ -160,13 +156,12 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
                         for (GetFibreCable.Datum data : fibreCable)
                             fibreValue.add(data.value);
                         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fibreType);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.spFibreCable.setAdapter(adapter1);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-
             }
 
             @Override
@@ -204,7 +199,6 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
                             nextScreen();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -229,6 +223,7 @@ public class WcrAddManholeFragment extends Fragment implements AdapterView.OnIte
         accountinfo.putString("canId", strCanId);
         accountinfo.putString("StatusofReport", StatusOfReport);
         accountinfo.putString("OrderId", OrderId);
+        accountinfo.putBoolean("WcrStatus", strWcrStatus);
         t.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(accountinfo);
         t.commit();

@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -50,9 +51,11 @@ import com.spectra.fieldforce.adapter.WcrServiceConsumptionListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.WcrFragmentBinding;
+import com.spectra.fieldforce.model.CommonMessageResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
+import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendNavRequest;
 import com.spectra.fieldforce.model.gpon.request.SubmitApprovalRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateCustomerNetwork;
@@ -116,7 +119,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private Uri cameraFileUri;
     private Bitmap bitmap1,bitmap2,bitmap3,bitmap4,bitmap5,bitmap6,bitmap7,bitmap8;
     LocationManager locationManager;
-    String latitude, longitude;
+    String latitude, longitude,add,fromDateString = "",straddservice="";
     private static final int REQUEST_LOCATION = 1;
    // ArrayAdapter<String> adapterParam;
     ArrayAdapter<String> adapterParamCable;
@@ -129,8 +132,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     FusedLocationProviderClient mFusedLocationClient;
     int PERMISSION_ID = 44;
     private Calendar mCalendar;
-    private String add;
-    private String fromDateString = "";
+    Boolean strWcrStatus;
+
+
     public WcrFragment() {
 
     }
@@ -157,10 +161,13 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
+        strWcrStatus = requireArguments().getBoolean("WcrStatus");
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
-        init();
+       // init();
         initOne();
+       runthread();
+        Type();
+        getFmsList();
     }
 
     private void initOne(){
@@ -176,7 +183,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         QualityParamWifi = new ArrayList<String>();
         QualityParamFace = new ArrayList<String>();
 
-
         binding.layoutItemConsumption.btnItemConsumption1.setOnClickListener(v -> {
             @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
             WcrItemConsumption wcrItemConsumption = new WcrItemConsumption();
@@ -185,6 +191,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             bundle.putString("strGuuId", strGuuId);
             bundle.putString("StatusofReport", StatusOfReport);
             bundle.putString("OrderId", OrderId);
+            bundle.putBoolean("WcrStatus", strWcrStatus);
             t1.replace(R.id.frag_container, wcrItemConsumption);
             wcrItemConsumption.setArguments(bundle);
             t1.commit();
@@ -198,6 +205,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             bundle.putString("strGuuId", strGuuId);
             bundle.putString("StatusofReport", StatusOfReport);
             bundle.putString("OrderId", OrderId);
+            bundle.putBoolean("WcrStatus", strWcrStatus);
             t1.replace(R.id.frag_container, wcrServiceConsumption);
             wcrServiceConsumption.setArguments(bundle);
             t1.commit();
@@ -211,11 +219,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             speedwifi = Objects.requireNonNull(binding.layoutCustomerNetwork.etSpeedWifi.getText()).toString();
             wifissd = Objects.requireNonNull(binding.layoutCustomerNetwork.etWifiSsd.getText()).toString();
             txpower = Objects.requireNonNull(binding.layoutCustomerNetwork.etTxPower.getText()).toString();
-       /*    if(speedlan.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter SpeedLan",Toast.LENGTH_LONG).show();
-            }   if(speedwifi.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter Speed Wifi",Toast.LENGTH_LONG).show();
-            }else*/ if(wifissd.isEmpty()){
+            if(wifissd.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Wifi SSD",Toast.LENGTH_LONG).show();
             }else{
                 updateCustomerNetwork(rxpower,speedlan,speedwifi,wifissd,txpower);
@@ -227,7 +231,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         binding.layoutAssociatedDetails.btSubmitAssociate.setOnClickListener((View v) -> {
             String idb = Objects.requireNonNull(binding.layoutAssociatedDetails.etIdbLength.getText()).toString();
             String link = Objects.requireNonNull(binding.layoutAssociatedDetails.etLinkBudget.getText()).toString();
-
             if(idb.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter IDB Length",Toast.LENGTH_LONG).show();
             }else if(link.isEmpty()){
@@ -247,6 +250,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             bundle.putString("canId",strCanId);
             bundle.putString("StatusofReport", StatusOfReport);
             bundle.putString("OrderId", OrderId);
+            bundle.putBoolean("WcrStatus", strWcrStatus);
             t1.replace(R.id.frag_container, wcrEquipmentConsumption);
             wcrEquipmentConsumption.setArguments(bundle);
             t1.commit();
@@ -261,7 +265,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 Toast.makeText(getContext(), "Please Select Fms Type", Toast.LENGTH_LONG).show();
             } else if (custEnd.equals("Select Customer End FMS(Second Level)")||custEnd.equals("")) {
                         Toast.makeText(getContext(), "Please Select Customer End FMS(Second Level)", Toast.LENGTH_LONG).show();
-                    } else if (custEndFms.equals("POD End FMS No.:")||custEndFms.equals("")) {
+                    } else if (custEndFms.equals("POD End FMS No.")||custEndFms.equals("")) {
                         Toast.makeText(getContext(), "Please Enter Pod End Fms", Toast.LENGTH_LONG).show();
                     } else if (PortNumCx.equals("Port Number (Cx End)")||PortNumCx.equals("")) {
                         Toast.makeText(getContext(), "Please Enter Port Number CX End", Toast.LENGTH_LONG).show();
@@ -281,7 +285,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             bundle.putString("strGuuId", strGuuId);
             bundle.putString("StatusofReport", StatusOfReport);
             bundle.putString("OrderId", OrderId);
-
+            bundle.putBoolean("WcrStatus", strWcrStatus);
             wcrAddManholeFragment.setArguments(bundle);
             t1.replace(R.id.frag_container, wcrAddManholeFragment);
             t1.commit();
@@ -293,12 +297,11 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     if (remark.isEmpty()) {
                         Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
                     }else if (misc.isEmpty()) {
-                Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please Enter The Misc Work Cost", Toast.LENGTH_LONG).show();
             }
                     else {
                         try {
                                 getLastLocation();
-
                                 if (strSegment.equals("Business")) {
                                     if (manHoleDetails.size() == 0 || manHoleDetails == null) {
                                         Toast.makeText(getContext(), "Please Add Manhole", Toast.LENGTH_LONG).show();
@@ -325,19 +328,17 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         );
         binding.layoutCustomerNetwork.etSpeedWifi.setOnClickListener(view -> {
             checkPermission(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_ONE);
-           //myStoragePermission(REQUEST_CAMERA_PERMISSION_ONE);
-
-
         });
         binding.layoutCustomerNetwork.etSpeedLan.setOnClickListener(view -> {
             checkPermission1(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_TWO);
-            //OpenCamera(REQUEST_CAMERA_PERMISSION_TWO);
 
         });
         binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
             strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
             if (strSegment.equals("Business")) {
                 updateWcrEnginer(strInsta);
+            } else if (strSegment.equals("Home")&& strProductSegment.equals("Managed Wi-Fi Business")) {
+                    updateWcrEnginer(strInsta);
             } else if (strSegment.equals("Home")) {
                 if(strInsta.isEmpty()|| strInsta.equals("Installation Code")){
                     Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
@@ -345,9 +346,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     updateWcrEnginer(strInsta);
                 }
             }
-
-
         });
+
         binding.tvWcrApproval.setOnClickListener(view -> SubmitApproval());
 
         binding.tvResendNav.setOnClickListener(view -> resendNav());
@@ -379,9 +379,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 updateQualityParam(ont,face,wifi,selfcare,virus,cable,speed);
             }
         });
+
     }
-
-
 
     public void checkPermission(String permission, int requestCode)
     {
@@ -398,8 +397,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     public void checkPermission1(String permission, int requestCode)
     {
         if (ContextCompat.checkSelfPermission(getActivity(), permission) == PackageManager.PERMISSION_DENIED) {
-
-            // Requesting the permission
             ActivityCompat.requestPermissions(getActivity(), new String[] { permission }, requestCode);
         }
         else {
@@ -424,6 +421,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 startActivityForResult(cameraIntent, requestCameraPermissionOne);
             }
         }
+
     }
 
     private File getImageFile() throws IOException {
@@ -440,7 +438,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private void getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
-
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
                     Location location = task.getResult();
                     if (location == null) {
@@ -472,7 +469,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private LocationCallback mLocationCallback = new LocationCallback() {
-
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
@@ -483,7 +479,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-
        }
 
     private void requestPermissions() {
@@ -545,7 +540,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     e.printStackTrace();
                 }
             }
-
     }
 
     @Override
@@ -556,12 +550,71 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
     }
 
+    private void getItemStatus(){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
+        resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
+        resendActivationCodeRequest.setAction(Constants.GET_ITEM_STATUS);
+        resendActivationCodeRequest.setId(strGuuId);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonMessageResponse> call = apiService.getItemCodeStatus(resendActivationCodeRequest);
+        call.enqueue(new Callback<CommonMessageResponse>() {
+            @Override
+            public void onResponse(Call<CommonMessageResponse> call, Response<CommonMessageResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatusCode()==200){
+                            binding.tvWcrItemStatus.setText("Item Status : "+ response.body().getMessage());
+                            binding.tvWcrItemStatus.setVisibility(View.VISIBLE);
+                            // Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else {
+                            binding.tvWcrItemStatus.setVisibility(View.GONE);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonMessageResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
+    private void runthread() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    init();
+                    }
+                });
+            }
+        }, 100);
+    }
+
+
     private void init(){
         binding.layoutWcrFms.etCustomerEndFms.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFms.performClick());
         binding.layoutWcrFms.spCustomerEndFms.setOnItemSelectedListener(this);
         binding.layoutWcrFms.etCustomerEndFmsSec.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFmsSec.performClick());
         binding.layoutWcrFms.spCustomerEndFmsSec.setOnItemSelectedListener(this);
-
         binding.layoutInstallationparam.etOntLogin.setOnClickListener(v-> binding.layoutInstallationparam.spOntLogin.performClick());
         binding.layoutInstallationparam.spOntLogin.setOnItemSelectedListener(this);
         binding.layoutInstallationparam.etFacePlate.setOnClickListener(v-> binding.layoutInstallationparam.spFacePlate.performClick());
@@ -593,6 +646,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linearNine.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -607,6 +661,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linearSix.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -621,6 +676,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linea11.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -635,6 +691,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linea13.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -649,6 +706,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linea15.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -663,6 +721,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linea18.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -677,6 +736,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linea20.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -691,6 +751,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linearEquipment.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -705,6 +766,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linearCustomerNetwork.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -719,6 +781,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.VISIBLE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linearInstallationParam.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -733,6 +796,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.VISIBLE);
             binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
         });
         binding.linearService.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -747,6 +811,22 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearCustomernetworkDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.VISIBLE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.GONE);
+        });
+        binding.linmisc.setOnClickListener(v -> {
+            binding.linearFive.setVisibility(View.GONE);
+            binding.linearTen.setVisibility(View.GONE);
+            binding.linearEight.setVisibility(View.GONE);
+            binding.linear12.setVisibility(View.GONE);
+            binding.linear14.setVisibility(View.GONE);
+            binding.linear16.setVisibility(View.GONE);
+            binding.linear19.setVisibility(View.GONE);
+            binding.linear21.setVisibility(View.GONE);
+            binding.linearEqipmentdetails.setVisibility(View.GONE);
+            binding.linearCustomernetworkDetails.setVisibility(View.GONE);
+            binding.linearservicedeatils.setVisibility(View.GONE);
+            binding.linearmisc.setVisibility(View.VISIBLE);
+            binding.linearInstallationParamDetails.setVisibility(View.GONE);
         });
     }
 
@@ -759,8 +839,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linea13.setVisibility(View.VISIBLE);
             binding.linea15.setVisibility(View.VISIBLE);
             binding.linearService.setVisibility(View.VISIBLE);
-            binding.linea18.setVisibility(View.GONE);
-            binding.tvWcrApproval.setVisibility(View.GONE);
+            binding.linea18.setVisibility(View.VISIBLE);
             binding.tvWcrApproval.setVisibility(View.GONE);
             binding.linearEquipment.setVisibility(View.GONE);
             binding.linearCustomerNetwork.setVisibility(View.GONE);
@@ -777,13 +856,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearSix.setVisibility(View.GONE);
             binding.linea13.setVisibility(View.GONE);
             binding.linea15.setVisibility(View.VISIBLE);
-            //binding.linea18.setVisibility(View.VISIBLE);
+            binding.linea18.setVisibility(View.VISIBLE);
             binding.linea20.setVisibility(View.VISIBLE);
             binding.linearService.setVisibility(View.VISIBLE);
         }
     }
 
     public void getFmsList() {
+        //getItemStatus();
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
@@ -827,6 +907,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 Log.e("RetroError", t.toString());
             }
         });
+
     }
 
     public void getHoldReason() {
@@ -892,6 +973,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }catch (Exception ex){
             ex.getMessage();
         }
+
 
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sendDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
@@ -972,14 +1054,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
 
     }
-    public boolean requestReadWriteCameraPermission() {
-        return ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED;
-    }
 
 
     @Override
@@ -996,6 +1070,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_WCR_INFO);
         accountInfoRequest.setCanId(strCanId);
+        accountInfoRequest.setOrderId(OrderId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<WcrResponse> call = apiService.getWcrInfo(accountInfoRequest);
@@ -1003,7 +1078,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<WcrResponse> call, Response<WcrResponse> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
+                if (response.isSuccessful() && response.body()!=null) {
                     outAnimation = new AlphaAnimation(1f, 0f);
                     outAnimation.setDuration(200);
                     binding.progressLayout.progressOverlay.setAnimation(outAnimation);
@@ -1012,53 +1087,68 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                         try {
                             binding.tvWcrStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
                             String consumptionStatus = response.body().getResponse().getWcr().getWCRConsumptionStatus();
-                            if(consumptionStatus.equals("Material not available")){
+                            if (consumptionStatus.equals("Material not Available")) {
                                 binding.tvResendNav.setVisibility(View.VISIBLE);
                             }
                             binding.layoutWcrFragmentCustomerDetails.setCustomer(response.body().getResponse().getWcr());
                             strGuuId = response.body().getResponse().getWcr().getWcrguidid();
                             strHold = response.body().getResponse().getWcr().getShowHold();
-                            if(strHold.equals("true")){
+                            if (strHold.equals("true")) {
                                 binding.linea18.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 binding.linea18.setVisibility(View.GONE);
                             }
-                            add="0";
+                            add = "0";
                             strProductSegment = response.body().getResponse().getWcr().getProductSegment();
                             strSegment = response.body().getResponse().getWcr().getBusinessSegment();
-                            if (((consumptionStatus.equals("false")) && strSegment.equals("Business")) || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))){
+                            if (strProductSegment.equals("Managed Wi-Fi Business")) {
+                                binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.GONE);
+                            } else {
+                                binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.VISIBLE);
+                            }
+                            listener();
+                            String strstatus = String.valueOf(strWcrStatus);
+                            if ((strstatus.equals("true") && strSegment.equals("Business") || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available")))){
                                 binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
                                 binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
-                                add="1";
-                            }
-                            if ((strSegment.equals("Home")) || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))){
-                                binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
-                                binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
-                                add="1";
-                            }
+                                binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
+                                binding.tvWcrApproval.setVisibility(View.GONE);
 
+                                add="1";
+                            }
+                            if ((strSegment.equals("Home")) && (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))){
+                                binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
+                                binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
+                                add="1";
+                            }
                             manHoleDetails = response.body().getResponse().getManHoleDetailsList();
                             binding.layoutAssociatedDetails.setAssociated(response.body().getResponse().getAssociated());
                             binding.layoutWcrFms.setFms(response.body().getResponse().getFMSDetails());
+                            binding.etMisc.setText(response.body().getResponse().getWcr().getMiscWorkCost());
+
                             String strfmsfirst = response.body().getResponse().getFMSDetails().getFmsfirst();
-                            if(strfmsfirst!=null && !strfmsfirst.equals("0")){
+                            if (strfmsfirst != null && !strfmsfirst.equals("0")) {
                                 FmsType = new ArrayList<String>();
                                 FmsType.add(strfmsfirst);
                                 FmsId = new ArrayList<String>();
-                                if(strfmsfirst.equals("Wall Mount")){
+                                if (strfmsfirst.equals("Wall Mount")) {
                                     FmsId.add("569480000");
-                                    strfmsId ="569480000";
-                                }else if(strfmsfirst.equals("Rack Mount")){
+                                    strfmsId = "569480000";
+                                    adapterfms = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
+                                    adapterfms.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapterfms);
+                                } else if (strfmsfirst.equals("Rack Mount")) {
                                     FmsId.add("569480001");
-                                    strfmsId ="569480001";
+                                    strfmsId = "569480001";
+                                    adapterfms = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
+                                    adapterfms.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                                    binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapterfms);
                                 }
-                                adapterfms = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, FmsType);
-                                adapterfms.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                                binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapterfms);
+
                             }
                             String strfmssec = response.body().getResponse().getFMSDetails().getFmssecond();
-                            if(strfmssec!=null && !strfmssec.equals("0")){
-                              //  firstFmsID = new ArrayList<>();
+                            if (strfmssec != null && !strfmssec.equals("0")) {
                                 fmsName = new ArrayList<>();
                                 fmsName.add(strfmssec);
                                 adaptersecond = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, fmsName);
@@ -1070,77 +1160,90 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutCustomerNetwork.setCustomerNetwork(response.body().getResponse().getCusotmerNetwork());
                             binding.layoutmanholDetails.rvAddManhole.setHasFixedSize(true);
                             binding.layoutmanholDetails.rvAddManhole.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            binding.layoutmanholDetails.rvAddManhole.setAdapter(new WcrAddManholeAdapter(getActivity(), manHoleDetails));
+                            if(manHoleDetails.size()!=0) {
+                                binding.layoutmanholDetails.rvAddManhole.setAdapter(new WcrAddManholeAdapter(getActivity(), manHoleDetails));
+                            }
                             itemConsumtions = response.body().getResponse().getItemConsumtionList();
-                             straddition = itemConsumtions.get(0).getItemType();
 
-                            if(straddition!=null){
-                                if(straddition.equals("Additional")&& strSegment.equals("Home")){
-                                    if(consumptionStatus.equals("Waiting for approval")){
+                            serviceConsumtions = response.body().getResponse().getServiceConsumtionList();
+                            equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
+
+                             try {
+                                 if(serviceConsumtions.size()!=0) {
+                                     straddservice = serviceConsumtions.get(0).getItemType();
+                                 }
+                                 if(itemConsumtions.size()!=0) {
+                                     straddition = itemConsumtions.get(0).getItemType();
+                                 }
+                                if (straddition != null) {
+                                    if (straddition.equals("Additional") || straddservice.equals("Additional") && strSegment.equals("Home")) {
+                                        if (consumptionStatus.equals("Waiting for approval") || consumptionStatus.equals("Approved")) {
+                                            binding.tvWcrApproval.setVisibility(View.GONE);
+                                            binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
+                                            binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
+                                            binding.layoutServiceDetails.btnAddService.setVisibility(View.GONE);
+                                            add = "0";
+                                        } else {
+                                            binding.tvWcrApproval.setVisibility(View.GONE);
+                                            binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
+                                            binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                            binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
+                                            add = "1";
+                                        }
+
+                                    }
+                                }
+
+                                doa = response.body().getResponse().getWcr().getDOAFlag();
+                                if (doa != null) {
+                                    if (doa.equals("No")) {
+                                        if(straddition.equals("Additional") || straddservice.equals("Additional")) {
+                                            binding.tvWcrApproval.setVisibility(View.VISIBLE);
+                                            binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
+                                            binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                            binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
+                                            add = "1";
+                                        }
+                                    } else if (doa.equals("Yes")){
                                         binding.tvWcrApproval.setVisibility(View.GONE);
-                                        binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
-                                        binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
-                                        add="0";
-                                    }else{
-                                        binding.tvWcrApproval.setVisibility(View.VISIBLE);
                                         binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
                                         binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
-                                        add="1";
+                                        binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
+                                        add = "1";
+                                        if (straddition.equals("Additional") || straddservice.equals("Additional") && strSegment.equals("Home")) {
+                                            if (consumptionStatus.equals("Waiting for approval") || consumptionStatus.equals("Approved")) {
+                                                binding.tvWcrApproval.setVisibility(View.GONE);
+                                                binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
+                                                binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
+                                                binding.layoutServiceDetails.btnAddService.setVisibility(View.GONE);
+                                                add = "0";
+                                            } else {
+                                                binding.tvWcrApproval.setVisibility(View.GONE);
+                                                binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
+                                                binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                                binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
+                                                add = "1";
+                                            }
+                                        }
                                     }
-
                                 }
-
-                            }
-
-                            doa = response.body().getResponse().getWcr().getDOAFlag();
-                            if(doa!=null){
-                                if(doa.equals("No") && straddition.equals("Additional")){
-                                    binding.tvWcrApproval.setVisibility(View.VISIBLE);
-                                    add="0";
-                                }
-                            }
-                            if(straddition!=null){
-                                if(straddition.equals("Additional")&& strSegment.equals("Home")){
-                                    if(consumptionStatus.equals("Waiting for approval")){
-                                        binding.tvWcrApproval.setVisibility(View.GONE);
-                                        binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
-                                        binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
-                                        add="0";
-                                    }else{
-                                        binding.tvWcrApproval.setVisibility(View.VISIBLE);
-                                        binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
-                                        binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
-                                        add="1";
-                                    }
-
-                                }
-
-                            }
-
-                            doa = response.body().getResponse().getWcr().getDOAFlag();
-                            if(doa!=null){
-                                if(doa.equals("No") && straddition.equals("Additional")){
-                                    binding.tvWcrApproval.setVisibility(View.VISIBLE);
-                                    add="1";
-                                }
+                            }catch (Exception ex){
+                                ex.getMessage();
                             }
                             binding.layoutItemConsumption.rvWcrItemlist.setHasFixedSize(true);
                             binding.layoutItemConsumption.rvWcrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions,add));
-                            serviceConsumtions = response.body().getResponse().getServiceConsumtionList();
+                            binding.layoutItemConsumption.rvWcrItemlist.setAdapter(new WcrCompletteItemConsumptionListAdapter(getActivity(), itemConsumtions,add,OrderId));
                             binding.layoutServiceDetails.rvAddService.setHasFixedSize(true);
                             binding.layoutServiceDetails.rvAddService.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            binding.layoutServiceDetails.rvAddService.setAdapter(new WcrServiceConsumptionListAdapter(getActivity(), serviceConsumtions));
-                            equipmentDetailsLists = response.body().getResponse().getEquipmentDetailsList();
+                            binding.layoutServiceDetails.rvAddService.setAdapter(new WcrServiceConsumptionListAdapter(getActivity(), serviceConsumtions,add,OrderId));
                             binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
                             binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
                             if(equipmentDetailsLists.size()!=0){
-                                binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(),equipmentDetailsLists,add));
+                                binding.layoutAddEquipment.rvAddEquipment.setAdapter(new WcrEquipmentConsumpAdapter(getActivity(),equipmentDetailsLists,add,OrderId));
                             }
                             binding.layoutInstallationparam.setQuality(response.body().getResponse().getInstallationQuality());
 
                             try {
-
                                 if (response.body().getResponse().getInstallationQuality().getAntiVirus().equals("Yes")) {
                                     QualityParamEducation.clear();
                                     QualityParamEducation.add("Yes");
@@ -1149,9 +1252,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     ArrayAdapter<String> adapterParam1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamEducation);
                                     adapterParam1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapterParam1);
-
                                 } else if (response.body().getResponse().getInstallationQuality().getAntiVirus().equals("No")) {
-
                                     QualityParamEducation.clear();
                                     QualityParamEducation.add("No");
                                     QualityParamEducation.add("Select Type");
@@ -1175,7 +1276,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     adapterParamCable = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamCable);
                                     adapterParamCable.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spCableCrimped.setAdapter(adapterParamCable);
-
                                 } else if (response.body().getResponse().getInstallationQuality().getCable().equals("No")) {
                                     QualityParamCable.clear();
                                     QualityParamCable.add("No");
@@ -1315,10 +1415,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                 ex.getMessage();
                             }
 
-                            listener();
-                            getFmsList();
                             getHoldReason();
-                            Type();
+
+
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
@@ -1356,6 +1455,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         accountinfo.putString("canId", strCanId);
         accountinfo.putString("StatusofReport", StatusOfReport);
         accountinfo.putString("OrderId", OrderId);
+        accountinfo.putBoolean("WcrStatus", strWcrStatus);
 
         t.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(accountinfo);
@@ -1423,7 +1523,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         wcrCompleteRequest.setWCRguidId(strGuuId);
         wcrCompleteRequest.setLat(latitude);
         wcrCompleteRequest.setLong(longitude);
-        wcrCompleteRequest.setSource("App");
+        wcrCompleteRequest.setSource("FFA App");
         wcrCompleteRequest.setCanId(strCanId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -1439,7 +1539,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                            moveNext();
+                          nextScreen();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -1599,12 +1699,13 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+
         UpdateFmsRequest updateFmsRequest = new UpdateFmsRequest();
         updateFmsRequest.setAuthkey(Constants.AUTH_KEY);
         updateFmsRequest.setAction(Constants.UPDATE_FMS_DETAILS);
         updateFmsRequest.setFmsFirst(strfmsId);
         updateFmsRequest.setFmsSecond(strSecFmsId);
-        updateFmsRequest.setWCRguidId(strGuuId);
+        updateFmsRequest.setWCRguidId(this.strGuuId);
         updateFmsRequest.setFmsPODno(Objects.requireNonNull(binding.layoutWcrFms.etPodEnd.getText()).toString());
         updateFmsRequest.setFmsPortCX(Objects.requireNonNull(binding.layoutWcrFms.etPortNumCx.getText()).toString());
         updateFmsRequest.setFmsPortPOD(Objects.requireNonNull(binding.layoutWcrFms.etPortnumEnd.getText()).toString());
@@ -1641,6 +1742,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 Log.e("RetroError", t.toString());
             }
         });
+
 
     }
 
@@ -1742,7 +1844,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVWCR,strGuuId,"Business","");
+        ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVWCR,strGuuId,"Business","","");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.submitNavWcr(resendNavRequest);
@@ -1910,5 +2012,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }catch (Exception ex){
             ex.getMessage();
         }
+    }
+
+    private void status(){
+        getItemStatus();
     }
 }

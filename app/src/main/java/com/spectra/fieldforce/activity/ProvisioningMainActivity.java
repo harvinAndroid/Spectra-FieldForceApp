@@ -41,12 +41,8 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
         canId = bundle.getString("canId");
         if(bundle!=null){
             orderId = bundle.getString("OrderId");
-
         }
-
         getAccountDetails();
-
-
         provisionFragmentBinding.searchtoolbar.rlBack.setOnClickListener(this);
 
         init();
@@ -75,6 +71,7 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_ACCOUNT_INFO);
         accountInfoRequest.setCanId(canId);
+        accountInfoRequest.setOrderId(orderId);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<AccInfoResponse> call = apiService.getAccountInfo(accountInfoRequest);
         call.enqueue(new Callback<AccInfoResponse>() {
@@ -134,7 +131,7 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
             provisionFragmentBinding.tvProvisioning.setVisibility(View.GONE);
         }
         provisionFragmentBinding.searchtoolbar.tvLang.setText("Provisioning");
-        if(statusReport.equals("Installation Pending")||statusReport.equals("Pending")||statusReport.equals("Installation On Hold")){
+        if(statusReport.equals("Installation Pending")||statusReport.equals("Pending")||statusReport.equals("Installation On Hold")||statusReport.equals("Hold")){
             provisionFragmentBinding.tvWcr.setText("WCR");
             provisionFragmentBinding.tvWcr.setOnClickListener(v -> {
                 WcrFragment wcrFragment = new WcrFragment();
@@ -148,9 +145,8 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
                 transaction.replace(R.id.frag_container, wcrFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
             });
-        }else if(statusReport.equals("Installation Completed")|| statusReport.equals("Completed")){
+        }else if(statusReport.equals("Installation Completed") || statusReport.equals("Completed")){
             provisionFragmentBinding.tvWcr.setText("WCR Completed");
             provisionFragmentBinding.tvWcr.setOnClickListener(v -> {
                 WcrCompletedFragment wcrCompletedFragment = new WcrCompletedFragment();
@@ -185,7 +181,7 @@ public class ProvisioningMainActivity extends BaseActivity implements View.OnCli
             accountinfo.putString("canId", canId);
             accountinfo.putString("StatusofReport",statusReport);
             accountinfo.putString("OrderId",orderId);
-           accountinfo.putString("IrStatusReport",IrStatusReport);
+            accountinfo.putString("IrStatusReport",IrStatusReport);
             accountinfo.putBoolean("IrStatus",IrStatus);
             irFragment.setArguments(accountinfo);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

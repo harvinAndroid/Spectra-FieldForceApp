@@ -136,39 +136,4 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
 
-   /* public void showProgressDialog() {
-        try {
-            dialog_loading = findViewById(R.id.dialog_loading);
-
-            if (mProgressDialog == null) {
-                mProgressDialog = new Dialog(this);
-                mProgressDialog.setContentView(R.layout.dialog_loading);
-                mProgressDialog.setCancelable(false);
-                try {
-                    mProgressDialog.show();
-                } catch (Exception e) {
-                    e.getStackTrace();
-                }
-
-            }
-            if (!isFinishing())
-                mProgressDialog.show();
-        } catch (Exception ex) {
-            ex.getStackTrace();
-        }
-
-    }
-
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing() && !isFinishing())
-            mProgressDialog.dismiss();
-    }
-*/
-
-
-
-
-
-
-
 }

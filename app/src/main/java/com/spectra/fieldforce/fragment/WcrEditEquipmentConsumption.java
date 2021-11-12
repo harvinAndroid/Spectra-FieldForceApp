@@ -52,7 +52,7 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,IrID;
-    private  String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID,OrderId,StatusOfReport,maxCap,strItemname, StrSubItemName;
+    private String strsubItemId,strFibre,ItemId,StrSubItem,ItemType,quantity,Serial,CanId,GuIID,OrderId,StatusOfReport,maxCap,strItemname, StrSubItemName;
 
 
     public WcrEditEquipmentConsumption() {
@@ -85,8 +85,6 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
                 if (!binding.etQuantity.getText().toString().isEmpty()) {
                     try {
                         int test = Integer.parseInt(binding.etQuantity.getText().toString());
-
-
                         if (test <= Integer.parseInt(maxCap)) {
                             System.out.println("Check string :allow ");
                         } else {
@@ -96,21 +94,16 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
                     }catch (NumberFormatException ex){
                         ex.getMessage();
                     }
-
                 }
-
-
             }
+
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
-
             }
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 System.out.println("Check111 string :"+binding.etQuantity.getText().toString());
-
-
             }
         });
     }
@@ -137,13 +130,10 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
                 }
                 updateItemConsumption(strItemTypeData);
             }
-
         });
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
         binding.etSubitem.setOnClickListener(v -> getSubItemList(ItemId));
-
-
     }
 
     private void Type() {
@@ -153,16 +143,13 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spType.setAdapter(adapter);
-
         consumptionItemType = new ArrayList<String>();
         itemTypeData = new ArrayList<String>();
         consumptionItemType.add("Select Type");
-       // consumptionItemType.add("Additional");
         consumptionItemType.add("Default");
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spItemType.setAdapter(adapter1);
-
     }
 
     public void getSubItemList(String strItemType) {
@@ -170,7 +157,6 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
         itemConsumptionById.setAuthkey(Constants.AUTH_KEY);
         itemConsumptionById.setAction(Constants.GET_SUBITEM_LIST);
         itemConsumptionById.setItemId(strItemType);
-
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetSubItemListResponse> call = apiService.getSubItem(itemConsumptionById);
         call.enqueue(new Callback<GetSubItemListResponse>() {
@@ -184,9 +170,9 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
                         subItemId = new ArrayList<>();
                         itemName.add("Select SubItem");
                         for (GetSubItemListResponse.Datum datum: subItem )
-                            subItemName.add(datum.getSubItemName());
+                             subItemName.add(datum.getSubItemName());
                         for (GetSubItemListResponse.Datum data : subItem)
-                            subItemId.add(data.getSubItemId());
+                             subItemId.add(data.getSubItemId());
                         ArrayAdapter<String> adapter12 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemName);
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spSubItem.setAdapter(adapter12);
@@ -194,7 +180,6 @@ public class WcrEditEquipmentConsumption extends Fragment implements AdapterView
                         e.printStackTrace();
                     }
                 }
-
             }
 
             @Override

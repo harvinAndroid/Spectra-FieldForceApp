@@ -54,7 +54,7 @@ public class IrServiceConsumption extends Fragment implements AdapterView.OnItem
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,strItemname;
-    private  String strsubItemId,strGuIId,strCanId,OrderId,StatusOfReport,maxCap,StrSubItemName;
+    private  String strsubItemId,strGuIId,strCanId,OrderId,StatusOfReport,maxCap,StrSubItemName,strwcrguid;
 
     public IrServiceConsumption() {
 
@@ -72,10 +72,11 @@ public class IrServiceConsumption extends Fragment implements AdapterView.OnItem
         super.onViewCreated(view, savedInstanceState);
         strGuIId = requireArguments().getString("strGuuId");
         strCanId = requireArguments().getString("canId");
-        StatusOfReport = requireArguments().getString("StatusofReport");
+        StatusOfReport = requireArguments().getString("IrStatusReport");
         OrderId = requireArguments().getString("OrderId");
+        strwcrguid = requireArguments().getString("strWcrId");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
-        binding.searchtoolbar.tvLang.setText(AppConstants.ITEM_CONSUMPTION);
+        binding.searchtoolbar.tvLang.setText(AppConstants.SERVICE_CONSUMPTION);
         init();
         binding.etQuantity.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -132,7 +133,7 @@ public class IrServiceConsumption extends Fragment implements AdapterView.OnItem
     private void Type() {
         itemType = new ArrayList<String>();
         itemType.add("Select Consumption Type");
-        itemType.add("WCR");
+        itemType.add("IR");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spType.setAdapter(adapter);
@@ -320,7 +321,8 @@ public class IrServiceConsumption extends Fragment implements AdapterView.OnItem
         addItem_Consumption.setMacId(Objects.requireNonNull(binding.etMacId.getText()).toString());
         addItem_Consumption.setQuantity(Objects.requireNonNull(binding.etQuantity.getText()).toString());
         addItem_Consumption.setSerialNumber(Objects.requireNonNull(binding.etSerialNumber.getText()).toString());
-        addItem_Consumption.setWCRguidId(strGuIId);
+        addItem_Consumption.setIRguid(strGuIId);
+        addItem_Consumption.setWCRguidId(strwcrguid);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemConsumption(addItem_Consumption);
@@ -352,13 +354,14 @@ public class IrServiceConsumption extends Fragment implements AdapterView.OnItem
 
     private void nextScreen(){
         @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-        WcrFragment wcrFragment = new WcrFragment();
-        Bundle accountinfo = new Bundle();
-        accountinfo.putString("canId", strCanId);
-        accountinfo.putString("StatusofReport", StatusOfReport);
-        accountinfo.putString("OrderId", OrderId);
-        t1.replace(R.id.frag_container, wcrFragment);
-        wcrFragment.setArguments(accountinfo);
+        IRFragment irFragment = new IRFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("canId", strCanId);
+        bundle.putString("IrStatusReport", StatusOfReport);
+        bundle.putString("OrderId", OrderId);
+
+        t1.replace(R.id.frag_container, irFragment);
+        irFragment.setArguments(bundle);
         t1.commit();
     }
 

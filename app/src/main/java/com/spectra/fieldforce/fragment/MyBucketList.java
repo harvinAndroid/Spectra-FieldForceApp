@@ -47,7 +47,7 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
   //  private ArrayList<String> statusType;
     ArrayAdapter<String> adapter;
     ArrayAdapter aa;
-    String[] statusType = { "Select Status Type", "Installation Pending", "Installation On Hold","Consumption Pending","Consumption Approved"};
+    String[] statusType = {"Select Status Type", "Installation Pending", "hold","Consumption Pending","Consumption Approved","Installation Completed"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +55,8 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
         binding = FragmentMyBucketListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
             }
         });
     }
+
     private void Type() {
        // binding.etSearch.setOnClickListener(v-> binding.spSearch.performClick());
         binding.spSearch.setOnItemSelectedListener(this);
@@ -86,7 +89,6 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
         aa.setDropDownViewResource(android.R.layout.simple_spinner_item);
         //Setting the ArrayAdapter data on the Spinner
         binding.spSearch.setAdapter(aa);
-
     }
 
     public void Search(String search){
@@ -103,11 +105,21 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
                 } else if (obj.getCrm_status().contains(search)) {
                     getBucketListItem.add(obj);
                 }
+                else if (search.contains("Consumption Pending")) {
+                    if (obj.getItemConsumption().equals("Waiting for approval")||obj.getItemConsumption().equals("Material not Available")||obj.getItemConsumption().equals("Pending")) {
+                        getBucketListItem.add(obj);
+                    }
+                } else if (search.contains("Consumption Approved")) {
+                    if (obj.getItemConsumption().equals("Approved")) {
+                        getBucketListItem.add(obj);
+                    }
+                }
             }
             binding.tvCount.setVisibility(View.VISIBLE);
             String size = String.valueOf(getBucketListItem.size());
             binding.tvCount.setText(size);
             this.myBucketListAdapter.Filter(getBucketListItem);
+            this.myBucketListAdapter.notifyDataSetChanged();
         }catch (Exception ex){
             ex.getMessage();
         }
@@ -157,12 +169,12 @@ public class MyBucketList extends Fragment implements AdapterView.OnItemSelected
                         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                         binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                         if(response.body().getStatus().equals("Success")){
-
                             binding.rvMybucket.setHasFixedSize(true);
                             binding.rvMybucket.setLayoutManager(new LinearLayoutManager(getActivity()));
                             myBucketListAdapter = new MyBucketListAdapter(getActivity(),getBucketList);
                             String size = String.valueOf(getBucketList.size());
                             binding.tvCount.setText(size);
+                            myBucketListAdapter.notifyDataSetChanged();
                             binding.rvMybucket.setAdapter(myBucketListAdapter);
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(getContext(),"No Data Available.",Toast.LENGTH_LONG).show();

@@ -38,4 +38,10 @@ public class AccountInfoRequest {
         Action = action;
     }
 
+    public void setOrderId(String orderId) {
+        OrderId = orderId;
+    }
+
+    private String OrderId;
+
 }

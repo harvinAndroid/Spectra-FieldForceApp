@@ -59,6 +59,13 @@ public class GetMyBucketList {
         private String contactPerson;
         private String contactNo;
 
+
+        public String getItemConsumption() {
+            return itemConsumption;
+        }
+
+        private String itemConsumption;
+
         public String getOrder_id() {
             return order_id;
         }

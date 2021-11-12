@@ -21,27 +21,27 @@ import com.spectra.fieldforce.activity.BucketTabActivity;
 import com.spectra.fieldforce.activity.DashBoardActivity;
 import com.spectra.fieldforce.activity.MainActivity;
 import com.spectra.fieldforce.activity.SpectraFfaActivity;
+import com.spectra.fieldforce.databinding.ActivityAllBucketListBinding;
+import com.spectra.fieldforce.databinding.MainDashboradBinding;
+import com.spectra.fieldforce.salesapp.activity.SalesDashboard;
 import com.spectra.fieldforce.utils.PrefConfig;
 
 public class DashboardFragment extends Fragment {
-
-    private LinearLayout linear_ffa,linear_gpon;
+    MainDashboradBinding binding;
     public static PrefConfig prefConfig;
     DashBoardActivity context;
     public static final String PREF ="Login";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_dashborad, container, false);
-        return view;
+        binding = MainDashboradBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         prefConfig = new PrefConfig(getActivity());
-        linear_ffa = view.findViewById(R.id.linear_ffa);
-        linear_gpon = view.findViewById(R.id.linear_gpon);
         init();
     }
 
@@ -50,9 +50,7 @@ public class DashboardFragment extends Fragment {
         String ffa =sp.getString("FFA", null);
         String installationAuth =sp.getString("InstallationAuth", null);
 
-
-
-            linear_gpon.setOnClickListener(v -> {
+            binding.linearGpon.setOnClickListener(v -> {
                 if(installationAuth!=null) {
                     if (installationAuth.equals("Y")) {
                         Intent i = new Intent(getActivity(), BucketTabActivity.class);
@@ -67,9 +65,7 @@ public class DashboardFragment extends Fragment {
                 }
             });
 
-
-
-            linear_ffa.setOnClickListener(v -> {
+            binding.linearFfa.setOnClickListener(v -> {
                 if(ffa!=null){
                 if(ffa.equals("Y")) {
                     Intent i = new Intent(getActivity(), SpectraFfaActivity.class);
@@ -82,7 +78,11 @@ public class DashboardFragment extends Fragment {
 
                 }
             });
-
+        binding.linearSales.setOnClickListener(view -> {
+            Intent i = new Intent(getActivity(), SalesDashboard.class);
+            startActivity(i);
+            getActivity().finish();
+        });
     }
 
 

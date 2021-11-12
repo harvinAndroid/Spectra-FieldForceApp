@@ -71,10 +71,10 @@ public class ItemConsumptionDetailAdapter extends RecyclerView.Adapter<ItemConsu
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        holder.tv_item.setText("Item Name: "+details.get(position).getItemName());
-        holder.tv_subitem.setText("Sub Item Name: "+details.get(position).getSubitemName());
-        holder.tv_status.setText("Status: " +  firstStatus);
-        holder.tv_cons_status.setText("Consumption Status: " + approvalStatus);
+        holder.tv_item.setText("Item Name : "+details.get(position).getItemName());
+        holder.tv_subitem.setText("Sub Item Name : "+details.get(position).getSubitemName());
+        holder.tv_status.setText("Status : " +  firstStatus);
+        holder.tv_cons_status.setText("Consumption Status : " + approvalStatus);
         holder.btn_edit.setOnClickListener(v -> {
             if(approvalStatus!=null){
             if(approvalStatus.equals("Rejected")){

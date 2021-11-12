@@ -61,7 +61,8 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
     private ArrayList<String> subItemName;
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,strItemname;
-    private  String strsubItemId,strGuIId,strCanId,OrderId,StatusOfReport,maxCap,StrSubItemName;
+    private String strsubItemId,strGuIId,strCanId,OrderId,StatusOfReport,maxCap,StrSubItemName;
+    private Boolean strWcrStatus;
 
     public WcrItemConsumption() {
 
@@ -81,6 +82,8 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
+        strWcrStatus = requireArguments().getBoolean("WcrStatus");
+
         binding.searchtoolbar.rlBack.setOnClickListener(this);
         binding.searchtoolbar.tvLang.setText(AppConstants.ITEM_CONSUMPTION);
         init();
@@ -131,15 +134,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
                 updateItemConsumption());
         binding.etItemType.setOnClickListener(v-> binding.spItemType.performClick());
         binding.spItemType.setOnItemSelectedListener(this);
-       /* binding.etSubitem.setOnClickListener(v -> {
-            if(strItemType==null || strItemType.equals("")){
-               // Toast.makeText(getContext(),response.body().response.message,Toast.LENGTH_LONG).show();
-
-            }else{
-                getSubItemList(strItemType);
-            }
-
-        });*/
     }
 
 
@@ -160,9 +154,6 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, consumptionItemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spItemType.setAdapter(adapter1);
-
-
-
     }
 
 
@@ -373,6 +364,8 @@ public class WcrItemConsumption extends Fragment implements AdapterView.OnItemSe
         accountinfo.putString("canId", strCanId);
         accountinfo.putString("StatusofReport", StatusOfReport);
         accountinfo.putString("OrderId", OrderId);
+        accountinfo.putBoolean("WcrStatus", strWcrStatus);
+
         t1.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(accountinfo);
         t1.commit();

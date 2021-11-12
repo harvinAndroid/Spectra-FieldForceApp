@@ -49,6 +49,7 @@
             android:hint="@string/installation_code"
             android:imeOptions="actionNext"
             android:inputType="text"
+            android:text="@{engineer.otp}"
             android:lines="1"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"

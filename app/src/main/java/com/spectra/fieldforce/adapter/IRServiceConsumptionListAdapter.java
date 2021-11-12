@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.IrItemServiceBinding;
 import com.spectra.fieldforce.databinding.WcrItemServiceBinding;
+import com.spectra.fieldforce.fragment.IREditItemConsumption;
+import com.spectra.fieldforce.fragment.IRFragment;
 import com.spectra.fieldforce.fragment.WcrEditItemConsumption;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
@@ -42,12 +45,15 @@ public class IRServiceConsumptionListAdapter extends RecyclerView.Adapter<IRServ
     private Context context;
     private ArrayList<IrInfoResponse.ServiceConsumtionList> serviceConsumtions;
     IrItemServiceBinding binding;
-    String IrStatusReport,add ;
-    public IRServiceConsumptionListAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.ServiceConsumtionList> serviceConsumtions,String irStatusReport,String add) {
+    String IrStatusReport,add , strGuiID,orderId;
+
+    public IRServiceConsumptionListAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.ServiceConsumtionList> serviceConsumtions, String irStatusReport, String add, String strGuiID,String OrderId) {
         this.context = activity;
         this.serviceConsumtions = serviceConsumtions;
         this.IrStatusReport = irStatusReport;
         this.add = add;
+        this.strGuiID = strGuiID;
+        this.orderId = OrderId;
     }
 
     @NotNull
@@ -68,7 +74,10 @@ public class IRServiceConsumptionListAdapter extends RecyclerView.Adapter<IRServ
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         IrInfoResponse.ServiceConsumtionList item = serviceConsumtions.get(position);
         holder.binding.setItemConsumption(item);
-
+        if(add.equals("1")){
+            holder.binding.delete.setVisibility(View.VISIBLE);
+            holder.binding.edit.setVisibility(View.VISIBLE);
+        }
         holder.binding.delete.setOnClickListener(v -> {
             deleteItem(item.getItemID(),item.getCANID());
         });
@@ -76,10 +85,14 @@ public class IRServiceConsumptionListAdapter extends RecyclerView.Adapter<IRServ
         holder.binding.edit.setOnClickListener(v -> {
             Bundle b = new Bundle();
             b.putString("ItemId", item.getItemID());
-            b.putString("GuIID", item.getWCRGUIDID());
+            b.putString("GuIID", strGuiID);
             b.putString("canId", item.getCANID());
+            b.putString("wcrguid",item.getWCRGUIDID());
+            b.putString("IrStatusReport",IrStatusReport);
+            b.putString("OrderId",orderId);
+
             AppCompatActivity activity = (AppCompatActivity) context;
-            Fragment myFragment = new WcrEditItemConsumption();
+            Fragment myFragment = new IREditItemConsumption();
             myFragment.setArguments(b);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
         });
@@ -110,8 +123,10 @@ public class IRServiceConsumptionListAdapter extends RecyclerView.Adapter<IRServ
 
                             Bundle b = new Bundle();
                             b.putString("canId", canid);
+                            b.putString("OrderId",orderId);
+
                             AppCompatActivity activity = (AppCompatActivity) context;
-                            Fragment myFragment = new WcrFragment();
+                            Fragment myFragment = new IRFragment();
                             myFragment.setArguments(b);
                             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
                         }

@@ -56,7 +56,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int REQ_CODE_VERSION_UPDATE = 530;
     private AppUpdateManager appUpdateManager;
     private InstallStateUpdatedListener installStateUpdatedListener;
-
     AppCompatActivity activity;
 
 
@@ -102,7 +101,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == REQ_CODE_VERSION_UPDATE) {
             if (resultCode != RESULT_OK) {
-                Log.d(TAG, "Update flow failed! Result code: " + resultCode);
                 unregisterInstallStateUpdListener();
             }
         }
@@ -155,9 +153,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .getAppUpdateInfo()
                 .addOnSuccessListener(
                         appUpdateInfo -> {
-                            //FLEXIBLE:
-                            // If the update is downloaded but not installed,
-                            // notify the user to complete the update.
                             if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                                 popupSnackbarForCompleteUpdateAndUnregister();
                             }
@@ -222,7 +217,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 drawerLayout.closeDrawers();
                 MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
                 getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
-                //     activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
             });
 
             TextView btnWiFi = dView.findViewById(R.id.nav_Wifi);
@@ -270,7 +264,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 startActivity(new Intent(activity, LoginActivity.class));
                 finish();
-//                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();
             });
             TextView version = dView.findViewById(R.id.nav_version);
            // int versionCode = BuildConfig.VERSION_CODE;

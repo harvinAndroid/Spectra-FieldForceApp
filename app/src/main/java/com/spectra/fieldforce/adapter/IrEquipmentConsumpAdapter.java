@@ -43,13 +43,14 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
     private Context context;
     private ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists;
         AdapterIrequipmentListBinding binding;
-        String IrStatusReport,add ;
+        String IrStatusReport,add,orderID ;
 
-    public IrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists,String irStatusReport,String add) {
+    public IrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.InstallationItemList> equipmentDetailsLists,String irStatusReport,String add,String OrderId) {
         this.context = activity;
         this.equipmentDetailsLists = equipmentDetailsLists;
         this.IrStatusReport = irStatusReport;
         this.add = add;
+        this.orderID = OrderId;
     }
 
     @NotNull
@@ -83,6 +84,7 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
             b.putString("GuIID", equipment.getIRGUID());
             b.putString("canId", equipment.getCANID());
             b.putString("IrStatusReport", IrStatusReport);
+            b.putString("OrderId",orderID);
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new IREditEquipmentConsumption();
             myFragment.setArguments(b);
@@ -115,6 +117,7 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
 
                             Bundle b = new Bundle();
                             b.putString("canId", canid);
+                            b.putString("OrderId",orderID);
                             AppCompatActivity activity = (AppCompatActivity) context;
                             Fragment myFragment = new IRFragment();
                             myFragment.setArguments(b);

@@ -1,10 +1,8 @@
 package com.spectra.fieldforce.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.databinding.DataBindingUtil;
-
 import com.google.android.material.tabs.TabLayout;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.adapter.MyBucketAdapter;

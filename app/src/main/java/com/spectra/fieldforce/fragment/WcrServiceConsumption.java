@@ -57,6 +57,7 @@ public class WcrServiceConsumption extends Fragment implements AdapterView.OnIte
     private ArrayList<String> subItemId;
     private String strItemType,strItemTypeData,strItemname;
     private  String strsubItemId,strGuIId,strCanId,OrderId,StatusOfReport,maxCap,StrSubItemName;
+    private Boolean strWcrStatus;
 
     public WcrServiceConsumption() {
 
@@ -76,8 +77,9 @@ public class WcrServiceConsumption extends Fragment implements AdapterView.OnIte
         strCanId = requireArguments().getString("canId");
         StatusOfReport = requireArguments().getString("StatusofReport");
         OrderId = requireArguments().getString("OrderId");
+        strWcrStatus = requireArguments().getBoolean("WcrStatus");
         binding.searchtoolbar.rlBack.setOnClickListener(this);
-        binding.searchtoolbar.tvLang.setText(AppConstants.ITEM_CONSUMPTION);
+        binding.searchtoolbar.tvLang.setText(AppConstants.SERVICE_CONSUMPTION);
         init();
         binding.etQuantity.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -95,11 +97,9 @@ public class WcrServiceConsumption extends Fragment implements AdapterView.OnIte
                     }catch (NumberFormatException ex){
                         ex.getMessage();
                     }
-
                 }
-
-
             }
+
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
 
@@ -138,7 +138,6 @@ public class WcrServiceConsumption extends Fragment implements AdapterView.OnIte
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, itemType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.spType.setAdapter(adapter);
-
         consumptionItemType = new ArrayList<String>();
         itemTypeData = new ArrayList<String>();
         consumptionItemType.add("Select Type");
@@ -175,7 +174,6 @@ public class WcrServiceConsumption extends Fragment implements AdapterView.OnIte
                         e.printStackTrace();
                     }
                 }
-
             }
 
             @Override
@@ -359,6 +357,7 @@ public class WcrServiceConsumption extends Fragment implements AdapterView.OnIte
         accountinfo.putString("canId", strCanId);
         accountinfo.putString("StatusofReport", StatusOfReport);
         accountinfo.putString("OrderId", OrderId);
+        accountinfo.putBoolean("WcrStatus", strWcrStatus);
         t1.replace(R.id.frag_container, wcrFragment);
         wcrFragment.setArguments(accountinfo);
         t1.commit();

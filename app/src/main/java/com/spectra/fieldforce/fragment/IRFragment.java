@@ -43,6 +43,7 @@ import com.spectra.fieldforce.adapter.IrServiceListAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
 import com.spectra.fieldforce.databinding.IrFragmentBinding;
 import com.spectra.fieldforce.databinding.WcrFragmentBinding;
+import com.spectra.fieldforce.model.CommonMessageResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
@@ -100,16 +101,17 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     ArrayAdapter<String> adaptercpe;
     LocationManager locationManager;
     Boolean IrStatus;
-    private String add;
+    private String add,strwcrguid;
     private List<HoldReasonResponse.WCRHoldCategory> holdList;
-    String latitude, longitude,doa;
+    String latitude, longitude,doa,strProductSegment;
     private static final int REQUEST_LOCATION = 1;
     FusedLocationProviderClient mFusedLocationClient;
     int PERMISSION_ID = 44;
-     int day,month,year;
-    private Calendar mcalendar;
+    int day,month,year;
+  //  private Calendar mcalendar;
     private Calendar mCalendar;
     private String fromDateString = "";
+    String type="",strProdSeg;
 
     public IRFragment() {
 
@@ -130,7 +132,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         strStatusofReport = requireArguments().getString("StatusofReport");
         orderId = requireArguments().getString("OrderId");
         IrStatusReport = requireArguments().getString("IrStatusReport");
-        binding.tvIrStatus.setText("IR Status:"+ IrStatusReport);
+        binding.tvIrStatus.setText("IR Status : "+ IrStatusReport);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         IrStatus = requireArguments().getBoolean("IrStatus");
         String strIrStatus = String.valueOf(IrStatus);
@@ -143,13 +145,11 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linea18.setVisibility(View.GONE);
         }
         getIrInfo();
+       // getItemStatus(strGuiID);
         init();
         setType();
-      //  getHoldReason();
         ActivityCompat.requestPermissions( getActivity(),
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-
-
     }
 
     private void init(){
@@ -283,14 +283,15 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
         binding.layoutServiceDetails.btnAddService.setOnClickListener(v -> {
             @SuppressLint("UseRequireInsteadOfGet") FragmentTransaction t1= Objects.requireNonNull(this.getFragmentManager()).beginTransaction();
-            IrServiceConsumption wcrEquipmentConsumption = new IrServiceConsumption();
+            IrServiceConsumption irServiceConsumption = new IrServiceConsumption();
             Bundle bundle = new Bundle();
             bundle.putString("strGuuId", strGuiID);
             bundle.putString("canId",strCanId);
-            bundle.putString("StatusofReport", strStatusofReport);
+            bundle.putString("IrStatusReport", strStatusofReport);
             bundle.putString("OrderId", orderId);
-            t1.replace(R.id.frag_container, wcrEquipmentConsumption);
-            wcrEquipmentConsumption.setArguments(bundle);
+            bundle.putString("strWcrId", strwcrguid);
+            t1.replace(R.id.frag_container, irServiceConsumption);
+            irServiceConsumption.setArguments(bundle);
             t1.commit();
         });
 
@@ -322,7 +323,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
             }else{
                 getLastLocation();
-
                     if (installationItemLists.size() == 0 || installationItemLists == null) {
                         Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
                     } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
@@ -349,9 +349,12 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 updateGeneralDetails(ipattach);
             }
         });
+
         binding.layoutEnggDetails.saveEnggDetails.setOnClickListener(v -> {
             String insta = binding.layoutEnggDetails.etInstallationCode.getText().toString();
-            if(insta.isEmpty()){
+          if (strProdSeg.equals("Managed Wi-Fi Business")) {
+              updateIrEnginer(insta);
+            }else if(insta.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
             }else{
                 updateIrEnginer(insta);
@@ -360,7 +363,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         });
 
         binding.layoutInstallationparam.tvSaveQualityParam.setOnClickListener((View v) -> {
-
             String dns = Objects.requireNonNull(binding.layoutInstallationparam.etDns.getText()).toString();
             String virus = Objects.requireNonNull(binding.layoutInstallationparam.etEducationAntivirus.getText()).toString();
             String ip = Objects.requireNonNull(binding.layoutInstallationparam.etIp.getText()).toString();
@@ -384,6 +386,52 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             }
         });
     }
+
+    private void getItemStatus(String strGuuId){
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
+        resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
+        resendActivationCodeRequest.setAction(Constants.GET_ITEM_STATUS);
+        resendActivationCodeRequest.setId(strGuuId);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommonMessageResponse> call = apiService.getItemCodeStatus(resendActivationCodeRequest);
+        call.enqueue(new Callback<CommonMessageResponse>() {
+            @Override
+            public void onResponse(Call<CommonMessageResponse> call, Response<CommonMessageResponse> response) {
+                if (response.isSuccessful()&& response.body()!=null) {
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    try {
+                        if(response.body().getStatusCode()==200){
+                            binding.tvWcrItemStatus.setText("Item Status : "+ response.body().getMessage());
+                            binding.tvWcrItemStatus.setVisibility(View.VISIBLE);
+                            // Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
+                        }else {
+                            binding.tvWcrItemStatus.setVisibility(View.GONE);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonMessageResponse> call, Throwable t) {
+                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                Log.e("RetroError", t.toString());
+            }
+        });
+    }
+
+
+
 
     private void updateHoldCategoryStatus(){
         inAnimation = new AlphaAnimation(0f, 1f);
@@ -613,6 +661,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_IR_INFO);
         accountInfoRequest.setCanId(strCanId);
+        accountInfoRequest.setOrderId(orderId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<IrInfoResponse> call = apiService.getIrInfo(accountInfoRequest);
@@ -629,84 +678,117 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         binding.layoutCustomerDetails.setCustomerDetails(response.body().getResponse().getIr());
                         binding.setIR(response.body().getResponse().getIr());
                         String consumptionStatus = response.body().getResponse().getIr().getConsumptionStatus();
-                        if (consumptionStatus.equals("Material not available")) {
+                        if (consumptionStatus.equals("Material not Available")) {
                             binding.tvResendNav.setVisibility(View.VISIBLE);
                         }
                         add="0";
                         strGuiID = response.body().getResponse().getIr().getIrguid();
                         strSegment = response.body().getResponse().getIr().getBusinessSegment();
                         str_provisionId = response.body().getResponse().getGeneral().getProvisionId();
+                        strProdSeg = response.body().getResponse().getIr().getProductSegment();
                         String strHold = response.body().getResponse().getIr().getShowHold();
                         if (strHold.equals("true")) {
                             binding.linea18.setVisibility(View.VISIBLE);
                         } else {
                             binding.linea18.setVisibility(View.GONE);
                         }
+                        strwcrguid = response.body().getResponse().getIr().getWcrGuid();
                         itemConsumtions = (ArrayList<IrInfoResponse.ItemConsumtion>) response.body().getResponse().getItemConsumtionList();
                         binding.layoutItemcousumption.rvIrItemlist.setHasFixedSize(true);
                         binding.layoutItemcousumption.rvIrItemlist.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.layoutInstallationparam.etSelfcare.setText(response.body().getResponse().getInstallationQty().getSelfCare());
                         binding.layoutInstallationparam.etDns.setText(response.body().getResponse().getInstallationQty().getDns());
                         binding.layoutInstallationparam.etEducationAntivirus.setText(response.body().getResponse().getInstallationQty().getAntiVirus());
-                        if (itemConsumtions.size() != 0) {
-                            binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(), itemConsumtions, IrStatusReport));
-                        }
-                        if ((strSegment.equals("Home")) || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))) {
+                        strProductSegment = response.body().getResponse().getIr().getProduct();
+                        if ((strSegment.equals("Home")) && (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))) {
                             binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                            binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
                             add = "1";
                         }
+                        if (strProdSeg.equals("Managed Wi-Fi Business")) {
+                            binding.layoutEnggDetails.etInstallationCode.setVisibility(View.GONE);
+                        } else {
+                            binding.layoutEnggDetails.etInstallationCode.setVisibility(View.VISIBLE);
+                        }
                         installationItemLists = (ArrayList<IrInfoResponse.InstallationItemList>) response.body().getResponse().getInstallationItemList();
-                        binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
-                        binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        if (installationItemLists.size() != 0) {
-                            binding.layoutAddEquipment.rvAddEquipment.setAdapter(new IrEquipmentConsumpAdapter(getActivity(), installationItemLists, IrStatusReport, add));
-                        }
-
                         serviceConsumtionLists = (ArrayList<IrInfoResponse.ServiceConsumtionList>) response.body().getResponse().getServiceConsumtionList();
-                        binding.layoutServiceDetails.rvAddService.setHasFixedSize(true);
-                        binding.layoutServiceDetails.rvAddService.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        if (serviceConsumtionLists.size() != 0) {
-                            binding.layoutServiceDetails.rvAddService.setAdapter(new IRServiceConsumptionListAdapter(getActivity(), serviceConsumtionLists, IrStatusReport, add));
+                        if(installationItemLists.size()!=0) {
+                            straddition = installationItemLists.get(0).getItemType();
                         }
-
-                        straddition = installationItemLists.get(0).getItemType();
+                        if(serviceConsumtionLists.size()!=0){
+                             type = serviceConsumtionLists.get(0).getItemType();
+                        }
 
                         if (straddition != null) {
-                            if (straddition.equals("Additional") && strSegment.equals("Home")) {
-                                if (consumptionStatus.equals("Waiting for approval")) {
+                            if (straddition.equals("Additional")||type.equals("Additional") && strSegment.equals("Home")) {
+                                if (consumptionStatus.equals("Waiting for approval")|| consumptionStatus.equals("Approved")||consumptionStatus.equals("Approved but not consumed")) {
                                     binding.tvApproval.setVisibility(View.GONE);
                                     binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.GONE);
+                                    binding.layoutServiceDetails.btnAddService.setVisibility(View.GONE);
                                     add = "0";
                                 } else {
                                     binding.tvApproval.setVisibility(View.VISIBLE);
                                     binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                    binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
                                     add = "1";
                                 }
                             }
                         }
+                        if (((consumptionStatus.equals("true")) && strSegment.equals("Business")) || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))){
+                            binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                            binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
+                            binding.tvApproval.setVisibility(View.VISIBLE);
+
+                            add="1";
+                        }
 
                         doa = response.body().getResponse().getIr().getDOAFlag();
                         if(doa!=null){
-                            if(doa.equals("No") && straddition.equals("Additional")){
-                                binding.tvApproval.setVisibility(View.VISIBLE);
-                                add="0";
+                            if (doa.equals("No")) {
+                                if(straddition.equals("Additional") || type.equals("Additional")) {
+                                    binding.tvApproval.setVisibility(View.VISIBLE);
+                                    binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
+                                    binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
+                                    add = "1";
+                                }
+                            } else if (doa.equals("Yes")){
+                                binding.tvApproval.setVisibility(View.GONE);
                             }
                         }
 
+                        binding.layoutAddEquipment.rvAddEquipment.setHasFixedSize(true);
+                        binding.layoutAddEquipment.rvAddEquipment.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        if (installationItemLists.size() != 0) {
+                            binding.layoutAddEquipment.rvAddEquipment.setAdapter(new IrEquipmentConsumpAdapter(getActivity(), installationItemLists, IrStatusReport, add,orderId));
+                        }
+                        binding.layoutServiceDetails.rvAddService.setHasFixedSize(true);
+                        binding.layoutServiceDetails.rvAddService.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        if (serviceConsumtionLists.size() != 0) {
+                            binding.layoutServiceDetails.rvAddService.setAdapter(new IRServiceConsumptionListAdapter(getActivity(), serviceConsumtionLists, strStatusofReport, add,strGuiID,orderId));
+                        }
+                        if (itemConsumtions.size() != 0) {
+                            binding.layoutItemcousumption.rvIrItemlist.setAdapter(new IRItemConsumptionListAdapter(getActivity(), itemConsumtions, IrStatusReport,add,orderId));
+                        }
                         binding.layoutGeneralDetails.setGeneralDetails(response.body().getResponse().getGeneral());
                         binding.layoutEnggDetails.setEngineer(response.body().getResponse().getEngineer());
                         binding.setHold(response.body().getResponse().getEngineer());
                         String cpe = response.body().getResponse().getIr().getMACShared();
-                        if(cpe!=null&& !cpe.equals("")){
+                        if(cpe.equals("0")){
+                            irCpeMac = new ArrayList<String>();
+                            irCpeMacid = new ArrayList<String>();
+                            irCpeMac.add("Select CPE Type");
+                            irCpeMac.add("Completed");
+                            irCpeMacid.add("111260000");
+                             }else  if(cpe.equals("Completed")){
                             irCpeMac = new ArrayList<String>();
                             irCpeMacid = new ArrayList<String>();
                             irCpeMac.add("Completed");
                             irCpeMacid.add("111260000");
                             irCpeMac.add("Select CPE Type");
-                            adaptercpe = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
-                            adaptercpe.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                            binding.layoutCpemac.spCpeMacShared.setAdapter(adaptercpe);
-                        }
+                           }
+                        adaptercpe = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, irCpeMac);
+                        adaptercpe.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                        binding.layoutCpemac.spCpeMacShared.setAdapter(adaptercpe);
                         attach = response.body().getResponse().getGeneral().getIRAttached();
                         if(attach!=null){
                             if(response.body().getResponse().getGeneral().getIRAttached().equals("Yes")){
@@ -752,7 +834,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             ArrayAdapter<String> adapter11 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
                             adapter11.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.layoutInstallationparam.spSpeedTest.setAdapter(adapter11);
-
                         }
                         String dns = response.body().getResponse().getInstallationQty().getDns();
                         if(dns.equals("Yes")){
@@ -780,7 +861,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamDns);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.layoutInstallationparam.spDns.setAdapter(adapter);
-
                         }
                         String antivirus = response.body().getResponse().getInstallationQty().getAntiVirus();
                         if(antivirus.equals("Yes")){
@@ -807,7 +887,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamAntivirus);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.layoutInstallationparam.spEducationAntivirus.setAdapter(adapter);
-
                         }
                         String mrtg = response.body().getResponse().getInstallationQty().getMrtg();
                         if(mrtg.equals("Yes")){
@@ -834,7 +913,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamMrtg);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.layoutInstallationparam.spMrtg.setAdapter(adapter);
-
                         }
                         String ip = response.body().getResponse().getInstallationQty().getIp();
                         if(ip.equals("Yes")){
@@ -861,7 +939,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamIP);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.layoutInstallationparam.spIp.setAdapter(adapter);
-
                         }
                         String selfCare = response.body().getResponse().getInstallationQty().getSelfCare();
                         if(selfCare.equals("Yes")){
@@ -885,15 +962,16 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             QualityParamSelfCare.add("Please Select Education customer");
                             QualityParamSelfCare.add("Yes");
                             QualityParamSelfCare.add("No");
-                            ArrayAdapter<String> adapter11 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSelfCare);
-                            adapter11.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                            binding.layoutInstallationparam.spSelfcare.setAdapter(adapter11);
-
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSelfCare);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                            binding.layoutInstallationparam.spSelfcare.setAdapter(adapter);
                         }
                         getHoldReason();
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                      //
                     }else if(response.body().getStatus().equals("Failure")){
                         Toast.makeText(getContext(),"Account Id (CAN Id) does not exist or Inactive.",Toast.LENGTH_LONG).show();
                         nextScreen();
@@ -915,8 +993,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-        ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVIR,strGuiID,"Business","");
-
+        ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVIR,"","Business","",strGuiID);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.submitNavWcr(resendNavRequest);
         call.enqueue(new Callback<CommonClassResponse>() {
@@ -955,7 +1032,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         i.putExtra("canId", strCanId);
         i.putExtra("StatusofReport", strStatusofReport);
         i.putExtra("OrderId", orderId);
-
         startActivity(i);
         getActivity().finish();
     }
@@ -976,7 +1052,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 binding.linear21.setVisibility(View.GONE);
                 binding.linearInstallationParamDetails.setVisibility(View.GONE);
                 binding.linearservicedeatils.setVisibility(View.GONE);
-
             });
         binding.linearNine.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -989,7 +1064,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
-
         });
         binding.linearSix.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -1002,7 +1076,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
-
         });
         binding.linearFour.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.VISIBLE);
@@ -1015,7 +1088,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
-
         });
         binding.linea11.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -1028,7 +1100,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
-
         });
         binding.linea13.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -1053,7 +1124,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
-
         });
         binding.linea18.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -1066,7 +1136,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             binding.linear21.setVisibility(View.GONE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
             binding.linearservicedeatils.setVisibility(View.GONE);
-
         });
         binding.linea20.setOnClickListener(v -> {
             binding.linearFive.setVisibility(View.GONE);
@@ -1215,7 +1284,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         updateIREngineer.setEngName(binding.layoutEnggDetails.etEnggName.getText().toString());
         updateIREngineer.setInstattionDate(date);
         updateIREngineer.setIRguid(strGuiID);
-        updateIREngineer.setOTP(binding.layoutEnggDetails.etInstallationCode.getText().toString());
+        updateIREngineer.setOTP(insta);
         updateIREngineer.setAppointmentDate(binding.layoutEnggDetails.etCreatedOn.getText().toString());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateIrEnginer(updateIREngineer);
@@ -1254,11 +1323,10 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         IRFragment irFragment = new IRFragment();
         Bundle accountinfo = new Bundle();
         accountinfo.putString("canId", strCanId);
-       accountinfo.putString("StatusofReport",strStatusofReport);
-       accountinfo.putString("OrderId",orderId);
+        accountinfo.putString("StatusofReport",strStatusofReport);
+        accountinfo.putString("OrderId",orderId);
         accountinfo.putBoolean("IrStatus",IrStatus);
         accountinfo.putString("IrStatusReport",IrStatusReport);
-
         t.replace(R.id.frag_container, irFragment);
         irFragment.setArguments(accountinfo);
         t.commit();
@@ -1266,16 +1334,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
-        // check if permissions are given
         if (checkPermissions()) {
-
-            // check if location is enabled
             if (isLocationEnabled()) {
-
-                // getting last
-                // location from
-                // FusedLocationClient
-                // object
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
                     Location location = task.getResult();
                     if (location == null) {
@@ -1291,8 +1351,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 startActivity(intent);
             }
         } else {
-            // if permissions aren't available,
-            // request for permissions
             requestPermissions();
         }
     }
@@ -1318,31 +1376,22 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         }
     };
 
-    // method to check for permissions
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-
-        // If we want background location
-        // on Android 10.0 and higher,
-        // use:
-        // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
-    // method to request for permissions
     private void requestPermissions() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
     }
 
-    // method to check
-    // if location is enabled
+
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    // If everything is alright then
     @Override
     public void
     onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -1420,7 +1469,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         irCompleteRequest.setRemarks(remark);
         irCompleteRequest.setLat(latitude);
         irCompleteRequest.setLong(longitude);
-        irCompleteRequest.setSource("App");
+        irCompleteRequest.setSource("FFA App");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.updateIR(irCompleteRequest);
         call.enqueue(new Callback<CommonClassResponse>() {

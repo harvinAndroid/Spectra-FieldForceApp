@@ -50,6 +50,66 @@
         android:textColor="@color/colorRed"
         android:textSize="@dimen/_14sdp" />
 
+   <!-- <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/errortxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:hintTextColor="@color/colorWhite"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColorHint="@color/colorWhite"
+        app:hintTextAppearance="@style/Widget.TextInputLayout.FilledBoxLogin">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/user_name"
+            android:background="@color/colorBlack"
+            android:inputType="text"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14sdp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@+id/user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColorHint="@color/colorWhite"
+        app:hintTextAppearance="@style/Widget.TextInputLayout.FilledBoxLogin">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:inputType="text"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14sdp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+-->
     <EditText
         android:id="@+id/user_name"
         android:layout_width="match_parent"
@@ -66,7 +126,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:textColorHint="@color/colorWhite"
         android:textColor="@color/colorWhite"/>
-
     <EditText
         android:id="@+id/user_pass"
         android:layout_width="match_parent"

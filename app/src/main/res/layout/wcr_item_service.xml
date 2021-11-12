@@ -12,7 +12,6 @@
         android:id="@+id/linear_ten"
         android:layout_width="match_parent"
         android:orientation="vertical"
-
         android:layout_height="wrap_content"
         android:visibility="visible"
         >
@@ -100,6 +99,7 @@
                 android:layout_height="@dimen/_25sdp"
                 android:background="@drawable/button_background"
                 android:text="@string/edit"
+                android:visibility="gone"
                 android:layout_weight=".5"
                 android:gravity="center"
                 android:textColor="@android:color/white"
@@ -113,6 +113,7 @@
                 android:layout_height="@dimen/_25sdp"
                 android:layout_weight=".5"
                 android:text="@string/delete"
+                android:visibility="gone"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:textColor="@android:color/white"

@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{@string/customer_business_segment    + customerDetails.businessSegment}"
+        android:text="@{`Customer Business Segment :  ` + customerDetails.businessSegment}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 
@@ -28,7 +28,7 @@
         android:id="@+id/tv_item_type3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@{@string/pod  + customerDetails.pod}"
+        android:text="@{`POD :  ` + customerDetails.pod}"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
         android:textColor="@color/colorBlack"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{@string/product  + customerDetails.product}"
+        android:text="@{`Product  :  ` + customerDetails.product}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@{@string/installation_date + customerDetails.installationdate}"
+        android:text="@{`Installation Date  :  ` + customerDetails.installationdate}"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12sdp" />
 

@@ -6,12 +6,14 @@ public class ResendNavRequest {
     private String WCRguidId;
     private String Segment;
     private String ItemType;
-    public ResendNavRequest(String authkey, String action, String WCRguidId, String segment, String itemType) {
+    private String IRguid;
+    public ResendNavRequest(String authkey, String action, String WCRguidId, String segment, String itemType,String IRguid) {
         Authkey = authkey;
         Action = action;
         this.WCRguidId = WCRguidId;
         Segment = segment;
         ItemType = itemType;
+        this.IRguid = IRguid;
     }
 
 

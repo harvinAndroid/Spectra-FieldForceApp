@@ -45,12 +45,13 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
     private Context context;
     private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
     AdapterWcrequipmentListBinding binding;
-    String add;
+    String add,orderId;
 
-    public WcrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists, String add) {
+    public WcrEquipmentConsumpAdapter(FragmentActivity activity, ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists, String add,String OrderId) {
         this.context = activity;
         this.equipmentDetailsLists = equipmentDetailsLists;
         this.add = add;
+        this.orderId = OrderId;
     }
 
     @NotNull
@@ -70,6 +71,8 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         WcrResponse.EquipmentDetailsList equipment = equipmentDetailsLists.get(position);
        holder.binding.setEquipment(equipment);
+        holder.binding.etIte6.setText("Quantity: "+equipment.getQuantity().toString());
+
         if(add.equals("1")){
             holder.binding.tvDelete.setVisibility(View.VISIBLE);
             holder.binding.tvEdit.setVisibility(View.VISIBLE);
@@ -83,6 +86,7 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
             b.putString("ItemId", equipment.getItemID());
             b.putString("GuIID", equipment.getWCRGUIDID());
             b.putString("canId", equipment.getCANID());
+            b.putString("OrderId", orderId);
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new WcrEditEquipmentConsumption();
             myFragment.setArguments(b);
@@ -116,6 +120,7 @@ public class WcrEquipmentConsumpAdapter extends RecyclerView.Adapter<WcrEquipmen
 
                             Bundle b = new Bundle();
                             b.putString("canId", canid);
+                            b.putString("OrderId", orderId);
                             AppCompatActivity activity = (AppCompatActivity) context;
                             Fragment myFragment = new WcrFragment();
                             myFragment.setArguments(b);

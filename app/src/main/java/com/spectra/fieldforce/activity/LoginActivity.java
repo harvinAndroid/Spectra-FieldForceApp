@@ -3,7 +3,9 @@ package com.spectra.fieldforce.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -29,6 +31,7 @@ import com.spectra.fieldforce.fragment.RegistrationFragment;
 import com.spectra.fieldforce.fragment.ResetpasswordFragment;
 import com.spectra.fieldforce.listener.OnLoginFormActivityListener;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
+import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
 
@@ -68,17 +71,16 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         binding.userPass.setTypeface(mytextFace);
 
         binding.loginBtn.setOnClickListener(view -> {
-            String idb = Objects.requireNonNull(binding.userName.getText()).toString();
-            String link = Objects.requireNonNull(binding.userPass.getText()).toString();
+            String strUserName = Objects.requireNonNull(binding.userName.getText()).toString();
+            String strPassword = Objects.requireNonNull(binding.userPass.getText()).toString();
 
-            if(idb.isEmpty()){
-                Toast.makeText(this,"Please Enter UserName",Toast.LENGTH_LONG).show();
-            }else if(link.isEmpty()){
-                Toast.makeText(this,"Please Enter Password",Toast.LENGTH_LONG).show();
+            if(strUserName.isEmpty()){
+                Toast.makeText(this, AppConstants.PLEASE_ENTER_USERNAME,Toast.LENGTH_LONG).show();
+            }else if(strPassword.isEmpty()){
+                Toast.makeText(this,AppConstants.PLEASE_ENTER_PASSWORD,Toast.LENGTH_LONG).show();
             }else{
                 performLogin();
             }
-
         });
         binding.registerTxt.setOnClickListener(view -> performResetpassword());
     }
@@ -107,40 +109,31 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
     public void performLogin(String email, String name) {
         prefConfig.writeName(email);
         prefConfig.writeUserName(name);
-//        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
-
         startActivity(new Intent(activity, MainActivity.class));
         finish();
-      /*  startActivity(new Intent(activity, DashBoardActivity.class));*/
     }
 
     @Override
     public void performLogout() {
         prefConfig.writeLoginStatus(false);
-      //  prefConfig.LoginStatus(false);
         prefConfig.writeName(Constants.User);
-
     }
 
     @Override
     public void Login(String email, String name) {
         prefConfig.writeName(email);
         prefConfig.writeUserName(name);
-//        getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new WelcomeFragment(), WelcomeFragment.class.getSimpleName()).addToBackStack(null).commit();
         finish();
         performLogin(email, name);
         startActivity(new Intent(activity, MainActivity.class));
     }
 
     private void performLogin() {
-
         LoginRequest loginRequest = new LoginRequest();
-
         loginRequest.setAction(Constants.ACTION_AUTHENTICATION);
         loginRequest.setUser_name(binding.userName.getText().toString());
         loginRequest.setUser_password(binding.userPass.getText().toString());
         loginRequest.setAuthkey(Constants.AUTH_KEY);
-
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<LoginResponse> call = apiService.performUserLogin(loginRequest);
         call.enqueue(new Callback<LoginResponse>() {
@@ -148,37 +141,27 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                      /* if(response.body().getStatus().equals("Success")){
-                           if(response.body().getResponse().getInstallAuth().equals("N")){
-                               MainActivity.prefConfig.writeLoginStatus(true);
-                             //  MainActivity.prefConfig.LoginStatus(false);
-                               performLogin(response.body().getResponse().getName(), response.body().getResponse().getUsername());
-                           }else if(response.body().getResponse().getInstallAuth().equals("Y")){*/
-                        if(response.body().getStatus().equals("Success")) {
-                            MainActivity.prefConfig.LoginStatus(true);
-                            SharedPreferences sp = getSharedPreferences(PREF , 0);
-                            SharedPreferences.Editor myEdit = sp.edit();
-                            myEdit.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
-                            myEdit.putString("FFA", response.body().getResponse().getFfaAuth());
-                            myEdit.putString("VenderCode", response.body().getResponse().getVendorCode());
-                            myEdit.putString("EnggId", response.body().getResponse().getUserID());
-                            myEdit.putString("EnggName",response.body().getResponse().getUsername());
-                            myEdit.commit();
-                            userEmailN = response.body().getResponse().getName();
-
-
-                            Log.e("ffalogin", String.valueOf(sp));
-
-                            Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());
-                            // }
-                            getSaveToken();
-                        } else {
-                            message = "Login Failed..Please try again...";
-                            binding.errortxt.setText(message);
-
+                        if (response.body() != null) {
+                            if(response.body().getStatus().equals("Success")) {
+                                MainActivity.prefConfig.LoginStatus(true);
+                                SharedPreferences sp = getSharedPreferences(PREF , 0);
+                                SharedPreferences.Editor myEdit = sp.edit();
+                                myEdit.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
+                                myEdit.putString("FFA", response.body().getResponse().getFfaAuth());
+                                myEdit.putString("VenderCode", response.body().getResponse().getVendorCode());
+                                myEdit.putString("EnggId", response.body().getResponse().getUserID());
+                                myEdit.putString("EnggName",response.body().getResponse().getUsername());
+                                myEdit.commit();
+                                userEmailN = response.body().getResponse().getName();
+                                Log.e("ffalogin", String.valueOf(sp));
+                                Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());
+                                getSaveToken();
+                            } else {
+                                message = "Login Failed..Please try again...";
+                                binding.errortxt.setText(message);
+                            }
                         }
-                       }
-                 //   }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -219,13 +202,6 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        //  parse(String.valueOf(response.body()!=null));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
 
             @Override

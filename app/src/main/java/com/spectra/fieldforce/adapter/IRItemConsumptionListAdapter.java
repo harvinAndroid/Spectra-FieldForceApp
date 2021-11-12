@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -45,12 +46,14 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
     private Context context;
     private ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions;
     IrItemCousumptionBinding binding;
-    private String IrStatusReport;
+    private String IrStatusReport,add,orderId;
 
-    public IRItemConsumptionListAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions, String irStatusReport) {
+    public IRItemConsumptionListAdapter(FragmentActivity activity, ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions, String irStatusReport,String add,String OrderId) {
         this.context = activity;
         this.itemConsumtions = itemConsumtions;
         this.IrStatusReport = irStatusReport;
+        this.add = add;
+        this.orderId = OrderId;
     }
 
     @NotNull
@@ -72,12 +75,17 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         IrInfoResponse.ItemConsumtion item = itemConsumtions.get(position);
         holder.binding.setItemConsumption(item);
+        if(add.equals("1")){
+            holder.binding.tvDelete.setVisibility(View.VISIBLE);
+            holder.binding.tvEdit.setVisibility(View.VISIBLE);
+        }
         holder.binding.tvEdit.setOnClickListener(v -> {
             Bundle b = new Bundle();
             b.putString("ItemId", item.getItemID());
             b.putString("IrID", item.getIrguid());
             b.putString("canId",item.getCanid());
             b.putString("IrStatusReport",IrStatusReport);
+            b.putString("OrderId",orderId);
             AppCompatActivity activity = (AppCompatActivity) context;
             Fragment myFragment = new IREditItemConsumption();
             myFragment.setArguments(b);
@@ -107,6 +115,7 @@ public class IRItemConsumptionListAdapter extends RecyclerView.Adapter<IRItemCon
 
                             Bundle b = new Bundle();
                             b.putString("canId", itemID);
+                            b.putString("OrderId",orderId);
                             AppCompatActivity activity = (AppCompatActivity) context;
                             Fragment myFragment = new IRFragment();
                             myFragment.setArguments(b);

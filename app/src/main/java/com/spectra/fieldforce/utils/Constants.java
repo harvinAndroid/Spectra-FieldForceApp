@@ -9,10 +9,12 @@ public class Constants {
   /*  Local URL */
     public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
     public static final String BASE_URL1="https://custappmwuat.spectra.co/";
-
     public static final String AUTH_KEY ="ac7b51de9d888e1458dd53d8aJAN3ba6f";
     public static final String GET_ACTION_CODEMST  ="getActioncodeMst";
     public static final String GETASR_BY_SRNUMBER= "getASRBySrNumber";
+    public static final String AUTH = "AdgT68HnjkehEqlkd4";
+    public static final String GET_ACCOUNT_DATA = "getAccountData";
+    public static final String GET_MRTG= "getMRTGbycanid";
     public static final String ASSIGNED = "Assigned";
     public static final String ASSIGNMENT = "assignment";
     public static final String ACKNOWLEDGE_SR= "AcknowledgeSR";
@@ -47,8 +49,8 @@ public class Constants {
     public static final String GET_CONSUMPTION_STATUS = "getConsumptionstatus";
     public static final String GET_ALL_ITEM_MASTER = "getAllItemMaster";
     public static final String GET_ACCOUNT_INFO="getAccountInfo";
-    public static final String GET_WCR_INFO = "getWCRInfo";
-    public static final String GET_IR_INFO = "getIRInfo";
+    public static final String GET_WCR_INFO = "ffaGetWCRInfo";
+    public static final String GET_IR_INFO = "ffaGetIRInfo";
     public static final String GET_HOLD_CATEGORY = "WCRholdCategories";
     public static final String GET_IRHOLD_CATEGORY = "IRHoldCategories";
     public static final String GET_ITEM_LIST = "getItemList";
@@ -61,7 +63,7 @@ public class Constants {
     public static final String POST_ITEM_CONSUMPTIONS = "postItemConsumptions";
     public static final String UPDATE_ASSOCIATE = "updateAssociate";
     public static final String UPDATE_FMS_DETAILS ="updateFMSdetails";
-    public static final String UPDATE_WCR_ENGINER ="updateWCREngineer";
+    public static final String UPDATE_WCR_ENGINER ="updateWCREngine er";
     public static final String HOLD_WCR = "holdWCR";
     public static final String WCR_COMPLETE = "WCRComplete";
     public static final String RESEND_CODE = "resendCode";
@@ -99,5 +101,8 @@ public class Constants {
     public static final String WCR_HOLD_CATEGORY= "WCRholdCategories";
     public static final String RESEND_NAVWCR= "resendNavWCR";
     public static final String GET_SERVICE_LIST = "getServiceList";
+    public static final String GET_ITEM_STATUS = "getItemStatus";
+    public static final String UPDATE_WCR_ENGINEER = "updateWCREngineer";
+    public static final String UPDATE_IR_ENGINEER = "updateIREngineer";
 
 }

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,7 @@ import com.spectra.fieldforce.model.gpon.request.AddBucketListRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
+import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
@@ -74,16 +76,31 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     }
 
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-    @SuppressLint("SetTextI18n")
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+
+    @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        System.out.println("cureent : "+allbucketlist.get(position).getEngineerName()+ " "+allbucketlist.get(position).getEngineerName()+"postion :"+position);
 
         GetAllBucketList.Response itemList = allbucketlist.get(position);
         holder.binding.setAllBucketList(itemList);
         holder.binding.enggNm.setText("Engineer Name: " +itemList.getEngineerName());
-        String enggName = holder.binding.enggNm.getText().toString();
-       //String enggName = itemList.getEngineerName();
+        if(allbucketlist.get(position).getAddAssign().equals("Assigned")){
+            holder.binding.tvAdd.setEnabled(false);
+            holder.binding.tvAdd.setFocusable(false);
+            holder.binding.tvAdd.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        }
         try {
             calendar = Calendar.getInstance();
             simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss aaa z");
@@ -93,14 +110,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(enggName.isEmpty()||enggName.equals("Engineer Name: ")){
-            binding.tvAdd.setText("ADD");
-            // binding.tvAdd.setBackgroundColor(context.getResources().getColor(android.R.color.secondary_text_light));
-        }else{
-            binding.tvAdd.setEnabled(false);
-            binding.tvAdd.setText("Assigned");
-           // Toast.makeText(context,"Already Assigned",Toast.LENGTH_LONG).show();
-        }
+
         holder.binding.tvAdd.setOnClickListener(v -> {
             AllBucketListAdapter.this.addItemToBucket(itemList.getID(),itemList.getOrderType(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), "",
                     itemList.getStatus(), itemList.getHoldCategory(),"",  "",
@@ -108,13 +118,13 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
                     itemList.getProduct(),itemList.getContactPerson(),itemList.getContactNo(),itemList.getWcrslaclock(),itemList.getIrslaclock(),itemList.getBusinessSegment(),itemList.getCityId(),itemList.getAddress(),itemList.getActivationOTP());
 
             if(itemList.getOrderType().equals("WCR")){
-                updateEnginer("updateWCREngineer",  itemList.getWcrId());
+                updateEnginer(Constants.UPDATE_WCR_ENGINEER,  itemList.getWcrId());
             }else if(itemList.getOrderType().equals("IR")){
-                updateEnginer("updateIREngineer", itemList.getIrId());
+                updateEnginer(Constants.UPDATE_IR_ENGINEER, itemList.getIrId());
             }
         });
-
     }
+
 
     private void updateEnginer(String updateWCREngineer, String wcrId){
         SharedPreferences sp1=context.getSharedPreferences("Login",0);
@@ -134,7 +144,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     try {
-                        if(response.body().getStatus().equals("Success")){
+                        if(response.body().getStatus().equals(AppConstants.SUCCESS)){
                            // Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -208,13 +218,10 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
                     binding.progressLayout.progressOverlay.setAnimation(outAnimation);
                     binding.progressLayout.progressOverlay.setVisibility(View.GONE);
                     try {
-                        if (response.body().getStatus().equals("Success")){
+                        if (response.body().getStatus().equals(AppConstants.SUCCESS)){
                             Toast.makeText(context,"Order has been Added into bucket.",Toast.LENGTH_LONG).show();
                             Intent i = new Intent(context, BucketTabActivity.class);
                             context.startActivity(i);
-                           /* AppCompatActivity activity1 = (AppCompatActivity) context;
-                            activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new MyBucketList(), MyBucketList.class.getSimpleName()).addToBackStack(null
-                            ).commit();*/
                         }else if(response.body().getStatus().equals("Failure")){
                             Toast.makeText(context,"Not Added in bucket.",Toast.LENGTH_LONG).show();
                         }else{
@@ -257,8 +264,9 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     }
 
     public void Filter(List<GetAllBucketList.Response> allbucketlist){
-       this.allbucketlist   = allbucketlist;
-       notifyDataSetChanged();
+        notifyDataSetChanged();
+        this.allbucketlist   = allbucketlist;
+        context.notifyAll();
     }
 
 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -44,10 +45,13 @@ public class WcrServiceConsumptionListAdapter extends RecyclerView.Adapter<WcrSe
     private Context context;
     private ArrayList<WcrResponse.ServiceConsumtion> serviceConsumtions;
     WcrItemServiceBinding binding;
+    private String add,orderId;
 
-    public WcrServiceConsumptionListAdapter(FragmentActivity activity, ArrayList<WcrResponse.ServiceConsumtion> serviceConsumtions) {
+    public WcrServiceConsumptionListAdapter(FragmentActivity activity, ArrayList<WcrResponse.ServiceConsumtion> serviceConsumtions,String add,String OrderId) {
         this.context = activity;
         this.serviceConsumtions = serviceConsumtions;
+        this.add = add;
+        this.orderId = OrderId;
     }
 
     @NotNull
@@ -68,7 +72,10 @@ public class WcrServiceConsumptionListAdapter extends RecyclerView.Adapter<WcrSe
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         WcrResponse.ServiceConsumtion item = serviceConsumtions.get(position);
         holder.binding.setItemConsumption(item);
-
+        if(add.equals("1")){
+            holder.binding.delete.setVisibility(View.VISIBLE);
+            holder.binding.edit.setVisibility(View.VISIBLE);
+        }
         holder.binding.delete.setOnClickListener(v -> {
             deleteItem(item.getItemID(),item.getCanid());
         });
@@ -78,8 +85,9 @@ public class WcrServiceConsumptionListAdapter extends RecyclerView.Adapter<WcrSe
             b.putString("ItemId", item.getItemID());
             b.putString("GuIID", item.getWcrguidid());
             b.putString("canId", item.getCanid());
+            b.putString("OrderId",orderId);
             AppCompatActivity activity = (AppCompatActivity) context;
-            Fragment myFragment = new IREditItemConsumption();
+            Fragment myFragment = new WcrEditItemConsumption();
             myFragment.setArguments(b);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
         });
@@ -101,15 +109,9 @@ public class WcrServiceConsumptionListAdapter extends RecyclerView.Adapter<WcrSe
                     try {
                         if (response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                              /*  AppCompatActivity activity1 = (AppCompatActivity) context;
-                                Bundle b = new Bundle();
-                                b.putString("canId", id);
-                                myFragment.setArguments(b);
-                                activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), WcrFragment.class.getSimpleName()).addToBackStack(null
-                                ).commit();*/
-
                             Bundle b = new Bundle();
                             b.putString("canId", canid);
+                            b.putString("OrderId",orderId);
                             AppCompatActivity activity = (AppCompatActivity) context;
                             Fragment myFragment = new WcrFragment();
                             myFragment.setArguments(b);

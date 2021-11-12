@@ -59,6 +59,12 @@ public class AddItemConsumption {
 
     private String IRguid;
 
+    public void setIRGuid(String IRGuid) {
+        this.IRGuid = IRGuid;
+    }
+
+    private String IRGuid;
+
 
     public void setItemID(String itemID) {
         ItemID = itemID;

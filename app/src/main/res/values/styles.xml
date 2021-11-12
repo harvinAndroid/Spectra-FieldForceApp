@@ -64,4 +64,17 @@
         <item name="hintTextColor">#fff</item>
     </style>
 
+    <style name="Widget.TextInputLayout.FilledBoxLogin" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeColor">#fff</item>
+        <item name="hintTextColor">#fff</item>
+
+        <!-- The color of the label in all other text field states (such as resting and disabled) -->
+        <item name="android:textColorHint">#fff</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:colorControlNormal">@color/colorWhite</item>
+        <item name="android:colorControlHighlight">@color/colorWhite</item>
+        <item name="android:colorControlActivated">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+
 </resources>
