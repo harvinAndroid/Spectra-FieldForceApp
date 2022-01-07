@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="updateChannel"
+            type="com.spectra.fieldforce.salesapp.model.LeadResponsee" />
+    </data>
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        >
+
+        <androidx.core.widget.NestedScrollView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardvewleadchannel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="@dimen/_5sdp"
+                    app:cardUseCompatPadding="true"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@color/colorWhite"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_leadchnl"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_lead_channel"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="@string/lead_channel"
+
+                                    android:imeOptions="actionNext"
+                                    android:focusableInTouchMode="false"
+                                    android:focusable="false"
+                                    android:drawableEnd="@drawable/lock"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_lead_src"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_lead_source"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="@string/lead_source"
+                                    android:text="@{updateChannel.response.get(0).leadSource}"
+
+                                    android:focusableInTouchMode="false"
+                                    android:focusable="false"
+                                    android:drawableEnd="@drawable/lock"
+                                    android:imeOptions="actionNext"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </FrameLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
+</layout>

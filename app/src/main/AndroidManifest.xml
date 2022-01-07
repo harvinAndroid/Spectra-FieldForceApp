@@ -12,19 +12,19 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-   <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
-        tools:node="remove"/>-->
-
+    <!--
+ <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
+        tools:node="remove"/>
+    -->
     <uses-feature
         android:name="android.hardware.camera.any"
         android:required="true" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true"
@@ -41,7 +41,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="AllowBackup">
-        <activity android:name=".activity.LoginActivity" />
+          <activity android:name=".activity.LoginActivity" />
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
@@ -59,7 +59,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".activity.MainActivity"
+        <activity
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,33 +87,51 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.Activity_Resolve"
+        <activity
+            android:name=".activity.Activity_Resolve"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".salesapp.activity.EditProduct"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.DashBoardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".salesapp.activity.UpdateLeadActivity"
+            android:screenOrientation="portrait" />
+          <!--  android:label="Update Flr"-->
+
+        <activity
+            android:name=".activity.ProvisioningTabActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".salesapp.activity.OppurtunityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".salesapp.activity.EditProduct"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BucketTabActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GetInsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ProvisioningScreenActivity"
             android:screenOrientation="portrait"
-            />
-
-        <activity android:name=".activity.DashBoardActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.ProvisioningTabActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.BucketTabActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.GetInsActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.ProvisioningScreenActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.SpectraFfaActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".activity.ProvisioningMainActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".salesapp.activity.SalesDashboard"
-            android:screenOrientation="portrait"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activity.SpectraFfaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ProvisioningMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".salesapp.activity.SalesDashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".salesapp.activity.CAFActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -123,7 +142,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

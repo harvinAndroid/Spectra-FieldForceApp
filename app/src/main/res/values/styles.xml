@@ -53,6 +53,12 @@
         <item name="android:colorControlHighlight">@color/colorWhite</item>
         <item name="android:colorControlActivated">@color/colorWhite</item>
     </style>
+    <style name="AppThemee" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorButton</item>
+        <item name="colorPrimaryDark">@color/colorButton</item>
+        <item name="colorAccent">@color/colorButton</item>
+    </style>
 
     <style name="SelectMediaDialogTheme">
         <item name="android:windowEnterAnimation">@anim/shift_up</item>

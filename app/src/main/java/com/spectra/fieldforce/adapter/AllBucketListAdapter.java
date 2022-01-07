@@ -169,8 +169,8 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             , String Sla, String vendorName, String createOn, String Product, String cperson, String Num, String Wcrslaclock, String Irslaclock, String businessSegment, String cityId, String address, String activationOTP){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        binding.progressbar.progressOverlay.setAnimation(inAnimation);
+        binding.progressbar.progressOverlay.setVisibility(View.VISIBLE);
         SharedPreferences sp1=context.getSharedPreferences("Login",0);
         String vendor =sp1.getString("VenderCode", null);
         String enggId = sp1.getString("EnggId", null);
@@ -215,8 +215,8 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
                 if (response.isSuccessful()&& response.body()!=null) {
                     outAnimation = new AlphaAnimation(1f, 0f);
                     outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    binding.progressbar.progressOverlay.setAnimation(outAnimation);
+                    binding.progressbar.progressOverlay.setVisibility(View.GONE);
                     try {
                         if (response.body().getStatus().equals(AppConstants.SUCCESS)){
                             Toast.makeText(context,"Order has been Added into bucket.",Toast.LENGTH_LONG).show();
@@ -235,7 +235,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             }
             @Override
             public void onFailure(Call<CommonClassResponse> call, Throwable t) {
-                binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                binding.progressbar.progressOverlay.setVisibility(View.GONE);
 
                 Log.e("RetroError", t.toString());
             }

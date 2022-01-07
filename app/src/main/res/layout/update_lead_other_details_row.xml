@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="updateOther"
+            type="com.spectra.fieldforce.salesapp.model.Other_Detail" />
+    </data>
+    <FrameLayout
+         android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        >
+
+        <androidx.core.widget.NestedScrollView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardvewleadcompany"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="@dimen/_5sdp"
+                    app:cardUseCompatPadding="true"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@color/colorWhite"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout android:id="@+id/linear12"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp">
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_media"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_media"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="Media *"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_ex_serv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_ext_srv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/existing_service_provider_1"
+                                android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_ext_serv_two"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_ext_srv_two"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/existing_service_provider_2"
+
+                                android:imeOptions="actionNext"
+
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/sp_work_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_crt_wrk"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/current_working_locations"
+                                android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_intrsteddata_center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_is_cus"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/is_customer_interested_in_data_center_services_cloud_services"
+                                 android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                          <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_intrs_frwal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_indus_firewl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/is_customer_interested_in_firewall"
+                                android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                         <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_vpn_serv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_vpn_srv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/is_customer_interested_in_vpn_services"
+                                android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_serv_pro_one"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_service_pv_one"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/services_from_service_provider_1"
+                                 android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_serv_pro_two"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_srv_pv_two"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/services_from_service_provider_2"
+                                android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_cst_voip"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_cust_void"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/is_customer_interested_in_voip"
+                                android:imeOptions="actionNext"
+                                android:focusable="false"
+                                 android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_cust_wifi"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_cust_wifi"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/is_customer_interested_in_managed_wi_fi"
+                                 android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        </FrameLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_trgt_period"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/target_instalation_period"
+                                android:imeOptions="actionNext"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
+</layout>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <variable
+            name="oppDetail"
+            type="com.spectra.fieldforce.salesapp.model.OppurtunityResponse" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        >
+
+        <androidx.core.widget.NestedScrollView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardvewleadcompany"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="@dimen/_5sdp"
+                    app:cardUseCompatPadding="true"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@color/colorWhite"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout android:id="@+id/linear12"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_attach_documents"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="Attach Documents"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_oppurtunity_ID"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="PAN NO."
+                                 android:imeOptions="actionNext"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_cmpny"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="TAN No"
+                                android:imeOptions="actionNext"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_grp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="GST No."
+                                android:imeOptions="actionNext"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_rltnshp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="Payment"
+                                android:imeOptions="actionNext"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            android:id="@+id/linearsection">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:weightSum="1"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:textColorHint="@color/colorPrimary"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                                    app:hintTextAppearance="@style/AppearanceText">
+
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/et_pyslip"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:backgroundTint="@color/color_light_blue"
+                                        android:hint="Pay-In-Slip"
+                                        android:imeOptions="actionNext"
+                                        android:drawableEnd="@drawable/download"
+                                        android:inputType="numberDecimal"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:textColorHighlight="@color/colorPrimary"
+                                        android:textSize="@dimen/_12sdp" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/share"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight=".8"
+                                    android:src="@drawable/share"
+                                    android:layout_gravity="center"
+                                    android:tint="@color/colorBlack"
+                                    android:layout_height="@dimen/_25sdp"/>
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

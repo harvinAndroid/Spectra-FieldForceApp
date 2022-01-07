@@ -165,7 +165,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
        // init();
         initOne();
-       runthread();
+        runthread();
         Type();
         getFmsList();
     }
@@ -225,7 +225,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 updateCustomerNetwork(rxpower,speedlan,speedwifi,wifissd,txpower);
                 uploadArtifacts();
             }
-                }
+            }
         );
 
         binding.layoutAssociatedDetails.btSubmitAssociate.setOnClickListener((View v) -> {
@@ -1008,9 +1008,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 fromPickerDialog.show();
                 fromPickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
             } catch (Exception ex) {
-
             }
         });
+
         mCalendar = Calendar.getInstance();
         fromDateString = sendDateFormat.format(mCalendar.getTime());
 

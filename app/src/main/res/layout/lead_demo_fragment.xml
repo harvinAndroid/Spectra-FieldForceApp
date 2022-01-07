@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <include
+                    android:id="@+id/searchtoolbarlead"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:background="@color/colorButton"
+                    android:layout_height="?attr/actionBarSize" />
+
+                <LinearLayout
+                    android:id="@+id/lineartwo"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/searchtoolbarlead"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/et_contct_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/contact_information"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearcontactinfo"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/lineartwo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <include
+                        android:id="@+id/lead_contactinfo_layout"
+                        layout="@layout/lead_contact_info"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearthree"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearcontactinfo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/et_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/lead_channel_source"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_insta_addres"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearthree"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/layout_channel_source"
+                        layout="@layout/lead_channel_source_row"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearfouraddres"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_insta_addres"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/et_cust_network"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/installation_address"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linadd"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                     app:layout_constraintTop_toBottomOf="@+id/linearfouraddres"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <include
+                        android:id="@+id/layout_lead_installation_address"
+                        layout="@layout/lead_installation_address_row"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearfive"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linadd"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/contact_person_address_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_contact_person_address"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintTop_toBottomOf="@+id/linearfive"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:weightSum="1"
+                        android:visibility="gone"
+                        android:background="@color/colorWhite"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".3"
+                        android:textColor="@color/colorBlack"
+                        android:text="@string/same_as_installation_address"
+                        />
+
+                        <CheckBox
+                            android:id="@+id/checkbx"
+                            android:layout_weight=".7"
+                            android:gravity="end"
+                            android:foregroundTint="@color/colorBlack"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+                    <include
+                        android:id="@+id/layout_lead_contact_address"
+                        layout="@layout/lead__contact_person_row"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearsix"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_contact_person_address"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/company_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_companydetails"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearsix"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/layout_lead_company_details"
+                        layout="@layout/lead_company_details_row"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/lineareight"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_companydetails"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                  >
+
+                    <TextView
+                        android:id="@+id/tv_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/other_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearother_details"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/lineareight"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/layout_lead_other_details"
+                        layout="@layout/lead_other_details_row"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearnine"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearother_details"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/remarks"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearremark_details"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearnine"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/layout_lead_remarks"
+                        layout="@layout/lead_remarks_row"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearsave"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearremark_details">
+
+                    <TextView
+                        android:id="@+id/lead_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:text="@string/save"
+                        android:gravity="center"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_40sdp"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:textSize="@dimen/_12sdp"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/button_black"
+                        />
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+        <include layout="@layout/progress"
+            android:id="@+id/createprogressLayout"
+            />
+
+    </FrameLayout>
+</layout>

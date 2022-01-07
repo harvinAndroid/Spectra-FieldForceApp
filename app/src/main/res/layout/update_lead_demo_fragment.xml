@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".salesapp.activity.UpdateLeadActivity"
+        android:background="@android:color/white">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <include
+                    android:id="@+id/searchtoolbarlead_update"
+                    layout="@layout/update_leadtoolbar"
+                    android:layout_width="match_parent"
+                    android:background="@color/colorButton"
+                    android:layout_height="?attr/actionBarSize" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/dis"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintTop_toBottomOf="@+id/searchtoolbarlead_update"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/sp_disqualify"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:id="@+id/et_disquslify"
+                        android:layout_width="match_parent"
+                        android:text="@string/disqualify"
+                        android:textColor="@color/colorWhite"
+                        android:gravity="center"
+                        android:textAllCaps="true"
+                        android:layout_height="@dimen/_25sdp"/>
+
+                       </FrameLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/tv_qualify"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="@string/qualify"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dis"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:background="@color/colorButton"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    />
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/lineartwo"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_qualify"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/et_contct_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/contact_information"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearcontactinfo"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/lineartwo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <include
+                        android:id="@+id/updatelayout_contactinfo_layout"
+                        layout="@layout/updatelead_contact_personadd_row"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearthree"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearcontactinfo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/et_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/lead_channel_source"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_insta_addres"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearthree"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/updatelayout_channel_source"
+                        layout="@layout/update_lead_channel_source_row"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearfouraddres"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_insta_addres"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/et_cust_network"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/installation_address"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linadd"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearfouraddres"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <include
+                        android:id="@+id/updatelayout_lead_installation_address"
+                        layout="@layout/update_lead_installation_address_row"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearfive"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linadd"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/contact_person_address_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_contact_person_address"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearfive"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+<!--<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="1">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_weight=".5"
+        android:layout_height="wrap_content"/>
+    <CheckBox
+        android:layout_weight=".5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>-->
+                    <include
+                        android:id="@+id/update_lead_contact_address"
+                        layout="@layout/updatelead__contact_person_row"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearsix"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_contact_person_address"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/company_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_companydetails"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearsix"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/updatelayout_lead_company_details"
+                        layout="@layout/update_lead_company_details_row"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linaerseven"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:visibility="gone"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_companydetails"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/product_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_pro_details"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linaerseven"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/updatelayout_lead_produvt_de"
+                        layout="@layout/update_lead_produvt_detail_row"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/lineareight"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_pro_details"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/other_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearother_details"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/lineareight"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/updatelayout_lead_other_details"
+                        layout="@layout/update_lead_other_details_row"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearnine"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearother_details"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/remarks"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearremark_details"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearnine"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <include
+                        android:id="@+id/updatelayout_lead_remarks"
+                        layout="@layout/update_lead_remarks_row"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearsave"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearremark_details">
+
+                    <TextView
+                        android:id="@+id/lead_updatesave"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:text="@string/save"
+                        android:gravity="center"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_40sdp"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:textSize="@dimen/_12sdp"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/button_black"
+                        />
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+        <include layout="@layout/progress"
+            android:id="@+id/updatelead_progressLayout"
+            />
+
+        <FrameLayout
+            android:id="@+id/fragment_lead"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

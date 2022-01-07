@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="updateGeneral"
+            type="com.spectra.fieldforce.salesapp.model.LeadResponsee" />
+
+    </data>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_5sdp"
+        app:cardUseCompatPadding="true"
+        android:background="@color/colorWhite"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout android:id="@+id/linear_five"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            >
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="Name *"
+                    android:text="@{updateGeneral.response.get(0).firstName}"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_lst_nm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="Last Name *"
+                    android:text="@{updateGeneral.response.get(0).lastName}"
+
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_mb_phn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="Mobile Phone *"
+                    android:text="@{updateGeneral.response.get(0).mobileNo}"
+
+                    android:maxEms="10"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="Email Id *"
+
+                    android:text="@{updateGeneral.response.get(0).emailId}"
+
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_sub_bus_segment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_sub_bus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="Sub Business Segment *"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:text="@{updateGeneral.response.get(0).subBusinessSegment}"
+
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:focusableInTouchMode="false"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_info_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_info_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="Lead Information Status *"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:text="@{updateGeneral.response.get(0).firstName}"
+
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:focusableInTouchMode="false"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

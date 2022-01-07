@@ -6,20 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.spectra.fieldforce.R
-import com.spectra.fieldforce.databinding.LeadContactInfoBinding
-import com.spectra.fieldforce.databinding.LeadFragmentBinding
-import com.spectra.fieldforce.utils.AppConstants
-import kotlinx.android.synthetic.main.lead_contact_info.*
-import kotlinx.android.synthetic.main.lead_fragment.*
-import kotlinx.android.synthetic.main.toolbar.view.*
+import com.spectra.fieldforce.databinding.ExampleBinding
 
-class ContactInfoLeadFrag : BottomSheetDialogFragment(),View.OnClickListener {
-    lateinit var  leadContactInfoBinding: LeadContactInfoBinding
+
+class EditProductFragment : Fragment() {
+   lateinit var  leadContactInfoBinding: ExampleBinding
 
     companion object {
-        fun newInstance(): ContactInfoLeadFrag {
+        fun newInstance(): EditProductFragment {
             return newInstance()
         }
     }
@@ -29,18 +23,24 @@ class ContactInfoLeadFrag : BottomSheetDialogFragment(),View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ):  View {
-        leadContactInfoBinding = LeadContactInfoBinding.inflate(inflater, container, false)
+        leadContactInfoBinding = ExampleBinding.inflate(inflater, container, false)
         val activity = activity as Context
         return leadContactInfoBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchtoolbar.rl_back.setOnClickListener(this)
-        searchtoolbar.tv_lang.text= AppConstants.LEAD_DETAILS
+     /*   tv_lead.setOnClickListener {
+            val fragmentB = LeadFragmentCopy()
+            activity?.getSupportFragmentManager()?.beginTransaction()
+                ?.replace(R.id.fragment_main, fragmentB, "fragmnetId")
+                ?.commit();
+        }*/
     }
 
-    fun backFragment(fragment: LeadFragment){
+
+
+   /* fun backFragment(fragment: LeadFragment){
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_main, fragment)
             .commit()
@@ -51,6 +51,6 @@ class ContactInfoLeadFrag : BottomSheetDialogFragment(),View.OnClickListener {
             val leadFrag = LeadFragment()
             backFragment(leadFrag)
         }
-    }
+    }*/
 
 }

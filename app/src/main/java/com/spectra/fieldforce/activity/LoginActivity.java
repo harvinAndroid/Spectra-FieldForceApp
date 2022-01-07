@@ -202,6 +202,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+
             }
 
             @Override

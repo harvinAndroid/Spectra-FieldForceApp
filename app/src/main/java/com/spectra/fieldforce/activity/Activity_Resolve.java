@@ -105,8 +105,8 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     private Uri uri,uri1,uri2,uri3;
     private Bitmap bitmap1,bitmap2,bitmap3,bitmap4,bitmap5,bitmap6,bitmap7,bitmap8;
     private ArrayList<String> itemlist1 = new ArrayList<>();
-     private int IntCount;
-     private ImageView image;
+    private int IntCount;
+    private ImageView image;
     private Uri cameraFileUri;
     private BaseActivity baseActivity;
     private HashMap<Integer,Answer> questionmap = new HashMap<Integer,Answer>();

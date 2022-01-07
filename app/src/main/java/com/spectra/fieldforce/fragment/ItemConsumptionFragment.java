@@ -388,7 +388,6 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
         sp_sub_item.setOnItemSelectedListener(this);
         sp_item_type.setOnItemSelectedListener(this);
 
-
         GetItemConsumptionRequest comsumptionDetails = new GetItemConsumptionRequest(Constants.GETALL_ITEM_MASTER,Constants.AUTH_KEY,SrNumber,canId,"true");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ItemConsumptionDetails> call = apiService.getItemConsumptionDetails(comsumptionDetails);
@@ -451,7 +450,6 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                                             for (ItemConsumptionDetails.Equipment templateId : equipmentresponselist)
                                                 TemplateId.add(templateId.getTemplateId());
                                         }
-
                                     }
                                     if (getActivity() != null) {
                                         SpinnerAdapter spinnerAdapter1 = new SpinnerAdapter(requireActivity(), R.layout.spinner_item, R.id.tv_item_name, item);

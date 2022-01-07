@@ -79,6 +79,64 @@ import com.spectra.fieldforce.model.SrDetailsListResponse;
 import com.spectra.fieldforce.model.StarttimeRequest;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.model.questionAnsResponse.QuestionAnswerList;
+import com.spectra.fieldforce.salesapp.model.AddProductRequest;
+import com.spectra.fieldforce.salesapp.model.CreateLeadRequest;
+import com.spectra.fieldforce.salesapp.model.CreateLeadResponse;
+import com.spectra.fieldforce.salesapp.model.CreateQuoteRequest;
+import com.spectra.fieldforce.salesapp.model.DeleteProductResponse;
+import com.spectra.fieldforce.salesapp.model.DisqualifyLead;
+import com.spectra.fieldforce.salesapp.model.GenQuoteResponse;
+import com.spectra.fieldforce.salesapp.model.GetAllCafListResponse;
+import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest;
+import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse;
+import com.spectra.fieldforce.salesapp.model.GetAllOppurtunityResponse;
+import com.spectra.fieldforce.salesapp.model.GetApprovalRersponse;
+import com.spectra.fieldforce.salesapp.model.GetBusinessSubSegRequest;
+import com.spectra.fieldforce.salesapp.model.GetCityRequest;
+import com.spectra.fieldforce.salesapp.model.GetCityResponse;
+import com.spectra.fieldforce.salesapp.model.GetCompanyRequest;
+import com.spectra.fieldforce.salesapp.model.GetCompanyResponse;
+import com.spectra.fieldforce.salesapp.model.GetDisQualifyResponse;
+import com.spectra.fieldforce.salesapp.model.GetFeasibiltyResponse;
+import com.spectra.fieldforce.salesapp.model.GetFirmTypeRequest;
+import com.spectra.fieldforce.salesapp.model.GetFirmTypeResponse;
+import com.spectra.fieldforce.salesapp.model.GetGroupResponse;
+import com.spectra.fieldforce.salesapp.model.GetIndustryTypeResponse;
+import com.spectra.fieldforce.salesapp.model.GetLeadAreaRequest;
+import com.spectra.fieldforce.salesapp.model.GetLeadAreaRes;
+import com.spectra.fieldforce.salesapp.model.GetLeadBuildingRequest;
+import com.spectra.fieldforce.salesapp.model.GetLeadBuildingResponse;
+import com.spectra.fieldforce.salesapp.model.GetLeadChannelRequest;
+import com.spectra.fieldforce.salesapp.model.GetLeadChannelResponse;
+import com.spectra.fieldforce.salesapp.model.GetLeadRequest;
+import com.spectra.fieldforce.salesapp.model.GetLeadSourceRequest;
+import com.spectra.fieldforce.salesapp.model.GetLeadSourceResp;
+import com.spectra.fieldforce.salesapp.model.GetOppurtunityProductRequest;
+import com.spectra.fieldforce.salesapp.model.GetOppurtunityProductResponse;
+import com.spectra.fieldforce.salesapp.model.GetOppurtunityRequest;
+import com.spectra.fieldforce.salesapp.model.GetOppurtunityResponse;
+import com.spectra.fieldforce.salesapp.model.GetPriceListResponse;
+import com.spectra.fieldforce.salesapp.model.GetPriceListRequest;
+import com.spectra.fieldforce.salesapp.model.GetProductItemListRes;
+import com.spectra.fieldforce.salesapp.model.GetProductListRequest;
+import com.spectra.fieldforce.salesapp.model.GetRelationShipResponse;
+import com.spectra.fieldforce.salesapp.model.GetServProvResponse;
+import com.spectra.fieldforce.salesapp.model.GetStateResponse;
+import com.spectra.fieldforce.salesapp.model.GetSubBusinessResponse;
+import com.spectra.fieldforce.salesapp.model.LeadResponsee;
+import com.spectra.fieldforce.salesapp.model.LeadSalutationRequest;
+import com.spectra.fieldforce.salesapp.model.LostOppurtunityRequest;
+import com.spectra.fieldforce.salesapp.model.ProdctResponse;
+import com.spectra.fieldforce.salesapp.model.ProductListResponse;
+import com.spectra.fieldforce.salesapp.model.QualifiedLeadRequest;
+import com.spectra.fieldforce.salesapp.model.QualifyLeadResponse;
+import com.spectra.fieldforce.salesapp.model.UpdateFlrRequest;
+import com.spectra.fieldforce.salesapp.model.UpdateOppurtunity;
+import com.spectra.fieldforce.salesapp.model.UpdateProductRequest;
+import com.spectra.fieldforce.salesapp.model.ValidateResponse;
+import com.spectra.fieldforce.salesapp.model.ValidateSalesResponse;
+import com.spectra.fieldforce.salesapp.model.ValidateUserRequest;
+
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -94,6 +152,12 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<QuestionAnswerList> getQuestionList(@Body QuestionListRequest questionListRequest);
+
+    @POST ("index.php")
+    Call<ValidateResponse> validateUserReq(@Body ValidateUserRequest questionListRequest);
+
+    @POST ("index.php")
+    Call<ValidateSalesResponse> validateSalesUserReq(@Body ValidateUserRequest questionListRequest);
 
 
     @POST ("index.php")
@@ -311,4 +375,121 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<CommonMessageResponse> getItemCodeStatus(@Body ResendActivationCodeRequest resendActivationCodeRequest);
+
+    @POST ("index.php")
+    Call<CreateLeadResponse> createLead(@Body CreateLeadRequest createLeadRewuest);
+
+    @POST ("index.php")
+    Call<CreateLeadResponse> updateOppurtunity(@Body UpdateOppurtunity updateOppurtunity);
+
+    @POST ("index.php")
+    Call<GetLeadBuildingResponse> getleadBuilding(@Body GetLeadBuildingRequest getLeadBuildingRequest);
+
+    @POST ("index.php")
+    Call<GetPriceListResponse> getPriceList(@Body GetPriceListRequest getProductListRequest);
+
+    @POST ("index.php")
+    Call<ProductListResponse> getProductList(@Body GetProductListRequest getProductListRequest);
+
+
+    @POST ("index.php")
+    Call<GetIndustryTypeResponse> getIndustry(@Body GetLeadBuildingRequest getLeadBuildingRequest);
+
+
+    @POST ("index.php")
+    Call<LeadResponsee> getLead(@Body GetLeadRequest getLeadRequest);
+
+    @POST ("index.php")
+    Call<GetOppurtunityProductResponse> getOppurtunityProduct(@Body GetOppurtunityProductRequest getOppurtunityProductRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> lostOppurtunityRequest(@Body LostOppurtunityRequest lostOppurtunityRequest);
+
+    @POST ("index.php")
+    Call<ProdctResponse> addProduct(@Body AddProductRequest addProductRequest);
+
+    @POST ("index.php")
+    Call<ProdctResponse> addQuote(@Body CreateQuoteRequest createQuoteRequest);
+
+
+    @POST ("index.php")
+    Call<DeleteProductResponse> deleteProduct(@Body AddProductRequest addProductRequest);
+
+    @POST ("index.php")
+    Call<GetProductItemListRes> addProductItem(@Body GetProductListRequest getProductListRequest);
+
+    @POST ("index.php")
+    Call<ProdctResponse> won(@Body GetProductListRequest getProductListRequest);
+
+
+    @POST ("index.php")
+    Call<GetOppurtunityResponse> getOppurtunity(@Body GetOppurtunityRequest getOppurtunityRequest);
+
+
+    @POST ("index.php")
+    Call<GetAllLeadResponse> getAllLead(@Body GetAllLeadRequest getAllLeadRequest);
+
+    @POST ("index.php")
+    Call<GetAllCafListResponse> getAllCAF(@Body GetAllLeadRequest getAllLeadRequest);
+
+
+    @POST ("index.php")
+    Call<GetAllOppurtunityResponse> getAllOppurtunity(@Body GetAllLeadRequest getAllLeadRequest);
+
+    @POST ("index.php")
+    Call<GetFeasibiltyResponse> getAllFeasibility(@Body GetProductListRequest getProductListRequest);
+
+    @POST ("index.php")
+    Call<GetApprovalRersponse> getApproval(@Body GetProductListRequest getProductListRequest);
+
+    @POST ("index.php")
+    Call<GenQuoteResponse> getQuote(@Body GetProductListRequest getProductListRequest);
+
+    @POST ("index.php")
+    Call<GetLeadChannelResponse> getleadChannel(@Body GetLeadChannelRequest getLeadChannelRequest);
+
+    @POST ("index.php")
+    Call<GetCompanyResponse> getComapnyList(@Body GetCompanyRequest getCompanyRequest);
+
+
+    @POST ("index.php")
+    Call<GetRelationShipResponse> getRelationList(@Body GetCompanyRequest getCompanyRequest);
+
+    @POST ("index.php")
+    Call<GetGroupResponse> getGroup(@Body GetCompanyRequest getCompanyRequest);
+
+    @POST ("index.php")
+    Call<CommonClassResponse> updateFlr(@Body UpdateFlrRequest updateFlrRequest);
+
+    @POST ("index.php")
+    Call<ProdctResponse> updateOppProduct(@Body UpdateProductRequest updateProductRequest);
+
+    @POST ("index.php")
+    Call<GetLeadSourceResp> getLeadSource(@Body GetLeadSourceRequest getLeadSourceRequest);
+
+    @POST ("index.php")
+    Call<GetLeadAreaRes> getLeadArea(@Body GetLeadAreaRequest getLeadAreaRequest);
+
+    @POST ("index.php")
+    Call<GetSubBusinessResponse> getSubBusSeg(@Body GetBusinessSubSegRequest getBusinessSubSegRequest);
+
+    @POST ("index.php")
+    Call<GetFirmTypeResponse> getFirmType(@Body GetFirmTypeRequest getFirmTypeRequest);
+
+    @POST ("index.php")
+    Call<GetServProvResponse> getServProv(@Body LeadSalutationRequest leadSalutationRequest);
+
+    @POST ("index.php")
+    Call<GetStateResponse> getStateList(@Body LeadSalutationRequest leadSalutationRequest);
+
+    @POST ("index.php")
+    Call<GetCityResponse> getCityList(@Body GetCityRequest getCityRequest);
+
+    @POST ("index.php")
+    Call<QualifyLeadResponse> qualifyReq(@Body QualifiedLeadRequest qualifiedLeadRequest);
+
+    @POST ("index.php")
+    Call<GetDisQualifyResponse> disQualifyReq(@Body DisqualifyLead disqualifyLead);
+
+
 }

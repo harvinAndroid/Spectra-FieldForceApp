@@ -42,21 +42,17 @@ public class CommonClassResponse {
         private Integer statusCode;
         @SerializedName("Message")
         private String message;
+        private String Id;
 
         public Integer getStatusCode() {
             return statusCode;
         }
-
-        public void setStatusCode(Integer statusCode) {
-            this.statusCode = statusCode;
-        }
-
         public String getMessage() {
             return message;
         }
-
-        public void setMessage(String message) {
-            this.message = message;
+        public String getId() {
+            return Id;
         }
+
     }
 }

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+     >
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorWhite"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <include
+                android:id="@+id/searchtoolbar"
+                layout="@layout/toolbar"
+                android:layout_width="match_parent"
+                android:background="@color/colorButton"
+                android:layout_height="?attr/actionBarSize" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_pro_nm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Product Name"
+                    android:drawableEnd="@drawable/lock"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_unit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:drawableEnd="@drawable/lock"
+                    android:focusable="false"
+                   android:focusableInTouchMode="false"
+                    android:hint="Unit"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_pricing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_pricing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="Pricing"
+                    android:drawableEnd="@drawable/ic_expand_down"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            </FrameLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Price Per Unit"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="number"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Discount"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_pro_submit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_50sdp"
+                android:layout_marginLeft="@dimen/_50sdp"
+                android:layout_marginRight="@dimen/_50sdp"
+                android:layout_marginEnd="@dimen/_50sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:elevation="@dimen/_5sdp"
+                android:text="@string/update"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_16sdp"
+                android:background="@drawable/button_black"
+                app:cornerRadius="@dimen/_25sdp" />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

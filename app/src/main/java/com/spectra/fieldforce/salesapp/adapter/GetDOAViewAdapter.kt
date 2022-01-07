@@ -1,0 +1,44 @@
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import android.view.View
+import com.spectra.fieldforce.databinding.GetAllFeasibiltyAdapterBinding
+
+import com.spectra.fieldforce.salesapp.model.AppData
+
+
+class GetDOAViewAdapter(private val items: ArrayList<AppData>, private val context: Context?, val str_oppId: String?) : RecyclerView.Adapter<GetDOAViewAdapter.ViewHolder>() {
+
+    lateinit var binding: GetAllFeasibiltyAdapterBinding
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = GetAllFeasibiltyAdapterBinding.inflate(inflater)
+        return ViewHolder(binding)
+    }
+
+    override fun getItemCount():
+            Int = items.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position])
+
+    inner class ViewHolder(val binding: GetAllFeasibiltyAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: AppData) {
+            binding.FeasibilityId.text = "Name : " +item.Name
+            binding.CustomerName.text = "Approval Requested Date : " +item.ApprovalRequestedDate
+            binding.Opportunity.text = "Approver : " +item.Approver
+            binding.EstimatedDoneBy.text = "Created On : " +item.CreatedOn
+            binding.FeasibilityStatus.text = "Approval Date : " +item.ApprovalDate
+            binding.ApproveLevel1.text = "Next Approval : " +item.NextApproval
+            binding.ApproveLevel2.text = "Opportunity: " +item.Opportunity
+            binding.RouteType.text = "Rejected Date : " +item.RejectedDate
+            binding.RedunancyRequired.text = "Status : " +item.Status
+            binding.ThirdPartyFeasibilityRequired.text = "Status Reason : "+item.StatusReason
+            binding.Area.visibility=View.GONE
+            binding.CityCorrect.visibility=View.GONE
+
+        }
+    }
+
+}

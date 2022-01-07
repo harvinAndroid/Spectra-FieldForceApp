@@ -3,7 +3,7 @@ package com.spectra.fieldforce.utils;
 public class Constants {
 
    /* PRODUCATION URL*/
-   /* public static final String BASE_URL="https://ffamwapi.spectra.co";
+  /*  public static final String BASE_URL="https://ffamwapi.spectra.co";
     public static final String BASE_URL1="https://custappmw.spectra.co";*/
 
   /*  Local URL */
@@ -15,14 +15,12 @@ public class Constants {
     public static final String AUTH = "AdgT68HnjkehEqlkd4";
     public static final String GET_ACCOUNT_DATA = "getAccountData";
     public static final String GET_MRTG= "getMRTGbycanid";
+    public static final String VALIDATE_USER = "validateUser";
     public static final String ASSIGNED = "Assigned";
     public static final String ASSIGNMENT = "assignment";
     public static final String ACKNOWLEDGE_SR= "AcknowledgeSR";
     public static final String ACTION_SAVEQUESTIONARE= "saveQuestionerdetails";
-    public static final String ACTION_GETSAVEQUESTIONARE= "getQuestBySrNo";
     public static final String URL = "http://fiber.spectra.co/";
-   // public static final String NOC = "https://cs.spectra.co/nocportal/index.php?account_no_bil=9063188";
-
     public static final String GET_QUESTIONARE_LIST = "getQuestBySrNo";
     public static final String APP= "FFA App";
     public static final String ACTION_AUTHENTICATION = "authentication";
@@ -55,7 +53,6 @@ public class Constants {
     public static final String GET_IRHOLD_CATEGORY = "IRHoldCategories";
     public static final String GET_ITEM_LIST = "getItemList";
     public static final String GET_FMS_LIST = "getFMSList";
-    //edit
     public static final String GET_ITEM_CONSUMPTION_BY_ID = "getItemConsumtionByID";
     public static final String GET_FIBRE_CABLE = "getFiberCable";
     public static final String PROVISIONING = "provisioning";
@@ -63,7 +60,7 @@ public class Constants {
     public static final String POST_ITEM_CONSUMPTIONS = "postItemConsumptions";
     public static final String UPDATE_ASSOCIATE = "updateAssociate";
     public static final String UPDATE_FMS_DETAILS ="updateFMSdetails";
-    public static final String UPDATE_WCR_ENGINER ="updateWCREngine er";
+    public static final String UPDATE_WCR_ENGINER ="updateWCREngineer";
     public static final String HOLD_WCR = "holdWCR";
     public static final String WCR_COMPLETE = "WCRComplete";
     public static final String RESEND_CODE = "resendCode";
@@ -104,5 +101,53 @@ public class Constants {
     public static final String GET_ITEM_STATUS = "getItemStatus";
     public static final String UPDATE_WCR_ENGINEER = "updateWCREngineer";
     public static final String UPDATE_IR_ENGINEER = "updateIREngineer";
+    public static final String CREATE_LEAD = "createLead";
+    public static final String GET_CHANNEL ="getChannel";
+    public static final String GET_BUILDING = "getBuilding";
+    public static final String GET_PRICELIST = "getPricelist";
+    public static final String GET_SOURCE = "getSource";
+    public static final String Get_AREA = "getArea";
+    public static final String GET_SUB_BUSINESS_SEG= "getSubBusinessSegment";
+    public static final String FIRM_TYPE_LIST = "firmTypeList";
+    public static final String EXSER_PROLIST_ONE = "exSerProvListOne";
+    public static final String SER_PROV_LISTONE = "serProvListOne" ;
+    public static final String EX_SERVPROV_LISTTWO = "exSerProvListTwo";
+    public static final String SER_PROLISTTWO= "serProvListTwo";
+    public static final String CUST_FIREWALL_LIST= "custFireWallList";
+    public static final String CUST_WIFI_LIST = "custWifiList";
+    public static final String CUST_VPN_LIST = "custVPNList";
+    public static final String GET_STATE = "getState" ;
+    public static final String GET_CITY = "getCity";
+    public static final String SALUTATION_LIST = "salutationList";
+    public static final String GET_LEADS = "getLeads";
+    public static final String UPDATE_LEAD = "updateLead";
+    public static final String UPDATE_FLR = "updateFLR";
+    public static final String DISQUALIFY_LEAD = "disqualifydLead";
+    public static final String QUALIFY_LEAD = "qualifyLead";
+    public static final String UPDATE_OPPURTUNITY = "updateopportunity";
+    public static final String GET_AllLEADS = "getAllLeads";
+    public static final String GET_AllOPPURTUNITY = "getAllOpportunity";
+    public static final String GET_COMPANY = "getCompany";
+    public static final String GET_RELATIONSHIP = "getRelationship";
+    public static final String GET_OPPURTUNITY = "getopportunity";
+    public static final String GetOpp_ProductList = "getProductlist";
+    public static final String GET_GROUP = "getGroups";
+    public static final String LOST_OPPURTUNITY ="lostOpportunity";
+    public static final String GET_INDUSTRYTYPE= "getindustrytype";
+    public static final String GET_OPPPRODUCT= "getOppProduct";
+    public static final String GET_PRODUCTLIST="getProductlist";
+    public static final String CREATE_OPPPRODUCT= "createOppProduct";
+    public static final String DELETE_OPPPRODUCT="deleteOppProduct";
+    public static final String GENERATE_FEASIBILITY ="generateFeasibility";
+    public static final String GET_FEASIBILITY ="getFeasibility";
+    public static final String CREATE_QUOTE  ="createQuote";
+    public static final String GET_QUOTE  ="getQuote";
+  public static final String UPDATE_OPPPRODUCT  ="updateOppProduct";
+  public static final String GETAPPROVAL="getApproval";
+  public static final String CREATEAPPROVAL="createApproval";
+  public static final String WON_OPPURTUNITY="wonOpportunity";
+  public static final String GETALLCAF="getAllCAF";
+
+
 
 }
