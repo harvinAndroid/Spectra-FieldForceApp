@@ -1,12 +1,12 @@
 package com.spectra.fieldforce.salesapp.model
 
 data class GetAllCafListResponse(
-    val Response: CafResponse,
+    val Response: CafDetaiResponse,
     val Status: String,
     val StatusCode: String
 )
 
-data class CafResponse(
+data class CafDetaiResponse(
     val Data: ArrayList<CafData>,
     val Message: String,
     val StatusCode: Int

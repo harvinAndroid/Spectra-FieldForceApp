@@ -4,10 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.animation.AlphaAnimation
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -16,10 +13,7 @@ import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
 import com.spectra.fieldforce.databinding.EditProductDetailsBinding
-import com.spectra.fieldforce.databinding.ExampleBinding
-import com.spectra.fieldforce.model.gpon.response.CommonClassResponse
 import com.spectra.fieldforce.salesapp.model.ProdctResponse
-import com.spectra.fieldforce.salesapp.model.UpdateFlrRequest
 import com.spectra.fieldforce.salesapp.model.UpdateProductRequest
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
@@ -98,7 +92,7 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
                         try {
                             Toast.makeText(this@EditProduct,img,Toast.LENGTH_LONG).show()
                             Log.e("image", img)
-                            val intent = Intent(this@EditProduct, OppurtunityActivity::class.java)
+                            val intent = Intent(this@EditProduct, OpportunityActivity::class.java)
                             intent.putExtra("OppId",str_Opp_Id)
                             startActivity(intent)
                             finish()

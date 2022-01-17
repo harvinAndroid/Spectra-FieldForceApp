@@ -1,7 +1,6 @@
 package com.spectra.fieldforce.salesapp.fragment
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -121,7 +120,6 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
     private var companyList: ArrayList<ComapnyData>? = null
     private var group : ArrayList<String>? = null
     private var groupId : ArrayList<String>? = null
-    private var groupList: ArrayList<GroupData>? = null
     private var relation : ArrayList<String>? = null
     private var relationId : ArrayList<String>? = null
     private var relationList: ArrayList<RelationshipData>? = null
@@ -140,6 +138,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
     var str_lead_chnl : String? = null
     var str_installbuild : String? = null
     var str_lead_src : String? = null
+    var date :String ?=null
     var str_sub_bus : String? = null
     var str_firm_type :String? = null
     var str_industry_type :String? = null
@@ -153,7 +152,6 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
     var str_cust_vpn : String? = null
     var str_cust_serv_one : String? = null
     var str_cust_serv_two : String? = null
-    var str_medium: String? = null
     var str_voip : String? = null
     var str_wifi : String? = null
     var str_company :String ? = null
@@ -163,18 +161,13 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
 
     var str_inst_country: String? = null
     var str_inst_state: String? = null
-    var str_inst_city : String? = null
     var str_inst_area : String? = null
     var str_inst_building_name : String? = null
     var str_inst_build_num : String? = null
-    var str_inst_build_type : String? = null
-     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
     var str_add_country : String? = null
     var str_add_state: String? = null
     var str_add_state_code : String? = null
     var str_add_city: String? = null
-    var str_add_area : String? = null
-    var str_add_city_code : String? = null
     var str_add_area_code: String? = null
     var str_add_building : String? = null
     var strCity = ""
@@ -183,8 +176,6 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
      var list_of_salutation = arrayOf("Select Salutation","Mr.", "Mrs.", "Miss")
     var list_of_salutation_id = arrayOf("1","2","3")
     var list_of_option = arrayOf("Select Options","Yes","No")
-    var list_valueoption = arrayOf("111260000","111260001")
-    var list_option_value = arrayOf("0","1")
     var list_of_channel = arrayOf("Select Channel","Call/SMS-Inbound","Caretel","CM Outbound","Email/Email Campaigns","Inside Sales","Inside Sales-QC","Kaizala","NetOps Channel","Online CAF","Outbound Call",
     "Paid Campaign/Activity","Promotion/BTL/ATL/Events/Sponsorship/Visibility Activity","Self Care Portal","Self Lead","Unify Churned","Web Campaign")
     var list_of_subBusSegment = arrayOf("Select Sub Business Segment","Connectivity Solution", "Data Centre Products", "Internet Service","SDWAN","SIP-Trunk","VOIP")
@@ -200,13 +191,11 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
 
     var list_of_boolean = arrayOf("True","False")
 
-    var list_state_code = arrayOf("100009","100021","100004", "100015","100008",
+    var list_state_code = arrayOf("0","100009","100021","100004", "100015","100008",
     "100011","100007", "100012","100014","100002","100026",
     "100017","100025", "100010", "100003","100023","100006",
     "100016","100013")
 
-    var companySize = arrayOf("Select Company Size","1-10","11-25","25-51","52-100","100-350","351-800","800=1000",">1000")
-    var numBranches = arrayOf("Number of Branches","<4","4-8","9-15",">15")
     var country_name = arrayOf("India")
 
     var ext_serv_one = arrayOf("Select Existing Service Provider","Jio", "ACT Fibernet","N.A",
@@ -224,14 +213,14 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
 
 
     var list_of_media = arrayOf("Fibre","RF")
-    var list_of_medium = arrayOf("Select Medium","Fibre","RF","Copper")
+    var list_of_mediavalue = arrayOf("1","2")
 
     var ext_serv_val = arrayOf("569480000","569480001","569480002","569480003")
 
     companion object {
-        fun newInstance(): CreateLeadFragment {
+       /* fun newInstance(): CreateLeadFragment {
             return CreateLeadFragment()
-        }
+        }*/
     }
 
     override fun onCreateView(
@@ -239,7 +228,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         savedInstanceState: Bundle?
     ): View {
         leadFragmentBinding = LeadDemoFragmentBinding.inflate(inflater, container, false)
-        val activity = activity as Context
+       // val activity = activity as Context
         return leadFragmentBinding.root
     }
 
@@ -250,46 +239,52 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
 
         listener()
         init()
-      //  getGroup("CNEW")
         Calender()
         getCompany()
         getIndustryTpe()
         getOtherCity()
+        setAdpter()
+        itemListener()
 
     }
 
 
     fun init(){
         checkbx.setOnCheckedChangeListener { _, isChecked ->
-         //   Toast.makeText(context,isChecked.toString(),Toast.LENGTH_SHORT).show()
             val inst_state_code = str_inst_state.toString()
-            val inst_state = str_state.toString()
-           // val statename = layout_lead_contact_address.et_cnt_state.setText(inst_state_code)
-            val state = inst_state
 
             val inst_city_code = str_city_code
-            val inst_city = str_city.toString()
+          //  val inst_city = str_city.toString()
             val inst_area = str_inst_area.toString()
 
           //  val city = layout_lead_contact_address.et_cnt_city.setText(inst_city)
             val citycode = inst_city_code
             var cntstatePosition = 0
-            list_of_state.forEachIndexed { index, s ->
-                if (s == inst_state) cntstatePosition = index
+            list_state_code.forEachIndexed { index, s ->
+                if (s == inst_state_code) cntstatePosition = index
             }
             val cntstateAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_state) }
             cntstateAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_item)
             layout_lead_contact_address.sp_cnt_state.adapter = cntstateAdapter
             layout_lead_contact_address.sp_cnt_state.setSelection(cntstatePosition)
             cntstateAdapter?.notifyDataSetChanged()
+            getAddCity(inst_state_code)
             strCity = str_city_code.toString()
             strArea = str_inst_area.toString()
-            val area =  str_inst_area.toString()
-            str_add_area_code = str_inst_area!!
-            getAddCity(inst_state_code)
-            getCpAdArea(str_city,str_city_code.toString(),true)
-            strBuilding = str_inst_building_name.toString()
-            getAddBuilding(str_inst_area!!,str_installbuild!!)
+            strBuilding = str_inst_build_num.toString()
+
+
+         //   getCpAdArea(str_city,str_city_code.toString(),true)
+
+            /*  strCity = str_city_code.toString()
+              strArea = str_inst_area.toString()
+              val area =  str_inst_area.toString()
+              str_add_area_code = str_inst_area!!
+              getAddCity(inst_state_code)
+              getCpAdArea(str_city,str_city_code.toString(),true)
+              strBuilding = str_inst_building_name.toString()
+              getAddBuilding(str_inst_area!!,str_installbuild!!)
+             */
             val inst_floor = layout_lead_installation_address.et_add_floor.text.toString()
             val inst_pincode = layout_lead_installation_address.et_pin_code.text.toString()
             val inst_buil = layout_lead_installation_address.et_add_build_num.text.toString()
@@ -339,7 +334,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             val other_pro_two=str_serv_pro_two.toString()
             val other_date = str_data.toString()
             val other_firewal = str_cust_frwl.toString()
-            val other_targetdate = layout_lead_other_details.et_trgt_period.text.toString()
+            val other_targetdate = date
             val other_wifi =  str_wifi.toString()
             val other_voip =  str_voip.toString()
             val other_vpn = str_cust_vpn.toString()
@@ -397,7 +392,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
                 Toast.makeText(context, "Please Select Area", Toast.LENGTH_SHORT).show()
             }else if(inst_build_name.isBlank()||inst_build=="Select Building"){
                 Toast.makeText(context, "Please Select Building Name", Toast.LENGTH_SHORT).show()
-            }else if(inst_build.toString().isBlank()){
+            }else if(inst_build.isBlank()){
                 Toast.makeText(context, "Please enter Building No. ", Toast.LENGTH_SHORT).show()
             }else if(inst_block.isBlank()){
                 Toast.makeText(context, "Please enter Block", Toast.LENGTH_SHORT).show()
@@ -448,7 +443,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
                 Toast.makeText(context, "Please Select Voip ", Toast.LENGTH_SHORT).show()
             }else if(other_wifi.isBlank()||other_wifi=="Select Option"){
                 Toast.makeText(context, "Please Select Manage Wifi ", Toast.LENGTH_SHORT).show()
-            }else if(other_targetdate.isBlank()){
+            }else if(other_targetdate?.isBlank()==true){
                 Toast.makeText(context, "Please Select Target Intallation Period ", Toast.LENGTH_SHORT).show()
             }
             else {
@@ -463,6 +458,10 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             }
 
         }
+
+    }
+
+    fun itemListener(){
         val email = lead_contactinfo_layout.et_upemailid.text.toString()
 
         lead_contactinfo_layout.et_upemailid.addTextChangedListener(object: TextWatcher{
@@ -475,14 +474,14 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
                 if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 
                 }
-               else{
+                else{
                     Toast.makeText(context, "Invalid email address", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun afterTextChanged(p0: Editable?) { }
         })
-        lead_contactinfo_layout.et_business_seg.setText("Business")
+        lead_contactinfo_layout.et_business_seg.setText(AppConstants.BUSINESS)
         lead_contactinfo_layout.et_sub_businessseg.setOnClickListener { lead_contactinfo_layout.sp_sub_bus.performClick() }
         lead_contactinfo_layout.sp_sub_bus.onItemSelectedListener = this
         lead_contactinfo_layout.et_saluation.setOnClickListener { lead_contactinfo_layout.sp_salutation.performClick() }
@@ -501,14 +500,12 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         lead_contactinfo_layout.sp_group.onItemSelectedListener = this
         lead_contactinfo_layout.et_relation.setOnClickListener { lead_contactinfo_layout.sp_relation.performClick() }
         lead_contactinfo_layout.sp_relation.onItemSelectedListener = this
-         layout_lead_company_details.et_firm_type.setOnClickListener { layout_lead_company_details.sp_firm_type.performClick() }
+        layout_lead_company_details.et_firm_type.setOnClickListener { layout_lead_company_details.sp_firm_type.performClick() }
         layout_lead_company_details.sp_firm_type.onItemSelectedListener = this
         layout_lead_company_details.et_lco.setOnClickListener { layout_lead_company_details.sp_lco.performClick() }
         layout_lead_company_details.sp_lco.onItemSelectedListener = this
         layout_lead_company_details.et_indus_type.setOnClickListener { layout_lead_company_details.sp_industype.performClick() }
         layout_lead_company_details.sp_industype.onItemSelectedListener = this
-        layout_lead_company_details.et_comp_sz.setOnClickListener { layout_lead_company_details.sp_cmpnysz.performClick() }
-        layout_lead_company_details.sp_cmpnysz.onItemSelectedListener = this
         layout_lead_other_details.et_cust_void.setOnClickListener { layout_lead_other_details.sp_cst_voip.performClick() }
         layout_lead_other_details.sp_cst_voip.onItemSelectedListener = this
         layout_lead_installation_address.et_country.setOnClickListener { layout_lead_installation_address.sp_cntry.performClick() }
@@ -545,15 +542,13 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         layout_lead_other_details.et_indus_firewl.setOnClickListener { layout_lead_other_details.sp_intrs_frwal.performClick() }
         layout_lead_other_details.sp_intrs_frwal.onItemSelectedListener = this
 
-         layout_lead_other_details.et_vpn_srv.setOnClickListener { layout_lead_other_details.sp_vpn_serv.performClick() }
+        layout_lead_other_details.et_vpn_srv.setOnClickListener { layout_lead_other_details.sp_vpn_serv.performClick() }
         layout_lead_other_details.sp_vpn_serv.onItemSelectedListener = this
 
         layout_lead_other_details.et_service_pv_one.setOnClickListener { layout_lead_other_details.sp_serv_pro_one.performClick() }
         layout_lead_other_details.sp_serv_pro_one.onItemSelectedListener = this
         layout_lead_other_details.et_srv_pv_two.setOnClickListener { layout_lead_other_details.sp_serv_pro_two.performClick() }
         layout_lead_other_details.sp_serv_pro_two.onItemSelectedListener = this
-        layout_lead_other_details.et_crnt_cnt_mdm.setOnClickListener { layout_lead_other_details.sp_crnt_mdm.performClick() }
-        layout_lead_other_details.sp_crnt_mdm.onItemSelectedListener = this
 
         layout_lead_other_details.et_cust_wifi.setOnClickListener { layout_lead_other_details.sp_cust_wifi.performClick() }
         layout_lead_other_details.sp_cust_wifi.onItemSelectedListener = this
@@ -564,6 +559,12 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         layout_lead_other_details.et_is_cus.setOnClickListener { layout_lead_other_details.sp_intrsteddata_center.performClick() }
         layout_lead_other_details.sp_intrsteddata_center.onItemSelectedListener = this
 
+
+
+
+    }
+
+    fun setAdpter(){
         val salutation = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_salutation) }
         salutation?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         lead_contactinfo_layout.sp_salutation!!.adapter = salutation
@@ -588,9 +589,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         val dataa = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_option) }
         dataa?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_other_details.sp_intrsteddata_center!!.adapter = dataa
-         val cmpsz = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, companySize) }
-        cmpsz?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        layout_lead_company_details.sp_cmpnysz!!.adapter = cmpsz
+
         val option = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_option) }
         option?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_other_details.sp_cst_voip!!.adapter = option
@@ -632,11 +631,6 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         serv_pv_two?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_other_details.sp_ext_serv_two!!.adapter = serv_pv_two
 
-        val crnt = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_medium) }
-        crnt?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        layout_lead_other_details.sp_crnt_mdm!!.adapter = crnt
-
-
         val wifi = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_option) }
         wifi?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_other_details.sp_cust_wifi!!.adapter = wifi
@@ -644,8 +638,6 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         val media = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_media) }
         media?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_other_details.sp_media!!.adapter = media
-
-
     }
 
 
@@ -731,7 +723,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         val fragmentB = GetAllLeadFrag()
         activity?.getSupportFragmentManager()?.beginTransaction()
                 ?.replace(R.id.fragment_main, fragmentB, "fragmnetId")
-                ?.commit();
+                ?.commit()
     }
 
     fun createLead(remark: String, companyname: String, firmtype: String, industrytype: String, jbtitle: String,
@@ -742,7 +734,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
                    inst_floor: String, inst_pincode: String, inst_buil: String, inst_state: String,
                    inst_state_code: String, inst_block: String, inst_sp_area: String, inst_sp_building: String,
                    other_work: String, other_pro_one: String, other_pro_two: String, other_date: String,
-                   other_firewal: String, other_targetdate: String, other_wifi: String, other_voip: String,
+                   other_firewal: String, other_targetdate: String?, other_wifi: String, other_voip: String,
                    other_vpn: String, other_media: String, other_cust_one: String, cust_two: String,
                    genral_name: String, general_lst_nm: String, general_chnl: String, general_src: String,
                    gnl_phn_num: String, gnl_sub: String, cnt_info_cnt_person: String, general_email: String,
@@ -764,16 +756,16 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         val companyDetail = CompanyDetail(companyname,firmtype, industrytype,jbtitle)
 
         val contactAddress= ContactAddress(area,addres_build,city,"10001",floor,pincode,building,
-                spcfc_area,spcfc_building,str_add_state_code.toString(),block)
-        val installationAddress= InstallationAddress(inst_block,inst_area,inst_build,inst_city_code.toString(),
+                spcfc_area,spcfc_building,str_add_state_code,block)
+        val installationAddress= InstallationAddress(inst_block,inst_area,inst_build,inst_city_code,
                 "10001", inst_floor,inst_pincode,inst_buil,
-                "0",inst_sp_area,inst_sp_building,str_inst_state.toString())
+                "0",inst_sp_area,inst_sp_building,str_inst_state)
 
         val createLeadRequest = CreateLeadRequest(Constants.CREATE_LEAD,Constants.AUTH_KEY,"",
-                companyDetail,contactAddress,installationAddress,"Business",str_cmp.toString(),
-                cnt_info_cnt_person,str_customer_segmentid.toString(),general_email,"3",general_lst_nm
+                companyDetail,contactAddress,installationAddress,"Business",str_cmp,
+                cnt_info_cnt_person,str_customer_segmentid,general_email,"3",general_lst_nm
         ,group,"",general_chnl,general_src,topic,gnl_phn_num,otherDetail,"Target@2021#@",
-        "",relation,remark,str_salutation.toString(),specific.toString(),
+        "",relation,remark,str_salutation,specific,
                 gnl_sub,"manager1")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -795,7 +787,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
                             val fragmentB = GetAllLeadFrag()
                             parentFragmentManager.beginTransaction()
                                     .replace(R.id.fragment_main, fragmentB, "fragmnetId")
-                                    .commit();
+                                    .commit()
                         }else{
                             Toast.makeText(context, img, Toast.LENGTH_SHORT).show()
 
@@ -825,7 +817,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             override fun onResponse(call: Call<GetLeadBuildingResponse?>, response: Response<GetLeadBuildingResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
-                        val msg = response.body()!!.Response.Message
+                      //  val msg = response.body()!!.Response.Message
                         buildingList= response.body()!!.Response.Data
                         building = ArrayList<String>()
                         buildingCode = ArrayList<String>()
@@ -868,7 +860,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
                             instryname.add(item.IndTypeName)
                             industryid.add(item.IndTypeId)
                         }
-                        val adapter12 = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, instryname!!)
+                        val adapter12 = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, instryname)
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
                         layout_lead_company_details.sp_industype.adapter = adapter12
 
@@ -893,7 +885,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             override fun onResponse(call: Call<GetLeadBuildingResponse?>, response: Response<GetLeadBuildingResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
-                        val msg = response.body()!!.Response.Message
+                       // val msg = response.body()!!.Response.Message
                         buildingList= response.body()!!.Response.Data
                         building = ArrayList<String>()
                         buildingCode = ArrayList<String>()
@@ -904,7 +896,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
                             buildingCode!!.add(item.BuildingCode)
                         }
                         var buildPosition=0
-                        building!!.forEachIndexed { index, s ->
+                        buildingCode!!.forEachIndexed { index, s ->
                             if(s==strBuilding)buildPosition=index
                         }
                         val adapter12 = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, building!!)
@@ -1253,6 +1245,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             val dpd = DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
                 val mn = monthOfYear+1
                 layout_lead_other_details.et_trgt_period.setText("$dayOfMonth-$mn-$year")
+                date = ("$year-$mn-$dayOfMonth")
             }, year, month, day)
             dpd.show()
         }
@@ -1330,7 +1323,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             layout_lead_installation_address.et_installarea.setText(area?.get(position))
             str_installbuild = area?.get(position).toString()
             str_inst_area = areaCode?.get(position )
-            getBuilding(str_inst_area!!,str_installbuild!!)
+            str_inst_area?.let { getBuilding(it, str_installbuild!!) }
             if(str_installbuild=="Other"){
                 layout_lead_installation_address.et_specific_area.visibility=View.VISIBLE
             }
@@ -1367,9 +1360,6 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         }else if(parent?.id == R.id.sp_cnt_cntry){
             layout_lead_contact_address.et_cnt_country.setText(country_name.get(position))
             str_add_country = country_name.get(position)
-        }else if(parent?.id == R.id.sp_crnt_mdm){
-            layout_lead_other_details.et_crnt_cnt_mdm.setText(list_of_medium.get(position))
-            if (position != 0) str_medium = "" + list_of_salutation_id.get(position - 1) else str_medium = " "
         }else if(parent?.id == R.id.sp_cust_seg){
             lead_contactinfo_layout.et_customer_seg.setText(list_of_cust_segment.get(position))
             if (position != 0) str_customer_segmentid = "" + list_cust_seg_value.get(position - 1) else str_customer_segmentid = " "
@@ -1393,12 +1383,12 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         }else if(parent?.id == R.id.sp_state){
             layout_lead_installation_address.et_state.setText(list_of_state.get(position))
             str_state = list_of_state.get(position)
-            if (position != 0) str_inst_state = "" + list_state_code.get(position - 1) else str_inst_state = " "
+           str_inst_state =list_state_code.get(position)
             getCity(str_inst_state.toString())
         }else if(parent?.id == R.id.sp_cnt_state){
             layout_lead_contact_address.et_cnt_state.setText(list_of_state.get(position))
             str_add_state = list_of_state.get(position)
-            if (position != 0) str_add_state_code = "" + list_state_code.get(position - 1) else str_add_state_code = " "
+             str_add_state_code = list_state_code.get(position)
             getAddCity(str_add_state_code.toString())
         }else if(parent?.id == R.id.sp_firm_type){
             layout_lead_company_details.et_firm_type.setText(list_firm_type.get(position))
@@ -1413,7 +1403,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             if (position != 0) str_industry_type = "" + industryid.get(position - 1) else str_industry_type= " "
         }else if(parent?.id == R.id.sp_media){
             layout_lead_other_details.et_media.setText(list_of_media.get(position))
-           str_media =list_option_value.get(position)
+           str_media =list_of_mediavalue.get(position)
         }else if(parent?.id == R.id.sp_intrsteddata_center){
             layout_lead_other_details.et_is_cus.setText(list_of_option.get(position))
             if (position != 0) str_data = "" + list_of_boolean.get(position - 1) else str_data= " "

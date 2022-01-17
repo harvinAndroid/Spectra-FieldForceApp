@@ -23,7 +23,7 @@
 
                 <include
                     android:id="@+id/searchtoolbaropp"
-                    layout="@layout/toolbar"
+                    layout="@layout/update_leadtoolbar"
                     android:layout_width="match_parent"
                     android:background="@color/colorButton"
                     android:layout_height="?attr/actionBarSize" />
@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     app:layout_constraintTop_toBottomOf="@+id/linearcontactinfo"
@@ -463,6 +463,23 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linear_daodetails">
+
+                    <TextView
+                        android:id="@+id/tv_opp_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:text="@string/submit_for_appoval"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_40sdp"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:textSize="@dimen/_12sdp"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/button_background"
+                        />
 
                     <TextView
                         android:id="@+id/tv_opp_save"

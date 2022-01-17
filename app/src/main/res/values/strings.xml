@@ -191,6 +191,7 @@
     <string name="installation_code">Installation Code</string>
     <string name="created_on">Created On</string>
     <string name="wcr">WCR</string>
+    <string name="creat">Create</string>
     <string name="pod">POD :</string>
     <string name="education_customer_regarding_selfcare_portal">Education customer Regarding Selfcare Portal</string>
     <string name="update">UPDATE</string>
@@ -240,21 +241,21 @@
     <string name="company_details">Company Details</string>
     <string name="product_details">Product Details</string>
     <string name="other_details">Other Details</string>
-    <string name="business_segment">Business Segment *</string>
-    <string name="sub_business_segment">Sub Business Segment *</string>
-    <string name="customer_segment">Customer Segment *</string>
-    <string name="topic">Topic *</string>
+    <string name="business_segment">Business Segment*</string>
+    <string name="sub_business_segment">Sub Business Segment*</string>
+    <string name="customer_segment">Customer Segment*</string>
+    <string name="topic">Topic*</string>
     <string name="lead_id">Lead Id</string>
-    <string name="contact_person_name">Contact Person Name *</string>
-    <string name="salutation">Salutation *</string>
-    <string name="email_id">Email ID *</string>
+    <string name="contact_person_name">Contact Person Name*</string>
+    <string name="salutation">Salutation*</string>
+    <string name="email_id">Email ID*</string>
     <string name="service_id">Service ID</string>
     <string name="account_name">Account Name</string>
     <string name="lead_category">Lead Category</string>
     <string name="campaign_code">Campaign Code</string>
-    <string name="enterprise_managed_services_ems">Enterprise Managed Services(EMS) *</string>
-    <string name="company">Company *</string>
-    <string name="group">Group *</string>
+    <string name="enterprise_managed_services_ems">Enterprise Managed Services(EMS)*</string>
+    <string name="company">Company*</string>
+    <string name="group">Group*</string>
     <string name="relationship">Relationship*</string>
     <string name="referring_account">Referring Account</string>
     <string name="expected_closure_date">Expected Closure Date</string>
@@ -264,23 +265,23 @@
     <string name="channel_partner">Channel Partner</string>
     <string name="facebook_id">Facebook ID</string>
     <string name="twitter_id">Twitter ID</string>
-    <string name="lead_channel">Lead Channel *</string>
-    <string name="country">Country *</string>
-    <string name="state">State *</string>
-    <string name="building_no_plot_no">Building No./Plot No. *</string>
+    <string name="lead_channel">Lead Channel*</string>
+    <string name="country">Country*</string>
+    <string name="state">State*</string>
+    <string name="building_no_plot_no">Building No./Plot No.*</string>
     <string name="building_type">Building Type</string>
-    <string name="floor">Floor *</string>
+    <string name="floor">Floor*</string>
     <string name="street">Street</string>
     <string name="locality">Locality</string>
     <string name="landmark_if_any">Landmark (if any)</string>
-    <string name="pin_code">Pin Code *</string>
-    <string name="firm_type">Firm Type *</string>
+    <string name="pin_code">Pin Code*</string>
+    <string name="firm_type">Firm Type*</string>
     <string name="website">Website</string>
-    <string name="company_name">Company Name *</string>
+    <string name="company_name">Company Name*</string>
     <string name="company_s_turnover">Company\'s Turnover</string>
     <string name="lco">LCO</string>
     <string name="expected_monthly_revenue_potential">Expected Monthly Revenue Potential</string>
-    <string name="industry_type">Industry Type *</string>
+    <string name="industry_type">Industry Type*</string>
     <string name="lock_in_period_with_the_current_provider">Lock in period with the current provider</string>
     <string name="job_title">Job Title</string>
     <string name="reason_for_purchase">Reason for purchase</string>
@@ -292,27 +293,27 @@
     <string name="preferred_date_time"><![CDATA[Preferred Date & Time]]></string>
     <string name="source_detail_2">Source Detail 2</string>
     <string name="media">Media</string>
-    <string name="existing_service_provider_1">Existing Service Provider 1 *</string>
-    <string name="existing_service_provider_2">Existing Service Provider 2 *</string>
-    <string name="current_working_locations">Current Working Locations *</string>
-    <string name="is_customer_interested_in_data_center_services_cloud_services">Innterested in Data Center/Cloud services *</string>
-    <string name="is_customer_interested_in_firewall">Is Customer interested in firewall *</string>
-    <string name="is_customer_interested_in_vpn_services">Is Customer interested in VPN services *</string>
-    <string name="services_from_service_provider_1">Services from Service Provider 1 *</string>
-    <string name="services_from_service_provider_2">Services from Service Provider 2 *</string>
+    <string name="existing_service_provider_1">Existing Service Provider 1*</string>
+    <string name="existing_service_provider_2">Existing Service Provider 2*</string>
+    <string name="current_working_locations">Current Working Locations*</string>
+    <string name="is_customer_interested_in_data_center_services_cloud_services">Interested in Data Center/Cloud services*</string>
+    <string name="is_customer_interested_in_firewall">Is Customer interested in firewall*</string>
+    <string name="is_customer_interested_in_vpn_services">Is Customer interested in VPN services*</string>
+    <string name="services_from_service_provider_1">Services from Service Provider 1*</string>
+    <string name="services_from_service_provider_2">Services from Service Provider 2*</string>
     <string name="current_connectivity_medium">Current Connectivity Medium</string>
-    <string name="is_customer_interested_in_voip">Is Customer interested in VOIP *</string>
-    <string name="is_customer_interested_in_managed_wi_fi">Is Customer interested in Managed Wi-Fi *</string>
-    <string name="target_instalation_period">Target Instalation period *</string>
+    <string name="is_customer_interested_in_voip">Is Customer interested in VOIP*</string>
+    <string name="is_customer_interested_in_managed_wi_fi">Is Customer interested in Managed Wi-Fi*</string>
+    <string name="target_instalation_period">Target Installation period*</string>
     <string name="subject">Subject</string>
     <string name="call_type">Call Type</string>
     <string name="call_to">Call To</string>
     <string name="call_from">Call From</string>
     <string name="mobile_phone">Mobile Phone</string>
     <string name="phone_number">Phone Number</string>
-    <string name="lead_source">Lead Source *</string>
+    <string name="lead_source">Lead Source*</string>
     <string name="estimated_closure_date">Estimated Closure Date</string>
-    <string name="oppurtunity_id">Oppurtunity ID *</string>
+    <string name="oppurtunity_id">Opportunity ID*</string>
     <string name="rack_required">Rack Required</string>
     <string name="lead_name">Lead Name</string>
     <string name="account_id">Account ID</string>
@@ -320,15 +321,15 @@
     <string name="originating_lead">Originating Lead</string>
     <string name="landline_number">Landline Number</string>
     <string name="network">Network Technology</string>
-    <string name="building_name">Building Name *</string>
+    <string name="building_name">Building Name*</string>
     <string name="owner">Owner</string>
     <string name="building_address">Building Address</string>
-    <string name="building_code">Building Code *</string>
+    <string name="building_code">Building Code*</string>
     <string name="last_mile_type">Last mile type</string>
-    <string name="oppurtunity_requirment">Oppurtunity Requirment</string>
+    <string name="oppurtunity_requirment">Opportunity Requirment</string>
     <string name="existing_service_provider">Existing Service Provider*</string>
-    <string name="uptime_sla_committed">Uptime SLA Committed (%) *</string>
-    <string name="company_self_po_erp">Company Self PO (ERP) *</string>
+    <string name="uptime_sla_committed">Uptime SLA Committed (%)*</string>
+    <string name="company_self_po_erp">Company Self PO (ERP)*</string>
     <string name="po_lock_in_duration">PO Lock In Duration*</string>
     <string name="redundancy_required">Redundancy Required</string>
     <string name="voip_port_activation">VOIP Port Activation</string>
@@ -336,14 +337,15 @@
     <string name="interface_required_second_level">Interface Required (Second Level)</string>
     <string name="interface_required_first_level">Interface Required (First Level)</string>
     <string name="po_next_renewal_date">PO Next Renewal Date*</string>
-    <string name="firewall_if_any">Firewall (if Any) *</string>
-    <string name="product_list">Product List *</string>
+    <string name="firewall_if_any">Firewall (if Any)*</string>
+    <string name="product_list">Product List*</string>
     <string name="reason">Reason</string>
     <string name="contact_person_details">Contact Person Details</string>
-    <string name="oppurtunity">Oppurtunity</string>
+    <string name="oppurtunity">Opportunity</string>
     <string name="disqualify">Disqualify</string>
+    <string name="document">Document</string>
     <string name="qualify">Qualify</string>
-    <string name="existing_service_provide">Existing Service Provider *</string>
+    <string name="existing_service_provide">Existing Service Provider*</string>
     <string name="prefer_date_time"><![CDATA[Prefer Date & Time]]></string>
     <string name="title_activity_settings">SettingsActivity</string>
 
@@ -364,9 +366,9 @@
     <string name="specific_area_name">Specific Area Name</string>
     <string name="specific_building_no">Specific Building Name</string>
     <string name="same_as_installation_address">Same as Installation Address</string>
-    <string name="won_oppurtunity">Won Oppurtunity</string>
-    <string name="lost_oppurtunity">Lost Oppurtunity</string>
-    <string name="oppurtunity_details">Oppurtunity Details</string>
+    <string name="won_oppurtunity">Won Opportunity</string>
+    <string name="lost_oppurtunity">Lost Opportunity</string>
+    <string name="oppurtunity_details">Opportunity Details</string>
     <string name="update_lead">UPDATE LEAD</string>
     <string name="price_list">Price list*</string>
     <string name="add_product">Add Product</string>
@@ -376,4 +378,342 @@
     <string name="generate_quote">Generate Quote</string>
     <string name="dao_approvals">DOA Approvals</string>
     <string name="operational_city">Operational City</string>
+    <string name="caf_details">CAF Details</string>
+    <string name="payment">Payment</string>
+    <string name="customer_agreement">Customer Details</string>
+    <string name="install_addr">Installation Address</string>
+    <string name="billing_address">Billing Address</string>
+    <string name="authorised_signatory_details">Authorised Signatory Details</string>
+
+    <string name="network_technology">Network Technology</string>
+    <string name="customer_working_hours">Customer Working Hours*</string>
+    <string name="is_customer_happy">Is Customer Happy</string>
+    <string name="nationality">Nationality</string>
+    <string name="parent_account">Parent Account</string>
+    <string name="preffered_commu">Preffered communication mode</string>
+    <string name="network_monitoring_alertsrequired">Network Monitoring AlertsRequired*</string>
+    <string name="caf_approval_date">CAF Approval Date</string>
+    <string name="business_daysrequired">Business DaysRequired*</string>
+    <string name="uptime_sla_required">Uptime SLA Committed (%)Required*</string>
+    <string name="po_lock_in_duration_required">PO Lock In Duration Reqd.*</string>
+    <string name="india">India</string>
+    <string name="bill_type">Bill Type</string>
+    <string name="category_of_customer">Category of Customer*</string>
+    <string name="building_status">Building Status*</string>
+    <string name="building_coderequired">Building CodeRequired*</string>
+    <string name="billing_email_id">Billing Email ID*</string>
+    <string name="phone_no">Phone No. *</string>
+    <string name="father_s_husband_s_namerequired">Father\'s/Husband\'s NameRequired*</string>
+    <string name="residential_address_required">Residential Address Required*</string>
+    <string name="pincode">Pincode*</string>
+    <string name="caf_num">CAF No.</string>
+    <string name="other_info">Other Information</string>
+   <!-- Array list for sales App-->
+    //////////////////
+    <string-array name="list_of_boolean">
+        <item>Select Option</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="CustValues">
+        <item>00</item>
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+    <string-array name="list_of_boolean_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="list_of_preffered">
+        <item>Select Option</item>
+        <item>Email</item>
+        <item>SMS</item>
+    </string-array>
+    <string-array name="list_of_prefferedvalue">
+        <item>0</item>
+        <item>111260000</item>
+        <item>111260001</item>
+    </string-array>
+
+    <string-array name="list_of_voipportvalue">
+        <item>0</item>
+        <item>569480000</item>
+        <item>569480001</item>
+    </string-array>
+
+    <string-array name="ext_serv_one">
+        <item>Select Option</item>
+        <item>Jio</item>
+        <item>ACT Fibernet</item>
+        <item>N.A</item>
+        <item>Others</item>
+        <item>Airtel</item>
+        <item>Aircel</item>
+        <item>BSNL</item>
+        <item>Hathway</item>
+        <item>MTNL</item>
+        <item>Nextra</item>
+        <item>Reliance Communications</item>
+        <item>Sify</item>
+        <item>Tata Communications</item>
+        <item>Tata DOCOMO</item>
+        <item>Tikona Infinet</item>
+        <item>Vodafone</item>
+    </string-array>
+    <string-array name="ext_serv_one_values">
+        <item>0</item>
+        <item>111260000</item>
+        <item>569480014</item>
+        <item>569480012</item>
+        <item>569480013</item>
+        <item>569480000</item>
+        <item>569480002</item>
+        <item>569480003</item>
+        <item>569480004</item>
+        <item>569480005</item>
+        <item>569480006</item>
+        <item>569480007</item>
+        <item>569480008</item>
+        <item>569480009</item>
+        <item>569480010</item>
+        <item>569480011</item>
+        <item>569480001</item>
+    </string-array>
+
+    <string-array name="list_of_subBusSegment">
+        <item>Select SubBussiness Segment</item>
+        <item>Connectivity Solution</item>
+        <item>Data Centre Products</item>
+        <item>Internet Service</item>
+        <item>SDWAN</item>
+        <item>SIP-Trunk</item>
+        <item>VOIP</item>
+    </string-array>
+
+    <string-array name="list_firm_type">
+        <item>Select Firm type</item>
+        <item>Proprietorship</item>
+        <item>Partnership</item>
+        <item>Pvt Ltd</item>
+        <item>Ltd</item>
+        <item>Trust</item>
+        <item>Individual</item>
+    </string-array>
+    <string-array name="list_firm_type_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="list_of_state">
+        <item>Select State</item>
+        <item>Andhra Pradesh</item>
+        <item>Bihar</item>
+        <item>Delhi</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Jammu and Kashmir</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Odisha</item>
+        <item>Other</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+
+    <string-array name="list_state_code">
+        <item>0</item>
+        <item>100009</item>
+        <item>100021</item>
+        <item>100004</item>
+        <item>100015</item>
+        <item>100008</item>
+        <item>100011</item>
+        <item>100007</item>
+        <item>100012</item>
+        <item>100014</item>
+        <item>100002</item>
+        <item>100026</item>
+        <item>100017</item>
+        <item>100025</item>
+        <item>100010</item>
+        <item>100003</item>
+        <item>100023</item>
+        <item>100006</item>
+        <item>100016</item>
+        <item>100013</item>
+    </string-array>
+
+    <string-array name="list_Of_Status">
+        <item>Select Option</item>
+        <item>Site readiness pending</item>
+        <item>IR Done</item>
+        <item> N/W Provisioning Done</item>
+        <item>FDR Done</item>
+        <item>Rejected</item>
+        <item>Installation Report Done</item>
+        <item>WCR Done</item>
+        <item>Installation Scheduling Pending</item>
+        <item>Installation Scheduling Done</item>
+        <item>Installation Completed</item>
+        <item>Installation Pending</item>
+        <item>Installation Not Done</item>
+        <item>Payment Verification Pending</item>
+        <item>Verification Pending</item>
+        <item>Document Verification Pending</item>
+        <item>Approved</item>
+        <item>Payment Verification Rejected</item>
+        <item>Document Verification Rejected</item>
+
+    </string-array>
+    <string-array name="list_Of_StatusId">
+        <item>0</item>
+        <item> 569480015</item>
+        <item>569480012</item>
+        <item>569480013</item>
+        <item>569480014</item>
+        <item>569480011</item>
+        <item>569480005</item>
+        <item>569480006</item>
+        <item>569480000</item>
+        <item>569480001</item>
+        <item>569480002</item>
+        <item>569480003</item>
+        <item>569480004</item>
+        <item>1</item>
+        <item>569480009</item>
+        <item>569480010</item>
+        <item>2</item>
+        <item>569480007</item>
+        <item>569480008</item>
+    </string-array>
+
+    <string-array name="list_of_wrkngdays">
+    <item>Select Option</item>
+    <item>MON-SUN</item>
+    <item>MON-SAT</item>
+    <item>MON-FRI</item>
+    </string-array>
+
+    <string-array name="list_of_wrkngdaysvalues">
+        <item>0</item>
+        <item>111260000</item>
+        <item>111260001</item>
+        <item>111260002</item>
+    </string-array>
+
+    <string-array name="list_of_monitoring">
+        <item>Select Option</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="list_of_monitoringvalues">
+        <item>0</item>
+        <item>111260000</item>
+        <item>111260001</item>
+    </string-array>
+
+    <string-array name="list_of_cstmrcategory">
+        <item>Select Option</item>
+        <item>OSP</item>
+        <item>Non OSP</item>
+    </string-array>
+
+    <string-array name="list_of_cstctgryvalues">
+        <item>0</item>
+        <item>569480000</item>
+        <item>569480001</item>
+    </string-array>
+
+    <string-array name="list_of_wrknghoursval">
+        <item>0</item>
+        <item>569480000</item>
+        <item>569480001</item>
+        <item>569480002</item>
+    </string-array>
+
+    <string-array name="list_of_wrknghours">
+        <item>Select Option</item>
+        <item>10 AM to 6 PM</item>
+        <item>6 PM to 2 AM</item>
+        <item>2 AM to 10 AM</item>
+    </string-array>
+
+    <string-array name="list_of_billtype">
+        <item>Select Option</item>
+        <item>Advance</item>
+        <item>Arrear</item>
+    </string-array>
+
+    <string-array name="list_of_payslip">
+        <item>Select Option</item>
+        <item>RTGS</item>
+        <item>Cheque</item>
+        <item>Demand draft</item>
+        <item>Credit Card</item>
+        <item>NEFT</item>
+        <item>Debit Card</item>
+        <item>Ezetap</item>
+        <item>Ezetap-Cheque</item>
+    </string-array>
+
+    <string-array name="list_of_payslipval">
+        <item>0</item>
+        <item>5</item>
+        <item>1</item>
+        <item>2</item>
+        <item>7</item>
+        <item>4</item>
+        <item>8</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="list_of_Deposit">
+    <item>Select Option</item>
+    <item>Refundable Security Deposit</item>
+    <item>Non Refundable Security Deposit</item>
+    </string-array>
+
+    <string-array name="list_of_Verification">
+        <item>Select Option</item>
+        <item>Approved</item>
+        <item>Pending</item>
+        <item>Rejected</item>
+    </string-array>
+
+    <string-array name="list_of_Verificationval">
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="list_of_gst">
+        <item>Select Option</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="list_of_gstval">
+        <item>0</item>
+        <item>569480000</item>
+        <item>569480001</item>
+    </string-array>
+
+
 </resources>

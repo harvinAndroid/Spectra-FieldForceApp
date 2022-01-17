@@ -147,6 +147,13 @@ public class Constants {
   public static final String CREATEAPPROVAL="createApproval";
   public static final String WON_OPPURTUNITY="wonOpportunity";
   public static final String GETALLCAF="getAllCAF";
+  public static final String GETCAF="getCaf";
+  public static final String CREATECAF="createCaf";
+  public static final String UPDATECAF="updateCaf";
+  public static final String SUBMITCAF="submitCaf";
+  public static final String GETDOCUMENT ="getDocument";
+  public static final String UPDATEDOCUMENT ="updateDocument";
+  public static final String GETBANK ="getBank";
 
 
 

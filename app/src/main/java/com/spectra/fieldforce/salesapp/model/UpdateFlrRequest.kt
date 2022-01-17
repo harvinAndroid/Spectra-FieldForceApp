@@ -6,10 +6,10 @@ data class UpdateFlrRequest(
     val leadId: String,
     val mobilephoneflr: String,
     val statusflr: String,
-    val estimatedclosureflr: String,
+    val estimatedclosureflr: String?,
     val remarkflr: String,
     val appointmentflr: String,
-    val prefereddatetimeflr: String,
+    val prefereddatetimeflr: String?,
     val userName: String,
     val password: String,
 )

@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="cafContactInfo"
+            type="com.spectra.fieldforce.salesapp.model.CaffData" />
+    </data>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    >
+
+
+    <androidx.core.widget.NestedScrollView
+         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+       <androidx.cardview.widget.CardView
+            android:id="@+id/cardview1"
+             android:layout_width="match_parent"
+            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardElevation="@dimen/_5sdp"
+            app:cardUseCompatPadding="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@color/colorWhite"
+            android:layout_height="wrap_content">
+
+            <LinearLayout android:id="@+id/linear12"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_cafno."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/caf_num"
+                    app:backgroundTint="@color/color_light_blue"
+                    android:text="@{cafContactInfo.cafNo}"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/lock"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                 app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_business_seg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/company_name"
+                    app:backgroundTint="@color/color_light_blue"
+                    android:text="@{cafContactInfo.companyName}"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/lock"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_sub_bus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_cstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Customer Name"
+                    app:backgroundTint="@color/color_light_blue"
+                    android:text="@{cafContactInfo.customerName}"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_cust_seg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_customer_seg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/service_id"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:text="@{cafContactInfo.serviceId}"
+                        android:imeOptions="actionNext"
+                        android:focusable="false"
+                        android:drawableEnd="@drawable/lock"
+                         android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_netwrktech"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/network_technology"
+                        android:focusable="false"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:drawableEnd="@drawable/lock"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_cstmrwrknghrs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_cstmrwrknghrs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:hint="@string/customer_working_hours"
+                        android:focusable="false"
+                        android:drawableEnd="@drawable/ic_expand_down"
+
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_custhappy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/is_customer_happy"
+                        android:focusable="false"
+                        android:drawableEnd="@drawable/lock"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_cafcompany"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_cafcmpny"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="@string/company"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                         android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_cafgroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_cafgrp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/group"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:focusable="false"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                       android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_cafrelation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_cafrelation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/relationship"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:focusable="false"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_cafbs_sgmnt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/business_segment"
+                        android:focusable="false"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:text="@{cafContactInfo.businessSegment}"
+                        android:drawableEnd="@drawable/lock"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/sp_cafsbbus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                      app:hintTextAppearance="@style/AppearanceText">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_sb_bs_sgmnt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/sub_business_segment"
+                         android:focusable="false"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/colorPrimaryDark"
+                         android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nationality"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/nationality"
+                        android:maxLength="10"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:text="@string/india"
+                        android:inputType="number"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+  <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/sp_preffered_cmmnctn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:visibility="invisible" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_prfcom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/preffered_commu"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:focusable="false"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                         android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+  </FrameLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                       <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_caflstmile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/last_mile_type"
+                        app:backgroundTint="@color/color_light_blue"
+                        android:drawableEnd="@drawable/lock"
+                        android:focusable="false"
+                        android:text="@{cafContactInfo.lastMileType}"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorPrimary"
+                        app:hintTextAppearance="@style/AppearanceText">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_cafproduct"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/product"
+                            app:backgroundTint="@color/color_light_blue"
+                            android:text="@{cafContactInfo.product}"
+                            android:drawableEnd="@drawable/lock"
+                            android:focusable="false"
+                            android:imeOptions="actionNext"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/sp_wrkng_days"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:visibility="invisible" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorPrimary"
+                        app:hintTextAppearance="@style/AppearanceText">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_wrkngdys"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Business Days*"
+                            android:focusable="false"
+                            app:backgroundTint="@color/color_light_blue"
+                            android:drawableEnd="@drawable/ic_expand_down"
+                            android:imeOptions="actionNext"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/sp_ntwrkmtr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:visibility="invisible" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorPrimary"
+                        app:hintTextAppearance="@style/AppearanceText">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_ntwrkmtr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Network Monitoring Alerts*"
+                            android:focusable="false"
+                            app:backgroundTint="@color/color_light_blue"
+                            android:drawableEnd="@drawable/ic_expand_down"
+                            android:imeOptions="actionNext"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/sp_prosegment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:visibility="invisible" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_prosegment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/product_segment"
+                        android:focusable="false"
+                        android:visibility="gone"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/sp_montalerts"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:visibility="invisible" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_montalerts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                         android:hint="@string/network_monitoring_alertsrequired"
+                        android:focusable="false"
+                        android:visibility="gone"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                         android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                         android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_appdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/caf_approval_date"
+                        android:focusable="false"
+                        android:visibility="gone"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                       <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_busreqd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/business_daysrequired"
+                        android:focusable="false"
+                        android:visibility="gone"
+                        android:drawableEnd="@drawable/lock"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>
+</layout>

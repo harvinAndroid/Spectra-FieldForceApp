@@ -10,25 +10,13 @@
         >
 
         <androidx.core.widget.NestedScrollView
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
-                android:layout_height="wrap_content">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardvewleadcompany"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="match_parent"
+                     android:layout_width="match_parent"
                     app:cardCornerRadius="@dimen/_5sdp"
                     app:cardElevation="@dimen/_5sdp"
                     app:cardUseCompatPadding="true"
@@ -97,10 +85,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                              app:hintTextAppearance="@style/AppearanceText">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_ext_srv"
@@ -134,10 +119,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -174,10 +156,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_crt_wrk"
@@ -211,10 +190,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                              app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -249,9 +225,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
                             app:hintTextAppearance="@style/AppearanceText">
 
 
@@ -287,9 +260,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
                             app:hintTextAppearance="@style/AppearanceText">
 
 
@@ -325,9 +295,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
                             app:hintTextAppearance="@style/AppearanceText">
 
 
@@ -364,9 +331,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
                             app:hintTextAppearance="@style/AppearanceText">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -392,44 +356,6 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_height="wrap_content">
                             <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_crnt_mdm"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:visibility="invisible" />
-
-
-                            <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_crnt_cnt_mdm"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/current_connectivity_medium"
-                                 android:imeOptions="actionNext"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                        </FrameLayout>
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_height="wrap_content">
-                            <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/sp_cst_voip"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -442,10 +368,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_cust_void"
@@ -479,9 +402,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
                             app:hintTextAppearance="@style/AppearanceText">
 
 
@@ -506,9 +426,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
                             app:hintTextAppearance="@style/AppearanceText">
 
 
@@ -527,9 +444,6 @@
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>

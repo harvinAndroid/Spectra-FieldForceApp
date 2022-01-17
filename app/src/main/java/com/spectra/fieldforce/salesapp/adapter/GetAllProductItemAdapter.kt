@@ -11,7 +11,7 @@ import android.widget.Toast
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
 import com.spectra.fieldforce.databinding.ItemProductListBinding
-import com.spectra.fieldforce.salesapp.activity.OppurtunityActivity
+import com.spectra.fieldforce.salesapp.activity.OpportunityActivity
 
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.Constants
@@ -19,12 +19,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
-import android.R
 import android.view.View
 import android.view.animation.AlphaAnimation
 
 import com.spectra.fieldforce.salesapp.activity.EditProduct
-import android.widget.LinearLayout
 
 class GetAllProductItemAdapter(private val items: List<ItemData>, private val activity: Context?,val OppId: String?,val Status: String?) : RecyclerView.Adapter<GetAllProductItemAdapter.ViewHolder>() {
 
@@ -58,30 +56,17 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
 
             val ProId:String = item.ProductId
             binding.imgDelete.setOnClickListener() {
-
-               /* binding.lineardel.setLayoutParams(LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT))
-
-                inAnimation = AlphaAnimation(0f, 1f)
-                inAnimation?.duration =200
-                binding.productrogressLayout.progressOverlay.animation = inAnimation
-                binding.productrogressLayout.progressOverlay.visibility = View.VISIBLE*/
                 val addProductRequest = OppId?.let { it1 -> AddProductRequest(Constants.DELETE_OPPPRODUCT, Constants.AUTH_KEY, it1, "Target@2021#@", ProId, "manager1") }
                 val apiService = ApiClient.getClient().create(ApiInterface::class.java)
                 val call = apiService.deleteProduct(addProductRequest)
                 call.enqueue(object : Callback<DeleteProductResponse?> {
                     override fun onResponse(call: Call<DeleteProductResponse?>, response: Response<DeleteProductResponse?>) {
                         val msg = response.body()!!.Response.Message
-                      /*  outAnimation = AlphaAnimation(1f, 0f)
-                        inAnimation?.duration =200
-                        binding.productrogressLayout.progressOverlay.animation = outAnimation
-                        binding.productrogressLayout.progressOverlay.visibility = View.GONE
-                        binding.lineardel.setLayoutParams(LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT))*/
+
                         if (response.body()?.Response?.StatusCode==200) {
                             try {
                                 Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
-                                val intent = Intent(activity, OppurtunityActivity::class.java)
+                                val intent = Intent(activity, OpportunityActivity::class.java)
                                 val bundle = Bundle()
                                 bundle.putString("OppId",OppId )
                                 intent.putExtras(bundle)
@@ -95,7 +80,6 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
                     }
 
                     override fun onFailure(call: Call<DeleteProductResponse?>, t: Throwable) {
-                     //   binding.productrogressLayout.progressOverlay.visibility = View.GONE
 
                         Log.e("RetroError", t.toString())
                     }

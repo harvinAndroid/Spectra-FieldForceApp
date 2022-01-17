@@ -20,12 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
-        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/opcardview1"
@@ -138,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
-                        android:hint="Mobile No. Correct *"
+                        android:hint="Mobile No. Correct*"
                         android:imeOptions="actionNext"
                         android:text="@{contact.data.mobilephone}"
                         android:inputType="number"
@@ -227,7 +221,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
-                        android:hint="City *"
+                        android:hint="City*"
                         android:text="@{contact.data.city}"
                         android:imeOptions="actionNext"
                         android:focusableInTouchMode="false"
@@ -262,7 +256,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
-                        android:hint="Area *"
+                        android:hint="Area*"
                         android:text="@{contact.data.area}"
                         android:imeOptions="actionNext"
                         android:focusableInTouchMode="false"
@@ -374,8 +368,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

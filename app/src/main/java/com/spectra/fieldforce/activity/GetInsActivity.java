@@ -52,8 +52,6 @@ public class GetInsActivity extends BaseActivity implements View.OnClickListener
 
         binding.tvGetProfileInfo.setOnClickListener(view -> {
             String account = binding.searchAccountNum.getText().toString();
-         /*   String account ="DSNW2741f5a0" ;
-            binding.searchAccountNum.setText(account);*/
             if(account.isEmpty()){
                 Toast.makeText(this,"Please Enter CANID/ONT Serial No.",Toast.LENGTH_LONG).show();
             }else{

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+<layout>
     <data>
         <variable
-            name="oppDetail"
-            type="com.spectra.fieldforce.salesapp.model.OppurtunityResponse" />
+            name="cafauthoInfo"
+            type="com.spectra.fieldforce.salesapp.model.AuthSigDetails" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
@@ -20,7 +20,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
 
 
                 <androidx.cardview.widget.CardView
@@ -50,14 +49,13 @@
                             android:textColorHint="@color/colorPrimary"
                             app:hintTextAppearance="@style/AppearanceText">
 
-
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_op_toptic"
+                                android:id="@+id/et_cafname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/topic"
-                                android:text="@{oppDetail.data.topic}"
+                                android:hint="Name*"
+                                android:text="@{cafauthoInfo.auth_Name}"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
                                 android:textColor="@color/colorPrimaryDark"
@@ -66,28 +64,44 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                            <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                              app:hintTextAppearance="@style/AppearanceText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_fthr_hsb"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/father_s_husband_s_namerequired"
+                                android:imeOptions="actionNext"
+                                android:text="@{cafauthoInfo.auth_Father}"
+
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_oppurtunity_ID"
+                                android:id="@+id/et_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/oppurtunity_id"
-                                android:text="@{oppDetail.data.oppId}"
-                                android:drawableEnd="@drawable/lock"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
+                                android:hint="@string/residential_address_required"
                                 android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
+                                android:text="@{cafauthoInfo.auth_Resadd}"
+
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
@@ -98,174 +112,166 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
-
+                             app:hintTextAppearance="@style/AppearanceText">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cmpny"
+                                android:id="@+id/et_authomob"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/company"
-                                android:text="@{oppDetail.data.company}"
-                                android:drawableEnd="@drawable/lock"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
+                                android:hint="@string/mobile_no"
+                                android:text="@{cafauthoInfo.auth_MobileNo}"
+                                android:maxLength="10"
+                                android:inputType="number"
                                 android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
 
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_grp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/group"
-                                android:text="@{oppDetail.data.group}"
-                                android:drawableEnd="@drawable/lock"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
-
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_rltnshp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/relationship"
-                                android:text="@{oppDetail.data.relationship}"
-                                android:drawableEnd="@drawable/lock"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                              app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_lead_nm"
+                                android:id="@+id/et_cafemailid"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/lead_name"
-                                android:text="@{oppDetail.data.leadname}"
+                                android:hint="@string/email_id"
+                                android:text="@{cafauthoInfo.auth_EmailId}"
 
-                                android:drawableEnd="@drawable/lock"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
                                 android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_originating"
+                                android:id="@+id/et_national"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/originating_lead"
-                                android:drawableEnd="@drawable/lock"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:text="@{oppDetail.data.originatingLead}"
-
+                                android:hint="@string/nationality"
+                                android:text="@string/india"
                                 android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/ic_expand_down"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-                        <com.google.android.material.textfield.TextInputLayout
+
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_cafauthostate"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
 
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_lead_id"
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/lead_id"
-                                android:text="@{oppDetail.data.leadId}"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
 
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:drawableEnd="@drawable/lock"
-                                android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_cafauthstate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="@string/state"
+                                    android:drawableEnd="@drawable/ic_expand_down"
+                                    android:focusableInTouchMode="false"
+                                    android:focusable="false"
+                                    android:imeOptions="actionNext"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_cafauthcity"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:visibility="invisible" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_add_cafauthcity"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="City *"
+                                    android:drawableEnd="@drawable/ic_expand_down"
+                                    android:imeOptions="actionNext"
+                                    android:focusableInTouchMode="false"
+                                    android:focusable="false"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_cafauthpincode"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="@string/pincode"
+                                    android:imeOptions="actionNext"
+                                    android:text="@{cafauthoInfo.auth_PinCode}"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
 
-
-             </androidx.core.widget.NestedScrollView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </layout>

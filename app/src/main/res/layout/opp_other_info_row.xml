@@ -309,7 +309,7 @@
                                 android:hint="@string/po_lock_in_duration"
                                 android:imeOptions="actionNext"
                                 android:focusable="false"
-                                android:text="@{other.data.poLock}"
+
 
                                 android:focusableInTouchMode="false"
                                 android:textColor="@color/colorPrimaryDark"
@@ -334,7 +334,6 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/po_next_renewal_date"
                                 android:imeOptions="actionNext"
-                                android:text="@{other.data.poNext}"
 
                                 android:focusable="false"
                                 android:focusableInTouchMode="false"
@@ -368,8 +367,6 @@
                                 android:hint="Firewall awc Expiry Date*"
                                 android:imeOptions="actionNext"
                                 android:focusable="false"
-                                android:text="@{other.data.firewallAwc}"
-
                                 android:focusableInTouchMode="false"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"

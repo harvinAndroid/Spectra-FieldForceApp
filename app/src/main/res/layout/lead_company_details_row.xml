@@ -16,19 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
-                android:layout_height="wrap_content">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardvewleadcompany"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="match_parent"
+                      android:layout_width="match_parent"
                     app:cardCornerRadius="@dimen/_5sdp"
                     app:cardElevation="@dimen/_5sdp"
                     app:cardUseCompatPadding="true"
@@ -80,10 +71,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -120,10 +108,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -160,9 +145,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
                             app:hintTextAppearance="@style/AppearanceText">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -185,10 +167,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                              app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -203,51 +182,11 @@
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-                            <FrameLayout
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                                android:visibility="gone"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_height="wrap_content">
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_cmpnysz"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:visibility="invisible" />
 
-                            <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_comp_sz"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/company_size"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:imeOptions="actionNext"
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        </FrameLayout>
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>

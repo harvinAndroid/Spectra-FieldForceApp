@@ -16,25 +16,13 @@
         >
 
         <androidx.core.widget.NestedScrollView
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
-                android:layout_height="wrap_content">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="match_parent"
+                     android:layout_width="match_parent"
                     app:cardCornerRadius="@dimen/_5sdp"
                     app:cardElevation="@dimen/_5sdp"
                     app:cardUseCompatPadding="true"
@@ -99,10 +87,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                               app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -145,7 +130,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="City *"
+                                android:hint="City*"
 
                                 android:drawableEnd="@drawable/ic_expand_down"
                                 android:imeOptions="actionNext"
@@ -179,7 +164,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="Area *"
+                                android:hint="Area*"
                                 android:imeOptions="actionNext"
                                 android:focusableInTouchMode="false"
                                 android:focusable="false"
@@ -352,9 +337,6 @@ android:visibility="gone"
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>

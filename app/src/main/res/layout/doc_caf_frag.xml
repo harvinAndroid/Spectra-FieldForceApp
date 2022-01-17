@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="cafdoc"
+            type="com.spectra.fieldforce.salesapp.model.DocData" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    <include
+        android:id="@+id/tlbrdoc"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorButton"
+        android:layout_height="?attr/actionBarSize" />
+        <androidx.core.widget.NestedScrollView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tlbrdoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardvewleadcompany"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tlbrdoc"
+            android:layout_width="match_parent"
+            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardElevation="@dimen/_5sdp"
+            app:cardUseCompatPadding="true"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@color/colorWhite"
+            android:layout_height="match_parent">
+
+
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardvewleadcompany"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:background="@color/colorWhite"
+        android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_cafnum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="CAF NO.*"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/lock"
+                    android:text="@{cafdoc.cafId}"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_acc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_light_blue"
+                    android:hint="Account*"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/lock"
+                    android:text="@{cafdoc.account}"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/ck_tan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TAN No.*"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp"  />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_tin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TIN no. (Hardware sale)Required"
+           android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_caf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CAF*"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp"  />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_po"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="Purchase Order (P.O.)*"
+            android:textSize="@dimen/_12sdp" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_apnic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="APNIC (Public IP declaration form)*"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp"  />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_photo"
+            android:layout_width="match_parent"
+            android:text="Photo ID proof of Authorized Signatory*"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp"  />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_osp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Non-OSP Declaratrion/OSP Registration Certificate*"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp"  />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_netwrk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Network Diagram*"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_adproof"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address proof of Company/Firm*"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_pan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Company's PAN Card copy*"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chk_deed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Partnership Deed*"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextAppearance="@style/AppearanceText">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_attachfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/color_light_blue"
+                android:hint="Attach File"
+                android:text="Attach File"
+                android:focusable="false"
+                android:drawableEnd="@drawable/attach_file"
+                android:imeOptions="actionNext"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/_12sdp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/linearsave"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_50sdp"
+
+                android:layout_marginTop="@dimen/_30sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearremark_details">
+
+                <TextView
+                    android:id="@+id/savedoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:text="@string/save"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/_50sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_40sdp"
+                    android:layout_marginStart="@dimen/_40sdp"
+                    android:textSize="@dimen/_12sdp"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button_black"
+                    />
+
+            </LinearLayout>
+
+    </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -2,7 +2,7 @@ package com.spectra.fieldforce.salesapp.fragment
 
 import android.R
 import android.app.DatePickerDialog
-import android.content.Context
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -18,8 +18,6 @@ import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
 import com.spectra.fieldforce.databinding.FlrFragmentBinding
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse
-import com.spectra.fieldforce.salesapp.activity.OppurtunityActivity
-import com.spectra.fieldforce.salesapp.activity.SalesDashboard
 import com.spectra.fieldforce.salesapp.activity.UpdateLeadActivity
 import com.spectra.fieldforce.salesapp.model.UpdateFlrRequest
 import com.spectra.fieldforce.utils.AppConstants
@@ -32,10 +30,11 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
    lateinit var flrFragmentBinding: FlrFragmentBinding
    lateinit var str_LeadId : String
    lateinit var  strMobile :String
-    var fromDateString :String ? = null
+    var esdtDate :String ? = null
+    var prfDate :String ? = null
     var list_of_status = arrayOf("Select Option","Positive","Negative","Scheduled Appointment")
     var list_of_status_values = arrayOf("Select Option","1","2","3")
-    var list_of_appointment = arrayOf("Select Appointment","Meeting","Phone Call")
+    var list_of_appointment = arrayOf("Select Option","Meeting","Phone Call")
     var list_of_appointment_value = arrayOf("0","1","2")
 
     var str_status = ""
@@ -43,9 +42,7 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
     companion object {
-        fun newInstance(): FlrFrag {
-            return FlrFrag()
-        }
+
     }
 
     override fun onCreateView(
@@ -53,7 +50,7 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         savedInstanceState: Bundle?
     ): View {
         flrFragmentBinding = FlrFragmentBinding.inflate(inflater, container, false)
-        val activity = activity as Context
+
         return flrFragmentBinding.root
     }
 
@@ -88,10 +85,11 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
 
         et_est_dt.setOnClickListener {
 
-            val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
                 val mnth = java.lang.String.valueOf(c[Calendar.MONTH] + 1)
 
                 et_est_dt.setText("$dayOfMonth-$mnth-$year")
+                esdtDate=("$year-$mnth-$dayOfMonth")
             }, year, month, day)
             dpd.show()
 
@@ -99,10 +97,11 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
 
         et_prf_date_tm.setOnClickListener {
 
-            val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
                 val mnth = java.lang.String.valueOf(c[Calendar.MONTH] + 1)
 
                 et_prf_date_tm.setText("$dayOfMonth-$mnth-$year")
+                prfDate =("$year-$mnth-$dayOfMonth")
             }, year, month, day)
             dpd.show()
 
@@ -142,9 +141,9 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         flrFragmentBinding.flrprogressLayout.progressOverlay.visibility = View.VISIBLE
 
         var str_status = et_Status.text.toString()
-        val str_estmd_closure = et_est_dt.text.toString()
+        val str_estmd_closure = esdtDate
         val str_remrk = et_remrk.text.toString()
-        var date_tm = et_prf_date_tm.text.toString()
+        var date_tm = prfDate
         if(date_tm==""||date_tm=="Prefer Date & Time"){
             date_tm= "0"
         }
@@ -216,9 +215,9 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
           if (parent?.id == com.spectra.fieldforce.R.id.sp_flrstatus) {
               et_Status.setText(list_of_status.get(position))
-              if (position != 0) str_status = "" + list_of_status_values.get(position - 1) else str_status= " "
+              str_status = list_of_status_values.get(position)
               Log.e("Id",str_status)
-             val status :String = et_Status.text.toString()
+              val status :String = et_Status.text.toString()
               if(status.equals("Negative")){
                   et_remrk.visibility = View.VISIBLE
                   et_est_dt.visibility = View.GONE
@@ -235,14 +234,12 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
               }
           }else if(parent?.id == com.spectra.fieldforce.R.id.sp_appointment){
               et_appointment.setText(list_of_appointment.get(position))
-              if (position != 0) str_appointment = "" + list_of_appointment.get(position - 1) else str_appointment= " "
-              Log.e("apd",list_of_appointment_value.get(position) )
-              Log.e("apdnm",list_of_appointment.get(position))
+               str_appointment = list_of_appointment.get(position)
           }
       }
 
       override fun onNothingSelected(p0: AdapterView<*>?) {
-          TODO("Not yet implemented")
+
       }
 
 }

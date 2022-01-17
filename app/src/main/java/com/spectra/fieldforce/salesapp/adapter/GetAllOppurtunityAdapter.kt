@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
 import android.os.Bundle
 import com.spectra.fieldforce.databinding.GetAllOppurtunityAdapterBinding
-import com.spectra.fieldforce.salesapp.activity.OppurtunityActivity
+import com.spectra.fieldforce.salesapp.activity.OpportunityActivity
 
 import com.spectra.fieldforce.salesapp.model.OppurData
 
@@ -31,17 +31,12 @@ class GetAllOppurtunityAdapter(private val items: List<OppurData>, private val c
             binding.tvMob.text = "Mobile No. : "+item.Mobile
             binding.orderStatus.text = "Status : "+item.Status
             binding.linearLead.setOnClickListener(){
-                val intent = Intent(context, OppurtunityActivity::class.java)
+                val intent = Intent(context, OpportunityActivity::class.java)
                 val bundle = Bundle()
                 bundle.putString("LeadId",item.LeadId )
                 bundle.putString("OppId",item.OppId )
                 intent.putExtras(bundle)
                 context?.startActivity(intent)
-                 /*   val activity=it.context as AppCompatActivity
-                    activity.supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.fragment_main,GetAllOppurtunityFrag.newInstance())
-                            .commitNow()*/
             }
 
         }

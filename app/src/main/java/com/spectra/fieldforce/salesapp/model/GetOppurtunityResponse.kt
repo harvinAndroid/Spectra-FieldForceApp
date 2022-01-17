@@ -55,5 +55,6 @@ data class OppurtunityData(
     val leadname: String,
     val Building_BuildingStatus:String,
     val CreateAreaOrBuilding:String,
-    val TPFeasibilty:String
+    val TPFeasibilty:String,
+    val Reason:String
 )

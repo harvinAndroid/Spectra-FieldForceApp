@@ -17,25 +17,12 @@
         >
 
         <androidx.core.widget.NestedScrollView
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="match_parent"
+              android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchtoolbar"
-                android:layout_height="wrap_content">
-
-                <androidx.cardview.widget.CardView
+                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="match_parent"
+                     android:layout_width="match_parent"
                     app:cardCornerRadius="@dimen/_5sdp"
                     app:cardElevation="@dimen/_5sdp"
                     app:cardUseCompatPadding="true"
@@ -79,10 +66,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -463,181 +447,10 @@
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-                        <!-- <com.google.android.material.textfield.TextInputLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-
-                             <com.google.android.material.textfield.TextInputEditText
-                                 android:id="@+id/et_referring"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:backgroundTint="@color/color_light_blue"
-                                 android:hint="@string/referring_account"
-                                 android:imeOptions="actionNext"
-                                 android:textColor="@color/colorPrimaryDark"
-                                 android:textColorHighlight="@color/colorPrimary"
-                                 android:textSize="@dimen/_12sdp" />
-
-                         </com.google.android.material.textfield.TextInputLayout>
-
-                         <com.google.android.material.textfield.TextInputLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-
-                             <com.google.android.material.textfield.TextInputEditText
-                                 android:id="@+id/et_closure"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:backgroundTint="@color/color_light_blue"
-                                 android:hint="@string/expected_closure_date"
-                                 android:imeOptions="actionNext"
-                                 android:textColor="@color/colorPrimaryDark"
-                                 android:textColorHighlight="@color/colorPrimary"
-                                 android:textSize="@dimen/_12sdp" />
-
-                         </com.google.android.material.textfield.TextInputLayout>
-
-                         <com.google.android.material.textfield.TextInputLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-
-                             <com.google.android.material.textfield.TextInputEditText
-                                 android:id="@+id/et_lead_status"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:backgroundTint="@color/color_light_blue"
-                                 android:hint="@string/lead_status"
-                                 android:imeOptions="actionNext"
-                                 android:textColor="@color/colorPrimaryDark"
-                                 android:textColorHighlight="@color/colorPrimary"
-                                 android:textSize="@dimen/_12sdp" />
-
-                         </com.google.android.material.textfield.TextInputLayout>
-
-                         <com.google.android.material.textfield.TextInputLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-
-                             <com.google.android.material.textfield.TextInputEditText
-                                 android:id="@+id/et_lead_info"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:backgroundTint="@color/color_light_blue"
-                                 android:hint="@string/lead_information_status"
-                                 android:imeOptions="actionNext"
-                                 android:textColor="@color/colorPrimaryDark"
-                                 android:textColorHighlight="@color/colorPrimary"
-                                 android:textSize="@dimen/_12sdp" />
-
-                         </com.google.android.material.textfield.TextInputLayout>
-
-                         <com.google.android.material.textfield.TextInputLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-
-                             <com.google.android.material.textfield.TextInputEditText
-                                 android:id="@+id/et_flr_status"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:backgroundTint="@color/color_light_blue"
-                                 android:hint="@string/flr_status"
-                                 android:imeOptions="actionNext"
-                                 android:textColor="@color/colorPrimaryDark"
-                                 android:textColorHighlight="@color/colorPrimary"
-                                 android:textSize="@dimen/_12sdp" />
-
-                         </com.google.android.material.textfield.TextInputLayout>
-
-                         <com.google.android.material.textfield.TextInputLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-                             <androidx.appcompat.widget.AppCompatSpinner
-                                 android:id="@+id/sp_chnlprtnr"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="match_parent"
-                                 android:background="@null"
-                                 android:visibility="invisible" />
-                             <com.google.android.material.textfield.TextInputEditText
-                                 android:id="@+id/et_channel"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:backgroundTint="@color/color_light_blue"
-                                 android:hint="@string/channel_partner"
-                                 android:focusable="false"
-                                 android:drawableEnd="@drawable/ic_expand_down"
-                                 android:focusableInTouchMode="false"
-                                 android:imeOptions="actionNext"
-                                 android:textColor="@color/colorPrimaryDark"
-                                 android:textColorHighlight="@color/colorPrimary"
-                                 android:textSize="@dimen/_12sdp" />
-
-                         </com.google.android.material.textfield.TextInputLayout>
-
-                         <com.google.android.material.textfield.TextInputLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-
-                             <com.google.android.material.textfield.TextInputEditText
-                                 android:id="@+id/et_facebook_id"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:backgroundTint="@color/color_light_blue"
-                                 android:hint="@string/facebook_id"
-                                 android:imeOptions="actionNext"
-                                 android:textColor="@color/colorPrimaryDark"
-                                 android:textColorHighlight="@color/colorPrimary"
-                                 android:textSize="@dimen/_12sdp" />
-
-                         </com.google.android.material.textfield.TextInputLayout>
-                         <com.google.android.material.textfield.TextInputLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-
-                             <com.google.android.material.textfield.TextInputEditText
-                                 android:id="@+id/et_twitter"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:backgroundTint="@color/color_light_blue"
-                                 android:hint="@string/twitter_id"
-                                 android:imeOptions="actionNext"
-                                 android:inputType="numberDecimal"
-                                 android:textColor="@color/colorPrimaryDark"
-                                 android:textColorHighlight="@color/colorPrimary"
-                                 android:textSize="@dimen/_12sdp" />
-
-                         </com.google.android.material.textfield.TextInputLayout>
-         -->
-
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>
 </layout>

@@ -36,8 +36,7 @@ class GetAllCAFAdapter(private val items: List<CafData>, private val context: Co
             binding.linearLead.setOnClickListener() {
                 val intent = Intent(context, CAFActivity::class.java)
                 val bundle = Bundle()
-                bundle.putString("LeadId", item.LeadId)
-                bundle.putString("LeadStatus", item.Status)
+                bundle.putString("CafId", item.Cafid)
                 intent.putExtras(bundle)
                 context?.startActivity(intent)
 

@@ -37,10 +37,10 @@ interface AppConstants {
         const val PLEASE_ENTER_PASSWORD = "Please Enter Password"
         const val SUCCESS = "Success"
         const val LEAD_DETAILS = "Lead Details"
-        const val OPPURTUNUTY = "Oppurtunity"
+        const val OPPURTUNUTY = "Opportunity"
         const val FLR = "FLR"
         const val ALL_LEADS = "All Leads"
-        const val ALL_OPPURTUNITY = "All Oppurtunity"
+        const val ALL_OPPURTUNITY = "All Opportunity"
         const val  DASHBOARD = "Dashboard"
         const val UPDATE_LEAD = "Update Lead"
         const val FEASIBILITY ="Feasbility"
@@ -49,5 +49,6 @@ interface AppConstants {
         const val APPROVAL="DOA Approval"
         const val CAF = "All CAF"
         const val Caf = "CAF"
+        const val BUSINESS="Business"
     }
 }

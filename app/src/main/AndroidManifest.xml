@@ -105,10 +105,10 @@
             android:name=".activity.ProvisioningTabActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".salesapp.activity.OppurtunityActivity"
+            android:name=".salesapp.activity.OpportunityActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".salesapp.activity.EditProduct"
+            android:name=".salesapp.activity.DocumentCafAct"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.BucketTabActivity"

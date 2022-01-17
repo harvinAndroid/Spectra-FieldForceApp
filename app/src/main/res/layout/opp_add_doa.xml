@@ -11,19 +11,13 @@
         android:layout_height="@dimen/_25sdp"
         android:text="Add DOA"
         android:textSize="@dimen/_12sdp"
+        android:visibility="gone"
         android:background="@color/colorButton"
         android:layout_marginStart="@dimen/_45sdp"
         android:layout_marginEnd="@dimen/_45sdp"
         android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:textColor="@android:color/white"
-        />
-
-    <View
-        android:id="@+id/view4"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:background="@color/color_light_blue"
-        android:layout_margin="@dimen/_4sdp"
         />
 
     <androidx.recyclerview.widget.RecyclerView

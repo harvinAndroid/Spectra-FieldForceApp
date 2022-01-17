@@ -14,7 +14,7 @@ data class UpdateOppurtunity(
     val emailaddress: String,
     val existingprovider: String,
     val firewall: String,
-    val firewallAwc: String,
+    val firewallAwc: String?,
     val firmtype: String,
     val floor: String,
     val industry: String,
@@ -23,8 +23,8 @@ data class UpdateOppurtunity(
     val mobilephone: String,
     val oppId: String,
     val password: String,
-    val poLock: String,
-    val poNext: String,
+    val poLock: String?,
+    val poNext: String?,
     val postalCode: String,
     val priceList: String,
     val redunancy: String,
@@ -32,5 +32,7 @@ data class UpdateOppurtunity(
     val state: String,
     val topic: String,
     val upTimesla: String,
-    val userName: String
+    val userName: String,
+    val reason:String,
+    val createAreaOrBuilding: Boolean?
 )

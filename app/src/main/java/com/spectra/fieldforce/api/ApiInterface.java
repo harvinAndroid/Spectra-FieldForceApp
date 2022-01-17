@@ -80,6 +80,10 @@ import com.spectra.fieldforce.model.StarttimeRequest;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.model.questionAnsResponse.QuestionAnswerList;
 import com.spectra.fieldforce.salesapp.model.AddProductRequest;
+import com.spectra.fieldforce.salesapp.model.BankListResponse;
+import com.spectra.fieldforce.salesapp.model.CafDetailResponse;
+import com.spectra.fieldforce.salesapp.model.CafRequest;
+import com.spectra.fieldforce.salesapp.model.CreateCafReqest;
 import com.spectra.fieldforce.salesapp.model.CreateLeadRequest;
 import com.spectra.fieldforce.salesapp.model.CreateLeadResponse;
 import com.spectra.fieldforce.salesapp.model.CreateQuoteRequest;
@@ -97,6 +101,7 @@ import com.spectra.fieldforce.salesapp.model.GetCityResponse;
 import com.spectra.fieldforce.salesapp.model.GetCompanyRequest;
 import com.spectra.fieldforce.salesapp.model.GetCompanyResponse;
 import com.spectra.fieldforce.salesapp.model.GetDisQualifyResponse;
+import com.spectra.fieldforce.salesapp.model.GetDocCafResponse;
 import com.spectra.fieldforce.salesapp.model.GetFeasibiltyResponse;
 import com.spectra.fieldforce.salesapp.model.GetFirmTypeRequest;
 import com.spectra.fieldforce.salesapp.model.GetFirmTypeResponse;
@@ -133,6 +138,7 @@ import com.spectra.fieldforce.salesapp.model.QualifyLeadResponse;
 import com.spectra.fieldforce.salesapp.model.UpdateFlrRequest;
 import com.spectra.fieldforce.salesapp.model.UpdateOppurtunity;
 import com.spectra.fieldforce.salesapp.model.UpdateProductRequest;
+import com.spectra.fieldforce.salesapp.model.UploadDocRequest;
 import com.spectra.fieldforce.salesapp.model.ValidateResponse;
 import com.spectra.fieldforce.salesapp.model.ValidateSalesResponse;
 import com.spectra.fieldforce.salesapp.model.ValidateUserRequest;
@@ -395,6 +401,9 @@ public interface ApiInterface {
     @POST ("index.php")
     Call<GetIndustryTypeResponse> getIndustry(@Body GetLeadBuildingRequest getLeadBuildingRequest);
 
+    @POST ("index.php")
+    Call<BankListResponse> getBankList(@Body CafRequest cafRequest);
+
 
     @POST ("index.php")
     Call<LeadResponsee> getLead(@Body GetLeadRequest getLeadRequest);
@@ -424,6 +433,18 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<GetOppurtunityResponse> getOppurtunity(@Body GetOppurtunityRequest getOppurtunityRequest);
+
+    @POST ("index.php")
+    Call<CafDetailResponse> getCaf(@Body CafRequest cafRequest);
+
+    @POST ("index.php")
+    Call<GetDocCafResponse> getDoc(@Body CafRequest cafRequest);
+
+    @POST ("index.php")
+    Call<DeleteProductResponse> uploadDoc(@Body UploadDocRequest uploadDocRequest);
+
+    @POST ("index.php")
+    Call<CafDetailResponse> createCaf(@Body CreateCafReqest createCafReqest);
 
 
     @POST ("index.php")

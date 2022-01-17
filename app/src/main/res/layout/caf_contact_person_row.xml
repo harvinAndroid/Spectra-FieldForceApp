@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="updateContactAdd"
-            type="com.spectra.fieldforce.salesapp.model.UpdateContact_Address" />
+            name="cafBillAdd"
+            type="com.spectra.fieldforce.salesapp.model.BillingAddress" />
     </data>
     <FrameLayout
         android:id="@+id/bottomSheet"
@@ -16,12 +14,13 @@
         >
 
         <androidx.core.widget.NestedScrollView
-              android:layout_width="match_parent"
+             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-                   <androidx.cardview.widget.CardView
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardview1"
-                     android:layout_width="match_parent"
+                    android:layout_width="match_parent"
                     app:cardCornerRadius="@dimen/_5sdp"
                     app:cardElevation="@dimen/_5sdp"
                     app:cardUseCompatPadding="true"
@@ -36,18 +35,69 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp">
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_height="wrap_content">
 
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_cnt_cntry"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_caf_cntname"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:visibility="invisible" />
+                                android:layout_height="wrap_content"
+                                android:hint="@string/contact_name"
+                                android:imeOptions="actionNext"
+                                android:text="@{cafBillAdd.bill_ConatctName}"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/_12sdp"
+                                app:backgroundTint="@color/color_light_blue" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_caf_bilngemailid"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/billing_email_id"
+                                 android:imeOptions="actionNext"
+
+                                android:text="@{cafBillAdd.bill_EmailId}"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/_12sdp"
+                                app:backgroundTint="@color/color_light_blue" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_cafphn_num"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/phone_no"
+                                android:imeOptions="actionNext"
+                                android:maxLength="10"
+                                android:inputType="number"
+                                android:text="@{cafBillAdd.bill_MobileNo}"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/_12sdp"
+                                app:backgroundTint="@color/color_light_blue" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -60,25 +110,24 @@
                                 android:id="@+id/et_cnt_country"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
+                                app:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/country"
-                                android:text="India"
+                                android:text="@string/india"
                                 android:drawableEnd="@drawable/ic_expand_down"
                                 android:imeOptions="actionNext"
                                 android:focusable="false"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-                        </FrameLayout>
+
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_height="wrap_content">
                             <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_cnt_state"
+                                android:id="@+id/sp_cfblstate"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@null"
@@ -87,23 +136,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
-                              app:hintTextAppearance="@style/AppearanceText">
+                             app:hintTextAppearance="@style/AppearanceText">
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cnt_state"
+                                android:id="@+id/et_cfblstate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
+                                app:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/state"
-
                                 android:drawableEnd="@drawable/ic_expand_down"
-
-                                android:focusableInTouchMode="false"
                                 android:focusable="false"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -114,7 +159,7 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_height="wrap_content">
                             <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_cnt_city"
+                                android:id="@+id/sp_cfblcity"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@null"
@@ -127,20 +172,16 @@
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cnt_city"
+                                android:id="@+id/et_cfblcity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="City*"
-
                                 android:drawableEnd="@drawable/ic_expand_down"
-
-                                android:imeOptions="actionNext"
-                                android:focusableInTouchMode="false"
                                 android:focusable="false"
+                                android:hint="@string/city"
+                                android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_12sdp"
+                                app:backgroundTint="@color/color_light_blue" />
 
                         </com.google.android.material.textfield.TextInputLayout>
                         </FrameLayout>
@@ -150,7 +191,7 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_height="wrap_content">
                             <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_cnt_cnarea"
+                                android:id="@+id/sp_cfblcnarea"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@null"
@@ -163,42 +204,19 @@
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_contacttarea"
+                                android:id="@+id/et_cfblarea"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="Area*"
-                                android:imeOptions="actionNext"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
                                 android:drawableEnd="@drawable/ic_expand_down"
+                                android:focusable="false"
+                                android:hint="@string/area_name"
+                                android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_12sdp"
+                                app:backgroundTint="@color/color_light_blue" />
 
                         </com.google.android.material.textfield.TextInputLayout>
                         </FrameLayout>
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            android:textColorHint="@color/colorPrimary"
-                            app:hintTextAppearance="@style/AppearanceText">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cntspbuilding_num"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/specific_area_name"
-                                android:text="@{updateContactAdd.contactSpecifyArea}"
-                                android:imeOptions="actionNext"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -206,7 +224,7 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_height="wrap_content">
                             <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_cnt_building_nm"
+                                android:id="@+id/sp_cfblbuilding_nm"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@null"
@@ -218,44 +236,38 @@
                             app:hintTextAppearance="@style/AppearanceText">
 
 
-
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cnt_building"
+                                android:id="@+id/et_cfblbuilding"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="Building Name*"
-
                                 android:drawableEnd="@drawable/ic_expand_down"
-                                android:focusableInTouchMode="false"
                                 android:focusable="false"
+                                android:hint="@string/building_society"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_12sdp"
+                                app:backgroundTint="@color/color_light_blue" />
 
                         </com.google.android.material.textfield.TextInputLayout>
                         </FrameLayout>
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:hintTextAppearance="@style/AppearanceText">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cntspbuilding_name"
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/specific_building_no"
-                                android:text="@{updateContactAdd.contactSpecifyBuilding}"
-                                android:visibility="gone"
-                                android:imeOptions="actionNext"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_cfblbuilding_num"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:backgroundTint="@color/color_light_blue"
+                                    android:hint="@string/specific_building_no"
+                                    android:visibility="gone"
+                                    android:imeOptions="actionNext"
+                                    android:textColor="@color/colorPrimaryDark"
+                                   android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -266,19 +278,18 @@
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cnt_buildng_num"
+                                android:id="@+id/et_cfblbuildng_num"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
+                                app:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/building_no_plot_no"
-                                android:text="@{updateContactAdd.contactPlotNo}"
+                                android:text="@{cafBillAdd.bill_BuildingNo}"
+
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -287,37 +298,14 @@
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cnt_floor"
+                                android:id="@+id/et_cfblfloor"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
+                                app:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/floor"
-                                android:text="@{updateContactAdd.contactFloor}"
-
-                                android:inputType="text"
+                                android:text="@{cafBillAdd.bill_Floor}"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:hintTextAppearance="@style/AppearanceText">
-
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_upcnt_block"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="Block*"
-                                android:text="@{updateContactAdd.ContactBlock}"
-                                android:imeOptions="actionNext"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -330,16 +318,14 @@
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cnt_pin_code"
+                                android:id="@+id/et_cfblpin_code"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
+                                app:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/pin_code"
-                                android:text="@{updateContactAdd.contactPincode}"
-
+                                android:text="@{cafBillAdd.bill_PinCode}"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>

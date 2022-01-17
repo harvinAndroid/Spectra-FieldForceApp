@@ -306,49 +306,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linaerseven"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:visibility="gone"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_companydetails"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:text="@string/product_details"
-                        android:textColor="@color/colorPrimary"
-                        android:textColorHighlight="@color/colorPrimary"
-                        android:textSize="@dimen/_12sdp"
-                        app:drawableEndCompat="@drawable/ic_expand_down" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear_pro_details"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="0dp"
-                    android:visibility="gone"
-                    android:background="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@+id/linaerseven"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    >
-
-                    <include
-                        android:id="@+id/updatelayout_lead_produvt_de"
-                        layout="@layout/update_lead_produvt_detail_row"
-                        />
-
-                </LinearLayout>
-
 
                 <LinearLayout
                     android:id="@+id/lineareight"
@@ -358,7 +315,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_pro_details"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_companydetails"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     >
