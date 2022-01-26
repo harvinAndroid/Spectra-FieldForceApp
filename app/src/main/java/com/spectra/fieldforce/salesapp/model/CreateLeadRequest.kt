@@ -28,7 +28,8 @@ data class CreateLeadRequest(
     val salutationId: String?,
     val specifyleadsource: String?,
     val subBusinessSegment: String?,
-    val userName: String?
+    val userName: String?,
+    val isSameAddress:String?
 )
 
 data class CompanyDetail(

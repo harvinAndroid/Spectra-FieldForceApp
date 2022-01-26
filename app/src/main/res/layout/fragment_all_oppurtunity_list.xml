@@ -7,18 +7,59 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         >
-    <include
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:visibility="visible"
+            android:id="@+id/linearrrrr"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/colorButton"
+            android:layout_height="@dimen/_40sdp">
+
+            <EditText
+                android:id="@+id/tv_search"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:hint="@string/search"
+                android:inputType="textCapWords"
+                android:layout_margin="@dimen/_8sdp"
+                android:background="@color/colorWhite"
+                android:singleLine="true"
+                android:gravity="center|start"
+                android:layout_weight=".2"
+                android:textCursorDrawable="@null"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null"
+                android:drawableEnd="@drawable/search"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:textStyle="bold"
+                android:text="Search"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:background="@color/colorWhite"
+                android:textColor="@color/colorPrimary"
+                android:layout_weight=".8"
+                android:layout_height="25dp"/>
+        </LinearLayout>
+   <!-- <include
         android:id="@+id/searchtoolbarlead_list"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:background="@color/colorButton"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize" />-->
 
 
     <androidx.core.widget.NestedScrollView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchtoolbarlead_list"
+        app:layout_constraintTop_toBottomOf="@+id/linearrrrr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

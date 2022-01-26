@@ -7,7 +7,7 @@ data class GetProductItemListRes(
 )
 
 data class ItemResponse(
-    val Data: ArrayList<ItemData>,
+    val Data: ArrayList<ItemData>?,
     val Message: String,
     val StatusCode: Int
 )

@@ -37,9 +37,7 @@ class GetAllLeadAdapter(private val items: List<AllLeadData>, private val contex
                 bundle.putString("LeadStatus",item.Status)
                 intent.putExtras(bundle)
                 context?.startActivity(intent)
-
             }
-
         }
     }
 }

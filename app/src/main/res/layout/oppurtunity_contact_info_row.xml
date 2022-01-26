@@ -132,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
-                        android:hint="Mobile No. Correct*"
+                        android:hint="Mobile No.*"
                         android:imeOptions="actionNext"
                         android:text="@{contact.data.mobilephone}"
                         android:inputType="number"
@@ -257,7 +257,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="Area*"
-                        android:text="@{contact.data.area}"
+
                         android:imeOptions="actionNext"
                         android:focusableInTouchMode="false"
                         android:focusable="false"
@@ -268,7 +268,27 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
-                 <FrameLayout
+              <!--  <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_oppspecfc_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_light_blue"
+                        android:hint="@string/specific_area_name"
+                        android:visibility="gone"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            -->    <FrameLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -303,6 +323,26 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
+             <!--   <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@style/AppearanceText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_oppspecfc_bldng"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_light_blue"
+                        android:hint="@string/specific_building_no"
+                        android:visibility="gone"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -67,6 +67,8 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/subject"
+                                android:focusable="false"
+
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
                                 android:textColor="@color/colorPrimaryDark"
@@ -117,6 +119,8 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:id="@+id/est_dt"
+                            android:visibility="gone"
                             android:textColorHint="@color/colorPrimary"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -141,6 +145,8 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:id="@+id/remark"
+                            android:visibility="gone"
                             android:textColorHint="@color/colorPrimary"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

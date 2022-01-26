@@ -155,7 +155,6 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                             String ip = response.body().getResponse().getIPAddress();
                             String Distance = response.body().getResponse().getFiberDistance();
                             buttonInsDialog(Power,ActStatus,Alarm,ip,Distance);
-
                         } else if (response.body().getStatus().equals("Failure")) {
                             Toast.makeText(ProvisioningScreenActivity.this, response.body().getResponse().getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -223,7 +222,6 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
         }
         tvcancel.setOnClickListener(v -> alertDialog.dismiss());
 
-
     }
 
     public void getAccountDetails() {
@@ -239,7 +237,6 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
             accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
             accountInfoRequest.setAction(Constants.GET_ACCOUNT_DETAILS);
             accountInfoRequest.setCanId(strCanId);
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<AccountDetailsResponse> call = apiService.getAccountDetails(accountInfoRequest);
             call.enqueue(new Callback<AccountDetailsResponse>() {
@@ -269,7 +266,6 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                                     adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     binding.spModel.setAdapter(adapter1);
                                 }
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

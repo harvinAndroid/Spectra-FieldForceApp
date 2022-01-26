@@ -28,16 +28,9 @@ class GetDOAViewAdapter(private val items: ArrayList<AppData>, private val conte
             binding.FeasibilityId.text = "Name : " +item.Name
             binding.CustomerName.text = "Approval Requested Date : " +item.ApprovalRequestedDate
             binding.Opportunity.text = "Approver : " +item.Approver
-            binding.EstimatedDoneBy.text = "Created On : " +item.CreatedOn
-            binding.FeasibilityStatus.text = "Approval Date : " +item.ApprovalDate
-            binding.ApproveLevel1.visibility=View.GONE
-            binding.ApproveLevel2.visibility = View.GONE
-            binding.RouteType.visibility = View.GONE
-            binding.RedunancyRequired.text = "Status : " +item.Status
-            binding.ThirdPartyFeasibilityRequired.text = "Status Reason : "+item.StatusReason
-            binding.Area.visibility=View.GONE
-            binding.CityCorrect.visibility=View.GONE
-
+            binding.EstimatedDoneBy.text = "Approval Date : " +item.ApprovalDate
+            binding.FeasibilityStatus.text ="Status : " +item.Status
+            binding.RouteType.text ="Status Reason : "+item.StatusReason
         }
     }
 

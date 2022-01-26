@@ -142,18 +142,21 @@ public class Constants {
     public static final String GET_FEASIBILITY ="getFeasibility";
     public static final String CREATE_QUOTE  ="createQuote";
     public static final String GET_QUOTE  ="getQuote";
-  public static final String UPDATE_OPPPRODUCT  ="updateOppProduct";
-  public static final String GETAPPROVAL="getApproval";
-  public static final String CREATEAPPROVAL="createApproval";
-  public static final String WON_OPPURTUNITY="wonOpportunity";
-  public static final String GETALLCAF="getAllCAF";
-  public static final String GETCAF="getCaf";
-  public static final String CREATECAF="createCaf";
-  public static final String UPDATECAF="updateCaf";
-  public static final String SUBMITCAF="submitCaf";
-  public static final String GETDOCUMENT ="getDocument";
-  public static final String UPDATEDOCUMENT ="updateDocument";
-  public static final String GETBANK ="getBank";
+    public static final String UPDATE_OPPPRODUCT  ="updateOppProduct";
+    public static final String GETAPPROVAL="getApproval";
+    public static final String CREATEAPPROVAL="createApproval";
+    public static final String WON_OPPURTUNITY="wonOpportunity";
+    public static final String GETALLCAF="getAllCAF";
+    public static final String GETCAF="getCaf";
+    public static final String CREATECAF="createCaf";
+    public static final String UPDATECAF="updateCaf";
+    public static final String SUBMITCAF="submitCaf";
+    public static final String GETDOCUMENT ="getDocument";
+    public static final String UPDATEDOCUMENT ="updateDocument";
+    public static final String GETBANK ="getBank";
+    public static final String GETNP="getNP";
+    public static final String GETWCR = "getWCR";
+    public static final String getIR = "getIR";
 
 
 

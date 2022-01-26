@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,25 +21,22 @@ import com.spectra.fieldforce.salesapp.activity.SalesDashboard
 import com.spectra.fieldforce.salesapp.model.AllLeadData
 import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest
 import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse
-import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
-import kotlinx.android.synthetic.main.edit_product_details.*
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
-import kotlinx.android.synthetic.main.toolbar.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 import kotlin.collections.ArrayList
 
-class GetAllLeadFrag : Fragment(),View.OnClickListener , AdapterView.OnItemSelectedListener {
+class GetAllLeadFrag : Fragment(),View.OnClickListener {
 lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
     private var lead : ArrayList<String>? = null
     private var allLead: ArrayList<AllLeadData>? = null
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
-    var list_of_status = arrayOf("Select Status","Open","Qualified","Disqualified")
 
+    val search :String?=null
 
     companion object {
         fun newInstance(): GetAllLeadFrag {
@@ -61,35 +56,39 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchtoolbarlead_list.rl_back.setOnClickListener(this)
+       /* searchtoolbarlead_list.rl_back.setOnClickListener(this)
         searchtoolbarlead_list.tv_lang.text= AppConstants.ALL_LEADS
-        getAllLeadList()
+
+     */
+       // val search = tv_search.text.toString()
+         getAllLeadList("")
+       // init()
+
+        tv_count.setOnClickListener{
+            val search = tv_search.text.toString()
+            getAllLeadList(search)
+        }
+
         fab_create_lead.setOnClickListener {
             try {
                 val fragmentB = CreateLeadFragment()
                 parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_main, fragmentB, "fragmnetId")
+                        .replace(R.id.frag_container, fragmentB, "fragmnetId")
                         .commit();
             }catch (e:Exception){
 
             }
         }
-        init()
     }
 
-    fun init(){
-        sp_leadsearch.setOnItemSelectedListener(this)
-        val pricingAdapter = activity?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_status) }
-        pricingAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        sp_leadsearch.adapter = pricingAdapter
-    }
 
-    fun getAllLeadList () {
+
+    fun getAllLeadList(srch: String) {
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,"","Target@2021#@","manager1")
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,"All","Target@2021#@","manager1",srch)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllLead(getAllLeadRequest)
@@ -102,10 +101,10 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
 
                 if (response.isSuccessful && response.body() != null) {
                     try {
-                        val msg = response.body()!!.Response.Message
+                        val msg = response.body()?.Response?.Message
                         if(response.body()?.Response?.StatusCode==200) {
-                            allLead = response.body()!!.Response.Data
-                            setAdapter(allLead!!, context)
+                            allLead = response.body()?.Response?.Data
+                            setAdapter(allLead, context)
                         }else{
                             Toast.makeText(context,msg, Toast.LENGTH_LONG).show()
                         }
@@ -121,22 +120,25 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
             }
         })
     }
+   /* private fun init() {
+        leadContactInfoBinding.swipeRefreshLayout.setEnabled(true)
+        leadContactInfoBinding.swipeRefreshLayout.setRefreshing(true)
+        leadContactInfoBinding.swipeRefreshLayout.setOnRefreshListener {
+            try {
+                leadContactInfoBinding.swipeRefreshLayout.setRefreshing(true)
+               getAllLeadList("")
+            } catch (ex: Exception) {
+                ex.message
+            }
+        }
+    }*/
 
-      fun Search(status: String) {
-          try {
 
-
-
-          }catch (Ex: Exception){
-              Ex.printStackTrace()
-          }
-      }
-
-    private fun setAdapter(allLead: ArrayList<AllLeadData>, context: Context?) {
+    private fun setAdapter(allLead: ArrayList<AllLeadData>?, context: Context?) {
         rv_lead_list?.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = GetAllLeadAdapter(allLead,context)
+            adapter = allLead?.let { GetAllLeadAdapter(it,context) }
         }
     }
 
@@ -145,19 +147,11 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         startActivity(i)
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (parent?.id == R.id.sp_leadsearch) {
+   /* override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-            //  binding.etSearch.setText(statusType.get(position));
-            val status: String = list_of_status.get(position)
-            if (status == "Select Status Type") {
-            } else {
-                Search(status)
-            }
-        }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
 
-    }
+    }*/
 }

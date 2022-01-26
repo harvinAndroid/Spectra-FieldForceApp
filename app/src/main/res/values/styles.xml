@@ -47,11 +47,11 @@
     </style>
 
     <style name="AppearanceText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/_10sdp</item>
-        <item name="android:colorControlNormal">@color/colorWhite</item>
-        <item name="android:colorControlHighlight">@color/colorWhite</item>
-        <item name="android:colorControlActivated">@color/colorWhite</item>
+        <item name="android:colorControlNormal">@color/colorPrimary</item>
+        <item name="android:colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:colorControlActivated">@color/colorPrimary</item>
     </style>
     <style name="AppThemee" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->

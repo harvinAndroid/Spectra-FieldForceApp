@@ -187,6 +187,38 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
                         </FrameLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:id="@+id/linearaws"
+                            android:visibility="gone"
+                            android:layout_height="wrap_content">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+
+                                app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_frwalaws"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="Firewall AMC Expiry Date*"
+                                    android:imeOptions="actionNext"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
                                 <FrameLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
@@ -342,38 +374,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-                      <LinearLayout
-                          android:layout_width="match_parent"
-                          android:orientation="vertical"
-                          android:id="@+id/linearaws"
-                          android:visibility="gone"
-                          android:layout_height="wrap_content">
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
 
-                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
-                            app:hintTextAppearance="@style/AppearanceText">
-
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_frwalaws"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="Firewall awc Expiry Date*"
-                                android:imeOptions="actionNext"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                      </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

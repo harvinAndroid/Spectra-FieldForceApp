@@ -25,24 +25,21 @@ class GetAllFeasibiltyAdapter(private val items: List<FeasData>, private val con
     inner class ViewHolder(val binding: GetAllFeasibiltyAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FeasData) {
             binding.FeasibilityId.text = "Feasibility Id : " +item.FeasibilityId
-            binding.CustomerName.text = "Customer Name : " +item.CustomerName
-            binding.Opportunity.text = "Opportunity : " +item.Opportunity
-            binding.EstimatedDoneBy.visibility=View.GONE
-            binding.FeasibilityStatus.visibility=View.GONE
-            binding.ApproveLevel1.visibility=View.GONE
-            binding.ApproveLevel2.visibility=View.GONE
-            val route = item.RouteType
-            if(route==true){
-                binding.RouteType.text= "Route Type : " +"Redundant Route"
-            }else if(route==false){
-                binding.RouteType.text= "Route Type : " +"Primary Route"
+            val fsstatus = item.FeasibilityStatus
+            if(fsstatus=="1"){
+                binding.FeasibilityStatus.text= "Feasibility Status : " +"Feasible"
+            }else if(fsstatus=="2"){
+                binding.FeasibilityStatus.text= "Feasibility Status : " +"Not Feasibility"
             }
-            binding.RouteType.text= "Route Type : " +item.RouteType
-            binding.RedunancyRequired.visibility=View.GONE
-            binding.ThirdPartyFeasibilityRequired.visibility=View.GONE
-            binding.Area.text = "Area : " +item.Area
-            binding.CityCorrect.text = "City : " +item.CityCorrect
-
+            binding.Opportunity.text = "Opportunity : " +item.Opportunity
+            val route = item.RouteType
+            if(route){
+                binding.CustomerName.text= "Route Type : " +"Redundant Route"
+            }else if(!route){
+                binding.CustomerName.text= "Route Type : " +"Primary Route"
+            }
+            binding.RouteType.visibility=View.GONE
+            binding.EstimatedDoneBy.visibility=View.GONE
         }
     }
 }

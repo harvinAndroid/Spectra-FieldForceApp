@@ -50,31 +50,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
-
-                android:textColorHint="@color/colorPrimary"
-                app:hintTextAppearance="@style/AppearanceText">
-
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_unit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/color_light_blue"
-                    android:drawableEnd="@drawable/lock"
-                    android:focusable="false"
-                   android:focusableInTouchMode="false"
-                    android:hint="Unit"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textColorHighlight="@color/colorPrimary"
-                    android:textSize="@dimen/_12sdp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <FrameLayout
+              <FrameLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">

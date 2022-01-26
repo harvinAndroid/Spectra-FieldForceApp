@@ -43,7 +43,6 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
     inner class ViewHolder(val binding: ItemProductListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ItemData) {
             binding.tvProductname.text = "Product Name : " + item.ProductId
-            binding.tvUnit.text = "Unit : " + item.Unit
             binding.tvPrcUnit.text = "Price Per Unit : " + item.PricePerUnit
             binding.tvDiscount.text = "Discount : " + item.Discount
             if(Status=="1"){
@@ -62,7 +61,6 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
                 call.enqueue(object : Callback<DeleteProductResponse?> {
                     override fun onResponse(call: Call<DeleteProductResponse?>, response: Response<DeleteProductResponse?>) {
                         val msg = response.body()!!.Response.Message
-
                         if (response.body()?.Response?.StatusCode==200) {
                             try {
                                 Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
@@ -85,15 +83,11 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
                     }
                 })
             }
-            binding.tvProductname.text = "Product Name : " + item.ProductId
-            binding.tvUnit.text = "Unit : " + item.Unit
-            binding.tvPrcUnit.text = "Price Per Unit : " + item.PricePerUnit
-            binding.tvDiscount.text = "Discount : " + item.Discount
             binding.tvEdit.setOnClickListener {
                 val intent = Intent(activity, EditProduct::class.java)
                 val bundle = Bundle()
                 bundle.putString("ProductName",item.ProductId )
-                bundle.putString("Unit",item.Unit )
+               // bundle.putString("Unit",item.Unit )
                 bundle.putString("Price",item.PricePerUnit )
                 bundle.putString("Discount",item.Discount )
                 bundle.putString("OppId",OppId )

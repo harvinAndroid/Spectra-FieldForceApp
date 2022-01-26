@@ -188,7 +188,7 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/specific_area_name"
                                 android:text="@{updateAdress.installSpecifyArea}"
-android:visibility="gone"
+                                android:visibility="gone"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"

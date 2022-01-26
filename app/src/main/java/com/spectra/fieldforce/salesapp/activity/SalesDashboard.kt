@@ -8,10 +8,12 @@ import androidx.databinding.DataBindingUtil
 import com.spectra.fieldforce.databinding.SalesDashboardActivityBinding
 import kotlinx.android.synthetic.main.sales_dashboard_activity.*
 import com.spectra.fieldforce.R
-import com.spectra.fieldforce.activity.MainActivity
 import com.spectra.fieldforce.salesapp.fragment.*
 import com.spectra.fieldforce.utils.AppConstants
 import kotlinx.android.synthetic.main.toolbar.view.*
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
+import com.spectra.fieldforce.activity.MainActivity
 
 
 class SalesDashboard:AppCompatActivity(),View.OnClickListener{
@@ -27,20 +29,20 @@ class SalesDashboard:AppCompatActivity(),View.OnClickListener{
 
     fun init(){
         cardview1.setOnClickListener {
-            val fragment = GetAllLeadFrag()
-            showFragment(fragment)
-        }
-        cardview2.setOnClickListener {
-           val i = Intent(this,EditProduct::class.java)
+            val i = Intent(this, LeadTabActivity::class.java)
             startActivity(i)
+            finish()
         }
+
         cardopp.setOnClickListener {
-            val fragment = GetAllOppurtunityFrag()
-            showFragmentopp(fragment)
+            val i = Intent(this, OppTabActivity::class.java)
+            startActivity(i)
+            finish()
         }
         cardflr.setOnClickListener {
-            val fragment = GetAllCAFFrag()
-            showFragmentflr(fragment)
+            val i = Intent(this, CafTabActivity::class.java)
+            startActivity(i)
+            finish()
         }
 
     }
@@ -70,11 +72,31 @@ class SalesDashboard:AppCompatActivity(),View.OnClickListener{
         }
     }
 
-    override fun onBackPressed() {
+   /* override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }*/
+
+    override fun onBackPressed() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setCancelable(false)
+        builder.setMessage("Do you want to Back?")
+        builder.setPositiveButton(
+            "Yes",
+            DialogInterface.OnClickListener { dialog, which -> //if user pressed "yes", then he is allowed to exit from application
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            })
+        builder.setNegativeButton(
+            "No",
+            DialogInterface.OnClickListener { dialog, which -> //if user select "No", just cancel this dialog and continue with app
+                dialog.cancel()
+            })
+        val alert: AlertDialog = builder.create()
+        alert.show()
     }
 
 

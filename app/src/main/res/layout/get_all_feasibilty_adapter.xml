@@ -59,20 +59,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_12sdp" />
-            <TextView
-                android:id="@+id/ApproveLevel1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp" />
-            <TextView
-                android:id="@+id/ApproveLevel2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp" />
+
             <TextView
                 android:id="@+id/RouteType"
                 android:layout_width="match_parent"
@@ -80,36 +67,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_12sdp" />
-            <TextView
-                android:id="@+id/ThirdPartyFeasibilityRequired"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp" />
-            <TextView
-                android:id="@+id/RedunancyRequired"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp" />
 
-            <TextView
-                android:id="@+id/Area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp" />
-            <TextView
-                android:id="@+id/CityCorrect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp" />
 
             <include layout="@layout/progress"
                 android:id="@+id/progressLayout"

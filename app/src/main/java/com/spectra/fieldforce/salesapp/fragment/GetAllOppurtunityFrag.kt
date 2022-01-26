@@ -12,16 +12,13 @@ import android.view.animation.AlphaAnimation
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
 import com.spectra.fieldforce.databinding.*
 import com.spectra.fieldforce.salesapp.activity.SalesDashboard
 import com.spectra.fieldforce.salesapp.model.*
-import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
-import kotlinx.android.synthetic.main.toolbar.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +32,8 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
 
+    var strtag :String?=null
+    var str_Search :String?=null
     companion object {
         fun newInstance(): GetAllOppurtunityFrag {
             return newInstance()
@@ -53,19 +52,26 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchtoolbarlead_list.rl_back.setOnClickListener(this)
-        searchtoolbarlead_list.tv_lang.text= AppConstants.ALL_OPPURTUNITY
-        getAlloppurtunityList()
+        val bundle = arguments
+        str_Search = bundle?.getString("STATUS")
+        strtag = bundle?.getString("TAG")
+        if(strtag=="1"){
+            linearrrrr.visibility=View.GONE
+        }
+        tv_count.setOnClickListener{
+            val search = tv_search.text.toString()
+            getAlloppurtunityList(search)
+        }
+        getAlloppurtunityList("")
 
     }
 
-    fun getAlloppurtunityList () {
+    fun getAlloppurtunityList(search: String) {
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
-
         binding.progressLayout.progressOverlay.animation = inAnimation
         binding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllOPPURTUNITY, Constants.AUTH_KEY,"","Target@2021#@","manager1")
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllOPPURTUNITY, Constants.AUTH_KEY,str_Search,"Target@2021#@","manager1",search)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllOppurtunity(getAllLeadRequest)
@@ -79,9 +85,9 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         if(response.body()?.Response?.StatusCode==200) {
-                             val msg = response.body()!!.Response.Message
+                             val msg = response.body()?.Response?.Message
                             alloppurtunity = response.body()!!.Response.Data
-                            setAdapter(alloppurtunity!!, context)
+                            setAdapter(alloppurtunity, context)
                         }
 
                     } catch (e: Exception) {
@@ -98,11 +104,11 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
         })
     }
 
-    private fun setAdapter(allOppurtunity: ArrayList<OppurData>, context: Context?) {
-        binding.rvFeasList?.apply {
+    private fun setAdapter(allOppurtunity: ArrayList<OppurData>?, context: Context?) {
+        binding.rvFeasList.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-           adapter = GetAllOppurtunityAdapter(allOppurtunity,context)
+           adapter = allOppurtunity?.let { GetAllOppurtunityAdapter(it,context) }
         }
     }
 

@@ -110,8 +110,6 @@
                     <include
                         android:id="@+id/layout_channel_source"
                         layout="@layout/lead_channel_source_row"/>
-
-
                 </LinearLayout>
 
 

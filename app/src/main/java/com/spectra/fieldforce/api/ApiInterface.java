@@ -96,11 +96,15 @@ import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse;
 import com.spectra.fieldforce.salesapp.model.GetAllOppurtunityResponse;
 import com.spectra.fieldforce.salesapp.model.GetApprovalRersponse;
 import com.spectra.fieldforce.salesapp.model.GetBusinessSubSegRequest;
+import com.spectra.fieldforce.salesapp.model.GetCafIRResponse;
+import com.spectra.fieldforce.salesapp.model.GetCafNPResponse;
+import com.spectra.fieldforce.salesapp.model.GetCafWCRResponse;
 import com.spectra.fieldforce.salesapp.model.GetCityRequest;
 import com.spectra.fieldforce.salesapp.model.GetCityResponse;
 import com.spectra.fieldforce.salesapp.model.GetCompanyRequest;
 import com.spectra.fieldforce.salesapp.model.GetCompanyResponse;
 import com.spectra.fieldforce.salesapp.model.GetDisQualifyResponse;
+import com.spectra.fieldforce.salesapp.model.GetDocCafReq;
 import com.spectra.fieldforce.salesapp.model.GetDocCafResponse;
 import com.spectra.fieldforce.salesapp.model.GetFeasibiltyResponse;
 import com.spectra.fieldforce.salesapp.model.GetFirmTypeRequest;
@@ -428,8 +432,19 @@ public interface ApiInterface {
     Call<GetProductItemListRes> addProductItem(@Body GetProductListRequest getProductListRequest);
 
     @POST ("index.php")
-    Call<ProdctResponse> won(@Body GetProductListRequest getProductListRequest);
+    Call<GetCafWCRResponse> getWCRList(@Body GetDocCafReq getDocCafReq);
 
+
+    @POST ("index.php")
+    Call<GetCafIRResponse> getIRList(@Body GetDocCafReq getDocCafReq);
+
+
+    @POST ("index.php")
+    Call<GetCafNPResponse> getNPList(@Body GetDocCafReq getDocCafReq);
+
+
+    @POST ("index.php")
+    Call<ProdctResponse> won(@Body GetProductListRequest getProductListRequest);
 
     @POST ("index.php")
     Call<GetOppurtunityResponse> getOppurtunity(@Body GetOppurtunityRequest getOppurtunityRequest);

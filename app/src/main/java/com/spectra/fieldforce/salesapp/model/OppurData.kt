@@ -7,5 +7,6 @@ data class OppurData(
         val OppId: String,
         val Status: String,
         val Email:String,
-        val Mobile:String
+        val Mobile:String,
+        val LeadName:String
 )

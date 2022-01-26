@@ -19,5 +19,6 @@ data class CafData(
     val LeadId: String,
     val MobileNo: String,
     val OpportunityId: String,
-    val Status: String
+    val Status: String,
+    val LeadName:String
 )

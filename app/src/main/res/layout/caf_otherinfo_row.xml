@@ -76,19 +76,6 @@
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_height="wrap_content">
-
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_sub_bus"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@null"
-                                android:visibility="invisible" />
-
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -108,8 +95,6 @@
                                     android:textSize="@dimen/_12sdp" />
 
                             </com.google.android.material.textfield.TextInputLayout>
-
-                        </FrameLayout>
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
@@ -178,6 +163,28 @@
 
 
                         </FrameLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:id="@+id/tv_frws"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_frwas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:backgroundTint="@color/color_light_blue"
+                                android:hint="Firewall AMC Expiry Date"
+                                android:focusable="false"
+                                android:imeOptions="actionNext"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                         <FrameLayout
                             android:layout_width="match_parent"

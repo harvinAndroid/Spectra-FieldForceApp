@@ -7,6 +7,7 @@ import GetDOAViewAdapter
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import android.view.animation.AlphaAnimation
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -29,6 +31,7 @@ import com.spectra.fieldforce.salesapp.fragment.GetAllOppurtunityFrag
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
+import kotlinx.android.synthetic.main.caf_demo_fragment.*
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
 import kotlinx.android.synthetic.main.op_product_add_item_row.view.*
 import kotlinx.android.synthetic.main.op_product_line_item_row.*
@@ -98,7 +101,6 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     var strRedundancy =""
     var strBusinessSement =""
     var strCreateAreaOrBuilding=""
-
     var strTPFeasibilty =""
     var str_salutation :String? = null
     var str_customer_segmentid :String? = null
@@ -112,6 +114,8 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     var strcontact_state:String? = null
     var strcontact_stateCode:String? = null
     var str_city_code : String? = null
+    var str_discount : String? = null
+    var isdiscount:Boolean=false
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
     private var allProductItem: ArrayList<ItemData>? = null
@@ -124,9 +128,11 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     var strLost = ""
     var status :String? = null
     var strStatus :String ? = null
+    var strReason:String ? =null
     var frwaws:String? = null
     var renewal:String? = null
     var polockdate:String? = null
+    var reas:String? = null
     private var areaList : ArrayList<AreaData>? = null
     private var area : ArrayList<String>? = null
     private var areaCode : ArrayList<String>? = null
@@ -199,15 +205,10 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         }
         listener()
         getOppurtunity()
-        getGenerateQuote()
-        getAllfeasList()
-        getDOA()
         init()
         flr.setOnClickListener {
            caf()
-
         }
-
     }
     fun caf(){
         val intent = Intent(this, CAFActivity::class.java)
@@ -249,130 +250,134 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         binding.layoutProductLine.spPrice.onItemSelectedListener = this
         layout_product_line.et_product_list.setOnClickListener {  layout_product_line.sp_opproduct.performClick() }
         layout_product_line.sp_opproduct.onItemSelectedListener = this
+
         layout_product_line.add_procuct.setOnClickListener{
             addProduct()
         }
+
         binding.feasibility.addFes.setOnClickListener{
             addFeasibility()
         }
         binding.quote.addQuote.setOnClickListener{
             addQuote()
         }
-        /*add_dao.setOnClickListener{
-            createApproval()
-        }*/
+
         tv_won.setOnClickListener{
             wonOpp()
         }
+
         tv_opp_submit.setOnClickListener{
             if(fesstatus=="1") {
-                submitApproval()
-            }else{
-                Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-                if(strOperationCity=="Yes"){
-                    if(fesstatus=="1"){
-                        if(strArea == "Other" && strBuilding == "Other") {
-                            Toast.makeText(this@OpportunityActivity, "For DOA submission you need to add Area or Building as they are still showing as Other", Toast.LENGTH_SHORT).show()
-                        }
+                if(strOperationCity=="true"){
+                    if(strArea == "Other" && strBuilding == "Other" && (strCreateAreaOrBuilding=="false")) {
+                        Toast.makeText(this@OpportunityActivity, "For DOA submission you need to add Area or Building as they are still showing as Other", Toast.LENGTH_SHORT).show()
+                    }else{
+                        submitApproval()
                     }
-                }else if(strOperationCity=="No"){
-                    if (fesstatus == "1" && strBusinessSement != "SDWAN"
-                        && (strArea != "Other") && (strBuilding != "Other")
+                }else if(strOperationCity=="false"){
+                    if (/* strBusinessSement != "SDWAN"
+                        &&*/ (strArea == "Other") && (strBuilding == "Other")
                         && (strCreateAreaOrBuilding=="false")/* && strTPFeasibilty.isNotBlank()*/){
                         fab_create_society.visibility=View.VISIBLE
                     }
                 }
+            }else{
+                Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
             }
         }
 
         fab_create_society.setOnClickListener{
             str_createbuilding=true
+            save()
         }
 
         et_lost.setOnClickListener { sp_lost.performClick() }
         sp_lost.onItemSelectedListener = this
 
         tv_opp_save.setOnClickListener  {
-            val topic = opp_contact_info_row.et_op_toptic.text.toString()
-            val oppId =opp_contact_info_row.et_oppurtunity_ID.text.toString()
-            val salutation = str_salutation.toString()
-            val mobile = layout_opp_cntct_person.et_mob_num.text.toString()
-            val media = str_media.toString()
-            val industry = str_industry_type.toString()
-            val floor = layout_opp_cntct_person.et_floor.text.toString()
-            val firmtype = str_firm_type.toString()
-            val extprovider = str_serv_pro.toString()
-            val email = layout_opp_cntct_person.et_eml_id.text.toString()
-            val city = str_city_code.toString()
-            val area = str_inst_area.toString()
-            val building = str_inst_building_nm.toString()
-            val pincode = layout_opp_cntct_person.et_op_pincode.text.toString()
-            val buildingnumber = layout_opp_cntct_person.et_build_num.text.toString()
-            val contactperson = layout_opp_cntct_person.et_contc_prsn.text.toString()
-            val customersegment = str_customer_segmentid.toString()
-            val uptmsla = layout_other.et_uptime_sla.text.toString()
-            val frwal = str_cust_frwl.toString()
-            val comanyself = str_cmpnyself.toString()
-            val polock = layout_other.et_polock.text.toString()
-            val firewallAwc = layout_other.et_frwalaws.text.toString()
-            val poNext = layout_other.et_oprenewal.text.toString()
-            val redundancy = str_redundancy.toString()
-            val state = strcontact_stateCode.toString()
-            val price = str_price.toString()
-            val reason = layout_product_line.et_op_reason.text.toString()
-            if(topic.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Topic", Toast.LENGTH_SHORT).show()
-            }else if(salutation.isBlank()||salutation=="Select Salutation"){
-                Toast.makeText(this@OpportunityActivity, "Please enter Salutation", Toast.LENGTH_SHORT).show()
-            }else if(contactperson.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Contact Person", Toast.LENGTH_SHORT).show()
-            }else if(email.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Email Id", Toast.LENGTH_SHORT).show()
-            }else if(mobile.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Mobile Number", Toast.LENGTH_SHORT).show()
-            }else if(state.isBlank()||state=="Select State"){
-                Toast.makeText(this@OpportunityActivity, "Please enter State", Toast.LENGTH_SHORT).show()
-            }else if(city.isBlank()|| city=="Select City"){
-                Toast.makeText(this@OpportunityActivity, "Please enter City", Toast.LENGTH_SHORT).show()
-            }else if(area.isBlank()||area=="Select Area"){
-                Toast.makeText(this@OpportunityActivity, "Please enter Area", Toast.LENGTH_SHORT).show()
-            }else if(building.isBlank()||building=="Select Building"){
-                Toast.makeText(this@OpportunityActivity, "Please enter Building", Toast.LENGTH_SHORT).show()
-            }else if(buildingnumber.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Building Number", Toast.LENGTH_SHORT).show()
-            }else if(floor.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Floor", Toast.LENGTH_SHORT).show()
-            }else if(pincode.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter PinCode", Toast.LENGTH_SHORT).show()
-            }else if(firmtype.isBlank()||firmtype=="Select FirmType"){
-                Toast.makeText(this@OpportunityActivity, "Please enter FirmType", Toast.LENGTH_SHORT).show()
-            }else if(industry.isBlank()||industry=="Select Industry Type"){
-                Toast.makeText(this@OpportunityActivity, "Please enter Industry", Toast.LENGTH_SHORT).show()
-            }else if(customersegment.isBlank()||customersegment=="Select Customer Segment"){
-                Toast.makeText(this@OpportunityActivity, "Please enter Customer Segment", Toast.LENGTH_SHORT).show()
-            }else if(uptmsla.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Uptime SLA", Toast.LENGTH_SHORT).show()
-            }else if(extprovider.isBlank()||extprovider=="Select Ex Provider"){
-                Toast.makeText(this@OpportunityActivity, "Please enter Service Provider", Toast.LENGTH_SHORT).show()
-            }else if(frwal.isBlank()||frwal=="Select Firewall"){
-                Toast.makeText(this@OpportunityActivity, "Please enter FireWall", Toast.LENGTH_SHORT).show()
-            }else if(comanyself.isBlank()||comanyself=="Select Company Self"){
-                Toast.makeText(this@OpportunityActivity, "Please enter Company Self", Toast.LENGTH_SHORT).show()
-            }else if(polock.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter PoLock", Toast.LENGTH_SHORT).show()
-            }else if(poNext.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Po Next", Toast.LENGTH_SHORT).show()
-            }else if(price.isBlank()||price=="Select PriceList"){
-                Toast.makeText(this@OpportunityActivity, "Please enter Price ", Toast.LENGTH_SHORT).show()
-            }else if(reason.isBlank()){
-                Toast.makeText(this@OpportunityActivity, "Please enter Reason ", Toast.LENGTH_SHORT).show()
-            }
-            else {
+            save()
+        }
+    }
+
+    private fun save(){
+        val topic = opp_contact_info_row.et_op_toptic.text.toString()
+        val oppId =opp_contact_info_row.et_oppurtunity_ID.text.toString()
+        val salutation = str_salutation.toString()
+        val mobile = layout_opp_cntct_person.et_mob_num.text.toString()
+        val media = str_media.toString()
+        val industry = str_industry_type.toString()
+        val floor = layout_opp_cntct_person.et_floor.text.toString()
+        val firmtype = str_firm_type.toString()
+        val extprovider = str_serv_pro.toString()
+        val email = layout_opp_cntct_person.et_eml_id.text.toString()
+        val city = str_city_code.toString()
+        val area = str_inst_area.toString()
+        val building = str_inst_building_nm.toString()
+        val pincode = layout_opp_cntct_person.et_op_pincode.text.toString()
+        val buildingnumber = layout_opp_cntct_person.et_build_num.text.toString()
+        val contactperson = layout_opp_cntct_person.et_contc_prsn.text.toString()
+        val customersegment = str_customer_segmentid.toString()
+        val uptmsla = layout_other.et_uptime_sla.text.toString()
+        val frwal = str_cust_frwl.toString()
+        val comanyself = str_cmpnyself.toString()
+        val polock = layout_other.et_polock.text.toString()
+        val firewallAwc = layout_other.et_frwalaws.text.toString()
+        val poNext = layout_other.et_oprenewal.text.toString()
+        val redundancy = str_redundancy.toString()
+        val state = strcontact_stateCode.toString()
+        val price = str_price.toString()
+        val reason = layout_product_line.et_op_reason.text.toString()
+        if(topic.isBlank()){
+            Toast.makeText(this@OpportunityActivity, "Please enter Topic", Toast.LENGTH_SHORT).show()
+        }else if(salutation.isBlank()||salutation=="Select Salutation"){
+            Toast.makeText(this@OpportunityActivity, "Please enter Salutation", Toast.LENGTH_SHORT).show()
+        }else if(contactperson.isBlank()){
+            Toast.makeText(this@OpportunityActivity, "Please enter Contact Person", Toast.LENGTH_SHORT).show()
+        }else if(email.isBlank()){
+            Toast.makeText(this@OpportunityActivity, "Please enter Email Id", Toast.LENGTH_SHORT).show()
+        }else if(mobile.isBlank()){
+            Toast.makeText(this@OpportunityActivity, "Please enter Mobile Number", Toast.LENGTH_SHORT).show()
+        }else if(state.isBlank()||state=="Select State"||(state=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter State", Toast.LENGTH_SHORT).show()
+        }else if(city.isBlank()|| city=="Select City"||(city=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter City", Toast.LENGTH_SHORT).show()
+        }else if(area.isBlank()||area=="Select Area"||(area=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Area", Toast.LENGTH_SHORT).show()
+        }else if(building.isBlank()||building=="Select Building"||(building=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Building", Toast.LENGTH_SHORT).show()
+        }else if(buildingnumber.isBlank()||(buildingnumber=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Building Number", Toast.LENGTH_SHORT).show()
+        }else if(floor.isBlank()){
+            Toast.makeText(this@OpportunityActivity, "Please enter Floor", Toast.LENGTH_SHORT).show()
+        }else if(pincode.isBlank()){
+            Toast.makeText(this@OpportunityActivity, "Please enter PinCode", Toast.LENGTH_SHORT).show()
+        }else if(firmtype.isBlank()||firmtype=="Select FirmType"||(firmtype=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter FirmType", Toast.LENGTH_SHORT).show()
+        }else if(industry.isBlank()||industry=="Select Industry Type"||(industry=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Industry", Toast.LENGTH_SHORT).show()
+        }else if(customersegment.isBlank()||customersegment=="Select Customer Segment"||(customersegment=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Customer Segment", Toast.LENGTH_SHORT).show()
+        }else if(uptmsla.isBlank()){
+            Toast.makeText(this@OpportunityActivity, "Please enter Uptime SLA", Toast.LENGTH_SHORT).show()
+        }else if(extprovider.isBlank()||extprovider=="Select Ex Provider"||(extprovider=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Service Provider", Toast.LENGTH_SHORT).show()
+        }else if(frwal.isBlank()||frwal=="Select Option"||(frwal=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter FireWall", Toast.LENGTH_SHORT).show()
+        }else if(comanyself.isBlank()||comanyself=="Select Option"||(comanyself=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Company Self", Toast.LENGTH_SHORT).show()
+        }else if(polock.isBlank()||(polock=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter PoLock", Toast.LENGTH_SHORT).show()
+        }else if(poNext.isBlank()||(poNext=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Po Next", Toast.LENGTH_SHORT).show()
+        }else if(strPrice.isBlank()||strPrice=="Select Price List"||(strPrice=="null")){
+            Toast.makeText(this@OpportunityActivity, "Please enter Price ", Toast.LENGTH_SHORT).show()
+        }else if(isdiscount&&reason.isBlank()){
+            Toast.makeText(this@OpportunityActivity, "Please enter Reason ", Toast.LENGTH_SHORT).show()
+        }
+        else {
                 updateOppurtunity(topic,oppId,salutation,mobile,media,industry,floor,firmtype,extprovider,email,
                 city,area,building,pincode,buildingnumber,contactperson,customersegment,uptmsla,frwal,comanyself,
                 polock,firewallAwc,poNext,redundancy,state,price,reason)
-            }
-
         }
     }
 
@@ -417,11 +422,28 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                         if(response.body()?.Response?.StatusCode==200) {
                            // val msg = response.body()!!.Response.Message
                             allFeasibility = response.body()!!.Response.Data
-
                              fesstatus = allFeasibility?.get(0)?.FeasibilityStatus
-                            val reas = layout_product_line.et_op_reason.text
-                            if ((fesstatus == "1") && (reas?.isNotBlank()==true)&&(allFeasibility?.size!! <=1)){
+                             reas = layout_product_line.et_op_reason.text.toString()
+                            if(allFeasibility?.size!=null){
+                                binding.feasibility.addFes.visibility=View.GONE
+                            }
+                            if ((fesstatus == "1") && (reas!=null)&&(str_discount!=null)&&(allFeasibility?.size!=null)){
                                 tv_opp_submit.visibility=View.VISIBLE
+                            }
+                            if(fesstatus=="1") {
+                                if(strOperationCity=="true"){
+                                    if(strArea == "Other" && strBuilding == "Other") {
+                                        Toast.makeText(this@OpportunityActivity, "For DOA submission you need to add Area or Building as they are still showing as Other", Toast.LENGTH_SHORT).show()
+                                    }
+                                }else if(strOperationCity=="false"){
+                                    if (/* strBusinessSement != "SDWAN"
+                        &&*/    (strArea == "Other") && (strBuilding == "Other")
+                                        && (strCreateAreaOrBuilding=="false")/* && strTPFeasibilty.isNotBlank()*/){
+                                        fab_create_society.visibility=View.VISIBLE
+                                    }
+                                }
+                            }else{
+                                Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
                             }
                             if(strOperationCity=="Yes"){
                                 if(fesstatus=="1"){
@@ -432,7 +454,6 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                     }
                                 }
                             }
-
                             setFesAdapter(allFeasibility!!, this@OpportunityActivity)
                         }
                     } catch (e: Exception) {
@@ -470,11 +491,10 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                         if(response.body()?.Response?.StatusCode==200) {
                           //  val msg = response.body()!!.Response.Message
                             allApproval = response.body()!!.Response.Data
-                            if(allApproval?.size!! <=1){
+                            /*if(allApproval?.size!=null){
                                 tv_opp_submit.visibility=View.GONE
-                            }
+                            }*/
                             setDOAAdapter(allApproval, this@OpportunityActivity)
-
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -488,7 +508,6 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             }
         })
     }
-
 
     private fun setDOAAdapter(allApproval: ArrayList<AppData>?, context: Context?) {
        rv_add_doa.apply {
@@ -510,7 +529,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     fun listener(){
         tv_opp_save.visibility = View.VISIBLE
         linearcontactinfo.visibility=View.VISIBLE
-        lineartwo.setOnClickListener { v ->
+        lineartwo.setOnClickListener {
             linearcontactinfo.visibility = View.VISIBLE
             linear_insta_addres.visibility = View.GONE
             linadd.visibility = View.GONE
@@ -520,7 +539,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
         }
-        linearthree.setOnClickListener { v ->
+        linearthree.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
             linear_insta_addres.visibility = View.VISIBLE
             linadd.visibility = View.GONE
@@ -530,7 +549,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
         }
-        linearfouraddres.setOnClickListener { v ->
+        linearfouraddres.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
             linear_insta_addres.visibility = View.GONE
             linadd.visibility = View.VISIBLE
@@ -540,7 +559,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
         }
-        linearfive.setOnClickListener { v ->
+        linearfive.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
             linear_insta_addres.visibility = View.GONE
             linadd.visibility = View.GONE
@@ -550,7 +569,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
         }
-        linearsix.setOnClickListener { v ->
+        linearsix.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
             linear_insta_addres.visibility = View.GONE
             linadd.visibility = View.GONE
@@ -561,7 +580,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_daodetails.visibility=View.GONE
         }
 
-        linearfes.setOnClickListener { v ->
+        linearfes.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
             linear_insta_addres.visibility = View.GONE
             linadd.visibility = View.GONE
@@ -571,7 +590,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_fesdetails.visibility=View.VISIBLE
             linear_daodetails.visibility=View.GONE
         }
-        linearequote.setOnClickListener { v ->
+        linearequote.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
             linear_insta_addres.visibility = View.GONE
             linadd.visibility = View.GONE
@@ -581,7 +600,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_fesdetails.visibility=View.GONE
             linear_daodetails.visibility=View.GONE
         }
-        lineardao.setOnClickListener { v ->
+        lineardao.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
             linear_insta_addres.visibility = View.GONE
             linadd.visibility = View.GONE
@@ -596,24 +615,19 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
     override fun onClick(p0: View?) {
         if (p0?.id == R.id.rl_back) {
-            val fragment = GetAllOppurtunityFrag()
-            showFragment(fragment)
+            next()
         }
     }
 
-    fun showFragment(fragment: GetAllOppurtunityFrag){
-        val fram = supportFragmentManager.beginTransaction()
-        fram.replace(R.id.fragment_opp,fragment)
-        fram.commit()
-    }
 
 
-    fun updateOppurtunity(topic: String, oppId: String, salutation: String, mobile: String, media: String,
-                          industry: String, floor: String, firmtype: String, extprovider: String, email: String,
-                          city: String, area: String, building: String, pincode: String, buildingnumber: String,
-                          contactperson: String, customersegment: String, uptmsla: String, frwal: String,
-                          comanyself: String, polock: String, firewallAwc: String, poNext: String,
-                          redundancy: String, state: String, price: String, reason: String) {
+
+    private fun updateOppurtunity(topic: String, oppId: String, salutation: String, mobile: String, media: String,
+                                  industry: String, floor: String, firmtype: String, extprovider: String, email: String,
+                                  city: String, area: String, building: String, pincode: String, buildingnumber: String,
+                                  contactperson: String, customersegment: String, uptmsla: String, frwal: String,
+                                  comanyself: String, polock: String, firewallAwc: String, poNext: String,
+                                  redundancy: String, state: String, price: String, reason: String) {
           val updateOppurtunity = UpdateOppurtunity(Constants.UPDATE_OPPURTUNITY,Constants.AUTH_KEY,
                 area,buildingnumber,building,city,comanyself,contactperson,"10001",customersegment,
                 email,extprovider,frwal,frwaws,firmtype,floor,industry,"",media,mobile,oppId,
@@ -629,10 +643,12 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                         val img = response.body()!!.Response.Message
                         Log.e("image", img)
                         Toast.makeText(this@OpportunityActivity, img, Toast.LENGTH_SHORT).show()
-                        val fragmentB = GetAllOppurtunityFrag()
-                        supportFragmentManager.beginTransaction()
-                                .replace(R.id.fragment_opp, fragmentB, "fragmnetId")
-                                .commit()
+                        val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putString("OppId",str_Opp_Id )
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                        finish()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -669,9 +685,6 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                }else{
-                    Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
-
                 }
             }
 
@@ -684,7 +697,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
 
     fun addFeasibility() {
-       // inProgress()
+        inProgress()
        val addProductRequest =
         str_Opp_Id?.let { it1 -> AddProductRequest(Constants.GENERATE_FEASIBILITY,Constants.AUTH_KEY, it1,"Target@2021#@","","manager1")  }
 
@@ -692,21 +705,18 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         val call = apiService.addProduct(addProductRequest)
         call.enqueue(object : Callback<ProdctResponse?> {
             override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
+                OutProgress()
                 val msg = response.body()!!.Response.Message
-
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
                         Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
-
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                }else{
-                    Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                 }
             }
             override fun onFailure(call: Call<ProdctResponse?>, t: Throwable) {
-            //   binding.opprogressLayout.progressOverlay.visibility=View.GONE
+             binding.opprogressLayout.progressOverlay.visibility=View.GONE
                 Log.e("RetroError", t.toString())
             }
         })
@@ -715,7 +725,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
 
     fun addQuote() {
-     //  inProgress()
+      inProgress()
         val createQuoteRequest =
                 str_Opp_Id?.let { it1 -> CreateQuoteRequest(Constants.CREATE_QUOTE,Constants.AUTH_KEY, it1,"Target@2021#@","manager1")  }
 
@@ -724,21 +734,18 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         call.enqueue(object : Callback<ProdctResponse?> {
             override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
                 val msg = response.body()!!.Response.Message
-             //  OutProgress()
+               OutProgress()
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
                         Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
-
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                }else{
-                    Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<ProdctResponse?>, t: Throwable) {
-            //    binding.opprogressLayout.progressOverlay.visibility=View.GONE
+              binding.opprogressLayout.progressOverlay.visibility=View.GONE
                 Log.e("RetroError", t.toString())
             }
         })
@@ -763,7 +770,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                         e.printStackTrace()
                     }
                 }else{
-                    Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
+                  //  Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -805,7 +812,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     }
 
     fun submitApproval() {
-        //inProgress()
+        inProgress()
         val getProductListRequest =
                 str_Opp_Id?.let { it1 -> GetProductListRequest(Constants.CREATEAPPROVAL,Constants.AUTH_KEY, it1,"Target@2021#@","manager1")  }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -813,19 +820,26 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         call.enqueue(object : Callback<ProdctResponse?> {
             override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
                 val msg = response.body()!!.Response.Message
-               // OutProgress()
+                OutProgress()
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
                         Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
+                        val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putString("OppId",str_Opp_Id )
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                        finish()
+                      //  caf()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }else{
-                    Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
+                   // Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                 }
             }
             override fun onFailure(call: Call<ProdctResponse?>, t: Throwable) {
-              //  binding.opprogressLayout.progressOverlay.visibility=View.GONE
+                binding.opprogressLayout.progressOverlay.visibility=View.GONE
                 Log.e("RetroError", t.toString())
             }
         })
@@ -862,14 +876,24 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                // Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                                 allProductItem = response.body()!!.Response.Data
                                 if(allProductItem?.isNotEmpty()==true) {
-                                    setAdapter(allProductItem!!, this@OpportunityActivity)
+                                    allProductItem?.forEachIndexed { index, itemData ->
+
+                                        if(!itemData.Discount.startsWith("0.0"))
+                                        {
+                                            isdiscount=true
+                                            return@forEachIndexed
+                                        }
+                                        println("chk discount:"+itemData.Discount)
+                                    }
+                                    str_discount= allProductItem?.get(0)?.Discount
+                                    setAdapter(allProductItem, this@OpportunityActivity)
                                 }
 
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         }else{
-                            Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
+                          //  Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                         }
 
                     } catch (e: Exception) {
@@ -884,12 +908,17 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             }
         })
     }
+    fun trimLeadingZeros(list: List<Int>): List<Int>? {
+        for (i in list.indices) if (list[i] != 0) return list.subList(i, list.size)
+        return Collections.emptyList()
+    }
 
-    private fun setAdapter(allProductItem: ArrayList<ItemData>, context: Context?) {
+
+    private fun setAdapter(allProductItem: ArrayList<ItemData>?, context: Context?) {
         rv_product_list?.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = GetAllProductItemAdapter(allProductItem,context,str_Opp_Id,status)
+            adapter = allProductItem?.let { GetAllProductItemAdapter(it,context,str_Opp_Id,status) }
         }
     }
 
@@ -947,6 +976,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             strIndustry = response.body()?.Response?.Data?.Industry.toString()
                             strPrice = response.body()?.Response?.Data?.PriceList.toString()
                             strStatus  = response.body()?.Response?.Data?.Status.toString()
+                             strReason = response.body()?.Response?.Data?.Reason.toString()
                             str_Opp_Id = response.body()?.Response?.Data?.OppId.toString()
                             strBuildingStatus = response.body()?.Response?.Data?.Building_BuildingStatus.toString()
                             strBusinessSement = response.body()?.Response?.Data?.CustomerSegment.toString()
@@ -1090,7 +1120,6 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                  val year = fr.get(2)
                                  layout_other.et_frwalaws.setText("$date-$month-$year")
                              }
-
                              val polockDate = response.body()?.Response?.Data?.PoLock
                              if(polockDate?.isNotEmpty()==true){
                                  val split1 = polockDate?.split("-")
@@ -1107,10 +1136,16 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                  val year2 = split2.get(2)
                                  layout_other.et_oprenewal.setText("$date2-$month2-$year2")
                              }
+                             getGenerateQuote()
+                             getAllfeasList()
+                             getDOA()
 
                              if((strBuildingStatus=="C-RFS"||strBuildingStatus=="P-RFS" ||
                                          strBuildingStatus=="B-RFS"||strBuildingStatus=="A-RFS") && redundancy==false){
                                      binding.feasibility.addFes.visibility=View.GONE
+                                 if((reas!=null)&&(str_discount!=null)&&(allFeasibility?.size!=null)){
+                                     tv_opp_submit.visibility=View.VISIBLE
+                                 }
                                  }else if((strBuildingStatus=="C-RFS"||strBuildingStatus=="P-RFS" ||
                                          strBuildingStatus=="B-RFS"||strBuildingStatus=="A-RFS")
                                          && redundancy==true){
@@ -1119,6 +1154,11 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                      binding.feasibility.addFes.visibility = View.VISIBLE
                                  }
                             if(strStatus=="Lost"||strStatus=="Won"){
+                                if(strStatus=="Lost"){
+                                    flr.visibility=View.GONE
+                                }else{
+                                    flr.visibility=View.VISIBLE
+                                }
                                 tv_opp_save.visibility=View.GONE
                                 tv_won.visibility = View.GONE
                                 opp_lost.visibility=View.GONE
@@ -1127,11 +1167,12 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                 binding.feasibility.addFes.visibility=View.GONE
                                 layout_product_line.sp_opproduct.isEnabled= false
                                 layout_product_line.et_product_list.isEnabled= false
-                                flr.visibility=View.VISIBLE
+
                                 tv_opp_submit.visibility=View.GONE
                                 fab_create_society.visibility=View.GONE
                                 status ="1"
                                 locked()
+
                             }else{
                                 opp_lost.visibility=View.VISIBLE
                                 tv_opp_save.visibility=View.VISIBLE
@@ -1142,6 +1183,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                 flr.visibility=View.GONE
                                 status="2"
                                 Calender()
+
                             }
 
                         }else{
@@ -1198,7 +1240,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         sp_opfrmtype.isEnabled=false
         sp_opindusty.isEnabled=false
         sp_opcustseg.isEnabled=false
-        et_lead_name.isEnabled=false
+       // et_lead_name.isEnabled=false
         sp_opmedia.isEnabled=false
         sp_opexservice.isEnabled=false
         sp_opfirewal.isEnabled=false
@@ -1209,6 +1251,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         layout_product_line.et_product_list.isEnabled= false
         opp_lost.visibility=View.GONE
         layout_product_line.add_procuct.visibility=View.GONE
+        tv_submit.visibility=View.GONE
       //  add_dao.visibility = View.GONE
         tv_won.visibility = View.GONE
     }
@@ -1359,10 +1402,10 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             }
                         }
                         var pricePosition=0
-                        price!!.forEachIndexed { index, s ->
+                        price?.forEachIndexed { index, s ->
                             if(s==strPrice)pricePosition=index
                         }
-                        if(price?.size!!<=1){
+                        if(price?.size!=null){
                             layout_product_line.et_product_list
                             layout_product_line.linearsection.visibility=View.VISIBLE
                             getProductList()
@@ -1389,6 +1432,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     }
     @SuppressLint("SetTextI18n")
     fun  Calender(){
+        try{
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
@@ -1397,7 +1441,12 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
                 val mnth = monthOfYear+1
                 layout_other.et_polock.setText("$dayOfMonth-$mnth-$year")
-                polockdate = ("$year-$mnth-$dayOfMonth")
+                val trgt =  layout_other.et_polock.text.toString()
+                val split = trgt.split("-")
+                val dateee = split[0]
+                val month1 = split[1]
+                val year1 = split[2]
+                polockdate=(year1+ "-" + month1+"-" +dateee)
             }, year, month, day)
             dpd.show()
         }
@@ -1406,7 +1455,12 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
                 val mnth = monthOfYear+1
                 layout_other.et_oprenewal.setText("$dayOfMonth-$mnth-$year")
-                 renewal = ("$year-$mnth-$dayOfMonth")
+                val trgt =  layout_other.et_oprenewal.text.toString()
+                val split = trgt.split("-")
+                val dateee = split[0]
+                val month1 = split[1]
+                val year1  = split[2]
+                renewal=(year1+ "-" +month1+ "-" + dateee)
             }, year, month, day)
             dpd.show()
         }
@@ -1415,9 +1469,17 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
                 val mnth = monthOfYear+1
                 layout_other.et_frwalaws.setText("$dayOfMonth-$mnth-$year")
-                 frwaws = ("$year-$mnth-$dayOfMonth")
+                val trgt =  layout_other.et_frwalaws.text.toString()
+                val split = trgt.split("-")
+                val dateee = split[0]
+                val month1 = split[1]
+                val year1 =  split[2]
+                frwaws=(year1+ "-" +month1+ "-" +dateee)
             }, year, month, day)
             dpd.show()
+        }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -1516,7 +1578,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
     fun getArea(str_city: String?, str_city_code: String?) {
         val getLeadAreaRequest =   GetLeadAreaRequest(Constants.Get_AREA,Constants.AUTH_KEY,
-                str_city_code.toString(), str_city.toString() ,"","manager1","Target@2021#@",true)
+                str_city_code.toString(), str_city.toString() ,"","manager1","Target@2021#@",false)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getLeadArea(getLeadAreaRequest)
@@ -1538,6 +1600,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                         var areaPosition=0
                         area!!.forEachIndexed { index, s ->
                             if(s==strArea)areaPosition=index
+                            return@forEachIndexed
                         }
                         val adapter12 = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, area!!)
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1583,6 +1646,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                         var cityPosition=0
                         city!!.forEachIndexed { index, s ->
                             if(s==strCity)cityPosition=index
+                            return@forEachIndexed
                         }
                         val adapter12 = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, city!!)
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1599,5 +1663,30 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                 Log.e("RetroError", t.toString())
             }
         })
+    }
+
+    override fun onBackPressed() {
+       next()
+
+    }
+
+    private fun next(){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setCancelable(false)
+        builder.setMessage("Do you want to go back to the previous screen?")
+        builder.setPositiveButton(
+            "Yes",
+            DialogInterface.OnClickListener { dialog, which ->
+                val intent = Intent(this, OppTabActivity::class.java)
+                startActivity(intent)
+                finish()
+            })
+        builder.setNegativeButton(
+            "No",
+            DialogInterface.OnClickListener { dialog, which ->
+                dialog.cancel()
+            })
+        val alert: AlertDialog = builder.create()
+        alert.show()
     }
 }

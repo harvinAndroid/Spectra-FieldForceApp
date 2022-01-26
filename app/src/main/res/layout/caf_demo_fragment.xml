@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/customer_agreement"
                         android:textColor="@color/colorPrimary"
-                         android:textSize="@dimen/_12sdp"
+                        android:textSize="@dimen/_12sdp"
                         app:drawableEndCompat="@drawable/ic_expand_down" />
                 </LinearLayout>
 
@@ -106,7 +106,6 @@
                     <include
                         android:id="@+id/layout_otherinfo"
                         layout="@layout/caf_otherinfo_row"/>
-
 
                 </LinearLayout>
 
@@ -397,6 +396,172 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/linearwcr"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/lineardoc_details"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/wcr"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_wcrdetails"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintTop_toBottomOf="@+id/linearwcr"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardvewquote"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:cardElevation="@dimen/_5sdp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:background="@color/colorWhite"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/opp_add_quote"
+                            android:id="@+id/wcr"
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lineareir"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_wcrdetails"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/ir"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_irdetails"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintTop_toBottomOf="@+id/lineareir"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardvewir"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:cardElevation="@dimen/_5sdp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:background="@color/colorWhite"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/opp_add_feasibility"
+                            android:id="@+id/ir"
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearnp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_irdetails"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="NP"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_npdetails"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintTop_toBottomOf="@+id/linearnp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardvewnp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:cardElevation="@dimen/_5sdp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:background="@color/colorWhite"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/opp_add_doa"
+                            android:id="@+id/np"
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/tv_create"
                     android:layout_width="match_parent"
@@ -412,7 +577,7 @@
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintStart_toStartOf="parent"
                     android:textColor="@android:color/white"
-                    app:layout_constraintTop_toBottomOf="@+id/lineardoc_details" />
+                    app:layout_constraintTop_toBottomOf="@+id/linear_npdetails" />
 
 
                 <TextView

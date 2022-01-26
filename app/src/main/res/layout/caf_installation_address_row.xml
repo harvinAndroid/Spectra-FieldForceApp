@@ -43,7 +43,6 @@
                             android:textColorHint="@color/colorPrimary"
                             app:hintTextAppearance="@style/AppearanceText">
 
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_cafemail"
                                 android:layout_width="match_parent"
@@ -70,10 +69,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/mobile_phone"
+                                android:hint="Mobile Phone*"
                                 android:text="@{cafInstAdress.inst_MobileNo}"
                                 android:imeOptions="actionNext"
                                 android:maxLength="10"
+                                android:focusable="false"
+                                android:drawableEnd="@drawable/lock"
                                 android:inputType="number"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -96,7 +97,8 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/lead_name"
                                 android:text="@{cafInstAdress.inst_LeadName}"
-
+                                android:focusable="false"
+                                android:drawableEnd="@drawable/lock"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -118,7 +120,8 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/lead_id"
                                 android:text="@{cafInstAdress.inst_LeadId}"
-
+                                android:focusable="false"
+                                android:drawableEnd="@drawable/lock"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -187,9 +190,8 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/state"
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:focusableInTouchMode="false"
                                 android:focusable="false"
+                                android:drawableEnd="@drawable/lock"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -222,10 +224,8 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="City *"
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:imeOptions="actionNext"
-                                android:focusableInTouchMode="false"
                                 android:focusable="false"
+                                android:drawableEnd="@drawable/lock"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
@@ -257,9 +257,8 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="Area *"
                                 android:imeOptions="actionNext"
-                                android:focusableInTouchMode="false"
                                 android:focusable="false"
-                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:drawableEnd="@drawable/lock"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
@@ -311,9 +310,8 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/building_name"
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:focusableInTouchMode="false"
                                 android:focusable="false"
+                                android:drawableEnd="@drawable/lock"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -348,9 +346,7 @@
                                 android:hint="@string/building_status"
                                 android:text="@{cafInstAdress.inst_BuildingStatus}"
                                 android:focusable="false"
-                                android:drawableEnd="@drawable/ic_expand_down"
-
-                                android:imeOptions="actionNext"
+                                android:drawableEnd="@drawable/lock"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -369,10 +365,9 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/building_coderequired"
                                  android:text="@{cafInstAdress.inst_BuildingCode}"
-                                 android:drawableEnd="@drawable/ic_expand_down"
-                                android:imeOptions="actionNext"
-                                android:focusable="false"
-                                android:textColor="@color/colorPrimaryDark"
+                                 android:focusable="false"
+                                 android:drawableEnd="@drawable/lock"
+                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 

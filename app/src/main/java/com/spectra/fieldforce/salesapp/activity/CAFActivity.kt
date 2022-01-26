@@ -1,7 +1,11 @@
 package com.spectra.fieldforce.salesapp.activity
 
+import GetIRdapter
+import GetNPAdapter
+import GetWCRAdapter
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +14,11 @@ import android.view.animation.AlphaAnimation
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
@@ -45,6 +52,7 @@ import kotlinx.android.synthetic.main.caf_installation_address_row.view.et_add_c
 import kotlinx.android.synthetic.main.caf_installation_address_row.view.et_cafstate
 import kotlinx.android.synthetic.main.caf_installation_address_row.view.sp_cafcity
 import kotlinx.android.synthetic.main.caf_installation_address_row.view.sp_cafstate
+import kotlinx.android.synthetic.main.caf_otherinfo_row.*
 import kotlinx.android.synthetic.main.caf_otherinfo_row.view.*
 import kotlinx.android.synthetic.main.caf_payment_details_row.view.*
 import kotlinx.android.synthetic.main.caf_payment_details_row.view.et_appcode
@@ -67,8 +75,14 @@ import kotlinx.android.synthetic.main.caf_payment_details_row.view.sp_securityty
 import kotlinx.android.synthetic.main.lead_contact_info.view.*
 import kotlinx.android.synthetic.main.lead_demo_fragment.*
 import kotlinx.android.synthetic.main.lead_other_details_row.view.*
+import kotlinx.android.synthetic.main.op_product_line_item_row.*
 import kotlinx.android.synthetic.main.op_product_line_item_row.view.*
 import kotlinx.android.synthetic.main.opp_add_doa.*
+import kotlinx.android.synthetic.main.opp_add_doa.view.*
+import kotlinx.android.synthetic.main.opp_add_feasibility.*
+import kotlinx.android.synthetic.main.opp_add_feasibility.view.*
+import kotlinx.android.synthetic.main.opp_add_quote.*
+import kotlinx.android.synthetic.main.opp_add_quote.view.*
 import kotlinx.android.synthetic.main.opp_company_details_row.*
 import kotlinx.android.synthetic.main.opp_company_details_row.view.*
 import kotlinx.android.synthetic.main.opp_other_info_row.*
@@ -93,7 +107,6 @@ import kotlin.collections.ArrayList
 
 
 class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemSelectedListener {
-
     var strCafId : String? = null
     var strOppId :String?=null
     private var cityList : ArrayList<CityData>? = null
@@ -107,6 +120,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     var strProductId: String? = null
     var strBlCity:String?=null
     var strAthCity:String?=null
+    var strPaymentStatus:String?=null
     var strArea: String? = null
     var strBuilding: String? = null
     var strBlArea: String? = null
@@ -149,10 +163,11 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     var str_sub_bus:String? = null
     var str_bankid:String? = null
     var str_wrknghrs:String? = null
-
     var caflock:String? = null
     var cafnext:String? = null
+    var frwamc:String? = null
     var cafpaydate:String? = null
+    var checkdate:String? = null
 
     private var buildingList : ArrayList<BuildData>? = null
     private var building : ArrayList<String>? = null
@@ -183,6 +198,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     var strRelation=""
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
+    private var wcrList: ArrayList<WCRData>? = null
+    private var irList: ArrayList<IRData>? = null
+    private var npList: ArrayList<NPData>? = null
+
     lateinit var binding:CafDemoFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -191,30 +210,214 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         searchtoolbarcaf.rl_back.setOnClickListener(this)
         searchtoolbarcaf.tv_lang.text = AppConstants.Caf
         val extras = intent.extras
-
         if (extras != null) {
             strCafId = extras.getString("CafId")
             strOppId = extras.getString("OppId")
         }
-
         listener()
         itemListener()
         getCaf()
-
         getBankList()
-        tv_create.setOnClickListener {
-            createCaf()
-        }
-        tv_update.setOnClickListener {
-            updateCaf()
-        }
+        saveItem()
         tv_submit.setOnClickListener {
             submitCaf()
         }
     }
 
-    fun itemListener(){
+    fun saveItem(){
+        tv_create.setOnClickListener {
+            val strbusinessSegment =  caf_contactinfo_layout.et_cafbs_sgmnt.text.toString()
+            val subbssegment = str_sub_bus.toString()
+            val customername = caf_contactinfo_layout.et_cstname.text.toString()
+            val phonenumber = caf_contact_person_row.et_cafphn_num.text.toString()
+            val polock = layout_otherinfo.et_caflock.text.toString()
+            val ponext = layout_otherinfo.et_cafnxt.text.toString()
+            val authemail = layout_cafothr_details.et_cafemailid.text.toString()
+            val authfather = layout_cafothr_details.et_fthr_hsb.text.toString()
+            val authmobile = layout_cafothr_details.et_authomob.text.toString()
+            val authname = layout_cafothr_details.et_cafname.text.toString()
+            val authaddress = layout_cafothr_details.et_address.text.toString()
+            val authpincode = layout_cafothr_details.et_cafauthpincode.text.toString()
+            val billingplot = caf_contact_person_row.et_cfblbuildng_num.text.toString()
+            val billingname = caf_contact_person_row.et_caf_cntname.text.toString()
+            val billingemail = caf_contact_person_row.et_caf_bilngemailid.text.toString()
+            val billingfloor = caf_contact_person_row.et_cfblfloor.text.toString()
+            val billingphn =   caf_contact_person_row.et_cafphn_num.text.toString()
+            val billingpincode = caf_contact_person_row.et_cfblpin_code.text.toString()
+            val instemail = layout_cafinstal_address.et_cafemail.text.toString()
+            val instmobile = layout_cafinstal_address.et_cafmbnum.text.toString()
+            val instpin = layout_cafinstal_address.et_cafpin.text.toString()
+            val amount = layout_payment.et_totalamt.text.toString()
+            val approvalcode = layout_payment.et_appcode.text.toString()
+            val brnch = layout_payment.et_brnch.text.toString()
+            val checkdd = layout_payment.et_chkdate.text.toString()
+            val checknum = layout_payment.et_chknum.text.toString()
+            val carddgts = layout_payment.et_cardfrdgt.text.toString()
+            val paymntdt = layout_payment.et_paymntdt.text.toString()
+            val txtty = layout_payment.et_txtid.text.toString()
+            val srcdepst = layout_payment.et_scdeposit.text.toString()
+            val creditcrd = layout_payment.et_creditfrdgt.text.toString()
+            val pan = layout_payment.et_pannum.text.toString()
+            val tan = layout_payment.et_tannum.text.toString()
+            val gstnum = layout_payment.et_gstt.text.toString()
+            val otc = layout_payment.et_otc.text.toString()
 
+            if(str_cmp?.isBlank()==true||str_cmp=="Select Company"||str_cmp=="null"){
+                Toast.makeText(this, "Please Select Company", Toast.LENGTH_SHORT).show()
+            }else if(str_grp?.isBlank()==true||str_grp=="Select Group"||str_grp=="null"){
+                Toast.makeText(this, "Please Select Group", Toast.LENGTH_SHORT).show()
+            }else if(str_rltn?.isBlank()==true||str_rltn=="Select Relation"||str_rltn=="null"){
+                Toast.makeText(this, "Please Select Relation", Toast.LENGTH_SHORT).show()
+            }else if(subbssegment.isBlank()){
+                Toast.makeText(this, "Please enter SubBusiness Segment", Toast.LENGTH_SHORT).show()
+            }else if(customername.isBlank()){
+                Toast.makeText(this, "Please enter Customer Name", Toast.LENGTH_SHORT).show()
+            }else if(phonenumber.isBlank()){
+                Toast.makeText(this, "Please enter Phone Number", Toast.LENGTH_SHORT).show()
+            }else if(polock.isBlank()){
+                Toast.makeText(this, "Please enter PoLock", Toast.LENGTH_SHORT).show()
+            }else if(ponext.isBlank()){
+                Toast.makeText(this, "Please enter PoNext", Toast.LENGTH_SHORT).show()
+            }else if(authemail.isBlank()){
+                Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show()
+            }else if(authfather.isBlank()){
+                Toast.makeText(this, "Please enter Father/Husband Name", Toast.LENGTH_SHORT).show()
+            }else if(authmobile.isBlank()){
+                Toast.makeText(this, "Please enter Mobile Num", Toast.LENGTH_SHORT).show()
+            }else if(authaddress.isBlank()){
+                Toast.makeText(this, "Please enter Address", Toast.LENGTH_SHORT).show()
+            }else if(authpincode.isBlank()){
+                Toast.makeText(this, "Please enter PinCode", Toast.LENGTH_SHORT).show()
+            }else if(authname.isBlank()){
+                Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show()
+            }else if(billingplot.isBlank()){
+                Toast.makeText(this, "Please enter Building No.", Toast.LENGTH_SHORT).show()
+            }else if(billingname.isBlank()){
+                Toast.makeText(this, "Please enter Billing Name", Toast.LENGTH_SHORT).show()
+            }else if(billingemail.isBlank()){
+                Toast.makeText(this, "Please enter Billing Email ", Toast.LENGTH_SHORT).show()
+            }else if(billingfloor.isBlank()){
+                Toast.makeText(this, "Please enter Billing Floor", Toast.LENGTH_SHORT).show()
+            }else if(billingphn.isBlank()){
+                Toast.makeText(this, "Please enter Billing Phone", Toast.LENGTH_SHORT).show()
+            }else if(billingpincode.isBlank()){
+                Toast.makeText(this, "Please enter Billing Pincode", Toast.LENGTH_SHORT).show()
+            } else if(instemail.isBlank()){
+                Toast.makeText(this, "Please enter Installation Email", Toast.LENGTH_SHORT).show()
+            }else if(instmobile.isBlank()){
+                Toast.makeText(this, "Please enter Installation Phone Number", Toast.LENGTH_SHORT).show()
+            }else if(instpin.isBlank()){
+                Toast.makeText(this, "Please enter Installation Pincode", Toast.LENGTH_SHORT).show()
+            }
+            else if(amount.isBlank()){
+                Toast.makeText(this, "Please enter Amount", Toast.LENGTH_SHORT).show()
+            }else if(srcdepst.isBlank()){
+                Toast.makeText(this, "Please enter Security Deposit Type", Toast.LENGTH_SHORT).show()
+            }else {
+                createCaf(strbusinessSegment,subbssegment,customername,phonenumber,polock,ponext,authemail,authfather,
+                    authmobile,authname,authaddress,authpincode,billingplot,billingname,billingemail,billingfloor,billingphn,
+                    billingpincode,instemail,instmobile,instpin,amount,approvalcode,brnch,checkdd,checknum,carddgts,
+                    paymntdt,txtty,srcdepst,creditcrd,pan,tan,gstnum,otc)
+            }
+        }
+        tv_update.setOnClickListener {
+            val strbusinessSegment =  caf_contactinfo_layout.et_cafbs_sgmnt.text.toString()
+            val subbssegment = str_sub_bus.toString()
+            val customername = caf_contactinfo_layout.et_cstname.text.toString()
+            val phonenumber = caf_contact_person_row.et_cafphn_num.text.toString()
+            val polock = layout_otherinfo.et_caflock.text.toString()
+            val ponext = layout_otherinfo.et_cafnxt.text.toString()
+            val authemail = layout_cafothr_details.et_cafemailid.text.toString()
+            val authfather = layout_cafothr_details.et_fthr_hsb.text.toString()
+            val authmobile = layout_cafothr_details.et_authomob.text.toString()
+            val authname = layout_cafothr_details.et_cafname.text.toString()
+            val authaddress = layout_cafothr_details.et_address.text.toString()
+            val authpincode = layout_cafothr_details.et_cafauthpincode.text.toString()
+            val billingplot = caf_contact_person_row.et_cfblbuildng_num.text.toString()
+            val billingname = caf_contact_person_row.et_caf_cntname.text.toString()
+            val billingemail = caf_contact_person_row.et_caf_bilngemailid.text.toString()
+            val billingfloor = caf_contact_person_row.et_cfblfloor.text.toString()
+            val billingphn =   caf_contact_person_row.et_cafphn_num.text.toString()
+            val billingpincode = caf_contact_person_row.et_cfblpin_code.text.toString()
+            val instemail = layout_cafinstal_address.et_cafemail.text.toString()
+            val instmobile = layout_cafinstal_address.et_cafmbnum.text.toString()
+            val instpin = layout_cafinstal_address.et_cafpin.text.toString()
+            val amount = layout_payment.et_totalamt.text.toString()
+            val approvalcode = layout_payment.et_appcode.text.toString()
+            val brnch = layout_payment.et_brnch.text.toString()
+            val checkdd = layout_payment.et_chkdate.text.toString()
+            val checknum = layout_payment.et_chknum.text.toString()
+            val carddgts = layout_payment.et_cardfrdgt.text.toString()
+            val paymntdt = layout_payment.et_paymntdt.text.toString()
+            val txtty = layout_payment.et_txtid.text.toString()
+            val srcdepst = layout_payment.et_scdeposit.text.toString()
+            val creditcrd = layout_payment.et_creditfrdgt.text.toString()
+            val pan = layout_payment.et_pannum.text.toString()
+            val tan = layout_payment.et_tannum.text.toString()
+            val gstnum = layout_payment.et_gstt.text.toString()
+            val otc = layout_payment.et_otc.text.toString()
+            if(str_cmp?.isBlank()==true||str_cmp=="Select Company"){
+                Toast.makeText(this, "Please Select Company", Toast.LENGTH_SHORT).show()
+            }else if(str_grp?.isBlank()==true||str_grp=="Select Group"){
+                Toast.makeText(this, "Please Select Group", Toast.LENGTH_SHORT).show()
+            }else if(str_rltn?.isBlank()==true||str_rltn=="Select Relation"){
+                Toast.makeText(this, "Please Select Relation", Toast.LENGTH_SHORT).show()
+            } else if(subbssegment.isBlank()){
+                Toast.makeText(this, "Please enter SubBusiness Segment", Toast.LENGTH_SHORT).show()
+            }else if(customername.isBlank()){
+                Toast.makeText(this, "Please enter Customer Name", Toast.LENGTH_SHORT).show()
+            }else if(phonenumber.isBlank()){
+                Toast.makeText(this, "Please enter Phone Number", Toast.LENGTH_SHORT).show()
+            }else if(polock.isBlank()){
+                Toast.makeText(this, "Please enter PoLock", Toast.LENGTH_SHORT).show()
+            }else if(ponext.isBlank()){
+                Toast.makeText(this, "Please enter PoNext", Toast.LENGTH_SHORT).show()
+            }else if(authemail.isBlank()){
+                Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show()
+            }else if(authfather.isBlank()){
+                Toast.makeText(this, "Please enter Father/Husband Name", Toast.LENGTH_SHORT).show()
+            }else if(authmobile.isBlank()){
+                Toast.makeText(this, "Please enter Mobile Num", Toast.LENGTH_SHORT).show()
+            }else if(authaddress.isBlank()){
+                Toast.makeText(this, "Please enter Address", Toast.LENGTH_SHORT).show()
+            }else if(authpincode.isBlank()){
+                Toast.makeText(this, "Please enter Pincode", Toast.LENGTH_SHORT).show()
+            }else if(authname.isBlank()){
+                Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show()
+            }else if(billingplot.isBlank()){
+                Toast.makeText(this, "Please enter Building No.", Toast.LENGTH_SHORT).show()
+            }else if(billingname.isBlank()){
+                Toast.makeText(this, "Please enter Billing Name", Toast.LENGTH_SHORT).show()
+            }else if(billingemail.isBlank()){
+                Toast.makeText(this, "Please enter Billing Email ", Toast.LENGTH_SHORT).show()
+            }else if(billingfloor.isBlank()){
+                Toast.makeText(this, "Please enter Billing Floor", Toast.LENGTH_SHORT).show()
+            }else if(billingphn.isBlank()){
+                Toast.makeText(this, "Please enter Billing Floor", Toast.LENGTH_SHORT).show()
+            }else if(billingpincode.isBlank()){
+                Toast.makeText(this, "Please enter Billing Pincode", Toast.LENGTH_SHORT).show()
+            }else if(instemail.isBlank()){
+                Toast.makeText(this, "Please enter Installation Email", Toast.LENGTH_SHORT).show()
+            }else if(instmobile.isBlank()){
+                Toast.makeText(this, "Please enter Installation Phone Number", Toast.LENGTH_SHORT).show()
+            }else if(instpin.isBlank()){
+                Toast.makeText(this, "Please enter Installation Pincode", Toast.LENGTH_SHORT).show()
+            } else if(amount.isBlank()){
+                Toast.makeText(this, "Please enter Amount", Toast.LENGTH_SHORT).show()
+            }else if(srcdepst.isBlank()){
+                Toast.makeText(this, "Please enter Security Deposit Type", Toast.LENGTH_SHORT).show()
+            }else if(otc.isBlank()){
+                Toast.makeText(this, "Please enter Otc", Toast.LENGTH_SHORT).show()
+            }else {
+                updateCaf(strbusinessSegment,subbssegment,customername,phonenumber,polock,ponext,authemail,authfather,
+                    authmobile,authname,authaddress,authpincode,billingplot,billingname,billingemail,billingfloor,billingphn,
+                    billingpincode,instemail,instmobile,instpin,amount,approvalcode,brnch,checkdd,checknum,carddgts,
+                    paymntdt,txtty,srcdepst,creditcrd,pan,tan,gstnum,otc)
+            }
+        }
+    }
+
+    fun itemListener(){
         caf_contactinfo_layout.et_wrkngdys.setOnClickListener { caf_contactinfo_layout.sp_wrkng_days.performClick() }
         caf_contactinfo_layout.sp_wrkng_days.onItemSelectedListener = this
         caf_contactinfo_layout.et_ntwrkmtr.setOnClickListener { caf_contactinfo_layout.sp_ntwrkmtr.performClick() }
@@ -257,6 +460,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         layout_cafinstal_address.sp_cafbuilding_nm.onItemSelectedListener = this
         layout_cafinstal_address.et_cafbuilding_status.setOnClickListener { layout_cafinstal_address.sp_cafstatus.performClick() }
         layout_cafinstal_address.sp_cafstatus.onItemSelectedListener = this
+
         layout_cafinstal_address.et_custctgry.setOnClickListener { layout_cafinstal_address.sp_custctgry.performClick() }
         layout_cafinstal_address.sp_custctgry.onItemSelectedListener = this
         caf_contact_person_row.et_cfblstate.setOnClickListener { caf_contact_person_row.sp_cfblstate.performClick() }
@@ -288,76 +492,70 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         }
     }
 
-    fun createCaf () {
-        val strbusinessSegment =  caf_contactinfo_layout.et_cafbs_sgmnt.text
-        val subbssegment = str_sub_bus
-        val customername = caf_contactinfo_layout.et_cstname.text
-        val phonenumber = caf_contact_person_row.et_cafphn_num.text
-        val polock = layout_otherinfo.et_caflock.text
-        val ponext = layout_otherinfo.et_cafnxt.text
-        val authemail = layout_cafothr_details.et_cafemailid.text
-        val authfather = layout_cafothr_details.et_fthr_hsb.text
-        val authmobile = layout_cafothr_details.et_authomob.text
-        val authname = layout_cafothr_details.et_cafname.text
-        val authaddress = layout_cafothr_details.et_address.text
-        val authpincode = layout_cafothr_details.et_cafauthpincode.text
-        val billingplot = caf_contact_person_row.et_cfblbuildng_num.text
-        val billingname = caf_contact_person_row.et_caf_cntname.text
-        val billingemail = caf_contact_person_row.et_caf_bilngemailid.text
-        val billingfloor = caf_contact_person_row.et_cfblfloor.text
-        val billingphn =   caf_contact_person_row.et_cafphn_num.text
-        val billingpincode = caf_contact_person_row.et_cfblpin_code.text
-        val instemail = layout_cafinstal_address.et_cafemail.text
-        val instmobile = layout_cafinstal_address.et_cafmbnum.text
-        val instpin = layout_cafinstal_address.et_cafpin.text
-        val amount = layout_payment.et_totalamt.text
-        val approvalcode = layout_payment.et_appcode.text
-       // val bnkname = layout_payment.et_bnknm.text
-        val brnch = layout_payment.et_brnch.text
-        val checkdd = layout_payment.et_chkdate.text
-        val checknum = layout_payment.et_chknum.text
-        val carddgts = layout_payment.et_cardfrdgt.text
-        val paymntdt = layout_payment.et_paymntdt.text
-        val txtty = layout_payment.et_txtid.text
-        val srcdepst = layout_payment.et_scdeposit.text
-        val creditcrd = layout_payment.et_creditfrdgt.text
-        val pan = layout_payment.et_pannum.text
-        val tan = layout_payment.et_tannum.text
-        val gstnum = layout_payment.et_gstt.text
+    fun createCaf(
+        strbusinessSegment: String,
+        subbssegment: String,
+        customername: String,
+        phonenumber: String,
+        polock: String,
+        ponext: String,
+        authemail: String,
+        authfather: String,
+        authname: String,
+        authaddress: String,
+        authpincode: String,
+        billingplot: String,
+        authmobile:String,
+        billingname: String,
+        billingemail: String,
+        billingfloor: String,
+        billingphn: String,
+        billingpincode: String,
+        instemail: String,
+        instmobile: String,
+        instpin: String,
+        amount: String,
+        approvalcode: String,
+        brnch: String,
+        checkdd: String,
+        checknum: String,
+        carddgts: String,
+        paymntdt: String,
+        txtty: String,
+        srcdepst: String,
+        creditcrd: String,
+        pan: String,
+        tan: String,
+        gstnum: String,
+        otc:String
+    ) {
         var date1=""
         if(str_frwall=="1"){
-            date1 = "2022-01-15"
+            date1 = layout_cafothr_details.et_frwas.text.toString()
         }
+        val cafDetails = CafDetail(str_wrkngdays,strbusinessSegment,strCafId,str_cmpnyself,
+                str_customercategory, customername,str_wrknghrs,str_provider, date1,
+                str_frwall, gstnum,str_gstval,str_ntwrk, pan,
+                phonenumber, caflock, cafnext,str_PrfCom, subbssegment, tan,str_voip)
 
-        val cafDetails = CafDetail(str_wrkngdays,strbusinessSegment?.toString(),strCafId,str_cmpnyself,
-                str_customercategory, customername?.toString(),str_wrknghrs,str_provider, date1,
-                str_frwall, gstnum?.toString(),str_gstval,str_ntwrk, pan?.toString(),
-                phonenumber?.toString(), caflock, cafnext,
-                str_PrfCom, subbssegment, tan?.toString(),str_voip)
+        val authSigDetails = AuthorSigDetails(authemail, authfather,"0",
+                authmobile, authname, authaddress,str_atcity_code,
+                "10001", authpincode,str_atinststateId)
 
-        val authSigDetails = AuthorSigDetails(authemail?.toString(), authfather?.toString(),"0",
-                authmobile?.toString(), authname?.toString(), authaddress?.toString(),str_atcity_code,
-                "10001", authpincode?.toString(),str_atinststateId)
-
-        val cafBillingAddress = CafBillingAddress(billingplot?.toString(),"",
-                billingname?.toString(), billingemail?.toString(), billingfloor?.toString(),
+        val cafBillingAddress = CafBillingAddress(billingplot,"",
+                billingname,billingemail,billingfloor,
                 "0","0","0",
-                str_bladd_area,str_blinst_building_nm,str_blcity_code,"10001", billingphn?.toString(),
-                billingpincode?.toString(),str_blinststateId)
+                str_bladd_area,str_blinst_building_nm,str_blcity_code,"10001", billingphn,
+                billingpincode,str_blinststateId)
 
         val cafInstallationAddress = CafInstallationAddress(str_billtype,"0","0",
-                "", instemail?.toString(),"0","0","0",
-                instmobile?.toString(),
-                "0", str_add_area,str_inst_building_nm,str_city_code,"10001", instpin?.toString(),
+                "", instemail,"0","0","0",
+                instmobile, "0", str_add_area,str_inst_building_nm,str_city_code,"10001", instpin,
                 str_inststateId, strProductId)
 
-        val paymentDetail = PaymentDetail("", amount?.toString(), approvalcode?.toString(), str_bankid,
-                brnch?.toString(), checkdd?.toString(), checknum?.toString(), creditcrd?.toString(),
-                carddgts?.toString(),str_payslip,
-                 cafpaydate,"569480002", srcdepst?.toString(),str_sctype,
-                txtty?.toString())
-
-
+        val paymentDetail = PaymentDetail(otc, amount, approvalcode, str_bankid,
+                brnch, checkdate, checknum, creditcrd, carddgts,str_payslip, cafpaydate,"", srcdepst,str_sctype,
+                txtty)
         val createCafReqest = CreateCafReqest(Constants.CREATECAF, Constants.AUTH_KEY, authSigDetails,
                 cafBillingAddress, cafDetails,str_cmp,str_grp,cafInstallationAddress,strOppId,
                 "Target@2021#@",paymentDetail,str_rltn,"manager1")
@@ -369,93 +567,88 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                     val msg = response.body()?.Response?.Message
                     if(response.body()?.StatusCode=="200"){
                         Toast.makeText(this@CAFActivity, msg, Toast.LENGTH_SHORT).show()
-                        val fragmentB = GetAllCAFFrag()
+                       /* val fragmentB = GetAllCAFFrag()
                         supportFragmentManager.beginTransaction()
                                 .replace(R.id.fragment_caf, fragmentB, "fragmnetId")
-                                .commit()
+                                .commit()*/
                     }else{
                         Toast.makeText(this@CAFActivity, msg, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-
             override fun onFailure(call: Call<CafDetailResponse?>, t: Throwable) {
                 Log.e("RetroError", t.toString())
             }
         })
 }
 
-    fun updateCaf () {
-        val strbusinessSegment =  caf_contactinfo_layout.et_cafbs_sgmnt.text
-        val subbssegment = str_sub_bus
-        val customername = caf_contactinfo_layout.et_cstname.text
-        val phonenumber = caf_contact_person_row.et_cafphn_num.text
-        val polock = layout_otherinfo.et_caflock.text
-        val ponext = layout_otherinfo.et_cafnxt.text
-
-        val authemail = layout_cafothr_details.et_cafemailid.text
-        val authfather = layout_cafothr_details.et_fthr_hsb.text
-        val authmobile = layout_cafothr_details.et_authomob.text
-        val authname = layout_cafothr_details.et_cafname.text
-        val authaddress = layout_cafothr_details.et_address.text
-        val authpincode = layout_cafothr_details.et_cafauthpincode.text
-
-        val billingplot = caf_contact_person_row.et_cfblbuildng_num.text
-        val billingname = caf_contact_person_row.et_caf_cntname.text
-        val billingemail = caf_contact_person_row.et_caf_bilngemailid.text
-        val billingfloor = caf_contact_person_row.et_cfblfloor.text
-        val billingphn = caf_contact_person_row.et_cafphn_num.text
-        val billingpincode = caf_contact_person_row.et_cfblpin_code.text
-
-        val instemail = layout_cafinstal_address.et_cafemail.text
-        val instmobile = layout_cafinstal_address.et_cafmbnum.text
-        val instpin = layout_cafinstal_address.et_cafpin.text
+    fun updateCaf(
+        strbusinessSegment: String,
+        subbssegment: String,
+        customername: String,
+        phonenumber: String,
+        polock: String,
+        ponext: String,
+        authemail: String,
+        authfather: String,
+        authmobile: String,
+        authname: String,
+        authaddress: String,
+        authpincode: String,
+        billingplot: String,
+        billingname: String,
+        billingemail: String,
+        billingfloor: String,
+        billingphn: String,
+        billingpincode: String,
+        instemail: String,
+        instmobile: String,
+        instpin: String,
+        amount: String,
+        approvalcode: String,
+        brnch: String,
+        checkdd: String,
+        checknum: String,
+        carddgts: String,
+        paymntdt: String,
+        txtty: String,
+        srcdepst: String,
+        creditcrd: String,
+        pan: String,
+        tan: String,
+        gstnum: String,
+        otc:String
+    ) {
         var date=""
         if(str_frwall=="1"){
-            date = "2022-01-15"
+            date = layout_cafothr_details.et_frwas.text.toString()
         }
+        val cafDetails = CafDetail(str_wrkngdays,strbusinessSegment,strCafId,str_cmpnyself,
+                str_customercategory, customername,str_wrknghrs,str_provider,
+                date, str_frwall, gstnum,str_gstval,str_ntwrk, pan,
+                phonenumber, caflock, cafnext,
+                str_PrfCom, subbssegment, tan,str_voip)
 
-        val amount = layout_payment.et_totalamt.text
-        val approvalcode = layout_payment.et_appcode.text
+        val authSigDetails = AuthorSigDetails(authemail, authfather,"",
+                authmobile, authname, authaddress,str_atcity_code,
+                "10001", authpincode,str_atinststateId)
 
-        val brnch = layout_payment.et_brnch.text
-        val checkdd = layout_payment.et_chkdate.text
-        val checknum = layout_payment.et_chknum.text
-        val carddgts = layout_payment.et_cardfrdgt.text
-        val paymntdt = layout_payment.et_paymntdt.text
-        val txtty = layout_payment.et_txtid.text
-        val srcdepst = layout_payment.et_scdeposit.text
-        val creditcrd = layout_payment.et_creditfrdgt.text
-        val pan = layout_payment.et_pannum.text
-        val tan = layout_payment.et_tannum.text
-        val gstnum = layout_payment.et_gstt.text
-
-        val cafDetails = CafDetail(str_wrkngdays,strbusinessSegment?.toString(),strCafId,str_cmpnyself,
-                str_customercategory, customername?.toString(),str_wrknghrs,str_provider,
-                date, str_frwall, gstnum?.toString(),str_gstval,str_ntwrk, pan?.toString(),
-                phonenumber?.toString(), caflock, cafnext,
-                str_PrfCom, subbssegment, tan?.toString(),str_voip)
-
-        val authSigDetails = AuthorSigDetails(authemail?.toString(), authfather?.toString(),"",
-                authmobile?.toString(), authname?.toString(), authaddress?.toString(),str_atcity_code,
-                "10001", authpincode?.toString(),str_atinststateId)
-
-        val cafBillingAddress = CafBillingAddress(billingplot?.toString(),"",
-                billingname?.toString(), billingemail?.toString(), billingfloor?.toString(),
+        val cafBillingAddress = CafBillingAddress(billingplot,"",
+                billingname, billingemail, billingfloor,
                 "","","",
-                str_bladd_area,str_blinst_building_nm,str_blcity_code,"10001", billingphn?.toString(),
-                billingpincode?.toString(),str_blinststateId)
+                str_bladd_area,str_blinst_building_nm,str_blcity_code,"10001", billingphn,
+                billingpincode,str_blinststateId)
 
         val cafInstallationAddress = CafInstallationAddress(str_billtype,"","",
-                "", instemail?.toString(),"","","",
-                instmobile?.toString(),
-                "", str_add_area,str_inst_building_nm,str_city_code,"10001", instpin?.toString(),
+                "", instemail,"","","",
+                instmobile,
+                "", str_add_area,str_inst_building_nm,str_city_code,"10001", instpin,
                 str_inststateId,"")
-        val paymentDetail = PaymentDetail("100", amount?.toString(), approvalcode?.toString(),str_bankid,
-                brnch?.toString(), checkdd?.toString(), checknum?.toString(), creditcrd?.toString(),
-                carddgts?.toString(),str_payslip,
-               cafpaydate,"569480002", srcdepst?.toString(),str_sctype,
-                txtty?.toString())
+        val paymentDetail = PaymentDetail(otc, amount, approvalcode,str_bankid,
+                brnch, checkdate, checknum, creditcrd,
+                carddgts,str_payslip,
+                cafpaydate,strPaymentStatus, srcdepst,str_sctype,
+                txtty)
 
         val createCafReqest = CreateCafReqest(Constants.UPDATECAF, Constants.AUTH_KEY, authSigDetails,
                 cafBillingAddress, cafDetails,str_cmp,str_grp,cafInstallationAddress,strOppId,
@@ -468,10 +661,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                     val msg = response.body()?.Response?.Message
                     if(response.body()?.StatusCode=="200"){
                         Toast.makeText(this@CAFActivity, msg, Toast.LENGTH_SHORT).show()
-                        val fragmentB = GetAllCAFFrag()
+                      /*  val fragmentB = GetAllCAFFrag()
                         supportFragmentManager.beginTransaction()
                                 .replace(R.id.fragment_caf, fragmentB, "fragmnetId")
-                                .commit()
+                                .commit()*/
                     }else{
                         Toast.makeText(this@CAFActivity, msg, Toast.LENGTH_SHORT).show()
                     }
@@ -495,13 +688,13 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                     val msg = response.body()?.Response?.Message
                     if(response.body()?.StatusCode=="200"){
                         Toast.makeText(this@CAFActivity, msg, Toast.LENGTH_SHORT).show()
+                        tv_create.visibility=View.GONE
                         caf()
                     }else{
                         Toast.makeText(this@CAFActivity, msg, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-
             override fun onFailure(call: Call<CafDetailResponse?>, t: Throwable) {
                 Log.e("RetroError", t.toString())
             }
@@ -521,6 +714,11 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
     fun getCaf () {
         inProgress()
+        if(strCafId.isNullOrEmpty()){
+            strOppId
+        }else{
+            strOppId=""
+        }
         val cafRequest = CafRequest(Constants.GETCAF, Constants.AUTH_KEY, strCafId,strOppId, "Target@2021#@", "manager1")
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getCaf(cafRequest)
@@ -534,12 +732,14 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             strCafId = response.body()?.Response?.Data?.CafNo
                             if(strCafId.isNullOrBlank()){
                                 tv_create.visibility=View.VISIBLE
+                                layout_payment.et_otc.visibility=View.GONE
                                 tv_update.visibility=View.GONE
                                 tv_submit.visibility=View.GONE
                             }else{
                                 tv_create.visibility=View.GONE
                                 tv_update.visibility=View.VISIBLE
                                 tv_submit.visibility=View.VISIBLE
+                                layout_payment.et_otc.visibility=View.VISIBLE
                             }
                             strOppId =  response.body()?.Response?.Data?.OpportunityId2
                             binding.cafContactinfoLayout.cafContactInfo = response.body()?.Response?.Data
@@ -550,10 +750,11 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             binding.layoutCafothrDetails.cafauthoInfo = response.body()?.Response?.Data?.authSigDetails
                             binding.layoutPayment.cafPaymentInfo = response.body()?.Response?.Data?.payments
                             val network = response.body()?.Response?.Data?.NetworkTechnology
+                            strPaymentStatus =response.body()?.Response?.Data?.payments?.PaymentStatus
                             if(network=="111260000"){
-                                caf_contactinfo_layout.et_netwrktech.setText("Yes")
+                                caf_contactinfo_layout.et_netwrktech.setText("GPON")
                             }else if(network=="111260001"){
-                                caf_contactinfo_layout.et_netwrktech.setText("No")
+                                caf_contactinfo_layout.et_netwrktech.setText("NON-GPON")
                             }
                             strCustHappy = response.body()?.Response?.Data?.IsCustomerHappy
                             if(strCustHappy=="1"){
@@ -567,7 +768,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                           */strProductId= response.body()?.Response?.Data?.ProductId
                             val strContactstate = response.body()?.Response?.Data?.installationAddresses?.Inst_State
                             val strBlstate = response.body()?.Response?.Data?.billingAddress?.Bill_State
-
                             val strSubBusSeg = response.body()?.Response?.Data?.SubBussinessSegment
                             val strPrefred = response.body()?.Response?.Data?.PreferredCommMode
                             val strProvider = response.body()?.Response?.Data?.otherinformations?.ExistingServiceProvider
@@ -578,12 +778,11 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             val strWrkngDays = response.body()?.Response?.Data?.BusinessDays
                             val strNetwork = response.body()?.Response?.Data?.NetworkTechnology
                             val strCustomerCategory = response.body()?.Response?.Data?.installationAddresses?.Inst_CategoryofCustomer
-                            val strWrkngHrs = response.body()?.Response?.Data?.installationAddresses?.Inst_CategoryofCustomer
+                            val strWrkngHrs = response.body()?.Response?.Data?.CustomerWorkingHours
                             val strVoip = response.body()?.Response?.Data?.installationAddresses?.Inst_VoidPort
                             val strBillType = response.body()?.Response?.Data?.installationAddresses?.Inst_BillType
                             val strSecrtyType = response.body()?.Response?.Data?.payments?.SecurityDepositType
                             val strGST = response.body()?.Response?.Data?.GstNumber
-
                             strCity = response.body()?.Response?.Data?.installationAddresses?.Inst_City
                             strBlCity = response.body()?.Response?.Data?.billingAddress?.Bill_City
                             strAthCity = response.body()?.Response?.Data?.authSigDetails?.Auth_City
@@ -598,7 +797,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             getCompany(strCompany)
                             getRelation(strRelation)
                             getIndustryTpe()
-
                             var cntstatePosition = 0
                             resources.getStringArray(R.array.list_of_state).forEachIndexed { index, s ->
                                 if (s == strContactstate) cntstatePosition = index
@@ -620,7 +818,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             layout_cafothr_details.sp_cafauthostate.adapter = atstateAdapter
                             layout_cafothr_details.sp_cafauthostate.setSelection(atstatePos)
                             atstateAdapter.notifyDataSetChanged()
-
                             var blstatePosition = 0
                             resources.getStringArray(R.array.list_of_state).forEachIndexed { index, s ->
                                 if (s == strBlstate) blstatePosition = index
@@ -779,11 +976,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             binding.layoutPayment.spGst.adapter = gstAdapter
                             binding.layoutPayment.spGst.setSelection(gstPosition)
                             gstAdapter.notifyDataSetChanged()
-
                             val polockDate = response.body()?.Response?.Data?.otherinformations?.PoLock
-                            if(polockDate.isNullOrEmpty()){
-
-                            }else {
+                            if(polockDate?.isNotEmpty()==true){
                                 val split1 = polockDate.split("-")
                                 val date1 = split1.get(0)
                                 val month1 = split1.get(1)
@@ -792,9 +986,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             }
 
                             val ponextdate = response.body()?.Response?.Data?.otherinformations?.PoNext
-                                if(ponextdate.isNullOrEmpty()){
-
-                                }else {
+                                if(ponextdate?.isNotEmpty()==true){
                                     val split2 = ponextdate.split("-")
                                     val date2 = split2.get(0)
                                     val month2 = split2.get(1)
@@ -802,9 +994,31 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                                     layout_otherinfo.et_cafnxt.setText("$date2-$month2-$year2")
                                 }
 
+                            val date = response.body()?.Response?.Data?.payments?.PaymentDate
+                            if(date?.isNotEmpty()==true){
+                                val split2 = date.split("-")
+                                val date2 = split2.get(0)
+                                val month2 = split2.get(1)
+                                val year2 = split2.get(2)
+                                layout_payment.et_paymntdt.setText("$date2-$month2-$year2")
+                            }
+                            layout_cafinstal_address.et_cafstate.isEnabled=false
+                            layout_cafinstal_address.et_add_cafcity.isEnabled=false
+                            layout_cafinstal_address.et_cafinstallarea.isEnabled=false
+                            layout_cafinstal_address.et_cafbuildingname.isEnabled=false
+
                             val status = response.body()?.Response?.Data?.SubmitFlag
                             if(status=="111260000"){
                                 locked()
+                                linearwcr.visibility=View.VISIBLE
+                                linearnp.visibility=View.VISIBLE
+                                lineareir.visibility=View.VISIBLE
+                                wcr.add_quote.visibility=View.GONE
+                                ir.add_fes.visibility=View.GONE
+                                np.add_dao.visibility=View.GONE
+                                getwcr()
+                                getIr()
+                                getNP()
                             }else{
                                 Calender()
                             }
@@ -836,6 +1050,137 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     }
 
 
+
+    fun getwcr() {
+        //  inProgress()
+        val getDocCafReq = GetDocCafReq(Constants.GETWCR,Constants.AUTH_KEY,strCafId,"Target@2021#@","manager1")
+
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getWCRList(getDocCafReq)
+        call.enqueue(object : Callback<GetCafWCRResponse?> {
+            override fun onResponse(call: Call<GetCafWCRResponse?>, response: Response<GetCafWCRResponse?>) {
+                //   OutProgress()
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        val msg = response.body()!!.Response.Message
+                        if (response.body()?.Response?.StatusCode==200) {
+                            try {
+                                wcrList = response.body()!!.Response.Data
+                                if(wcrList?.isNotEmpty()==true) {
+                                    setWcrAdapter(wcrList!!, this@CAFActivity)
+                                }
+                            } catch (e: java.lang.Exception) {
+                                e.printStackTrace()
+                            }
+                        }else{
+                        }
+
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<GetCafWCRResponse?>, t: Throwable) {
+                 Log.e("RetroError", t.toString())
+            }
+        })
+    }
+
+
+    private fun setWcrAdapter(allProductItem: ArrayList<WCRData>, context: Context?) {
+        rv_add_quote?.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            adapter = GetWCRAdapter(allProductItem,context)
+        }
+    }
+
+    fun getIr() {
+        //  inProgress()
+        val getDocCafReq = GetDocCafReq(Constants.getIR,Constants.AUTH_KEY,strCafId,"Target@2021#@","manager1")
+
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getIRList(getDocCafReq)
+        call.enqueue(object : Callback<GetCafIRResponse?> {
+            override fun onResponse(call: Call<GetCafIRResponse?>, response: Response<GetCafIRResponse?>) {
+                //   OutProgress()
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        val msg = response.body()!!.Response.Message
+                        if (response.body()?.Response?.StatusCode==200) {
+                            try {
+                                irList = response.body()!!.Response.Data
+                                if(irList?.isNotEmpty()==true) {
+                                    setIrAdapter(irList!!, this@CAFActivity)
+                                }
+                            } catch (e: java.lang.Exception) {
+                                e.printStackTrace()
+                            }
+                        }else{
+
+                        }
+
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<GetCafIRResponse?>, t: Throwable) {
+                //  binding.opprogressLayout.progressOverlay.visibility=View.GONE
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+    private fun setIrAdapter(irData:  ArrayList<IRData>, context: Context?) {
+        rv_add_fes?.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            adapter = GetIRdapter(irData,context)
+        }
+    }
+
+    fun getNP() {
+        //  inProgress()
+        val getDocCafReq = GetDocCafReq(Constants.GETNP,Constants.AUTH_KEY,strCafId,"Target@2021#@","manager1")
+
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getNPList(getDocCafReq)
+        call.enqueue(object : Callback<GetCafNPResponse?> {
+            override fun onResponse(call: Call<GetCafNPResponse?>, response: Response<GetCafNPResponse?>) {
+                //   OutProgress()
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        val msg = response.body()!!.Response.Message
+                        if (response.body()?.Response?.StatusCode==200) {
+                            try {
+                                npList = response.body()!!.Response.Data
+                                if(npList?.isNotEmpty()==true) {
+                                    setNPAdapter(npList!!, this@CAFActivity)
+                                }
+                            } catch (e: java.lang.Exception) {
+                                e.printStackTrace()
+                            }
+                        }else{
+                        }
+
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<GetCafNPResponse?>, t: Throwable) {
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+    private fun setNPAdapter(npData:  ArrayList<NPData>, context: Context?) {
+        rv_add_doa?.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            adapter = GetNPAdapter(npData,context)
+        }
+    }
+
     fun locked(){
         caf_contactinfo_layout.et_cstname.isEnabled= false
         caf_contactinfo_layout.et_cstmrwrknghrs.isEnabled= false
@@ -855,7 +1200,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         caf_contactinfo_layout.et_prfcom.isEnabled=false
         caf_contactinfo_layout.et_wrkngdys.isEnabled=false
         caf_contactinfo_layout.et_ntwrkmtr.isEnabled=false
-
         layout_otherinfo.et_caflock.isEnabled=false
         layout_otherinfo.et_cafcmpny_self.isEnabled=false
         layout_otherinfo.et_cafno.isEnabled=false
@@ -871,7 +1215,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         layout_cafcompany_details.sp_cafindustype.isEnabled=false
         layout_cafcompany_details.et_caffirm_type.isEnabled=false
         layout_cafcompany_details.et_lco.isEnabled=false
-
         layout_cafinstal_address.et_cafemail.isEnabled=false
         layout_cafinstal_address.et_cafmbnum.isEnabled=false
         layout_cafinstal_address.et_cafleadname.isEnabled=false
@@ -895,7 +1238,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         layout_cafinstal_address.et_cafbuilding_status.isEnabled=false
         layout_cafinstal_address.et_cafvoip.isEnabled=false
         layout_cafinstal_address.et_custctgry.isEnabled=false
-
         caf_contact_person_row.et_caf_cntname.isEnabled=false
         caf_contact_person_row.et_caf_bilngemailid.isEnabled=false
         caf_contact_person_row.et_cafphn_num.isEnabled=false
@@ -911,7 +1253,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         caf_contact_person_row.et_cfblcity.isEnabled=false
         caf_contact_person_row.et_cfblarea.isEnabled=false
         caf_contact_person_row.et_cfblbuilding.isEnabled=false
-
         layout_cafothr_details.et_cafname.isEnabled=false
         layout_cafothr_details.et_fthr_hsb.isEnabled=false
         layout_cafothr_details.et_address.isEnabled=false
@@ -923,7 +1264,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         layout_cafothr_details.et_cafauthpincode.isEnabled=false
         layout_cafothr_details.et_cafauthstate.isEnabled=false
         layout_cafothr_details.et_add_cafauthcity.isEnabled=false
-
         layout_payment.et_cafpyid.isEnabled=false
         layout_payment.sp_payslip.isEnabled=false
         layout_payment.et_payslip.isEnabled=false
@@ -939,7 +1279,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         layout_payment.et_chkdate.isEnabled=false
         layout_payment.et_appcode.isEnabled=false
         layout_payment.et_cardfrdgt.isEnabled=false
-
         layout_payment.et_creditfrdgt.isEnabled=false
         layout_payment.et_pannum.isEnabled=false
         layout_payment.et_tannum.isEnabled=false
@@ -953,40 +1292,90 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
     @SuppressLint("SetTextI18n")
     fun  Calender(){
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-        layout_otherinfo.et_caflock.setOnClickListener {
-            val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
-                val mnth = monthOfYear+1
-                layout_otherinfo.et_caflock.setText("$dayOfMonth-$mnth-$year")
-                 caflock = ("$year-$mnth-$dayOfMonth")
-            }, year, month, day)
-            dpd.show()
-        }
+        try {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            layout_otherinfo.et_caflock.setOnClickListener {
+                val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
+                    val mnth = monthOfYear + 1
+                    layout_otherinfo.et_caflock.setText("$dayOfMonth-$mnth-$year")
+                    val trgt = layout_otherinfo.et_caflock.text.toString()
+                    val split = trgt.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    caflock = (year1 + "-" + month1 + "-" + dateee)
+                }, year, month, day)
+                dpd.show()
+            }
 
-        layout_otherinfo.et_cafnxt.setOnClickListener {
-            val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
-                val mnth = monthOfYear+1
-                layout_otherinfo.et_cafnxt.setText("$dayOfMonth-$mnth-$year")
-                 cafnext = ("$year-$mnth-$dayOfMonth")
-            }, year, month, day)
-            dpd.show()
-        }
+            layout_otherinfo.et_cafnxt.setOnClickListener {
+                val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
+                    val mnth = monthOfYear + 1
+                    layout_otherinfo.et_cafnxt.setText("$dayOfMonth-$mnth-$year")
+                    val trgt = layout_otherinfo.et_cafnxt.text.toString()
+                    val split = trgt.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    cafnext = (year1 + "-" + month1 + "-" + dateee)
+                }, year, month, day)
+                dpd.show()
+            }
+            layout_otherinfo.et_frwas.setOnClickListener {
+                val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
+                    val mnth = monthOfYear + 1
+                    layout_otherinfo.et_frwas.setText("$dayOfMonth-$mnth-$year")
+                    val trgt = layout_otherinfo.et_frwas.text.toString()
+                    val split = trgt.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    frwamc = (year1 + "-" + month1 + "-" + dateee)
+                }, year, month, day)
+                dpd.show()
+            }
 
-        layout_payment.et_paymntdt.setOnClickListener {
-            val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
-                val mnth = monthOfYear+1
-                layout_payment.et_paymntdt.setText("$dayOfMonth-$mnth-$year")
-                 cafpaydate = ("$year-$mnth-$dayOfMonth")
-            }, year, month, day)
-            dpd.show()
+            layout_payment.et_paymntdt.setOnClickListener {
+                val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
+                    val mnth = monthOfYear + 1
+                    layout_payment.et_paymntdt.setText("$dayOfMonth-$mnth-$year")
+                    val trgt = layout_payment.et_paymntdt.text.toString()
+                    val split = trgt.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    cafpaydate = (year1 + "-" + month1 + "-" + dateee)
+                }, year, month, day)
+                dpd.show()
+            }
+            layout_payment.et_chkdate.setOnClickListener {
+                val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
+                    val mnth = monthOfYear + 1
+                    layout_payment.et_chkdate.setText("$dayOfMonth-$mnth-$year")
+                    val trgt = layout_payment.et_chkdate.text.toString()
+                    val split = trgt.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    checkdate = (year1 + "-" + month1 + "-" + dateee)
+                }, year, month, day)
+                dpd.show()
+            }
+
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
         }
     }
 
     override fun onClick(p0: View?) {
-
+        when (p0?.id) {
+            R.id.rl_back -> {
+                next()
+            }
+        }
     }
 
     fun getCompany(strCompany: String) {
@@ -1024,11 +1413,12 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                         }
 
                         var groupPosition=0
-                        group!!.forEachIndexed { index, s ->
+                        group?.forEachIndexed { index, s ->
                             if(s==strGroup)
                                 groupPosition=index
                             return@forEachIndexed
                         }
+
 
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, company!!)
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1074,7 +1464,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             }
                         }
                         var relationPosition=0
-                        relation!!.forEachIndexed { index, s ->
+                        relation?.forEachIndexed { index, s ->
                             if(s==strRelation)relationPosition=index
                             return@forEachIndexed
                         }
@@ -1191,6 +1581,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             linearother_details.visibility = View.GONE
             linearcafpymnt_details.visibility = View.GONE
             lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
         }
         linearthree.setOnClickListener { v ->
             linearcontactinfo.visibility = View.GONE
@@ -1201,6 +1595,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             linearother_details.visibility = View.GONE
             linearcafpymnt_details.visibility = View.GONE
             lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
         }
         linearsix.setOnClickListener { v ->
             linearcontactinfo.visibility = View.GONE
@@ -1211,6 +1609,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             linearother_details.visibility = View.GONE
             linearcafpymnt_details.visibility = View.GONE
             lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
         }
         linearfouraddres.setOnClickListener { v ->
             linearcontactinfo.visibility = View.GONE
@@ -1221,6 +1623,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             linearother_details.visibility = View.GONE
             linearcafpymnt_details.visibility = View.GONE
             lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
         }
         linearfive.setOnClickListener { v ->
             linearcontactinfo.visibility = View.GONE
@@ -1231,6 +1637,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             linearother_details.visibility = View.GONE
             linearcafpymnt_details.visibility = View.GONE
             lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
         }
         lineareight.setOnClickListener { v ->
             linearcontactinfo.visibility = View.GONE
@@ -1241,6 +1651,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             linearother_details.visibility = View.VISIBLE
             linearcafpymnt_details.visibility = View.GONE
             lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
         }
         linearnine.setOnClickListener { v ->
             linearcontactinfo.visibility = View.GONE
@@ -1251,6 +1665,10 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             linearother_details.visibility = View.GONE
             linearcafpymnt_details.visibility = View.VISIBLE
             lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
         }
 
         linearten.setOnClickListener { v ->
@@ -1262,6 +1680,50 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             linearother_details.visibility = View.GONE
             linearcafpymnt_details.visibility = View.GONE
             lineardoc_details.visibility = View.VISIBLE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
+        }
+        linearwcr.setOnClickListener { v ->
+            linearcontactinfo.visibility = View.GONE
+            linear_otherinfo.visibility = View.GONE
+            linear_companydetails.visibility = View.GONE
+            linadd.visibility = View.GONE
+            linear_contact_person_address.visibility= View.GONE
+            linearother_details.visibility = View.GONE
+            linearcafpymnt_details.visibility = View.GONE
+            lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.VISIBLE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.GONE
+
+        }
+        linearnp.setOnClickListener { v ->
+            linearcontactinfo.visibility = View.GONE
+            linear_otherinfo.visibility = View.GONE
+            linear_companydetails.visibility = View.GONE
+            linadd.visibility = View.GONE
+            linear_contact_person_address.visibility= View.GONE
+            linearother_details.visibility = View.GONE
+            linearcafpymnt_details.visibility = View.GONE
+            lineardoc_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.GONE
+            linear_npdetails.visibility = View.VISIBLE
+
+        }
+        lineareir.setOnClickListener { v ->
+            linearcontactinfo.visibility = View.GONE
+            linear_otherinfo.visibility = View.GONE
+            linear_companydetails.visibility = View.GONE
+            linadd.visibility = View.GONE
+            linear_contact_person_address.visibility= View.GONE
+            linearother_details.visibility = View.GONE
+            linearcafpymnt_details.visibility = View.GONE
+            linear_wcrdetails.visibility = View.GONE
+            linear_irdetails.visibility = View.VISIBLE
+            linear_npdetails.visibility = View.GONE
         }
 
     }
@@ -1308,7 +1770,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             }
         })
     }
-
 
     fun getBillingCity(stateCode: String) {
         val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,"Target@2021#@",stateCode,"manager1")
@@ -1396,7 +1857,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
     fun getInstallArea(str_city: String?, str_city_code: String?) {
         val getLeadAreaRequest =   GetLeadAreaRequest(Constants.Get_AREA,Constants.AUTH_KEY,
-                str_city_code.toString(), str_city.toString() ,"","manager1","Target@2021#@",true)
+                str_city_code.toString(), str_city.toString() ,"","manager1","Target@2021#@",false)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getLeadArea(getLeadAreaRequest)
@@ -1418,6 +1879,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                         var areaPosition=0
                         area!!.forEachIndexed { index, s ->
                             if(s==strArea)areaPosition=index
+                            return@forEachIndexed
                         }
 
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, area!!)
@@ -1652,6 +2114,11 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         }else if(parent?.id == R.id.sp_caffrwal){
             layout_otherinfo.et_caffrwl.setText(resources.getStringArray(R.array.list_of_boolean).get(position))
             str_frwall =  resources.getStringArray(R.array.list_of_boolean_values).get(position )
+          if(resources.getStringArray(R.array.list_of_boolean).get(position)=="Yes"){
+              layout_otherinfo.tv_frws.visibility= View.VISIBLE
+          }else{
+              layout_otherinfo.tv_frws.visibility= View.GONE
+          }
         }else if(parent?.id == R.id.sp_cafauthostate){
             layout_cafothr_details.et_cafauthstate.setText(resources.getStringArray(R.array.list_of_state).get(position))
             str_atstatename = resources.getStringArray(R.array.list_of_state).get(position)
@@ -1693,7 +2160,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 layout_payment.et_gsttnum.visibility=View.GONE
             }
         }
-
         else if (parent?.id == R.id.sp_payslip) {
             layout_payment.et_payslip.setText( resources.getStringArray(R.array.list_of_payslip).get(position))
             str_payslip =  resources.getStringArray(R.array.list_of_payslipval).get(position)
@@ -1748,15 +2214,14 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                  layout_payment.et_card4dgt.visibility=View.GONE
                 layout_payment.et_chknumber.visibility=View.GONE
                 layout_payment.et_transactionid.visibility=View.GONE
-                layout_payment.et_approvalcode.visibility=View.GONE
             }else if(pay=="NEFT"){
                 layout_payment.et_transactionid.visibility=View.VISIBLE
-                layout_payment.et_approvalcode.visibility=View.VISIBLE
+                layout_payment.et_approvalcode.visibility=View.GONE
                 layout_payment.et_paymentdate.visibility=View.VISIBLE
                 layout_payment.et_brnchname.visibility=View.GONE
                 layout_payment.et_checkkdate.visibility=View.GONE
                 layout_payment.et_chknumber.visibility=View.GONE
-                 layout_payment.et_card4dgt.visibility=View.GONE
+                layout_payment.et_card4dgt.visibility=View.GONE
                 layout_payment.et_debit4dgt.visibility=View.GONE
                 layout_payment.frbnk.visibility=View.GONE
             }else if(pay=="Debit Card"){
@@ -1765,7 +2230,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 layout_payment.et_checkkdate.visibility=View.GONE
                 layout_payment.et_chknumber.visibility=View.GONE
                 layout_payment.et_approvalcode.visibility=View.VISIBLE
-
                 layout_payment.et_card4dgt.visibility=View.VISIBLE
                 layout_payment.et_paymentdate.visibility=View.VISIBLE
                 layout_payment.et_transactionid.visibility=View.GONE
@@ -1776,7 +2240,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 layout_payment.et_checkkdate.visibility=View.GONE
                 layout_payment.et_chknumber.visibility=View.GONE
                 layout_payment.et_card4dgt.visibility=View.GONE
-
                 layout_payment.et_transactionid.visibility=View.VISIBLE
                 layout_payment.et_approvalcode.visibility=View.GONE
                 layout_payment.et_debit4dgt.visibility=View.GONE
@@ -1786,7 +2249,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 layout_payment.et_brnchname.visibility=View.VISIBLE
                 layout_payment.et_checkkdate.visibility=View.VISIBLE
                 layout_payment.et_chknumber.visibility=View.VISIBLE
-                layout_payment.et_card4dgt.visibility=View.VISIBLE
+                layout_payment.et_card4dgt.visibility=View.GONE
                 layout_payment.et_transactionid.visibility=View.GONE
                 layout_payment.et_approvalcode.visibility=View.GONE
                 layout_payment.et_debit4dgt.visibility=View.GONE
@@ -1795,10 +2258,30 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         }
 
     }
-
     override fun onNothingSelected(p0: AdapterView<*>?) {
 
     }
 
-
+    override fun onBackPressed() {
+       next()
+    }
+    private fun next(){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setCancelable(false)
+        builder.setMessage("Do you want to go back to the previous screen?")
+        builder.setPositiveButton(
+            "Yes"
+        ) { _, _ ->
+            val intent = Intent(this, CafTabActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        builder.setNegativeButton(
+            "No"
+        ) { dialog, _ ->
+            dialog.cancel()
+        }
+        val alert: AlertDialog = builder.create()
+        alert.show()
+    }
 }

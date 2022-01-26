@@ -65,6 +65,10 @@ public class DocumentCafAct extends BaseActivity {
     Uri uri;
     Bitmap bitmap1,bitmap5;
     ArrayList<DocumentData> name;
+     ArrayList<String> mFilepaths;
+    ArrayList<String> img;
+    String encodedImage="";
+    Boolean chtann,chk_tin,chk_caf,chk_po,chk_apnic,chk_photo,chk_osp,chk_netwrk,chk_adproof,chk_pan,chk_deed;
 
 
     @Override
@@ -77,6 +81,7 @@ public class DocumentCafAct extends BaseActivity {
             strCafId = extras.getString("CafId");
             strOppId = extras.getString("OppId");
         }
+        mFilepaths = new ArrayList<>();
       //  binding.tlbrdoc.rlBack.setOnClickListener(this);
         binding.tlbrdoc.tvLang.setText(AppConstants.Caf);
         camera();
@@ -84,6 +89,62 @@ public class DocumentCafAct extends BaseActivity {
         binding.savedoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!binding.ckTan.isChecked()){
+                    chtann=true;
+                }else{
+                    chtann=false;
+                }
+                if(binding.chkTin.isChecked()){
+                    chk_tin=true;
+                }else{
+                    chk_tin=false;
+                }
+                if(binding.chkCaf.isChecked()){
+                    chk_caf=true;
+                }else{
+                    chk_caf=false;
+                }
+                if(binding.chkPo.isChecked()){
+                    chk_po=true;
+                }else{
+                    chk_po=false;
+                }
+                if(binding.chkApnic.isChecked()){
+                    chk_apnic=true;
+                }else{
+                    chk_apnic=false;
+                }
+                if(binding.chkPhoto.isChecked()){
+                    chk_photo=true;
+                }else{
+                    chk_photo=false;
+                }
+                if(binding.chkOsp.isChecked()){
+                    chk_osp=true;
+                }else{
+                    chk_osp=false;
+                }
+                if(binding.chkNetwrk.isChecked()){
+                    chk_netwrk=true;
+                }else{
+                    chk_netwrk=false;
+                }
+                if(binding.chkAdproof.isChecked()){
+                    chk_adproof=true;
+                }else{
+                    chk_adproof=false;
+                }
+                if(binding.chkDeed.isChecked()){
+                    chk_deed=true;
+                }else{
+                    chk_deed=false;
+                }
+                if(binding.chkPan.isChecked()){
+                    chk_pan=true;
+                }else{
+                    chk_pan=false;
+                }
+
                 updateDoc();
             }
         });
@@ -143,10 +204,10 @@ public class DocumentCafAct extends BaseActivity {
                             if(response.body().getResponse().getData().getAccordingtoFirmType().getListDirector().equals("1")){
                                 binding.chkDeed.setChecked(true);
                             }
-                            String status = response.body().getResponse().getData().getVerificationStatus();
-                            if(status.equals("3")){
+                            /*String status = response.body().getResponse().getData().getVerificationStatus();
+                            if(status.equals("111260000")){
                                 lock();
-                            }
+                            }*/
                     }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -179,92 +240,6 @@ public class DocumentCafAct extends BaseActivity {
 
 
     private void updateDoc() {
-        String encodedImage="";
-        Boolean chtann,chk_tin,chk_caf,chk_po,chk_apnic,chk_photo,chk_osp,chk_netwrk,chk_adproof,chk_pan,chk_deed;
-
-        try {
-            if (str_ext1 != null && str_ext1.equals("pdf")) {
-                InputStream inputStream = this.getContentResolver().openInputStream(uri);
-                byte[] pdfInBytes = new byte[inputStream.available()];
-                inputStream.read(pdfInBytes);
-                encodedImage = Base64.encodeToString(pdfInBytes, Base64.NO_WRAP);
-            } else if (str_ext1 != null && bitmap1 != null) {
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap1.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
-                byte[] imageInByte = byteArrayOutputStream.toByteArray();
-                encodedImage = Base64.encodeToString(imageInByte, Base64.NO_WRAP);
-            }
-            if (bitmap5 != null) {
-                ByteArrayOutputStream byteArrayOutputStream3 = new ByteArrayOutputStream();
-                bitmap5.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream3);
-                byte[] imageInByte3 = byteArrayOutputStream3.toByteArray();
-                encodedImage = Base64.encodeToString(imageInByte3, Base64.NO_WRAP);
-            }
-        }catch (Exception ex){
-            ex.getMessage();
-        }
-
-
-        if(binding.ckTan.isChecked()){
-            chtann=true;
-        }else{
-            chtann=false;
-        }
-        if(binding.chkTin.isChecked()){
-            chk_tin=true;
-        }else{
-            chk_tin=false;
-        }
-        if(binding.chkCaf.isChecked()){
-            chk_caf=true;
-        }else{
-            chk_caf=false;
-        }
-        if(binding.chkPo.isChecked()){
-            chk_po=true;
-        }else{
-            chk_po=false;
-        }
-        if(binding.chkApnic.isChecked()){
-            chk_apnic=true;
-        }else{
-            chk_apnic=false;
-        }
-        if(binding.chkPhoto.isChecked()){
-            chk_photo=true;
-        }else{
-            chk_photo=false;
-        }
-        if(binding.chkOsp.isChecked()){
-            chk_osp=true;
-        }else{
-            chk_osp=false;
-        }
-        if(binding.chkNetwrk.isChecked()){
-            chk_netwrk=true;
-        }else{
-            chk_netwrk=false;
-        }
-        if(binding.chkAdproof.isChecked()){
-            chk_adproof=true;
-        }else{
-            chk_adproof=false;
-        }
-        if(binding.chkDeed.isChecked()){
-            chk_deed=true;
-        }else{
-            chk_deed=false;
-        }
-        if(binding.chkPan.isChecked()){
-            chk_pan=true;
-        }else{
-            chk_pan=false;
-        }
-        DocumentData data = new DocumentData(encodedImage,str_ext1);
-
-        name = new ArrayList<>();
-        name.add(data);
-
         DocumentRequired doc = new DocumentRequired(chk_adproof,chk_apnic,chk_caf,true,chk_pan,
                 name,"","", chk_netwrk,chk_osp, chk_po,
                 chk_deed,chk_photo,"","","",chtann, chk_tin);
@@ -369,6 +344,7 @@ public class DocumentCafAct extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+
             if (requestCode == REQUEST_CODE_ONE) {
                 try {
                     uri = data.getData();
@@ -378,13 +354,14 @@ public class DocumentCafAct extends BaseActivity {
                             Uri file = Uri.fromFile(new File(filepath));
                             str_ext1 = MimeTypeMap.getFileExtensionFromUrl(file.toString());
                             binding.etAttachfile.setText(filepath);
+                            mFilepaths.add(filepath);
                             try {
+
                                 bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show();
                             }
-
                         } else {
                             displayToast(R.string.valid_formats);
                         }
@@ -400,10 +377,30 @@ public class DocumentCafAct extends BaseActivity {
                     //   Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
                     binding.etAttachfile.setText(currentImagePath);
                     str_ext1 = "jpg";
+                    mFilepaths.add(currentImagePath);
                     //image.setImageBitmap(bitmap5);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+            try {
+                if (str_ext1 != null && str_ext1.equals("pdf")) {
+                    InputStream inputStream = this.getContentResolver().openInputStream(uri);
+                    byte[] pdfInBytes = new byte[inputStream.available()];
+                    inputStream.read(pdfInBytes);
+                    encodedImage = Base64.encodeToString(pdfInBytes, Base64.NO_WRAP);
+                } else if (str_ext1 != null && bitmap1 != null) {
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap1.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
+                    byte[] imageInByte = byteArrayOutputStream.toByteArray();
+                    encodedImage = Base64.encodeToString(imageInByte, Base64.NO_WRAP);
+                }
+
+                DocumentData data_image = new DocumentData(encodedImage,str_ext1);
+                name = new ArrayList<>();
+                name.add(data_image);
+            }catch (Exception ex){
+                ex.getMessage();
             }
         }
     }

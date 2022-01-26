@@ -27,7 +27,7 @@ class GetAllOppurtunityAdapter(private val items: List<OppurData>, private val c
 
     inner class ViewHolder(val binding: GetAllOppurtunityAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: OppurData) {
-            binding.status.text = item.Email + " "+ "("+item.OppId+")"
+            binding.status.text = item.LeadName + " "+ "("+item.OppId+")"
             binding.tvMob.text = "Mobile No. : "+item.Mobile
             binding.orderStatus.text = "Status : "+item.Status
             binding.linearLead.setOnClickListener(){

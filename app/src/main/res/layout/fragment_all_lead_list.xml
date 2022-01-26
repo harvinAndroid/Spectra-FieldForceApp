@@ -7,26 +7,26 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         >
-    <include
+   <!-- <include
         android:id="@+id/searchtoolbarlead_list"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:background="@color/colorButton"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/linearrrrr"
-            app:layout_constraintTop_toBottomOf="@+id/searchtoolbarlead_list"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:background="@color/colorButton"
             android:layout_height="@dimen/_40sdp">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search"
+            <EditText
+                android:id="@+id/tv_search"
                 android:textColor="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:hint="@string/search"
@@ -46,101 +46,37 @@
                 android:id="@+id/tv_count"
                 android:layout_width="match_parent"
                 android:gravity="center"
-                android:layout_margin="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:textStyle="bold"
+                android:text="Search"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@color/colorWhite"
                 android:textColor="@color/colorPrimary"
                 android:layout_weight=".8"
-                android:layout_height="wrap_content"/>
+                android:layout_height="30dp"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            android:id="@+id/lin"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/linearrrrr"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/colorBlack"
-                android:layout_weight=".3"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_height="1dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:text="@string/or"
-                android:textColor="@color/colorBlack"
-                android:layout_weight=".4"
-                android:gravity="center"
-                android:layout_height="wrap_content"/>
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/colorBlack"
-                android:layout_weight=".3"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_height="1dp"/>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/lin"
-            app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/hhh"
-            android:layout_margin="@dimen/_5sdp"
-            android:layout_height="wrap_content">
-
-
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/sp_leadsearch"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:layout_marginBottom="@dimen/_2sdp"
-                android:spinnerMode="dropdown"
-                android:layout_weight=".2"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_expand_down"
-                android:visibility="visible" />
-
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/gray"
-            android:id="@+id/tt"
-            app:layout_constraintTop_toBottomOf="@+id/hhh"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_1sdp"
-            android:layout_height="1dp"/>
 
     <androidx.core.widget.NestedScrollView
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tt"
+        app:layout_constraintTop_toBottomOf="@+id/linearrrrr"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@color/colorWhite"
-        android:id="@+id/match"
-        android:layout_marginStart="@dimen/_6sdp"
-        android:layout_marginEnd="@dimen/_6sdp"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:layout_marginBottom="@dimen/_2sdp"
-        android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview1"
+            android:layout_width="match_parent"
+            app:cardCornerRadius="@dimen/_3sdp"
+            app:cardElevation="@dimen/_3sdp"
+            app:cardUseCompatPadding="true"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@color/colorWhite"
+            android:layout_height="@dimen/_40sdp">
+       <!-- <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">-->
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_lead_list"
@@ -149,8 +85,8 @@
             android:layout_marginBottom="@dimen/_35sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
-    </LinearLayout>
+  <!--      </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+ -->  </androidx.cardview.widget.CardView>>
     </androidx.core.widget.NestedScrollView>
 
         <include layout="@layout/progress"

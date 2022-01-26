@@ -91,7 +91,6 @@
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/color_light_blue"
                                     android:hint="Pay-In-Slip*"
-                                    android:focusableInTouchMode="false"
                                     android:focusable="false"
                                     android:imeOptions="actionNext"
                                     android:drawableEnd="@drawable/ic_expand_down"
@@ -117,6 +116,26 @@
                                 android:text="@{cafPaymentInfo.totalAmount}"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_otc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="OTC*"
+                                android:text="@{cafPaymentInfo.otc}"
+                                android:inputType="number"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
@@ -169,7 +188,6 @@
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/color_light_blue"
                                     android:hint="Security Deposit Type*"
-                                    android:focusableInTouchMode="false"
                                     android:focusable="false"
                                     android:imeOptions="actionNext"
                                     android:drawableEnd="@drawable/ic_expand_down"
@@ -219,7 +237,6 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="Payment Date*"
                                 android:imeOptions="actionNext"
-                                android:text="@{cafPaymentInfo.paymentDate}"
                                 android:inputType="text"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -255,7 +272,6 @@
                                     android:backgroundTint="@color/color_light_blue"
                                     android:hint="Bank Name*"
                                     android:drawableEnd="@drawable/ic_expand_down"
-                                    android:focusableInTouchMode="false"
                                     android:focusable="false"
                                     android:imeOptions="actionNext"
                                     android:inputType="text"
@@ -330,6 +346,7 @@
                                 android:text="@{cafPaymentInfo.chequeDDDate}"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
+                                android:focusable="false"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />

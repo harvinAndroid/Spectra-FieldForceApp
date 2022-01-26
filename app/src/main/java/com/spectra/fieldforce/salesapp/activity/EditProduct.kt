@@ -47,11 +47,9 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
         if (extras != null) {
             str_Opp_Id = extras.getString("OppId")
             str_Product = extras.getString("ProductName")
-            str_Unit = extras.getString("Unit")
             str_Price = extras.getString("Price")
             str_Discount = extras.getString("Discount")
             binding.etProNm.setText(str_Product)
-            binding.etUnit.setText(str_Unit)
             binding.etPrice.setText(str_Price)
             binding.etDiscount.setText(str_Discount)
             bt_pro_submit.setOnClickListener {
@@ -124,11 +122,15 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
             if(price=="Use Default"){
                 et_price.isFocusable=false
                 et_price.isFocusableInTouchMode=false
-                et_discount.isFocusableInTouchMode =true
+                et_discount.isFocusableInTouchMode=true
             }else if(price=="Override Price"){
                 et_price.isFocusable=true
                 et_price.isFocusableInTouchMode=true
                 et_discount.isFocusableInTouchMode =false
+              /*  price should be higher from previous value
+              *   use default price by default set ho jaye.
+              *
+              * */
             }
         }
     }

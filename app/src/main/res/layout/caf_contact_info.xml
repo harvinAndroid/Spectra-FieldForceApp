@@ -397,6 +397,7 @@
                         android:maxLength="10"
                         app:backgroundTint="@color/color_light_blue"
                         android:text="@string/india"
+                        android:focusable="false"
                         android:inputType="number"
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"

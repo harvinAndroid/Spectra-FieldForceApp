@@ -50,45 +50,12 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintTop_toBottomOf="@id/cardview1"
-                android:layout_width="match_parent"
-                app:cardCornerRadius="@dimen/_3sdp"
-                android:visibility="gone"
-                app:cardElevation="@dimen/_3sdp"
-                app:cardUseCompatPadding="true"
-                android:layout_margin="@dimen/_8sdp"
-                android:background="@color/colorWhite"
-                android:layout_height="@dimen/_40sdp">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/lead_copy"
-                        android:gravity="start|center"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:textColor="@color/colorBlack"
-                        android:text="Leadddd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardopp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardview2"
+                app:layout_constraintTop_toBottomOf="@id/cardview1"
                 android:layout_width="match_parent"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="@dimen/_3sdp"

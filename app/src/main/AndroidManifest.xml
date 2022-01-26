@@ -133,6 +133,17 @@
             android:name=".salesapp.activity.CAFActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".salesapp.activity.LeadTabActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".salesapp.activity.CafTabActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".salesapp.activity.OppTabActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

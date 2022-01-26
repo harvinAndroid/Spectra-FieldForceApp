@@ -236,8 +236,8 @@
     <string name="sales_app">Sales App</string>
     <string name="contact_information">Contact Information</string>
     <string name="lead_channel_source"><![CDATA[Lead Channel & Source]]></string>
-    <string name="installation_address">Installation Address (All fields are Mandatory)</string>
-    <string name="contact_person_address_details">Contact Person Address Details (All fields are Mandatory)</string>
+    <string name="installation_address">Installation Address</string>
+    <string name="contact_person_address_details">Contact Person Address Details</string>
     <string name="company_details">Company Details</string>
     <string name="product_details">Product Details</string>
     <string name="other_details">Other Details</string>
