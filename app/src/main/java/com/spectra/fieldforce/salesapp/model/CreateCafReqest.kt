@@ -31,6 +31,7 @@ data class AuthorSigDetails(
     val authstate: String?
 )
 
+
 data class CafBillingAddress(
     val billBuildingPlotFlatNumber: String?,
     val billBuildingType: String?,

@@ -121,7 +121,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-                        <com.google.android.material.textfield.TextInputLayout
+                     <!--   <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
@@ -141,7 +141,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
+-->
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:id="@+id/et_securitycdeposit"
@@ -156,6 +156,8 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="Security Deposit"
                                 android:imeOptions="actionNext"
+                                android:text="@{cafPaymentInfo.securityDeposit}"
+
                                 android:id="@+id/et_scdeposit"
                                 android:inputType="text"
                                 android:textColor="@color/colorPrimaryDark"
@@ -236,6 +238,7 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="Payment Date*"
+                                android:focusable="false"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
                                 android:textColor="@color/colorPrimaryDark"
@@ -443,8 +446,9 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="PAN No."
+                                android:textAllCaps="true"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="textCapCharacters"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
@@ -464,6 +468,8 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="TAN No."
+                                android:textAllCaps="true"
+                                android:inputType="textCapCharacters"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -518,9 +524,10 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="GST Number*"
+                                android:textAllCaps="true"
                                 android:text="@{cafPaymentInfo.totalAmount}"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="textCapCharacters"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />

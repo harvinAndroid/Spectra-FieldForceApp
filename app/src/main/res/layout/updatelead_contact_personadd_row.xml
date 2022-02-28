@@ -278,9 +278,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="Mobile No. "
+                                android:hint="Mobile No.*"
                                 android:text="@{updateContact.response.get(0).mobileNo}"
                                 android:inputType="number"
+                                android:maxLength="10"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -301,14 +302,22 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="Lead Name*"
                                 android:text="@{updateContact.response.get(0).firstName}"
-
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
+                     <!--   <AutoCompleteTextView
+                            android:id="@+id/et_updateleadcompany"
+                            android:layout_width="match_parent"
+                            android:hint="@string/company"
+                            android:textSize="@dimen/_12sdp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textColorHighlight="@color/colorPrimary"
+                            android:textColorHint="@color/colorPrimary"
+                            android:layout_height="wrap_content"/>
+-->
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
@@ -333,8 +342,6 @@
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/color_light_blue"
                                     android:hint="@string/company"
-                                    android:text="@{updateContact.response.get(0).companyName}"
-
                                     android:drawableEnd="@drawable/ic_expand_down"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
@@ -369,8 +376,6 @@
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/color_light_blue"
                                     android:hint="@string/group"
-                                    android:text="@{updateContact.response.get(0).groupId}"
-
                                     android:drawableEnd="@drawable/ic_expand_down"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"

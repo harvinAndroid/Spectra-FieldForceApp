@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.salesapp.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -34,6 +35,8 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
     var str_Price : String? = null
     var str_Discount : String? = null
     var str_pricing :String?= null
+    var userName : String? = null
+    var password :String?= null
     var list_of_pricing = arrayOf("Use Default","Override Price")
     var list_pricing_value = arrayOf("0","1")
 
@@ -43,6 +46,9 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
         binding = DataBindingUtil.setContentView(this, R.layout.edit_product_details)
         searchtoolbar.rl_back.setOnClickListener(this)
         searchtoolbar.tv_lang.text= AppConstants.UPDATEPRODUCT
+        val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
+        userName = sp1.getString("UserName", null)
+        password = sp1.getString("Password", null)
         val extras = intent.extras
         if (extras != null) {
             str_Opp_Id = extras.getString("OppId")
@@ -75,7 +81,7 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
         val updateProductRequest = str_Opp_Id?.let {
             str_pricing?.let { it1 ->
                 UpdateProductRequest(Constants.UPDATE_OPPPRODUCT, Constants.AUTH_KEY,discount,it,
-                        "Target@2021#@",price, it1,product,"","manager1")
+                        password,price, it1,product,"",userName)
             }
         }
 

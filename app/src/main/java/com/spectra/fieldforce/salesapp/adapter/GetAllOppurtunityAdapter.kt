@@ -29,6 +29,7 @@ class GetAllOppurtunityAdapter(private val items: List<OppurData>, private val c
         fun bind(item: OppurData) {
             binding.status.text = item.LeadName + " "+ "("+item.OppId+")"
             binding.tvMob.text = "Mobile No. : "+item.Mobile
+            binding.tvEmail.text = "Email ID : "+item.Email
             binding.orderStatus.text = "Status : "+item.Status
             binding.linearLead.setOnClickListener(){
                 val intent = Intent(context, OpportunityActivity::class.java)

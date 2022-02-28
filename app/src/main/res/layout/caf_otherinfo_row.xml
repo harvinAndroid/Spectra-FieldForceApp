@@ -177,7 +177,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:backgroundTint="@color/color_light_blue"
-                                android:hint="Firewall AMC Expiry Date"
+                                android:hint="@string/firewall_amc_expiry_date"
                                 android:focusable="false"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"

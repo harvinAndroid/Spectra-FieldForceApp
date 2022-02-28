@@ -82,8 +82,10 @@ import com.spectra.fieldforce.model.questionAnsResponse.QuestionAnswerList;
 import com.spectra.fieldforce.salesapp.model.AddProductRequest;
 import com.spectra.fieldforce.salesapp.model.BankListResponse;
 import com.spectra.fieldforce.salesapp.model.CafDetailResponse;
+import com.spectra.fieldforce.salesapp.model.CafPdfRequest;
 import com.spectra.fieldforce.salesapp.model.CafRequest;
 import com.spectra.fieldforce.salesapp.model.CreateCafReqest;
+import com.spectra.fieldforce.salesapp.model.CreateContactRequest;
 import com.spectra.fieldforce.salesapp.model.CreateLeadRequest;
 import com.spectra.fieldforce.salesapp.model.CreateLeadResponse;
 import com.spectra.fieldforce.salesapp.model.CreateQuoteRequest;
@@ -91,6 +93,7 @@ import com.spectra.fieldforce.salesapp.model.DeleteProductResponse;
 import com.spectra.fieldforce.salesapp.model.DisqualifyLead;
 import com.spectra.fieldforce.salesapp.model.GenQuoteResponse;
 import com.spectra.fieldforce.salesapp.model.GetAllCafListResponse;
+import com.spectra.fieldforce.salesapp.model.GetAllContactResponse;
 import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest;
 import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse;
 import com.spectra.fieldforce.salesapp.model.GetAllOppurtunityResponse;
@@ -103,6 +106,9 @@ import com.spectra.fieldforce.salesapp.model.GetCityRequest;
 import com.spectra.fieldforce.salesapp.model.GetCityResponse;
 import com.spectra.fieldforce.salesapp.model.GetCompanyRequest;
 import com.spectra.fieldforce.salesapp.model.GetCompanyResponse;
+import com.spectra.fieldforce.salesapp.model.GetCompetitorResponse;
+import com.spectra.fieldforce.salesapp.model.GetContactRequest;
+import com.spectra.fieldforce.salesapp.model.GetContactResponse;
 import com.spectra.fieldforce.salesapp.model.GetDisQualifyResponse;
 import com.spectra.fieldforce.salesapp.model.GetDocCafReq;
 import com.spectra.fieldforce.salesapp.model.GetDocCafResponse;
@@ -124,10 +130,13 @@ import com.spectra.fieldforce.salesapp.model.GetOppurtunityProductRequest;
 import com.spectra.fieldforce.salesapp.model.GetOppurtunityProductResponse;
 import com.spectra.fieldforce.salesapp.model.GetOppurtunityRequest;
 import com.spectra.fieldforce.salesapp.model.GetOppurtunityResponse;
+import com.spectra.fieldforce.salesapp.model.GetPdfResponse;
+import com.spectra.fieldforce.salesapp.model.GetPlanCategoryRes;
 import com.spectra.fieldforce.salesapp.model.GetPriceListResponse;
 import com.spectra.fieldforce.salesapp.model.GetPriceListRequest;
 import com.spectra.fieldforce.salesapp.model.GetProductItemListRes;
 import com.spectra.fieldforce.salesapp.model.GetProductListRequest;
+import com.spectra.fieldforce.salesapp.model.GetRFSResponse;
 import com.spectra.fieldforce.salesapp.model.GetRelationShipResponse;
 import com.spectra.fieldforce.salesapp.model.GetServProvResponse;
 import com.spectra.fieldforce.salesapp.model.GetStateResponse;
@@ -135,10 +144,12 @@ import com.spectra.fieldforce.salesapp.model.GetSubBusinessResponse;
 import com.spectra.fieldforce.salesapp.model.LeadResponsee;
 import com.spectra.fieldforce.salesapp.model.LeadSalutationRequest;
 import com.spectra.fieldforce.salesapp.model.LostOppurtunityRequest;
+import com.spectra.fieldforce.salesapp.model.PlanCategoryRequest;
 import com.spectra.fieldforce.salesapp.model.ProdctResponse;
 import com.spectra.fieldforce.salesapp.model.ProductListResponse;
 import com.spectra.fieldforce.salesapp.model.QualifiedLeadRequest;
 import com.spectra.fieldforce.salesapp.model.QualifyLeadResponse;
+import com.spectra.fieldforce.salesapp.model.ReportResponse;
 import com.spectra.fieldforce.salesapp.model.UpdateFlrRequest;
 import com.spectra.fieldforce.salesapp.model.UpdateOppurtunity;
 import com.spectra.fieldforce.salesapp.model.UpdateProductRequest;
@@ -390,6 +401,9 @@ public interface ApiInterface {
     Call<CreateLeadResponse> createLead(@Body CreateLeadRequest createLeadRewuest);
 
     @POST ("index.php")
+    Call<CreateLeadResponse> createContact(@Body CreateContactRequest createContactRequest);
+
+    @POST ("index.php")
     Call<CreateLeadResponse> updateOppurtunity(@Body UpdateOppurtunity updateOppurtunity);
 
     @POST ("index.php")
@@ -413,6 +427,9 @@ public interface ApiInterface {
     Call<LeadResponsee> getLead(@Body GetLeadRequest getLeadRequest);
 
     @POST ("index.php")
+    Call<GetContactResponse> getContact(@Body GetContactRequest getContactRequest);
+
+    @POST ("index.php")
     Call<GetOppurtunityProductResponse> getOppurtunityProduct(@Body GetOppurtunityProductRequest getOppurtunityProductRequest);
 
     @POST ("index.php")
@@ -434,6 +451,9 @@ public interface ApiInterface {
     @POST ("index.php")
     Call<GetCafWCRResponse> getWCRList(@Body GetDocCafReq getDocCafReq);
 
+    @POST ("index.php")
+    Call<GetRFSResponse> getRFSList(@Body GetDocCafReq getDocCafReq);
+
 
     @POST ("index.php")
     Call<GetCafIRResponse> getIRList(@Body GetDocCafReq getDocCafReq);
@@ -446,6 +466,10 @@ public interface ApiInterface {
     @POST ("index.php")
     Call<ProdctResponse> won(@Body GetProductListRequest getProductListRequest);
 
+
+    @POST ("index.php")
+    Call<ProdctResponse> reOpenOpp(@Body GetOppurtunityRequest getOppurtunityRequest);
+
     @POST ("index.php")
     Call<GetOppurtunityResponse> getOppurtunity(@Body GetOppurtunityRequest getOppurtunityRequest);
 
@@ -456,6 +480,12 @@ public interface ApiInterface {
     Call<GetDocCafResponse> getDoc(@Body CafRequest cafRequest);
 
     @POST ("index.php")
+    Call<GetPdfResponse> getPdf(@Body CafPdfRequest cafPdfRequest);
+
+    @POST ("index.php")
+    Call<ReportResponse> shareEmail(@Body CafPdfRequest cafPdfRequest);
+
+    @POST ("index.php")
     Call<DeleteProductResponse> uploadDoc(@Body UploadDocRequest uploadDocRequest);
 
     @POST ("index.php")
@@ -464,6 +494,9 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<GetAllLeadResponse> getAllLead(@Body GetAllLeadRequest getAllLeadRequest);
+
+    @POST ("index.php")
+    Call<GetAllContactResponse> getAllContact(@Body GetAllLeadRequest getAllLeadRequest);
 
     @POST ("index.php")
     Call<GetAllCafListResponse> getAllCAF(@Body GetAllLeadRequest getAllLeadRequest);
@@ -502,6 +535,14 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<GetLeadSourceResp> getLeadSource(@Body GetLeadSourceRequest getLeadSourceRequest);
+
+    @POST ("index.php")
+    Call<GetCompetitorResponse> getCompetitorList(@Body GetLeadSourceRequest getLeadSourceRequest);
+
+    @POST ("index.php")
+    Call<GetPlanCategoryRes> getPlanCategory(@Body PlanCategoryRequest planCategoryRequest);
+
+
 
     @POST ("index.php")
     Call<GetLeadAreaRes> getLeadArea(@Body GetLeadAreaRequest getLeadAreaRequest);

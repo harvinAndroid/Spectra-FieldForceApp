@@ -14,7 +14,6 @@ data class CafDetaiResponse(
 
 data class CafData(
     val Cafid: String,
-    val CreatedOn: String,
     val EmailID: String,
     val LeadId: String,
     val MobileNo: String,

@@ -91,43 +91,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
                         </FrameLayout>
 
-                                <FrameLayout
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                            android:layout_marginTop="@dimen/_5sdp"
-                                    android:visibility="gone"
-                            android:layout_height="wrap_content">
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_lco"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:visibility="invisible" />
 
-                            <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                             app:hintTextAppearance="@style/AppearanceText">
-
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_lco"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/lco"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                        </FrameLayout>
                                 <FrameLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"

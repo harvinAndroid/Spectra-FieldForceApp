@@ -20,5 +20,6 @@ data class IRData(
     val PodCode: String,
     val PodName: String,
     val RouteType: String,
-    val Zone: String
+    val Zone: String,
+    val Owner:String
 )

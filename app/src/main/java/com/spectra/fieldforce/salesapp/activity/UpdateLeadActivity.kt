@@ -3,6 +3,7 @@ package com.spectra.fieldforce.salesapp.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -19,21 +20,17 @@ import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
 import com.spectra.fieldforce.databinding.UpdateLeadDemoFragmentBinding
 import com.spectra.fieldforce.salesapp.fragment.FlrFrag
-import com.spectra.fieldforce.salesapp.fragment.GetAllLeadFrag
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.lead_company_details_row.view.*
 import kotlinx.android.synthetic.main.lead_contact_info.view.*
 import kotlinx.android.synthetic.main.lead_demo_fragment.*
-import kotlinx.android.synthetic.main.lead_installation_address_row.view.*
-import kotlinx.android.synthetic.main.lead_other_details_row.view.*
-import kotlinx.android.synthetic.main.sales_dashboard_activity.*
+
 import kotlinx.android.synthetic.main.toolbar.view.*
 import kotlinx.android.synthetic.main.update_lead_channel_source_row.*
 import kotlinx.android.synthetic.main.update_lead_channel_source_row.view.*
 import kotlinx.android.synthetic.main.update_lead_company_details_row.*
-import kotlinx.android.synthetic.main.update_lead_company_details_row.view.*
 import kotlinx.android.synthetic.main.update_lead_company_details_row.view.et_company_name
 import kotlinx.android.synthetic.main.update_lead_company_details_row.view.et_firm_type
 import kotlinx.android.synthetic.main.update_lead_company_details_row.view.et_indus_type
@@ -55,7 +52,6 @@ import kotlinx.android.synthetic.main.update_lead_demo_fragment.linearremark_det
 import kotlinx.android.synthetic.main.update_lead_demo_fragment.linearsix
 import kotlinx.android.synthetic.main.update_lead_demo_fragment.linearthree
 import kotlinx.android.synthetic.main.update_lead_demo_fragment.lineartwo
-import kotlinx.android.synthetic.main.update_lead_general_info.view.*
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.*
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.*
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.et_add_build_num
@@ -116,6 +112,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import java.lang.NumberFormatException
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
@@ -207,17 +204,20 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     var str_rltn:String ? = null
     var str_cmp :String? = null
     var str_lead_Id : String? = null
+    var userName :String? = null
+    var password : String? = null
+    var strContactId : String? = null
 
     var str_lead_status : String? = null
     var list_of_salutation = arrayOf("Select Salutation","Mr.", "Mrs.", "Miss")
     var list_of_salutation_id = arrayOf("","1","2","3")
     var list_of_option = arrayOf("Select Option","Yes","No")
     var list_of_mediavalue = arrayOf("","1","2")
-   var list_of_channel = arrayOf("Call/SMS-Inbound","Caretel","CM Outbound","Email/Email Campaigns","Inside Sales","Inside Sales-QC","Kaizala","NetOps Channel","Online CAF","Outbound Call",
+   var list_of_channel = arrayOf("Select Channel","Call/SMS-Inbound","Caretel","CM Outbound","Email/Email Campaigns","Inside Sales","Inside Sales-QC","Kaizala","NetOps Channel","Online CAF","Outbound Call",
             "Paid Campaign/Activity","Promotion/BTL/ATL/Events/Sponsorship/Visibility Activity","Self Care Portal","Self Lead","Unify Churned","Web Campaign")
-    var list_of_subBusSegment = arrayOf("Connectivity Solution", "Data Centre Products", "Internet Service","SDWAN","SIP-Trunk","VOIP")
-    var list_of_cust_segment = arrayOf("SDWAN","SMB","Media","LA","SP")
-    var list_cust_seg_value = arrayOf("111260004","111260000","111260001","111260002","111260003")
+    var list_of_subBusSegment = arrayOf("Select Sub Business Segment","Connectivity Solution", "Data Centre Products", "Internet Service","SDWAN","SIP-Trunk","VOIP")
+    var list_of_cust_segment = arrayOf("Select Customer Segment","SDWAN","SMB","Media","LA","SP")
+    var list_cust_seg_value = arrayOf("0","111260004","111260000","111260001","111260002","111260003")
     var list_firm_type = arrayOf("Select Firm type","Proprietorship","Partnership","Pvt Ltd","Ltd","Trust","Individual")
 
     var list_firm_type_value = arrayOf("","1","2","3","4","5","6")
@@ -237,22 +237,22 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
     var country_name = arrayOf("India")
 
-    var ext_serv_one = arrayOf("Jio", "ACT Fibernet","N.A",
+    var ext_serv_one = arrayOf("Select Existing Service Provider","Jio", "ACT Fibernet","N.A",
             "Others","Airtel","Aircel","BSNL", "Hathway","MTNL","Nextra",
             "Reliance Communications","Sify","Tata Communications","Tata DOCOMO",
             "Tikona Infinet","Vodafone")
 
-    var ext_serv_one_value = arrayOf("111260000",
+    var ext_serv_one_value = arrayOf("0","111260000",
             "569480014","569480012","569480013","569480000","569480002",
             "569480003","569480004","569480005","569480006","569480007",
             "569480008","569480009","569480010","569480011","569480001")
 
-    var ext_serv = arrayOf(
+    var ext_serv = arrayOf("Select Existing Service Provider",
             "Internet", "Data Center Services","VOIP Services","Other Services")
     private val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
     var list_of_media = arrayOf("Select Media","Fibre","RF")
 
-    var ext_serv_val = arrayOf("569480000","569480001","569480002","569480003")
+    var ext_serv_val = arrayOf("0","569480000","569480001","569480002","569480003")
 
     var disqualifyCode = arrayOf("569480000","569480002","569480003","569480004","569480007","569480008",
     "569480010","569480011","569480012","569480014","569480015","569480016")
@@ -267,16 +267,26 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         binding = DataBindingUtil.setContentView(this, R.layout.update_lead_demo_fragment)
         searchtoolbarlead_update.rl_back.setOnClickListener(this)
         searchtoolbarlead_update.tv_lang.text= AppConstants.UPDATE_LEAD
-
+        val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
+        userName = sp1.getString("UserName", null)
+        password = sp1.getString("Password", null)
         val extras = intent.extras
         if (extras != null) {
             str_lead_Id = extras.getString("LeadId")
             str_lead_status = extras.getString("LeadStatus")
+            strContactId = extras.getString("ContactID")
         }
+        linearcontactinfo.visibility = View.VISIBLE
+        linear_insta_addres.visibility = View.VISIBLE
+        linadd.visibility = View.VISIBLE
+        linear_contact_person_address.visibility = View.VISIBLE
+        linear_companydetails.visibility= View.VISIBLE
+        linearother_details.visibility = View.VISIBLE
+        linearremark_details.visibility = View.VISIBLE
 
         init()
         itemListener()
-        listener()
+
         flr.visibility= View.VISIBLE
         getLead()
       //  getOtherCity()
@@ -290,7 +300,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
           if(strDisqualify==""||strDisqualify==""||dis==("Disqualify")){
               et_disquslify.setOnClickListener { sp_disqualify.performClick() }
               sp_disqualify.onItemSelectedListener = this
-
            //   Toast.makeText(this,"Please Select Reason",Toast.LENGTH_LONG).show()
           }
       }
@@ -350,7 +359,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             dis.visibility = View.GONE
             lead_updatesave.visibility = View.GONE
             et_saluation.isEnabled=false
-            et_updtcompany.isEnabled=false
+            //et_updtcompany.isEnabled=false
             et_uprelation.isEnabled=false
             et_upgroup.isEnabled=false
             et_sub_busiessseg.isEnabled=false
@@ -483,7 +492,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please Enter Contact Person", Toast.LENGTH_SHORT).show()
             }else if(general_email.isBlank()||(!validEmail(general_email))){
                 Toast.makeText(this, "Please Enter Email Id", Toast.LENGTH_SHORT).show()
-            }else if(gnl_phn_num.isBlank()){
+            }else if(gnl_phn_num.isBlank()|| gnl_phn_num.length!=10){
                 Toast.makeText(this, "Please Enter Mobile Number", Toast.LENGTH_SHORT).show()
             }else if(genral_name.isBlank()){
                 Toast.makeText(this, "Please Enter Lead Name", Toast.LENGTH_SHORT).show()
@@ -515,7 +524,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please enter Block", Toast.LENGTH_SHORT).show()
             }else if(inst_floor.isBlank()){
                 Toast.makeText(this, "Please enter Floor", Toast.LENGTH_SHORT).show()
-            }else if(inst_pincode.isBlank()){
+            }else if(inst_pincode.isBlank()|| inst_pincode.length!=6){
                 Toast.makeText(this, "Please enter Pincode", Toast.LENGTH_SHORT).show()
             }else if(state.isBlank()||state=="Select State"||(state=="null")){
                 Toast.makeText(this, "Please Select State", Toast.LENGTH_SHORT).show()
@@ -535,7 +544,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please enter Block", Toast.LENGTH_SHORT).show()
             }else if(floor.isBlank()){
                 Toast.makeText(this, "Please enter Floor", Toast.LENGTH_SHORT).show()
-            }else if(pincode.isBlank()){
+            }else if(pincode.isBlank()|| pincode.length!=6){
                 Toast.makeText(this, "Please enter Pincode ", Toast.LENGTH_SHORT).show()
             }else if(company.isBlank()||(company=="null")){
                 Toast.makeText(this, "Please Enter Company Name", Toast.LENGTH_SHORT).show()
@@ -668,6 +677,28 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         updatelayout_contactinfo_layout.sp_upgroup.onItemSelectedListener = this
         updatelayout_contactinfo_layout.et_uprelation.setOnClickListener { updatelayout_contactinfo_layout.sp_rltn.performClick() }
         updatelayout_contactinfo_layout.sp_rltn.onItemSelectedListener = this
+
+        updatelayout_contactinfo_layout.et_emailid.setOnFocusChangeListener { v, hasFocus ->
+            if(!hasFocus)
+            {
+                val email = updatelayout_contactinfo_layout.et_emailid.text.toString()
+                val isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+                if (!isValid) {
+                    Toast.makeText(this, "Invalid Email", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        updatelayout_contactinfo_layout.et_upmobile_num.setOnFocusChangeListener { v, hasFocus ->
+            if(!hasFocus)
+            {
+                val mobile = updatelayout_contactinfo_layout.et_upmobile_num.text.toString()
+                val isValid = Patterns.PHONE.matcher(mobile).matches();
+                if (!isValid) {
+                    Toast.makeText(this, "Invalid Mobile Number", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
     }
 
 
@@ -735,7 +766,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             linadd.visibility = View.GONE
             linear_contact_person_address.visibility = View.GONE
             linear_companydetails.visibility= View.GONE
-             linearother_details.visibility = View.GONE
+            linearother_details.visibility = View.GONE
             linearremark_details.visibility = View.VISIBLE
         }
     }
@@ -814,9 +845,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
         val companyDetail = CompanyDetail(company,firmtype,industrytype,jbtitle)
 
-        val contactAddress= ContactAddress(str_add_area,addres_build, str_ContactcityCode,
-                "10001",floor,pincode,buildingnum,strcontact_stateCode,
-                sparea,spbuilg,block)
+        val contactAddress= ContactAddress(str_add_area,addres_build,str_ContactcityCode,"10001",
+            floor, pincode,buildingnum,sparea,spbuilg,
+            state,block)
         var specific=""
         if(general_src=="Other"){
             specific = "Other"
@@ -830,8 +861,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 contactAddress,installationAddress,"Business",str_cmp,
                 cnt_info_cnt_person,str_customer_segmentid,general_email,
                 "3",genral_name,str_grp,"",general_chnl,general_src,topic,
-                gnl_phn_num,otherDetail,"Target@2021#@","",str_rltn,
-                remark,salutation,specific,gnl_sub,"manager1","")
+                gnl_phn_num,otherDetail,password,"",str_rltn,
+                remark,salutation,specific,gnl_sub,userName,"")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.createLead(createLeadRequest)
@@ -842,16 +873,18 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                     if(response.body()?.Response?.StatusCode=="200") {
                         try {
                             outAnimation = AlphaAnimation(1f, 0f)
-                            inAnimation?.duration = 200
-                            binding.updateleadProgressLayout.progressOverlay.animation = outAnimation
-                            binding.updateleadProgressLayout.progressOverlay.visibility = View.GONE
-
+                            outProgress()
                             img?.let { Log.e("image", it) }
                             Toast.makeText(this@UpdateLeadActivity, img, Toast.LENGTH_SHORT).show()
-                            val intent = Intent (this@UpdateLeadActivity, UpdateLeadActivity::class.java)
+                            Intent(this@UpdateLeadActivity, LeadTabActivity::class.java).also {
+                                it.putExtra("LeadId", str_lead_Id)
+                                startActivity(it)
+                                finish()
+                            }
+                           /* val intent = Intent (this@UpdateLeadActivity, UpdateLeadActivity::class.java)
                             intent.putExtra("LeadId", str_lead_Id)
                             startActivity(intent)
-                            finish()
+                            finish()*/
 
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -868,6 +901,14 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Log.e("RetroError", t.toString())
             }
         })
+    }
+
+    private fun outProgress(){
+        outAnimation = AlphaAnimation(1f, 0f)
+        inAnimation?.duration = 200
+        binding.updateleadProgressLayout.progressOverlay.animation = outAnimation
+        binding.updateleadProgressLayout.progressOverlay.visibility = View.GONE
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -887,7 +928,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 val dateee = split[0]
                 val month1 = split[1]
                 val year1 = split[2]
-                trgtdate=(year1 + "-" + month1 + "-" + dateee)
+                trgtdate=("$year1-$month1-$dateee")
 
             }, year, month, day)
             dpd.show()
@@ -897,14 +938,19 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         }
     }
 
-
-    fun getLead () {
+    private fun inProgress(){
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
         binding.updateleadProgressLayout.progressOverlay.animation = inAnimation
         binding.updateleadProgressLayout.progressOverlay.visibility = View.VISIBLE
+    }
 
-        val getLeadRequest = GetLeadRequest(Constants.GET_LEADS,Constants.AUTH_KEY,str_lead_Id.toString(),"Target@2021#@","manager1")
+    fun getLead () {
+      inProgress()
+        if(strContactId!=null){
+            str_lead_Id =""
+        }
+        val getLeadRequest = GetLeadRequest(Constants.GET_LEADS,Constants.AUTH_KEY,str_lead_Id,password,userName,strContactId)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getLead(getLeadRequest)
@@ -913,12 +959,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             override fun onResponse(call: Call<LeadResponsee?>, response: Response<LeadResponsee?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
-                        outAnimation = AlphaAnimation(1f, 0f)
-                        inAnimation?.duration =200
-                        binding.updateleadProgressLayout.progressOverlay.animation = outAnimation
-                        binding.updateleadProgressLayout.progressOverlay.visibility = View.GONE
 
                         if(response.body()?.StatusCode==200) {
+                            str_lead_Id =  response.body()?.Response?.get(0)?.LeadId
                             // binding.updatelayoutChannelSource.updateChannel = response.body()
                             binding.updatelayoutContactinfoLayout.updateContact = response.body()
                             binding.updatelayoutLeadCompanyDetails.updateCompany = response.body()?.Response?.get(0)?.companyDetail
@@ -926,6 +969,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             binding.updatelayoutLeadOtherDetails.updateOther = response.body()?.Response?.get(0)?.otherDetail
                             binding.updateLeadContactAddress.updateContactAdd = response.body()?.Response?.get(0)?.contactAddress
                             binding.updatelayoutLeadRemarks.updateRemarks = response.body()
+                            binding.updatelayoutChannelSource.updateChannel = response.body()
 
                             val flrStatus = response.body()?.Response?.get(0)?.FLRstatus
                             val flrdate = response.body()?.Response?.get(0)?.Estimatedclosure
@@ -935,7 +979,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             } else if (flrStatus == "3") {
                                 dis.visibility = View.VISIBLE
                             }
-                            val strStatus = response.body()!!.Response[0].Status
+
+                            val strStatus = response.body()?.Response?.get(0)?.Status
                             strCurentLocation = response.body()?.Response?.get(0)?.otherDetail?.CurrentWorkingLocation
                             strMobile = response.body()?.Response?.get(0)?.MobileNo.toString()
                             strCompany = response.body()?.Response?.get(0)?.CompanyId.toString()
@@ -950,6 +995,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             strContactBuilding = response.body()?.Response?.get(0)?.contactAddress?.ContactBuilding.toString()
                             getCompany(strCompany)
                             getOtherCity(strCurentLocation)
+                            outProgress()
+
                             val strContactstate = response.body()?.Response?.get(0)?.contactAddress?.ContactStateName
                             var cntstatePosition = 0
                             list_of_state.forEachIndexed { index, s ->
@@ -1138,10 +1185,10 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_installation_address.sp_state.setSelection(statePosition)
                             stateAdapter.notifyDataSetChanged()
 
-                            val strchannel = response.body()?.Response?.get(0)?.LeadChannel
+                            str_lead_chnl = response.body()?.Response?.get(0)?.LeadChannel
                             var channePosition = 0
                             list_of_channel.forEachIndexed { index, s ->
-                                if (s == strchannel) channePosition = index
+                                if (s == str_lead_chnl) channePosition = index
                             }
                             val adapterchannel = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, list_of_channel)
                             adapterchannel.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1166,36 +1213,32 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             firmAdapter.notifyDataSetChanged()
                             et_lead_channel.isEnabled=false
                             et_lead_source.isEnabled=false
-
                             var salutationPosition = 0
-                            list_of_salutation_id.forEachIndexed { index, s ->
-                                if (index == sal?.toInt()) {
-                                    salutationPosition = index
-                                    return@forEachIndexed
+                            try {
+                                if (sal != null || sal != "") {
+                                    list_of_salutation_id.forEachIndexed { index, s ->
+                                        if (index == sal?.toInt()) {
+                                            salutationPosition = index
+                                            return@forEachIndexed
+                                        }
+                                    }
                                 }
+                            }catch (E :NumberFormatException){
+                                E.printStackTrace()
                             }
                             val salutationAdapter = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, list_of_salutation)
                             salutationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             updatelayout_contactinfo_layout.sp_salutation?.adapter = salutationAdapter
                             updatelayout_contactinfo_layout.sp_salutation.setSelection(salutationPosition)
                             salutationAdapter.notifyDataSetChanged()
-                            val trgtdate = response.body()?.Response?.get(0)?.otherDetail?.TargetInstallationPeriod.toString()
-                           /* try {
-                                val sdf2 = SimpleDateFormat("yyyy-MM-dd")
-                                val sdf = SimpleDateFormat("dd-MM-yyyy")
-
-                                println(sdf.format(sdf2.parse(trgtdate)))
-                                updatelayout_lead_other_details.et_trgt_period.setText(sdf.format(sdf2.parse(trgtdate)))
-
-                            } catch (e: ParseException) {
-                                e.printStackTrace()
-                            }*/
-                             if(trgtdate.isNotEmpty()){
-                                 val split = trgtdate.split("-")
+                            val targetdate = response.body()?.Response?.get(0)?.otherDetail?.TargetInstallationPeriod.toString()
+                             if(targetdate.isNotEmpty()){
+                                 val split = targetdate.split("-")
                                  val date = split[0]
                                  val month = split[1]
                                  val year = split[2]
-                                 updatelayout_lead_other_details.et_trgt_period.setText(date + "-" + month + "-" + year)
+                                 updatelayout_lead_other_details.et_trgt_period.setText("$date-$month-$year")
+                                 trgtdate=("$year-$month-$date")
                              }
 
                             if (strStatus == "1") {
@@ -1208,8 +1251,16 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                                 oppurtunity.visibility= View.GONE
                                 Calender()
                             }
-                        }
+                            linearcontactinfo.visibility = View.VISIBLE
+                            linear_insta_addres.visibility = View.GONE
+                            linadd.visibility = View.GONE
+                            linear_contact_person_address.visibility = View.GONE
+                            linear_companydetails.visibility= View.GONE
+                            linearother_details.visibility = View.GONE
+                            linearremark_details.visibility = View.GONE
+                            listener()
 
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -1248,7 +1299,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
 
     fun getIndustryTpe() {
-        val getLeadBuildingRequest = GetLeadBuildingRequest(Constants.GET_INDUSTRYTYPE,Constants.AUTH_KEY,"","","Target@2021#@","manager1")
+        val getLeadBuildingRequest = GetLeadBuildingRequest(Constants.GET_INDUSTRYTYPE,Constants.AUTH_KEY,"","",password,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getIndustry(getLeadBuildingRequest)
@@ -1259,7 +1310,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         industryList= response.body()!!.Response
                         instryname = ArrayList<String>()
                         industryid = ArrayList<String>()
-                       // instryname.add("Select Industry")
+                        instryname.add("Select Industry")
+                        industryid.add("0")
                         for (item in industryList!!){
                             instryname.add(item.IndTypeName)
                             industryid.add(item.IndTypeId)
@@ -1287,7 +1339,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
 
     fun getBuilding(areaname: String, areaCode: String?) {
-        val getLeadBuildingRequest = GetLeadBuildingRequest(Constants.GET_BUILDING,Constants.AUTH_KEY,areaCode.toString(),areaname,"Target@2021#@","manager1")
+        val getLeadBuildingRequest = GetLeadBuildingRequest(Constants.GET_BUILDING,Constants.AUTH_KEY,areaCode.toString(),areaname,password,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getleadBuilding(getLeadBuildingRequest)
@@ -1301,13 +1353,12 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         buildingCode = ArrayList<String>()
                        // building?.add("Select Building")
                         if (buildingList != null) {
-                            for (item in buildingList)
-                                building?.add(item.BuildingName)
+                            for (item in buildingList) {
+                                item.BuildingName?.let { building?.add(it) }
+                                item.BuildingCode?.let { buildingCode?.add(it) }
+                            }
                         }
-                        if (buildingList != null) {
-                            for(it1 in buildingList)
-                                buildingCode?.add(it1.BuildingCode)
-                        }
+
 
                         var buildPosition=0
                         building!!.forEachIndexed { index, s ->
@@ -1350,8 +1401,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         cntbuildingCode = ArrayList<String>()
                       //  cntbuilding?.add("Select Building")
                         for (item in buildingList!!){
-                            cntbuilding?.add(item.BuildingName)
-                            cntbuildingCode?.add(item.BuildingCode)
+                            item.BuildingName?.let { cntbuilding?.add(it) }
+                            item.BuildingCode?.let { cntbuildingCode?.add(it) }
                         }
                         var buildPosition=0
                         cntbuildingCode!!.forEachIndexed { index, s ->
@@ -1377,39 +1428,40 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     }
 
     fun getCompany(strCompany: String) {
-        val getCompanyRequest = GetCompanyRequest(Constants.GET_COMPANY,Constants.AUTH_KEY,strCompany,"Target@2021#@","manager1")
+        inProgress()
+        val getCompanyRequest = GetCompanyRequest(Constants.GET_COMPANY,Constants.AUTH_KEY,strCompany,password,userName)
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getComapnyList(getCompanyRequest)
         call.enqueue(object : Callback<GetCompanyResponse?> {
             override fun onResponse(call: Call<GetCompanyResponse?>, response: Response<GetCompanyResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
+                        outProgress()
                         val img = response.body()?.Response?.Message
                         img?.let { Log.e("image", it) }
                         companyList= response.body()?.Response?.Data
                         company = ArrayList<String>()
                         companyId = ArrayList<String>()
                         company?.add("Select Company")
-                        companyId?.add("Select Company")
+                        companyId?.add("0")
                         group = ArrayList<String>()
                         groupId = ArrayList<String>()
                         group?.add("Select Group")
-                        groupId?.add("Select Group")
+                        groupId?.add("0")
                         for (item in companyList!!){
-                            company!!.add(item.Company_Name +"("+item.Company_ID+")")
+                            company?.add(item.Company_Name +" ("+item.Company_ID+")")
                             companyId?.add(item.Company_ID)
+                            group?.add(item.Group_Name +" ("+item.Group_ID+")")
+                            groupId?.add(item.Group_ID)
                         }
 
                         var comPosition=0
                         companyId?.forEachIndexed { index, s ->
-                            if(s== this@UpdateLeadActivity.strCompany)comPosition=index
+                            if(s== strCompany)comPosition=index
                         }
-                        for (item in companyList!!){
-                            group!!.add(item.Group_Name +"("+item.Group_ID+")")
-                            groupId?.add(item.Group_ID)
-                        }
+
                         var groupPosition=0
-                        groupId!!.forEachIndexed { index, s ->
+                        groupId?.forEachIndexed { index, s ->
                             if(s==strGroup)groupPosition=index
                         }
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, company!!)
@@ -1430,14 +1482,99 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             }
 
             override fun onFailure(call: Call<GetCompanyResponse?>, t: Throwable) {
+                binding.updateleadProgressLayout.progressOverlay.visibility = View.GONE
                 Log.e("RetroError", t.toString())
             }
         })
     }
 
+   /* fun getCompany() {
+        inProgress()
+        val getCompanyRequest = GetCompanyRequest(Constants.GET_COMPANY,Constants.AUTH_KEY,"",password,userName)
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getComapnyList(getCompanyRequest)
+        call.enqueue(object : Callback<GetCompanyResponse?> {
+            override fun onResponse(call: Call<GetCompanyResponse?>, response: Response<GetCompanyResponse?>) {
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        outProgress()
+                        val img = response.body()?.Response?.Message
+                        img?.let { Log.e("image", it) }
+                        companyList= response.body()?.Response?.Data
+                        company = java.util.ArrayList<String>()
+                        companyId = java.util.ArrayList<String>()
+                        company?.add("Select Company")
+                        companyId?.add("0")
+                        group = java.util.ArrayList<String>()
+                        groupId = java.util.ArrayList<String>()
+                        group?.add("Select Group")
+                        groupId?.add("0")
+                        for (item in companyList!!){
+                            // company?.add(item.Company_Name)
+                            company?.add(item.Company_Name +" ("+item.Company_ID+")")
+                            companyId?.add(item.Company_ID)
+                            group?.add(item.Group_Name +" ("+item.Group_ID+")")
+                            groupId?.add(item.Group_ID)
+                        }
 
+                        val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, company!!)
+                        updatelayout_contactinfo_layout.et_updateleadcompany.threshold=0
+                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                        updatelayout_contactinfo_layout.et_updateleadcompany.setAdapter(adapter12)
+
+                        updatelayout_contactinfo_layout.et_updateleadcompany.setOnFocusChangeListener { _, b ->
+                            if (b) updatelayout_contactinfo_layout.et_updateleadcompany.showDropDown()
+                        }
+                        updatelayout_contactinfo_layout.et_updateleadcompany.onItemClickListener = AdapterView.OnItemClickListener {
+                                parent, _, position, _ ->
+                            strCompany = adapter12.getItem(position).toString()
+                            val split = strCompany.split("(")
+                            val compid = split.get(1)
+                            var compPosition=0
+                            company?.forEachIndexed { index, s ->
+                                if(s==strCompany)compPosition=index
+                                strCompany.let { Log.e("idddddddddd", it) }
+                                return@forEachIndexed
+                            }
+                            val companyidd = compid.split(")")
+                            str_cmp = companyidd.get(0)
+                            str_cmp?.let { Log.e("compid", it) }
+                            getRelation(str_cmp)
+                            if(strCompany!=null||strCompany=="Select Company") {
+                                if (strCompany.contentEquals("New Company (CNew)")||strCompany=="Select Company"){
+                                    updatelayout_contactinfo_layout.et_lead_name.setText("")
+                                    updatelayout_lead_company_details.et_company_name.setText("")
+                                    if(strCompany.contentEquals("New Company(CNew)")) {
+                                        Toast.makeText(this@UpdateLeadActivity, "Please search company name from drop-down before selecting New Company", Toast.LENGTH_SHORT).show()
+                                    }
+                                }else {
+                                    val name = strCompany.split("(")
+                                    val cmpname = name.get(0)
+                                    updatelayout_contactinfo_layout.et_lead_name.setText(cmpname)
+                                    updatelayout_lead_company_details.et_company_name.setText(cmpname)
+                                }
+                                val adapter1 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, group!!)
+                                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                                updatelayout_contactinfo_layout.sp_upgroup.adapter = adapter1
+                                updatelayout_contactinfo_layout.sp_upgroup.setSelection(compPosition)
+                                adapter1.notifyDataSetChanged()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetCompanyResponse?>, t: Throwable) {
+                binding.updateleadProgressLayout.progressOverlay.visibility = View.GONE
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+*/
     fun getRelation(str_cmny: String?) {
-        val getCompanyRequest = GetCompanyRequest(Constants.GET_RELATIONSHIP,Constants.AUTH_KEY,str_cmny.toString(),"Target@2021#@","manager1")
+        val getCompanyRequest = GetCompanyRequest(Constants.GET_RELATIONSHIP,Constants.AUTH_KEY,str_cmny.toString(),password,userName)
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getRelationList(getCompanyRequest)
         call.enqueue(object : Callback<GetRelationShipResponse?> {
@@ -1453,8 +1590,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         relationId?.add("")
                         if (relationList != null) {
                             for (item in relationList){
-                                relation!!.add(item.Relationship_Name +"("+item.Relationship_ID+")")
-                                relationId?.add(item.Relationship_ID)
+                                relation!!.add(item.Relationship_Name +" ("+item.Relationship_ID+")")
+                                item.Relationship_ID?.let { relationId?.add(it) }
                             }
                         }
                         var relationPosition=0
@@ -1484,7 +1621,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         val getLeadSourceRequest =
                 str_lead_chnl?.let {
                     GetLeadSourceRequest(Constants.GET_SOURCE,Constants.AUTH_KEY,
-                            it,"manager1","Target@2021#@")
+                            it,userName,password)
                 }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getLeadSource(getLeadSourceRequest)
@@ -1515,7 +1652,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
     fun getArea(str_city: String?, str_city_code: String?) {
         val getLeadAreaRequest =   GetLeadAreaRequest(Constants.Get_AREA,Constants.AUTH_KEY,
-                str_city_code.toString(), str_city.toString() ,"","manager1","Target@2021#@",true)
+                str_city_code.toString(), str_city.toString() ,"",userName,password,true)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getLeadArea(getLeadAreaRequest)
@@ -1524,18 +1661,18 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val img = response.body()!!.Response.Message
-                        Log.e("image", img)
+                        img?.let { Log.e("image", it) }
                         areaList= response.body()!!.Response.Data
                         area = ArrayList<String>()
                         areaCode = ArrayList<String>()
                         area?.add("Select Area")
                         areaCode?.add("")
                         for (item in areaList!!){
-                            area?.add(item.AreaName)
-                            areaCode?.add(item.AreaCode)
+                            item.AreaName?.let { area?.add(it) }
+                            item.AreaCode?.let { areaCode?.add(it) }
                         }
                         var areaPosition=0
-                        area!!.forEachIndexed { index, s ->
+                        area?.forEachIndexed { index, s ->
                             if(s==strArea)areaPosition=index
                         }
 
@@ -1559,7 +1696,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
     fun getCntArea(str_city: String?, str_city_code: String) {
         val getLeadAreaRequest =   GetLeadAreaRequest(Constants.Get_AREA,Constants.AUTH_KEY,
-                str_city_code, str_city.toString() ,"","manager1","Target@2021#@",false)
+                str_city_code, str_city.toString() ,"",userName,password,false)
 
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -1569,15 +1706,15 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val img = response.body()!!.Response.Message
-                        Log.e("image", img)
+                        img?.let { Log.e("image", it) }
                         areaList= response.body()!!.Response.Data
                         cntarea = ArrayList<String>()
                         cntareaCode = ArrayList<String>()
                         cntarea?.add("")
                         cntareaCode?.add("")
                         for (item in areaList!!){
-                            cntarea?.add(item.AreaName)
-                            cntareaCode?.add(item.AreaCode)
+                            item.AreaName?.let { cntarea?.add(it) }
+                            item.AreaCode?.let { cntareaCode?.add(it) }
                         }
                         var areaPosition=0
                         cntarea?.forEachIndexed { index, s ->
@@ -1603,16 +1740,16 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
 
     fun getCity(str_inst_state: String) {
-        val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,"Target@2021#@",str_inst_state,"manager1")
+        val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,str_inst_state,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getCityList(getCityRequest)
         call.enqueue(object : Callback<GetCityResponse?> {
             override fun onResponse(call: Call<GetCityResponse?>, response: Response<GetCityResponse?>) {
-                if (response.isSuccessful && response.body() != null) {
+              if (response.isSuccessful && response.body() != null) {
                     try {
-                        val img = response.body()!!.Response.Message
-                        Log.e("image", img)
+                        val img = response.body()?.Response?.Message
+                        img?.let { Log.e("image", it) }
                         cityList = response.body()!!.Response.Data
                         city = ArrayList<String>()
                         cityCode = ArrayList<String>()
@@ -1644,7 +1781,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     }
 
     fun getContactCity(strcontact_stateCode: String) {
-        val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,"Target@2021#@",strcontact_stateCode,"manager1")
+        val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,strcontact_stateCode,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getCityList(getCityRequest)
@@ -1652,14 +1789,14 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             override fun onResponse(call: Call<GetCityResponse?>, response: Response<GetCityResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
-                        val img = response.body()!!.Response.Message
-                        Log.e("image", img)
-                       val cityList = response.body()!!.Response.Data
+                        val img = response.body()?.Response?.Message
+                        img?.let { Log.e("image", it) }
+                       val cityList = response.body()?.Response?.Data
                         city = ArrayList<String>()
                         cityCode = ArrayList<String>()
                         city?.add("Select City")
                         cityCode?.add("")
-                        for (item in cityList) {
+                        for (item in cityList!!) {
                             city?.add(item.CityName)
                             cityCode?.add(item.CityCode)
                         }
@@ -1707,7 +1844,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 updatelayout_lead_installation_address.et_upspefc_area.visibility=View.VISIBLE
             }else{
                 updatelayout_lead_installation_address.et_upspefc_area.visibility=View.GONE
-
             }
         }else if(parent?.id == R.id.sp_cnt_cnarea){
             update_lead_contact_address.et_contacttarea.setText(cntarea?.get(position))
@@ -1732,7 +1868,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             }else{
                 update_lead_contact_address.et_cntspbuilding_name.visibility=View.GONE
             }
-
         }
         else if(parent?.id == R.id.sp_building_nm) {
             updatelayout_lead_installation_address.et_building.setText(building?.get(position))
@@ -1800,12 +1935,11 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         }else if(parent?.id == R.id.sp_firm_type){
             updatelayout_lead_company_details.et_firm_type.setText(list_firm_type.get(position))
          //   str_firm_type =  list_firm_type_value.get(position-1)
-            str_firm_type = list_firm_type_value.get(position ) 
-
+            str_firm_type = list_firm_type_value.get(position)
         }
         else if(parent?.id == R.id.sp_media){
             updatelayout_lead_other_details.et_media.setText(list_of_media.get(position))
-            str_media = list_of_mediavalue.get(position )
+            str_media = list_of_mediavalue.get(position)
         }else if(parent?.id == R.id.sp_intrsteddata_center){
             updatelayout_lead_other_details.et_is_cus.setText(list_of_boolean.get(position))
             str_data = list_of_booleanvalue.get(position)
@@ -1831,6 +1965,20 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             updatelayout_contactinfo_layout.et_updtcompany.setText(company?.get(position))
             str_cmp =  companyId?.get(position )
             updatelayout_contactinfo_layout.et_upgroup.setText(group?.get(position))
+            val strCompanyName = company?.get(position)
+            if (strCompanyName.contentEquals("New Company (CNew)")||strCompanyName=="Select Company"){
+                updatelayout_contactinfo_layout.et_lead_name.setText("")
+                updatelayout_lead_company_details.et_company_name.setText("")
+               /* if(strCompanyName.contentEquals("New Company (CNew)")) {
+                    Toast.makeText(this, "Please search company name from drop-down before selecting New Company", Toast.LENGTH_SHORT).show()
+                }*/
+            }else {
+                val name = strCompanyName?.split("(")
+                val cmpname = name?.get(0)
+                updatelayout_contactinfo_layout.et_lead_name.setText(cmpname)
+                updatelayout_lead_company_details.et_company_name.setText(cmpname)
+            }
+
             str_grp = groupId?.get(position )
             getRelation(str_cmp)
         }else if(parent?.id == R.id.sp_upgroup){
@@ -1857,7 +2005,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         binding.updateleadProgressLayout.progressOverlay.animation = inAnimation
         binding.updateleadProgressLayout.progressOverlay.visibility = View.VISIBLE
 
-        val qualifiedLeadRequest = QualifiedLeadRequest(Constants.QUALIFY_LEAD,Constants.AUTH_KEY,str_lead_Id.toString(),"Target@2021#@","manager1")
+        val qualifiedLeadRequest = QualifiedLeadRequest(Constants.QUALIFY_LEAD,Constants.AUTH_KEY,str_lead_Id.toString(),password,userName)
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.qualifyReq(qualifiedLeadRequest)
         call.enqueue(object : Callback<QualifyLeadResponse?> {
@@ -1900,7 +2048,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         fram.commit()
     }*/
     fun getOtherCity(strCurLocation: String?) {
-        val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,"Target@2021#@","","manager1")
+        val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,"",userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getCityList(getCityRequest)
@@ -1946,7 +2094,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         binding.updateleadProgressLayout.progressOverlay.animation = inAnimation
         binding.updateleadProgressLayout.progressOverlay.visibility = View.VISIBLE
 
-        val disqualifyLead = DisqualifyLead(Constants.DISQUALIFY_LEAD,Constants.AUTH_KEY,str_lead_Id.toString(),"Target@2021#@",disqualif,"manager1")
+        val disqualifyLead = DisqualifyLead(Constants.DISQUALIFY_LEAD,Constants.AUTH_KEY,str_lead_Id.toString(),password,disqualif,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.disQualifyReq(disqualifyLead)
@@ -1961,7 +2109,11 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                          if(response.body()?.Response?.StatusCode==200){
                              val img = response.body()?.Response?.Message
                              Toast.makeText(this@UpdateLeadActivity, img , Toast.LENGTH_SHORT).show()
-
+                             Intent(this@UpdateLeadActivity, LeadTabActivity::class.java).also {
+                                 it.putExtra("LeadId", str_lead_Id)
+                                 startActivity(it)
+                                 finish()
+                             }
                         }else{
                              Toast.makeText(this@UpdateLeadActivity, response.body()?.Response?.Message, Toast.LENGTH_SHORT).show()
                          }

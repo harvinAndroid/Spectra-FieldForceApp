@@ -2,10 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white">
+
+      <!--  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/swipeOppRefreshLayout">-->
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -33,10 +43,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_25sdp"
                     android:text="@string/won_oppurtunity"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/searchtoolbaropp"
                     android:textSize="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:background="@color/colorButton"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/tv_reopen"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="@string/re_open_oppurtunity"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_won"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
@@ -51,11 +79,12 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:background="@color/colorBlack"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_won"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_reopen"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="wrap_content">
+
                     <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/sp_lost"
                         android:layout_width="match_parent"
@@ -73,6 +102,15 @@
 
                 </FrameLayout>
 
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/opp_lost"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+
                 <LinearLayout
                     android:id="@+id/lineartwo"
                     android:layout_width="match_parent"
@@ -81,7 +119,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/opp_lost"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     >
@@ -473,13 +511,12 @@
                         <TextView
                             android:id="@+id/tv_opp_submit"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_25sdp"
+                            android:layout_height="@dimen/_30sdp"
                             android:background="@drawable/button_background"
                             android:text="@string/submit_for_appoval"
                             android:layout_weight=".5"
                             android:gravity="center"
                             android:visibility="gone"
-
                             android:textColor="@android:color/white"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
@@ -488,11 +525,10 @@
                         <TextView
                             android:id="@+id/fab_create_society"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_25sdp"
+                            android:layout_height="@dimen/_30sdp"
                             android:layout_weight=".5"
-                            android:text="Create Society"
+                            android:text="@string/create_area_building"
                             android:visibility="gone"
-
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:textColor="@android:color/white"
@@ -536,11 +572,11 @@
                         />
 
                 </LinearLayout>
-
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+      <!--  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
         <FrameLayout
             android:id="@+id/fragment_opp"
             android:layout_width="match_parent"

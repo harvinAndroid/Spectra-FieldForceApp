@@ -8,7 +8,7 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -41,7 +41,7 @@
             app:cardUseCompatPadding="true"
             android:layout_margin="@dimen/_5sdp"
             android:background="@color/colorWhite"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
 
@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/color_light_blue"
-                    android:hint="CAF NO.*"
+                    android:hint="@string/caf_no"
                     android:focusableInTouchMode="false"
                     android:focusable="false"
                     android:drawableEnd="@drawable/lock"
@@ -90,7 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/color_light_blue"
-                    android:hint="Account*"
+                    android:hint="@string/account"
                     android:focusableInTouchMode="false"
                     android:focusable="false"
                     android:drawableEnd="@drawable/lock"
@@ -108,7 +108,7 @@
             android:id="@+id/ck_tan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TAN No.*"
+            android:text="@string/tan_no"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp"  />
 
@@ -116,7 +116,7 @@
             android:id="@+id/chk_tin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TIN no. (Hardware sale)Required"
+            android:text="@string/tin_no_hardware_sale_required"
            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
@@ -133,21 +133,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
-            android:text="Purchase Order (P.O.)*"
+            android:text="@string/purchase_order_p_o"
             android:textSize="@dimen/_12sdp" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/chk_apnic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="APNIC (Public IP declaration form)*"
+            android:text="@string/apnic_public_ip_declaration_form"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp"  />
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/chk_photo"
             android:layout_width="match_parent"
-            android:text="Photo ID proof of Authorized Signatory*"
+            android:text="@string/photo_id_proof_of_authorized_signatory"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp"  />
@@ -156,7 +156,7 @@
             android:id="@+id/chk_osp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Non-OSP Declaratrion/OSP Registration Certificate*"
+            android:text="@string/non_osp_declaratrion_osp_registration_certificate"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp"  />
 
@@ -164,54 +164,86 @@
             android:id="@+id/chk_netwrk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Network Diagram*"
+            android:text="@string/network_diagram"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/chk_adproof"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Address proof of Company/Firm*"
+            android:text="@string/address_proof_of_company_firm"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/chk_pan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Company's PAN Card copy*"
+            android:text="@string/company_s_pan_card_copy"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/chk_deed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Partnership Deed*"
+            android:text="@string/partnership_deed"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12sdp" />
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/colorPrimary"
-            app:hintTextAppearance="@style/AppearanceText">
-
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_attachfile"
+          <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:backgroundTint="@color/color_light_blue"
-                android:hint="Attach File"
-                android:text="Attach File"
-                android:focusable="false"
-                android:drawableEnd="@drawable/attach_file"
-                android:imeOptions="actionNext"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/_12sdp" />
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
 
-        </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_attachfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="@color/color_light_blue"
+                    android:hint="Attach File"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/attach_file"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextAppearance="@style/AppearanceText">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="@color/color_light_blue"
+                    android:hint="@string/remark"
+                    android:focusable="false"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:text="@string/view_document"
+                    android:layout_width="match_parent"
+                    android:textAllCaps="true"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_docView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:id="@+id/linearsave"
                 android:layout_width="match_parent"
@@ -220,8 +252,7 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_50sdp"
-
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearremark_details">
@@ -247,5 +278,9 @@
     </LinearLayout>
         </androidx.cardview.widget.CardView>
         </androidx.core.widget.NestedScrollView>
+        <include layout="@layout/progress"
+            android:id="@+id/docprogressLayout"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

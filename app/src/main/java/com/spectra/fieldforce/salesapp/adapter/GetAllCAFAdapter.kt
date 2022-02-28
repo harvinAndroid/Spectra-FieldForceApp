@@ -32,6 +32,7 @@ class GetAllCAFAdapter(private val items: List<CafData>, private val context: Co
         fun bind(item: CafData) {
             binding.status.text = item.LeadName + " " + "(" + item.Cafid + ")"
             binding.tvMob.text = "Mobile No. : " + item.MobileNo
+            binding.tvEmail.text = "Email ID : " + item.EmailID
             binding.orderStatus.text = "Status : " + item.Status
             binding.linearLead.setOnClickListener() {
                 val intent = Intent(context, CAFActivity::class.java)
@@ -39,9 +40,7 @@ class GetAllCAFAdapter(private val items: List<CafData>, private val context: Co
                 bundle.putString("CafId", item.Cafid)
                 intent.putExtras(bundle)
                 context?.startActivity(intent)
-
             }
-
         }
     }
 }

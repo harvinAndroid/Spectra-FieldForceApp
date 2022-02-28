@@ -17,28 +17,28 @@ internal class CafTabAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                val getQualifiedLeadFrag = GetAllCAFFrag()
+                val getAllCAFFrag = GetAllCAFFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "All")
                 bundle.putString("TAG", "0")
-                getQualifiedLeadFrag.arguments = bundle
-                return getQualifiedLeadFrag
+                getAllCAFFrag.arguments = bundle
+                return getAllCAFFrag
             }
             1 -> {
-                val getQualifiedLeadFrag = GetAllCAFFrag()
-                val bundle = Bundle()
-                bundle.putString("STATUS", "Installation Completed")
-                bundle.putString("TAG", "1")
-                getQualifiedLeadFrag.arguments = bundle
-                return getQualifiedLeadFrag
-            }
-            2 -> {
-                val getQualifiedLeadFrag = GetAllCAFFrag()
+                val getAllCAFFrag = GetAllCAFFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "not equals Installation Completed")
                 bundle.putString("TAG", "1")
-                getQualifiedLeadFrag.arguments = bundle
-                return getQualifiedLeadFrag
+                getAllCAFFrag.arguments = bundle
+                return getAllCAFFrag
+            }
+            2 -> {
+                val getAllCAFFrag = GetAllCAFFrag()
+                val bundle = Bundle()
+                bundle.putString("STATUS", "Installation Completed")
+                bundle.putString("TAG", "1")
+                getAllCAFFrag.arguments = bundle
+                return getAllCAFFrag
             }
             else -> getItem(position)
         }

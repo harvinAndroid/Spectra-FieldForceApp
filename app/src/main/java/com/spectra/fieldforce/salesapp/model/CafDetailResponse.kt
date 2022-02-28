@@ -1,68 +1,68 @@
 package com.spectra.fieldforce.salesapp.model
 
 data class CafDetailResponse(
-    val Response: CaffResponse,
-    val Status: String,
-    val StatusCode: String
+    val Response: CaffResponse?,
+    val Status: String?,
+    val StatusCode: String?
 )
 
 data class CaffResponse(
-    val Data: CaffData,
-    val Message: String,
-    val StatusCode: Int
+    val Data: CaffData?,
+    val Message: String?,
+    val StatusCode: Int?
 )
 
 data class CaffData(
-    val AttachDocument: String,
-    val BillCycle: Any,
-    val BusinessDays: String,
-    val BusinessSegment: String,
-    val CafNo: String,
-    val Company: String,
-    val CompanyName: String,
-    val CustomerName: String,
-    val CustomerWorkingHours: String,
-    val Group: String,
-    val GstNumber: String,
-    val GstNumberDetial: String,
-    val IsCustomerHappy: String,
-    val LastMileType: String,
-    val Nationality: String,
-    val NetworkTechnology: String,
-    val NtwMonitAlert: String,
-    val OpportunityId: String,
-    val OpportunityId2: String,
-    val PanNo: String,
-    val PayInSlip: String,
-    val PreferredCommMode: String,
-    val Product: String,
-    val ProductId:String,
-    val ProductSegment: String,
-    val Relationship: String,
-    val ServiceId: String,
-    val Status: String,
-    val SubBussinessSegment: String,
-    val TanNo: String,
-    val SubmitFlag:String,
-    val authSigDetails: AuthSigDetails,
-    val billingAddress: BillingAddress,
-    val companyDetail: CafCompanyDetail,
-    val installationAddresses: CafInstallationAddresses,
-    val otherinformations: Otherinformations,
-    val payments: Payments
+    val AttachDocument: String?,
+    val BillCycle: Any?,
+    val BusinessDays: String?,
+    val BusinessSegment: String?,
+    val CafNo: String?,
+    val Company: String?,
+    val CompanyName: String?,
+    val CustomerName: String?,
+    val CustomerWorkingHours: String?,
+    val Group: String?,
+    val GstNumber: String?,
+    val GstNumberDetial: String?,
+    val IsCustomerHappy: String?,
+    val LastMileType: String?,
+    val Nationality: String?,
+    val NetworkTechnology: String?,
+    val NtwMonitAlert: String?,
+    val OpportunityId: String?,
+    val OpportunityId2: String?,
+    val PanNo: String?,
+    val PayInSlip: String?,
+    val PreferredCommMode: String?,
+    val Product: String?,
+    val ProductId:String?,
+    val ProductSegment: String?,
+    val Relationship: String?,
+    val ServiceId: String?,
+    val Status: String?,
+    val SubBussinessSegment: String?,
+    val TanNo: String?,
+    val SubmitFlag:String?,
+    val authSigDetails: AuthSigDetails?,
+    val billingAddress: BillingAddress?,
+    val companyDetail: CafCompanyDetail?,
+    val installationAddresses: CafInstallationAddresses?,
+    val otherinformations: Otherinformations?,
+    val payments: Payments?
 )
 
 data class AuthSigDetails(
-    val Auth_City: String,
-    val Auth_Country: String,
-    val Auth_EmailId: String,
-    val Auth_Father: String,
-    val Auth_MobileNo: String,
-    val Auth_Name: String,
-    val Auth_Nationality: String,
-    val Auth_PinCode: String,
-    val Auth_Resadd: String,
-    val Auth_State: String
+    val Auth_City: String?,
+    val Auth_Country: String?,
+    val Auth_EmailId: String?,
+    val Auth_Father: String?,
+    val Auth_MobileNo: String?,
+    val Auth_Name: String?,
+    val Auth_Nationality: String?,
+    val Auth_PinCode: String?,
+    val Auth_Resadd: String?,
+    val Auth_State: String?
 )
 
 data class BillingAddress(
@@ -115,7 +115,8 @@ data class Otherinformations(
     val FireWall: String,
     val PoLock: String,
     val PoNext: String,
-    val UptimeSLA: String
+    val UptimeSLA: String,
+    val FirewallAMC:String
 )
 
 data class Payments(
@@ -137,5 +138,6 @@ data class Payments(
     val Reason: String,
     val TotalAmount: String,
     val TransactionReferenceId: String,
-    val SecurityDepositType:String
+    val SecurityDepositType:String,
+    val SecurityDeposit:String
 )

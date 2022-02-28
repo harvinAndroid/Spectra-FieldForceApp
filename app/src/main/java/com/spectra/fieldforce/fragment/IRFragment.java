@@ -359,9 +359,14 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             }else{
                 updateIrEnginer(insta);
             }
-
         });
 
+        /*Managed Office Solution
+
+   MBB
+
+Secured Managed Internet
+*/
         binding.layoutInstallationparam.tvSaveQualityParam.setOnClickListener((View v) -> {
             String dns = Objects.requireNonNull(binding.layoutInstallationparam.etDns.getText()).toString();
             String virus = Objects.requireNonNull(binding.layoutInstallationparam.etEducationAntivirus.getText()).toString();

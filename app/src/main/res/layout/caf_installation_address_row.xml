@@ -447,12 +447,10 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/pin_code"
                                 android:text="@{cafInstAdress.inst_PinCode}"
-
+                                android:maxLength="6"
+                                android:inputType="number"
                                 android:imeOptions="actionNext"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:textColor="@color/colorPrimaryDark"
+                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 

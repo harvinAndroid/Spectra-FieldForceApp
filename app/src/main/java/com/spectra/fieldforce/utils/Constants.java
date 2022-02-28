@@ -152,11 +152,26 @@ public class Constants {
     public static final String UPDATECAF="updateCaf";
     public static final String SUBMITCAF="submitCaf";
     public static final String GETDOCUMENT ="getDocument";
+    public static final String DOWNLOADREPORTS ="downloadReports";
     public static final String UPDATEDOCUMENT ="updateDocument";
     public static final String GETBANK ="getBank";
     public static final String GETNP="getNP";
     public static final String GETWCR = "getWCR";
     public static final String getIR = "getIR";
+    public static final String REPORTSEMAIL_SEND="reportsEmailSend";
+    public static final String REOPEN_OPP="reopenOpportunity";
+    public static final String GETALLCONTACT="getAllContact";
+    public static final String getRFS = "getRFS";
+
+    public static final String getCONTACT = "getContact";
+    public static final String GET_COMPETITOR = "getCompetitor";
+    public static final String GETPLAN_CATEGORY = "getPlanCategory";
+    public static final String UPDATECONTACT = "updateContact";
+    public static final String CREATECONTACT = "createContact";
+    public static final String GETCONTACT = "getContact";
+
+
+
 
 
 

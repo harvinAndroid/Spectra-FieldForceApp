@@ -4,6 +4,6 @@ data class CreateQuoteRequest(
     val Action: String,
     val Authkey: String,
     val Oppid: String,
-    val password: String,
-    val userName: String
+    val password: String?,
+    val userName: String?
 )

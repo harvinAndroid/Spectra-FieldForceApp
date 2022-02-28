@@ -61,7 +61,7 @@
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp"
-                                tools:ignore="TouchTargetSizeCheck" />
+                                 />
 
                         </com.google.android.material.textfield.TextInputLayout>
 

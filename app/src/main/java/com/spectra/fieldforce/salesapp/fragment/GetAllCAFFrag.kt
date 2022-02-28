@@ -3,7 +3,10 @@ package com.spectra.fieldforce.salesapp.fragment
 import GetAllCAFAdapter
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +37,8 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
     private var outAnimation: AlphaAnimation? = null
     var strtag :String?=null
     var str_Search :String?=null
-
+    var userName: String? = null
+    var password : String? = null
     companion object {
         fun newInstance(): GetAllCAFFrag {
             return newInstance()
@@ -47,8 +51,7 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
         savedInstanceState: Bundle?
     ):  View {
         leadContactInfoBinding = FragmentAllLeadListBinding.inflate(inflater, container, false)
-        val activity = activity as Context
-        return leadContactInfoBinding.root
+         return leadContactInfoBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,6 +59,9 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
         val bundle = arguments
         str_Search = bundle?.getString("STATUS")
         strtag = bundle?.getString("TAG")
+        val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
+        userName = sp1?.getString("UserName", null)
+        password = sp1?.getString("Password", null)
         if(strtag=="1"){
             linearrrrr.visibility=View.GONE
         }
@@ -66,16 +72,25 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
         }
 
         fab_create_lead.visibility =View.GONE
-        /*fab_create_lead.setOnClickListener {
-            try {
-                val fragmentB = CreateLeadFragment()
-                parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_main, fragmentB, "fragmnetId")
-                        .commit();
-            }catch (e:Exception){
+        tv_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                val search = tv_search.text.toString()
+                if(search.isBlank()){
+                    tv_msg.visibility=View.GONE
+                    getCAFList("")
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
 
             }
-        }*/
+        })
     }
 
 
@@ -84,7 +99,7 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCAF, Constants.AUTH_KEY,str_Search,"Target@2021#@","manager1",search)
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCAF, Constants.AUTH_KEY,str_Search,password,userName,search)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllCAF(getAllLeadRequest)
@@ -103,6 +118,9 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
                             allCaf?.let { setAdapter(it, context) }
                         }else{
                             Toast.makeText(context,msg, Toast.LENGTH_LONG).show()
+                            tv_msg.visibility=View.GONE
+                            tv_msg.text=(msg)
+                            allCaf?.clear()
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()

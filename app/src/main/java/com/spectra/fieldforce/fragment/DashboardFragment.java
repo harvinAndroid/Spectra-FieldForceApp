@@ -33,6 +33,7 @@ public class DashboardFragment extends Fragment {
     MainDashboradBinding binding;
     public static PrefConfig prefConfig;
     DashBoardActivity context;
+    private String emailId,password;
     public static final String PREF ="Login";
     @Nullable
     @Override
@@ -45,31 +46,19 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         prefConfig = new PrefConfig(getActivity());
-        init();
+       // init();
        // validateUser();
-       /* binding.linearSales.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                validateSalesUser("S");
-            }
-        });
-        binding.linearFfa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                validateUser("F");
-            }
-        });
-        binding.linearGpon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                validateUser("I");
-            }
-        });*/
+        SharedPreferences sp1=getActivity().getSharedPreferences("Login",0);
+         emailId =sp1.getString("EmailId", null);
+        password = sp1.getString("Password", null);
+        binding.linearSales.setOnClickListener(view1 -> validateSalesUser("S"));
+        binding.linearFfa.setOnClickListener(view13 -> validateffa("F"));
+        binding.linearGpon.setOnClickListener(view12 -> validateGpon("I"));
 
     }
 
-    private void validateUser(String f) {
-        ValidateUserRequest validateUserRequest = new ValidateUserRequest(Constants.VALIDATE_USER,Constants.AUTH_KEY,"Manager1","Target@2021#@",f);
+    private void validateffa(String f) {
+        ValidateUserRequest validateUserRequest = new ValidateUserRequest(Constants.VALIDATE_USER,Constants.AUTH_KEY,emailId,password,f);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ValidateResponse> call = apiService.validateUserReq(validateUserRequest);
@@ -80,7 +69,43 @@ public class DashboardFragment extends Fragment {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             if(response.body().getStatus().equals("Success")) {
+                                Intent i = new Intent(getActivity(), SpectraFfaActivity.class);
+                                startActivity(i);
+                                getActivity().finish();
+                                }else if(response.body().getStatus().equals("Failure")) {
+                                Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ValidateResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void validateGpon(String f) {
+        ValidateUserRequest validateUserRequest = new ValidateUserRequest(Constants.VALIDATE_USER,Constants.AUTH_KEY,emailId,password,f);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ValidateResponse> call = apiService.validateUserReq(validateUserRequest);
+        call.enqueue(new Callback<ValidateResponse>() {
+            @Override
+            public void onResponse(Call<ValidateResponse> call, Response<ValidateResponse> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            if(response.body().getStatus().equals("Success")) {
+                                Intent i = new Intent(getActivity(), BucketTabActivity.class);
+                                startActivity(i);
+                                getActivity().finish();
+                            }else  if(response.body().getStatus().equals("Failure")) {
+                                Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -97,7 +122,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void validateSalesUser(String s) {
-        ValidateUserRequest validateUserRequest = new ValidateUserRequest(Constants.VALIDATE_USER,Constants.AUTH_KEY,"Manager1","Target@2021#@",s);
+        ValidateUserRequest validateUserRequest = new ValidateUserRequest(Constants.VALIDATE_USER,Constants.AUTH_KEY,emailId,password,s);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ValidateSalesResponse> call = apiService.validateSalesUserReq(validateUserRequest);
@@ -107,8 +132,12 @@ public class DashboardFragment extends Fragment {
                 try {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
-                            if(response.body().getStatus().equals("Success")) {
-
+                            if (response.body().getResponse().getStatusCode() == 200) {
+                                Intent i = new Intent(getActivity(), SalesDashboard.class);
+                                startActivity(i);
+                                getActivity().finish();
+                            } else if (response.body().getStatus().equals("Failure")) {
+                                Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -125,7 +154,7 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    private void init(){
+   /* private void init(){
         SharedPreferences sp = getActivity().getSharedPreferences(PREF , 0);
         String ffa =sp.getString("FFA", null);
         String installationAuth =sp.getString("InstallationAuth", null);
@@ -164,6 +193,6 @@ public class DashboardFragment extends Fragment {
             getActivity().finish();
         });
     }
-
+*/
 
 }

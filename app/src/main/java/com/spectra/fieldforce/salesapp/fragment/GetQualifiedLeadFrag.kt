@@ -3,6 +3,7 @@ package com.spectra.fieldforce.salesapp.fragment
 import GetAllLeadAdapter
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -37,7 +38,8 @@ class GetQualifiedLeadFrag() : Fragment(),View.OnClickListener {
     private var allLead: ArrayList<AllLeadData>? = null
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
-
+    var userName: String? = null
+    var password : String? = null
   var str_Search :String?=null
 
     companion object {
@@ -62,7 +64,9 @@ class GetQualifiedLeadFrag() : Fragment(),View.OnClickListener {
         fab_create_lead.visibility=View.GONE
         val bundle = arguments
         str_Search = bundle?.getString("STATUS")
-
+        val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
+        userName = sp1?.getString("UserName", null)
+        password = sp1?.getString("Password", null)
          getAllLeadList()
 
         fab_create_lead.setOnClickListener {
@@ -84,7 +88,7 @@ class GetQualifiedLeadFrag() : Fragment(),View.OnClickListener {
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,str_Search,"Target@2021#@","manager1",
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,str_Search,password,userName,
         "")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)

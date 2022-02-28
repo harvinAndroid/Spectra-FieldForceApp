@@ -21,7 +21,7 @@
 
                    <androidx.cardview.widget.CardView
                     android:id="@+id/cardview1"
-                     android:layout_width="match_parent"
+                    android:layout_width="match_parent"
                     app:cardCornerRadius="@dimen/_5sdp"
                     app:cardElevation="@dimen/_5sdp"
                     app:cardUseCompatPadding="true"
@@ -29,7 +29,8 @@
                     android:background="@color/colorWhite"
                     android:layout_height="wrap_content">
 
-                    <LinearLayout android:id="@+id/linear12"
+                    <LinearLayout
+                        android:id="@+id/linear12"
                         android:layout_width="match_parent"
                         android:orientation="vertical"
                         android:layout_height="wrap_content"
@@ -337,7 +338,8 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/pin_code"
                                 android:text="@{updateContactAdd.contactPincode}"
-
+                                android:maxLength="6"
+                                android:inputType="number"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"

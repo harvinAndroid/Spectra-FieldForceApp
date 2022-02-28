@@ -296,6 +296,7 @@
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="Lead Name*"
                         app:hintEnabled="true"
+                        android:textColorHint="@color/colorPrimary"
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
@@ -303,8 +304,17 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <AutoCompleteTextView
+                    android:id="@+id/et_leadcompany"
+                    android:layout_width="match_parent"
+                    android:hint="@string/company"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textColorHint="@color/colorPrimary"
+                    android:layout_height="wrap_content"/>
 
-                <FrameLayout
+               <!-- <FrameLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -338,7 +348,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-                </FrameLayout>
+                </FrameLayout>-->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"

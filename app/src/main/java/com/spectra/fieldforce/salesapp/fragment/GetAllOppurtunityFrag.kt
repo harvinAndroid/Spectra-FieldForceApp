@@ -3,12 +3,16 @@ package com.spectra.fieldforce.salesapp.fragment
 import GetAllOppurtunityAdapter
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +23,11 @@ import com.spectra.fieldforce.salesapp.activity.SalesDashboard
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
+import kotlinx.android.synthetic.main.fragment_all_lead_list.linearrrrr
+import kotlinx.android.synthetic.main.fragment_all_lead_list.tv_count
+import kotlinx.android.synthetic.main.fragment_all_lead_list.tv_msg
+import kotlinx.android.synthetic.main.fragment_all_lead_list.tv_search
+import kotlinx.android.synthetic.main.fragment_all_oppurtunity_list.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +40,8 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
     private var alloppurtunity: ArrayList<OppurData>? = null
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
-
+    var userName: String? = null
+    var password : String? = null
     var strtag :String?=null
     var str_Search :String?=null
     companion object {
@@ -55,14 +65,36 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
         val bundle = arguments
         str_Search = bundle?.getString("STATUS")
         strtag = bundle?.getString("TAG")
+        val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
+        userName = sp1?.getString("UserName", null)
+        password = sp1?.getString("Password", null)
         if(strtag=="1"){
             linearrrrr.visibility=View.GONE
         }
         tv_count.setOnClickListener{
-            val search = tv_search.text.toString()
+            val search = tv_oppsearch.text.toString()
             getAlloppurtunityList(search)
         }
         getAlloppurtunityList("")
+        tv_oppsearch.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                val search = tv_oppsearch.text.toString()
+                if(search.isBlank()){
+                    tv_msg.visibility=View.GONE
+                    getAlloppurtunityList("")
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+            }
+        })
 
     }
 
@@ -71,7 +103,7 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
         inAnimation?.duration =200
         binding.progressLayout.progressOverlay.animation = inAnimation
         binding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllOPPURTUNITY, Constants.AUTH_KEY,str_Search,"Target@2021#@","manager1",search)
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllOPPURTUNITY, Constants.AUTH_KEY,str_Search,password,userName,search)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllOppurtunity(getAllLeadRequest)
@@ -84,10 +116,15 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
 
                 if (response.isSuccessful && response.body() != null) {
                     try {
+                        val msg = response.body()?.Response?.Message
                         if(response.body()?.Response?.StatusCode==200) {
-                             val msg = response.body()?.Response?.Message
-                            alloppurtunity = response.body()!!.Response.Data
+                            alloppurtunity = response.body()?.Response?.Data
                             setAdapter(alloppurtunity, context)
+                        }else if(response.body()?.Response?.StatusCode==400) {
+                            Toast.makeText(context,msg, Toast.LENGTH_LONG).show()
+                            tv_msg.visibility=View.GONE
+                            tv_msg.text=("Your Search value is not valid")
+                            alloppurtunity?.clear()
                         }
 
                     } catch (e: Exception) {

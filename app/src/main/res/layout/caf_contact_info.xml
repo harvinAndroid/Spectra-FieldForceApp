@@ -207,27 +207,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
 
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_custhappy"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/is_customer_happy"
-                        android:focusable="false"
-                        android:drawableEnd="@drawable/lock"
-                        app:backgroundTint="@color/color_light_blue"
-                        android:imeOptions="actionNext"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
@@ -504,7 +483,7 @@
                             android:id="@+id/et_wrkngdys"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Business Days*"
+                            android:hint="@string/business_days"
                             android:focusable="false"
                             app:backgroundTint="@color/color_light_blue"
                             android:drawableEnd="@drawable/ic_expand_down"
@@ -538,7 +517,7 @@
                             android:id="@+id/et_ntwrkmtr"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Network Monitoring Alerts*"
+                            android:hint="@string/network_monitoring_alerts"
                             android:focusable="false"
                             app:backgroundTint="@color/color_light_blue"
                             android:drawableEnd="@drawable/ic_expand_down"
@@ -548,101 +527,6 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_prosegment"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_prosegment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/product_segment"
-                        android:focusable="false"
-                        android:visibility="gone"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:imeOptions="actionNext"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/sp_montalerts"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:visibility="invisible" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_montalerts"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                         android:hint="@string/network_monitoring_alertsrequired"
-                        android:focusable="false"
-                        android:visibility="gone"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                         android:imeOptions="actionNext"
-                        android:textColor="@color/colorPrimaryDark"
-                         android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_appdate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/caf_approval_date"
-                        android:focusable="false"
-                        android:visibility="gone"
-                        android:drawableEnd="@drawable/ic_expand_down"
-                        android:imeOptions="actionNext"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textColorHint="@color/colorPrimary"
-                    app:hintTextAppearance="@style/AppearanceText">
-
-                       <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_busreqd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/business_daysrequired"
-                        android:focusable="false"
-                        android:visibility="gone"
-                        android:drawableEnd="@drawable/lock"
-                        android:imeOptions="actionNext"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_12sdp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

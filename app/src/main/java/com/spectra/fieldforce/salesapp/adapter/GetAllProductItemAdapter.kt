@@ -2,6 +2,7 @@ package com.spectra.fieldforce.salesapp.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -55,7 +56,10 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
 
             val ProId:String = item.ProductId
             binding.imgDelete.setOnClickListener() {
-                val addProductRequest = OppId?.let { it1 -> AddProductRequest(Constants.DELETE_OPPPRODUCT, Constants.AUTH_KEY, it1, "Target@2021#@", ProId, "manager1") }
+                val sp1: SharedPreferences? = activity?.getSharedPreferences("Login", 0)
+               val  userName = sp1?.getString("UserName", null)
+                val password = sp1?.getString("Password", null)
+                val addProductRequest = OppId?.let { it1 -> AddProductRequest(Constants.DELETE_OPPPRODUCT, Constants.AUTH_KEY, it1, password, ProId, userName) }
                 val apiService = ApiClient.getClient().create(ApiInterface::class.java)
                 val call = apiService.deleteProduct(addProductRequest)
                 call.enqueue(object : Callback<DeleteProductResponse?> {

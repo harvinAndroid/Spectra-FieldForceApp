@@ -29,8 +29,9 @@ class GetAllLeadAdapter(private val items: List<AllLeadData>, private val contex
         fun bind(item: AllLeadData) {
             binding.status.text = item.LeadName + " "+ "("+item.LeadId+")"
             binding.tvMob.text = "Mobile No. : "+item.MobileNumber
+            binding.tvEmail.text = "Email ID : "+item.EmailId
             binding.orderStatus.text = "Status : "+item.Status
-             binding.linearLead.setOnClickListener(){
+            binding.linearLead.setOnClickListener(){
                 val intent = Intent(context, UpdateLeadActivity::class.java)
                 val bundle = Bundle()
                 bundle.putString("LeadId",item.LeadId )

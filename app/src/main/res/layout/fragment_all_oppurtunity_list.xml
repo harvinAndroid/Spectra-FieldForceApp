@@ -19,7 +19,7 @@
             android:layout_height="@dimen/_40sdp">
 
             <EditText
-                android:id="@+id/tv_search"
+                android:id="@+id/tv_oppsearch"
                 android:textColor="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:hint="@string/search"
@@ -84,6 +84,17 @@
             android:layout_marginBottom="@dimen/_35sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:background="@color/colorWhite"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="30dp"/>
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
         <include layout="@layout/progress"

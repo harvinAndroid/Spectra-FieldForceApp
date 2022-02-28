@@ -1,14 +1,12 @@
 package com.spectra.fieldforce.salesapp.activity
 
-import android.content.DialogInterface
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
 import com.spectra.fieldforce.R
-import com.spectra.fieldforce.activity.MainActivity
 import com.spectra.fieldforce.salesapp.adapter.CafTabAdapter
 import com.spectra.fieldforce.utils.AppConstants
 import kotlinx.android.synthetic.main.provision_fault_tab_screen.*
@@ -22,8 +20,9 @@ class CafTabActivity : AppCompatActivity(), View.OnClickListener {
         searchtoolbar.rl_back.setOnClickListener(this)
         searchtoolbar.tv_lang.text= AppConstants.CAF
         tabLayout?.newTab()?.setText("All CAF")?.let { tabLayout.addTab(it) }
-        tabLayout?.newTab()?.setText("Installation Completed")?.let { tabLayout.addTab(it) }
         tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("Pending")) }
+        tabLayout?.newTab()?.setText("Installation Completed")?.let { tabLayout.addTab(it) }
+
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
         val adapter = CafTabAdapter(this, supportFragmentManager, tabLayout.tabCount)

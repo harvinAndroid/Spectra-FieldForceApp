@@ -63,7 +63,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="Media *"
+                                android:hint="Media*"
                                 android:focusable="false"
                                 android:focusableInTouchMode="false"
                                 android:drawableEnd="@drawable/ic_expand_down"
@@ -137,7 +137,6 @@
                                 android:hint="@string/existing_service_provider_2"
 
                                 android:imeOptions="actionNext"
-
                                 android:focusable="false"
                                 android:focusableInTouchMode="false"
                                 android:drawableEnd="@drawable/ic_expand_down"

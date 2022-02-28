@@ -33,13 +33,15 @@ class GetWCRAdapter(private val items: List<WCRData>, private val context: Conte
     inner class ViewHolder(val binding: GetAllFeasibiltyAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: WCRData) {
             binding.FeasibilityId.text = "WCR Id : " +item.WcrID
-            binding.FeasibilityStatus.text= "WCR Status : " +item.WcrStatus
-            binding.Opportunity.text = "CreatedOn : " +item.CreatedOn
-            binding.CustomerName.text= "PodCode : " +item.PodCode
-            binding.RouteType.text= "PodName : "+item.PodName
+            binding.CustomerName.text= "Route Type : " +item.RouteType
+            binding.Opportunity.text= "POD Code : " +item.PodCode
+            binding.FeasibilityStatus.text="POD Name : "+item.PodName
             binding.EstimatedDoneBy.text= "Zone :"+item.Zone
-
-
+            binding.RouteType.text= "CreatedOn : " +item.CreatedOn
+            binding.Customer.visibility=View.VISIBLE
+            binding.owner.visibility=View.VISIBLE
+            binding.Customer.text= "WCR Status : " +item.WcrStatus
+            binding.owner.text= "Owner : " +item.Owner
         }
     }
 }

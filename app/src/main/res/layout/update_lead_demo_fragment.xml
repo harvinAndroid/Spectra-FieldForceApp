@@ -242,21 +242,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     >
-<!--<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:weightSum="1">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_weight=".5"
-        android:layout_height="wrap_content"/>
-    <CheckBox
-        android:layout_weight=".5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
-
-</LinearLayout>-->
                     <include
                         android:id="@+id/update_lead_contact_address"
                         layout="@layout/updatelead__contact_person_row"

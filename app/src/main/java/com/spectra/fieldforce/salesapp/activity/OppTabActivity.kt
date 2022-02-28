@@ -1,15 +1,11 @@
 package com.spectra.fieldforce.salesapp.activity
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
 import com.spectra.fieldforce.R
-import com.spectra.fieldforce.activity.MainActivity
-import com.spectra.fieldforce.salesapp.adapter.LeadTabAdapter
 import com.spectra.fieldforce.salesapp.adapter.OppTabAdapter
 import com.spectra.fieldforce.utils.AppConstants
 import kotlinx.android.synthetic.main.provision_fault_tab_screen.*
@@ -33,7 +29,7 @@ class OppTabActivity : AppCompatActivity(), View.OnClickListener {
 
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
 
-        tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
             }

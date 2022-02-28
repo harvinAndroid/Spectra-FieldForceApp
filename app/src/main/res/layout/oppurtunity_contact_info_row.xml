@@ -133,6 +133,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="Mobile No.*"
+                        android:maxLength="10"
                         android:imeOptions="actionNext"
                         android:text="@{contact.data.mobilephone}"
                         android:inputType="number"
@@ -268,19 +269,23 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
-              <!--  <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/et_oppspecific_ar"
+                    android:visibility="gone"
                     android:textColorHint="@color/colorPrimary"
                     app:hintTextAppearance="@style/AppearanceText">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_oppspecfc_area"
+                        android:id="@+id/et_oppspecific_area"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/specific_area_name"
-                        android:visibility="gone"
+
+                        android:text="@{contact.data.specificArea}"
+
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
@@ -288,7 +293,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-            -->    <FrameLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -312,6 +317,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/building_name"
+
                         android:imeOptions="actionNext"
                         android:focusable="false"
                         android:drawableEnd="@drawable/ic_expand_down"
@@ -323,10 +329,12 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
-             <!--   <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/colorPrimary"
+                    android:id="@+id/et_oppspecfc_dng"
+                    android:visibility="gone"
                     app:hintTextAppearance="@style/AppearanceText">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -335,14 +343,15 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/specific_building_no"
-                        android:visibility="gone"
+
+                        android:text="@{contact.data.specificBuilding}"
+
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
--->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -396,9 +405,10 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/pin_code"
+                        android:maxLength="6"
+                        android:inputType="number"
                         android:text="@{contact.data.postalCode}"
                         android:imeOptions="actionNext"
-                        android:inputType="number"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />

@@ -1,6 +1,5 @@
 package com.spectra.fieldforce.salesapp.activity
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -11,7 +10,6 @@ import com.spectra.fieldforce.R
 import com.spectra.fieldforce.activity.MainActivity
 import com.spectra.fieldforce.salesapp.adapter.LeadTabAdapter
 import com.spectra.fieldforce.utils.AppConstants
-import kotlinx.android.synthetic.main.fragment_all_oppurtunity_list.*
 import kotlinx.android.synthetic.main.provision_fault_tab_screen.*
 import kotlinx.android.synthetic.main.toolbar.view.*
 

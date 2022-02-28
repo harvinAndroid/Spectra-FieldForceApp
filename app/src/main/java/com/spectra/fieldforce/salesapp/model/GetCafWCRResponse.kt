@@ -19,5 +19,6 @@ data class WCRData(
     val RouteType: String,
     val WcrID: String,
     val WcrStatus: String,
-    val Zone: String
+    val Zone: String,
+    val Owner:String
 )

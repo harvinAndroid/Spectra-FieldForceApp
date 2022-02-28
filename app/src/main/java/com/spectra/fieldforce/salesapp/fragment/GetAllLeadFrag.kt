@@ -3,8 +3,12 @@ package com.spectra.fieldforce.salesapp.fragment
 import GetAllLeadAdapter
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +27,8 @@ import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest
 import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
+import kotlinx.android.synthetic.main.lead_contact_info.view.*
+import kotlinx.android.synthetic.main.lead_demo_fragment.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,7 +41,8 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
     private var allLead: ArrayList<AllLeadData>? = null
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
-
+    var userName: String? = null
+    var password : String? = null
     val search :String?=null
 
     companion object {
@@ -56,11 +63,14 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
+        userName = sp1?.getString("UserName", null)
+        password = sp1?.getString("Password", null)
        /* searchtoolbarlead_list.rl_back.setOnClickListener(this)
         searchtoolbarlead_list.tv_lang.text= AppConstants.ALL_LEADS
 
      */
-       // val search = tv_search.text.toString()
+       //
          getAllLeadList("")
        // init()
 
@@ -79,6 +89,28 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
 
             }
         }
+       // val search = tv_search.text.toString()
+
+        tv_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                val search = tv_search.text.toString()
+                if(search.isBlank()){
+                    tv_msg.visibility=View.GONE
+                    getAllLeadList("")
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+            }
+        })
+
     }
 
 
@@ -88,7 +120,7 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,"All","Target@2021#@","manager1",srch)
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,"All",password,userName,srch)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllLead(getAllLeadRequest)
@@ -107,6 +139,9 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
                             setAdapter(allLead, context)
                         }else{
                             Toast.makeText(context,msg, Toast.LENGTH_LONG).show()
+                            tv_msg.visibility=View.GONE
+                            tv_msg.text=(msg)
+                            allLead?.clear()
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()

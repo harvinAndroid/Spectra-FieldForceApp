@@ -33,13 +33,11 @@ class GetNPAdapter(private val items: List<NPData>, private val context: Context
     inner class ViewHolder(val binding: GetAllFeasibiltyAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NPData) {
             binding.FeasibilityId.text = "NP Id : " +item.NpId
-            binding.FeasibilityStatus.text= "Provisioning Status : " +item.ProvisioningStatus
+            binding.FeasibilityStatus.text="Network Technology : " +item.Ntw_Technology
             binding.Opportunity.text = "POD Name : " +item.PodName
-            binding.CustomerName.text= "Network Technology : " +item.Ntw_Technology
-            binding.RouteType.text = "POD Code : "+item.PodCode
-            binding.EstimatedDoneBy.visibility= View.GONE
-
-
+            binding.CustomerName.text = "POD Code : "+item.PodCode
+            binding.RouteType.text ="Owner : " +item.Owner
+            binding.EstimatedDoneBy.text ="Provisioning Status : " +item.ProvisioningStatus
         }
     }
 }

@@ -45,6 +45,7 @@
     <string name="can_id">CAN ID:</string>
     <string name="customer_name">Customer Name:</string>
     <string name="mobile_no">Mobile No:</string>
+    <string name="mob_no">Mobile No*</string>
     <string name="slot_date_time">Slot Date Time:</string>
     <string name="address">Address:</string>
     <string name="segment">Segment:</string>
@@ -80,6 +81,7 @@
     <!--  <string name="next">NEXT</string>-->
     <string name="hold_reason">Hold Reason:</string>
     <string name="contact_name">Contact Name:</string>
+    <string name="cntct_name">Contact Name*</string>
     <string name="contact_number">Contact Number:</string>
     <string name="customer_contacted">Customer Contacted:</string>
     <string name="submit_on_hold">Submit on Hold</string>
@@ -408,7 +410,47 @@
     <string name="pincode">Pincode*</string>
     <string name="caf_num">CAF No.</string>
     <string name="other_info">Other Information</string>
-   <!-- Array list for sales App-->
+    <string name="create_area_building">Create Area/Building</string>
+    <string name="caf">CAF</string>
+    <string name="np">NP</string>
+    <string name="add_quote">Add Quote</string>
+    <string name="business_days">Business Days*</string>
+    <string name="network_monitoring_alerts">Network Monitoring Alerts*</string>
+    <string name="firewall_amc_expiry_date">Firewall AMC Expiry Date</string>
+    <string name="remark">Remark</string>
+    <string name="caf_no">CAF NO.*</string>
+    <string name="account">Account*</string>
+    <string name="tan_no">TAN No.*</string>
+    <string name="tin_no_hardware_sale_required">TIN no. (Hardware sale)Required</string>
+    <string name="contact">Contact Management</string>
+    <string name="lead">Lead</string>
+
+    <string name="area">Area*</string>
+    <string name="block">Block*</string>
+    <string name="full_name">Full Name</string>
+    <string name="first_name">First Name*</string>
+    <string name="last_name">Last Name</string>
+    <string name="mobile_number">Mobile Number*</string>
+    <string name="mobile_number_2">Mobile Number 2</string>
+    <string name="dnc_number">DNC Number</string>
+    <string name="call_attempted">Call Attempted*</string>
+    <string name="campaign_name">Campaign Name</string>
+    <string name="plan_category">Plan Category*</string>
+    <string name="status_reason">Status Reason*</string>
+    <string name="competitor_name">Competitor Name</string>
+    <string name="rfs">RFS</string>
+    <string name="view_document">View Document</string>
+    <string name="purchase_order_p_o">Purchase Order (P.O.)*</string>
+    <string name="photo_id_proof_of_authorized_signatory">Photo ID proof of Authorized Signatory*</string>
+    <string name="apnic_public_ip_declaration_form">APNIC (Public IP declaration form)*</string>
+    <string name="non_osp_declaratrion_osp_registration_certificate">Non-OSP Declaratrion/OSP Registration Certificate*</string>
+    <string name="network_diagram">Network Diagram*</string>
+    <string name="address_proof_of_company_firm">Address proof of Company/Firm*</string>
+    <string name="company_s_pan_card_copy">Company\'s PAN Card copy*</string>
+    <string name="partnership_deed">Partnership Deed*</string>
+    <string name="follow_up_date_time">Follow Up Date/Time</string>
+    <string name="re_open_oppurtunity">Re-Open Oppurtunity</string>
+    <!-- Array list for sales App-->
     //////////////////
     <string-array name="list_of_boolean">
         <item>Select Option</item>
@@ -709,10 +751,113 @@
         <item>No</item>
     </string-array>
 
+
+
     <string-array name="list_of_gstval">
+        <item>0</item>
+        <item>111260001</item>
+        <item>111260000</item>
+    </string-array>
+
+    <string-array name="listDNC">
+        <item>Select Option</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+
+    <string-array name="listDNCVal">
         <item>0</item>
         <item>569480000</item>
         <item>569480001</item>
+    </string-array>
+
+    <string-array name="list_of_conReason">
+        <item>Select Option</item>
+        <item>Closed</item>
+        <item>Scheduled for Appointment</item>
+        <item>Lead Created/Closed</item>
+        <item>Lead Created/Open</item>
+    </string-array>
+
+    <string-array name="list_of_conReasonValue">
+        <item>0</item>
+        <item>111260001</item>
+        <item>111260000</item>
+        <item>111260002</item>
+        <item>111260003</item>
+    </string-array>
+
+    <string-array name="listDisposition">
+        <item>Select Option</item>
+        <item>Busy</item>
+        <item>Call Back</item>
+        <item>Call Drop</item>
+        <item>Call To Sales Rep.</item>
+        <item>Duplicate</item>
+        <item>Existing Customer</item>
+        <item>Follow Up</item>
+        <item>Hung Up</item>
+        <item>Invalid No.</item>
+        <item>Landline Issue</item>
+        <item>Language Barrier</item>
+        <item>Lead Business</item>
+        <item>Lead Home</item>
+        <item>Location is Non RFS</item>
+        <item>Lost to Competition</item>
+        <item>No Voice</item>
+        <item>Not Interested</item>
+        <item>Not Looking For Services</item>
+        <item>Not Reacheable</item>
+        <item>Nurture</item>
+        <item>Online Payment Done</item>
+        <item>Plan Expensive</item>
+        <item>Pre Lead Generated</item>
+        <item>Ringing</item>
+        <item>Service Related Follow up</item>
+        <item>Switched Off</item>
+        <item>Test Call</item>
+        <item> Using Other ISP</item>
+        <item>Wrong No</item>
+        <item>SMS Sent</item>
+        <item>E-Mail Sent</item>
+        <item>N/A</item>
+    </string-array>
+
+    <string-array name="listDispositionValue">
+        <item>0</item>
+        <item>569480000</item>
+        <item>569480001</item>
+        <item>569480002</item>
+        <item>569480003</item>
+        <item>569480004</item>
+        <item>569480007</item>
+        <item>569480008</item>
+        <item>569480009</item>
+        <item>569480010</item>
+        <item>569480011</item>
+        <item>569480012</item>
+        <item>569480014</item>
+        <item>569480015</item>
+        <item>569480016</item>
+        <item>111260000</item>
+        <item>111260001</item>
+        <item>111260002</item>
+        <item>111260003</item>
+        <item>111260004</item>
+        <item>111260005</item>
+        <item>111260006</item>
+        <item>111260007</item>
+        <item>111260008</item>
+        <item>111260009</item>
+        <item>111260010</item>
+        <item>111260011</item>
+        <item>111260012</item>
+        <item>111260013</item>
+        <item>111260014</item>
+        <item>111260015</item>
+        <item>111260016</item>
+        <item>111260017</item>
     </string-array>
 
 

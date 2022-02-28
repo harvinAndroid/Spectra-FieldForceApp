@@ -204,7 +204,9 @@ public class FileUtils {
                 FileUtils.getMimeType(context, uri).equalsIgnoreCase("gif") ||
                 FileUtils.getMimeType(context, uri).equalsIgnoreCase("pdf") ||
                 FileUtils.getMimeType(context, uri).equalsIgnoreCase("docx") ||
-                FileUtils.getMimeType(context, uri).equalsIgnoreCase("doc")) {
+                FileUtils.getMimeType(context, uri).equalsIgnoreCase("doc")||
+                FileUtils.getMimeType(context, uri).equalsIgnoreCase("xls"))
+        {
             return true;
         }
         return false;

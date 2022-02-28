@@ -38,6 +38,14 @@
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
                 android:id="@+id/order_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

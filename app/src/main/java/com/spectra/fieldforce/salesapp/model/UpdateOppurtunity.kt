@@ -22,7 +22,7 @@ data class UpdateOppurtunity(
     val media: String,
     val mobilephone: String,
     val oppId: String,
-    val password: String,
+    val password: String?,
     val poLock: String?,
     val poNext: String?,
     val postalCode: String,
@@ -32,7 +32,9 @@ data class UpdateOppurtunity(
     val state: String,
     val topic: String,
     val upTimesla: String,
-    val userName: String,
+    val userName: String?,
     val reason:String,
-    val createAreaOrBuilding: Boolean?
+    val createAreaOrBuilding: Boolean?,
+    val specificArea:String,
+    val specificBuilding:String
 )

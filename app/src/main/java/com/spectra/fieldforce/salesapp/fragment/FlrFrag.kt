@@ -31,6 +31,7 @@ import com.spectra.fieldforce.activity.MainActivity
 import android.widget.TimePicker
 
 import android.app.TimePickerDialog
+import android.content.SharedPreferences
 import android.text.format.DateFormat
 
 import android.widget.DatePicker
@@ -62,6 +63,8 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
     var str_estmd_closure :String?=null
     var str_remrk:String?=null
     var date_tm:String?=null
+    var userName: String? = null
+    var password : String? = null
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
     companion object {
@@ -84,7 +87,9 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         val bundle = arguments
         str_LeadId = bundle?.getString("LeadId")
         strMobile =bundle?.getString("Mobile")
-
+        val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
+        userName = sp1?.getString("UserName", null)
+        password = sp1?.getString("Password", null)
         tv_op_save.setOnClickListener {
              str_status = et_Status.text.toString()
              str_estmd_closure = et_est_dt.text.toString()
@@ -243,12 +248,10 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         flrFragmentBinding.flrprogressLayout.progressOverlay.animation = inAnimation
         flrFragmentBinding.flrprogressLayout.progressOverlay.visibility = View.VISIBLE
 
-
-
         val updateFlrRequest = UpdateFlrRequest(Constants.UPDATE_FLR,Constants.AUTH_KEY, str_LeadId,
             strMobile, str_status,str_estmd_closure, str_remrk,str_appointment,
-                date_tm,"manager1",
-            "Target@2021#@")
+                date_tm,userName,
+            password)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.updateFlr(updateFlrRequest)

@@ -4,7 +4,7 @@ data class LostOppurtunityRequest(
     val Action: String,
     val Authkey: String,
     val Oppid: String,
-    val password: String,
+    val password: String?,
     val status: String,
-    val userName: String
+    val userName: String?
 )

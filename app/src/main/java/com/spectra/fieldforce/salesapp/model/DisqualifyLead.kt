@@ -4,7 +4,7 @@ data class DisqualifyLead(
     val Action: String,
     val Authkey: String,
     val leadId: String,
-    val password: String,
+    val password: String?,
     val status: String,
-    val userName: String
+    val userName: String?
 )

@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
     private String couponCodeString, userEmail, userEmailN, userName,message,fcmToken;
     private AppCompatActivity activity;
     public static final String PREF ="Login";
+    private String strPassword,  strUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +72,8 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
         binding.userPass.setTypeface(mytextFace);
 
         binding.loginBtn.setOnClickListener(view -> {
-            String strUserName = Objects.requireNonNull(binding.userName.getText()).toString();
-            String strPassword = Objects.requireNonNull(binding.userPass.getText()).toString();
+             strUserName = Objects.requireNonNull(binding.userName.getText()).toString();
+             strPassword = Objects.requireNonNull(binding.userPass.getText()).toString();
 
             if(strUserName.isEmpty()){
                 Toast.makeText(this, AppConstants.PLEASE_ENTER_USERNAME,Toast.LENGTH_LONG).show();
@@ -151,6 +152,10 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                                 myEdit.putString("VenderCode", response.body().getResponse().getVendorCode());
                                 myEdit.putString("EnggId", response.body().getResponse().getUserID());
                                 myEdit.putString("EnggName",response.body().getResponse().getUsername());
+                                myEdit.putString("EmailId",response.body().getResponse().getName());
+                                myEdit.putString("EnggName",/*response.body().getResponse().getUsername()*/"Manager1");
+                                myEdit.putString("UserName",strUserName);
+                                myEdit.putString("Password",strPassword);
                                 myEdit.commit();
                                 userEmailN = response.body().getResponse().getName();
                                 Log.e("ffalogin", String.valueOf(sp));

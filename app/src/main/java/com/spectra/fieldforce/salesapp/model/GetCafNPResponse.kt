@@ -19,5 +19,6 @@ data class NPData(
     val PodName: String,
     val ProvisioningStatus: String,
     val RouteType: String,
-    val Zone: String
+    val Zone: String,
+    val Owner:String
 )

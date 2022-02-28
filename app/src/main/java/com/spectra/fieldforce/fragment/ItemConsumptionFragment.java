@@ -414,7 +414,17 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                                     ItemType.add("Select Item Type");
                                     if (strType.equals("Item")) {
                                         if (itemlist != null || itemlist.size()!=0) {
-                                            for (ItemConsumptionDetails.Item itemName : itemlist)
+                                            for (ItemConsumptionDetails.Item itemName : itemlist){
+                                                item.add(itemName.getItemName());
+                                                subItem.add(itemName.getSub_item_name());
+                                                ItemID.add(itemName.getItemCode());
+                                                SubItemID.add(itemName.getSubItemCode());
+                                                MaxCap.add(itemName.getMaxcap());
+                                                ItemType.add(itemName.getItemType());
+                                                NRGP.add(itemName.getNRGP());
+                                                TemplateId.add(itemName.getTemplateId());
+                                            }
+                                           /* for (ItemConsumptionDetails.Item itemName : itemlist)
                                                 item.add(itemName.getItemName());
                                             for (ItemConsumptionDetails.Item sub_item : itemlist)
                                                 subItem.add(sub_item.getSub_item_name());
@@ -429,11 +439,22 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                                             for (ItemConsumptionDetails.Item itemType : itemlist)
                                                 NRGP.add(itemType.getNRGP());
                                             for (ItemConsumptionDetails.Item templateId : itemlist)
-                                                TemplateId.add(templateId.getTemplateId());
+                                                TemplateId.add(templateId.getTemplateId());*/
                                         }
                                     } else {
                                         if (equipmentresponselist != null || equipmentresponselist.size()!=0) {
-                                            for (ItemConsumptionDetails.Equipment itemName : equipmentresponselist)
+                                            for (ItemConsumptionDetails.Equipment itemName : equipmentresponselist){
+                                                item.add(itemName.getItemName());
+                                                subItem.add(itemName.getSub_item_name());
+                                                ItemID.add(itemName.getItemCode());
+                                                SubItemID.add(itemName.getSubItemCode());
+                                                MaxCap.add(itemName.getMaxcap());
+                                                ItemType.add(itemName.getItemType());
+                                                NRGP.add(itemName.getNRGP());
+                                                TemplateId.add(itemName.getTemplateId());
+                                            }
+
+                                           /* for (ItemConsumptionDetails.Equipment itemName : equipmentresponselist)
                                                 item.add(itemName.getItemName());
                                             for (ItemConsumptionDetails.Equipment sub_item : equipmentresponselist)
                                                 subItem.add(sub_item.getSub_item_name());
@@ -448,7 +469,7 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                                             for (ItemConsumptionDetails.Equipment nrgp : equipmentresponselist)
                                                 NRGP.add(nrgp.getNRGP());
                                             for (ItemConsumptionDetails.Equipment templateId : equipmentresponselist)
-                                                TemplateId.add(templateId.getTemplateId());
+                                                TemplateId.add(templateId.getTemplateId());*/
                                         }
                                     }
                                     if (getActivity() != null) {

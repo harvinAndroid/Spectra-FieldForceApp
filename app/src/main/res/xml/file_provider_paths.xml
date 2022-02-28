@@ -3,5 +3,9 @@
   <external-path
         name="my_images"
         path="Android/data/com.spectra.fieldforce/files/Pictures"/>
+
+  <external-path
+      name="external_files"
+      path="."/>
 </paths>
 
