@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class DashboardFragment extends Fragment {
     MainDashboradBinding binding;
     public static PrefConfig prefConfig;
-    DashBoardActivity context;
+   // DashBoardActivity context;
     private String emailId,password;
     public static final String PREF ="Login";
     @Nullable
@@ -73,7 +73,7 @@ public class DashboardFragment extends Fragment {
                                 startActivity(i);
                                 getActivity().finish();
                                 }else if(response.body().getStatus().equals("Failure")) {
-                                Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -105,7 +105,7 @@ public class DashboardFragment extends Fragment {
                                 startActivity(i);
                                 getActivity().finish();
                             }else  if(response.body().getStatus().equals("Failure")) {
-                                Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -137,7 +137,7 @@ public class DashboardFragment extends Fragment {
                                 startActivity(i);
                                 getActivity().finish();
                             } else if (response.body().getStatus().equals("Failure")) {
-                                Toast.makeText(context, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

@@ -1,10 +1,10 @@
 package com.spectra.fieldforce.model;
 
 public class CommonMessageResponse {
-     Integer StatusCode;
+     String StatusCode;
      String Message;
 
-    public Integer getStatusCode() {
+    public String getStatusCode() {
         return StatusCode;
     }
 

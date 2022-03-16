@@ -31,7 +31,6 @@ class LeadTabActivity : AppCompatActivity(), View.OnClickListener {
         viewPager.adapter = adapter
 
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position

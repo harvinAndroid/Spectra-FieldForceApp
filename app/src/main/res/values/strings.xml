@@ -116,6 +116,7 @@
     <string name="get_profile_info">Get Profile info</string>
     <string name="customer_account_id">Can ID:</string>
     <string name="city">City:</string>
+    <string name="citybl">City</string>
     <string name="area_name">Area Name</string>
     <string name="building_society">Building/Society</string>
     <string name="provisioing">Provisioning</string>
@@ -450,6 +451,8 @@
     <string name="partnership_deed">Partnership Deed*</string>
     <string name="follow_up_date_time">Follow Up Date/Time</string>
     <string name="re_open_oppurtunity">Re-Open Oppurtunity</string>
+    <string name="no_of_beds">No. of Beds</string>
+    <string name="no_of_users">No. of Users</string>
     <!-- Array list for sales App-->
     //////////////////
     <string-array name="list_of_boolean">

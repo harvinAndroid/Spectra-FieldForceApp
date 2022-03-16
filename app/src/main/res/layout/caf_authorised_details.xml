@@ -78,7 +78,6 @@
                                 android:hint="@string/father_s_husband_s_namerequired"
                                 android:imeOptions="actionNext"
                                 android:text="@{cafauthoInfo.auth_Father}"
-
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
@@ -101,7 +100,6 @@
                                 android:hint="@string/residential_address_required"
                                 android:imeOptions="actionNext"
                                 android:text="@{cafauthoInfo.auth_Resadd}"
-
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />

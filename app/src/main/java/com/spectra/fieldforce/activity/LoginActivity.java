@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                                 myEdit.putString("EnggId", response.body().getResponse().getUserID());
                                 myEdit.putString("EnggName",response.body().getResponse().getUsername());
                                 myEdit.putString("EmailId",response.body().getResponse().getName());
-                                myEdit.putString("EnggName",/*response.body().getResponse().getUsername()*/"Manager1");
+                                myEdit.putString("EnggName",response.body().getResponse().getUsername());
                                 myEdit.putString("UserName",strUserName);
                                 myEdit.putString("Password",strPassword);
                                 myEdit.commit();

@@ -181,6 +181,5 @@ public class ProvisioningFragment extends Fragment implements View.OnClickListen
             irFragment.setArguments(accountinfo);
             t.commit();
         });
-
     }
 }

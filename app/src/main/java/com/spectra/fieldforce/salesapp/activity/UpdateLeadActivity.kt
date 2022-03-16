@@ -334,6 +334,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             updatelayout_contactinfo_layout.et_uptopic.isEnabled= false
 
             updatelayout_contactinfo_layout.et_business_seg.isFocusableInTouchMode= false
+            updatelayout_contactinfo_layout.et_updtcompany.isFocusableInTouchMode= false
             updatelayout_contactinfo_layout.et_saluation.isFocusableInTouchMode= false
             updatelayout_contactinfo_layout.et_customer_seg.isFocusableInTouchMode= false
             updatelayout_contactinfo_layout.et_contact_person.isFocusableInTouchMode= false
@@ -343,6 +344,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             updatelayout_lead_installation_address.et_add_build_num.isFocusableInTouchMode = false
             updatelayout_lead_installation_address.et_add_floor.isFocusableInTouchMode = false
             updatelayout_lead_installation_address.et_pin_code.isFocusableInTouchMode = false
+           updatelayout_lead_installation_address.et_upad_block.isFocusableInTouchMode = false
             update_lead_contact_address.et_cnt_buildng_num.isFocusableInTouchMode = false
             update_lead_contact_address.et_cnt_pin_code.isFocusableInTouchMode = false
             update_lead_contact_address.et_cnt_floor.isFocusableInTouchMode = false
@@ -351,22 +353,24 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             binding.updatelayoutLeadRemarks.etUpleadRemark.isFocusableInTouchMode = false
             update_lead_contact_address.et_cntspbuilding_num.isFocusableInTouchMode = false
             update_lead_contact_address.et_cntspbuilding_name.isFocusableInTouchMode = false
+            update_lead_contact_address.et_upcnt_block.isFocusableInTouchMode = false
             updatelayout_lead_installation_address.et_upspefc_area.isFocusableInTouchMode = false
             updatelayout_lead_installation_address.et_upspecfcbuilding_num.isFocusableInTouchMode = false
 
-        flr.visibility= View.GONE
+            flr.visibility= View.GONE
             tv_qualify.visibility= View.GONE
             dis.visibility = View.GONE
-            lead_updatesave.visibility = View.GONE
             et_saluation.isEnabled=false
             //et_updtcompany.isEnabled=false
             et_uprelation.isEnabled=false
+            updatelayout_lead_installation_address.et_upad_block.isEnabled=false
             et_upgroup.isEnabled=false
             et_sub_busiessseg.isEnabled=false
             et_customer_seg.isEnabled=false
             et_country.isEnabled=false
             et_lead_name.isEnabled=false
-
+        updatelayout_contactinfo_layout.et_updtcompany.isEnabled=false
+        update_lead_contact_address.et_upcnt_block.isEnabled=false
         et_state.isEnabled=false
         et_add_city.isEnabled=false
         et_cntarea.isEnabled=false
@@ -508,17 +512,17 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please Select Source", Toast.LENGTH_SHORT).show()
             }else if((inst_state.isBlank())||(inst_state=="Select State")||(inst_state=="null")){
                 Toast.makeText(this, "Please Select State", Toast.LENGTH_SHORT).show()
-            }else if(inst_city.isBlank()||(inst_city=="Select City")||(inst_city=="null")){
+            }else if(inst_city_code.isBlank()||(inst_city_code=="")||(inst_city_code=="null")){
                 Toast.makeText(this, "Please Select City", Toast.LENGTH_SHORT).show()
             }else if(inst_area.isBlank()||(inst_area=="Select Area")||(inst_area=="null")){
                 Toast.makeText(this, "Please Select Area", Toast.LENGTH_SHORT).show()
             }else if((str_inst_areaname== "Other")&&(inst_sparea.isEmpty())){
                 Toast.makeText(this, "Please Enter Specific Area Name", Toast.LENGTH_SHORT).show()
-            }else if(inst_build_num.isBlank()||(inst_build_num=="Select Building")||(inst_build_num=="null")){
+            }else if(str_inst_build_num?.isBlank() == true ||(str_inst_build_num=="")||(str_inst_build_num=="null")){
                 Toast.makeText(this, "Please Select Building Name", Toast.LENGTH_SHORT).show()
             }else if(inst_spbuild.isBlank()&&str_inst_build_name=="Other"){
                 Toast.makeText(this, "Please Select Specific Building Name", Toast.LENGTH_SHORT).show()
-            }else if(inst_build.isBlank()){
+            }else if(inst_buil.isBlank()){
                 Toast.makeText(this, "Please enter Building No. ", Toast.LENGTH_SHORT).show()
             }else if(inst_block.isBlank()){
                 Toast.makeText(this, "Please enter Block", Toast.LENGTH_SHORT).show()
@@ -534,7 +538,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please Select Area", Toast.LENGTH_SHORT).show()
             }else if((cntareaname=="Other")&&(sparea.isEmpty())){
                 Toast.makeText(this, "Please Enter Specific Area Name", Toast.LENGTH_SHORT).show()
-            }else if(inst_build_num.isBlank()||inst_build_num=="Select Building Name"||(inst_build_num=="null")){
+            }else if(addres_build?.isBlank() == true ||addres_build==""||(addres_build=="null")){
                 Toast.makeText(this, "Please enter Building Name ", Toast.LENGTH_SHORT).show()
             }else if(spbuilg.isBlank()&&str_cntct_building_nm=="Other"){
                 Toast.makeText(this, "Please Select Specific Building Name", Toast.LENGTH_SHORT).show()
@@ -703,7 +707,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
 
     fun listener(){
-        lead_updatesave.visibility = View.VISIBLE
         linearcontactinfo.visibility = View.VISIBLE
         lineartwo.setOnClickListener {
             linearcontactinfo.visibility = View.VISIBLE
@@ -981,7 +984,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             }
 
                             val strStatus = response.body()?.Response?.get(0)?.Status
-                            strCurentLocation = response.body()?.Response?.get(0)?.otherDetail?.CurrentWorkingLocation
+                            str_othercity = response.body()?.Response?.get(0)?.otherDetail?.CurrentWorkingLocationId
                             strMobile = response.body()?.Response?.get(0)?.MobileNo.toString()
                             strCompany = response.body()?.Response?.get(0)?.CompanyId.toString()
                             strGroup = response.body()?.Response?.get(0)?.GroupId.toString()
@@ -994,8 +997,18 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             strContactArea = response.body()?.Response?.get(0)?.contactAddress?.ContactAreaName.toString()
                             strContactBuilding = response.body()?.Response?.get(0)?.contactAddress?.ContactBuilding.toString()
                             getCompany(strCompany)
-                            getOtherCity(strCurentLocation)
+                            getOtherCity(str_othercity)
+                            str_inst_building_nm = response.body()?.Response?.get(0)?.contactAddress?.ContactBuilding.toString()
+                            str_inst_build_num =  response.body()?.Response?.get(0)?.installationAddress?.InstallBuilding.toString()
                             outProgress()
+                            str_city_code = response.body()?.Response?.get(0)?.installationAddress?.InstallCity.toString()
+                            str_inst_area = response.body()?.Response?.get(0)?.installationAddress?.InstallArea.toString()
+
+                            str_lead_src = response.body()?.Response?.get(0)?.LeadSource
+                            str_ContactcityCode = response.body()?.Response?.get(0)?.contactAddress?.ContactCity
+                            strcontact_stateCode =response.body()?.Response?.get(0)?.contactAddress?.ContactState
+                            str_add_area  =response.body()?.Response?.get(0)?.contactAddress?.ContactArea
+
 
                             val strContactstate = response.body()?.Response?.get(0)?.contactAddress?.ContactStateName
                             var cntstatePosition = 0
@@ -1008,11 +1021,12 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             update_lead_contact_address.sp_cnt_state.setSelection(cntstatePosition)
                             cntstateAdapter.notifyDataSetChanged()
                             getIndustryTpe()
+                            str_industry_type = response.body()?.Response?.get(0)?.companyDetail?.IndustryType
 
-                            val strmedia = response.body()?.Response?.get(0)?.otherDetail?.Media
+                            str_media = response.body()?.Response?.get(0)?.otherDetail?.Media
                             var mediaPosition = 0
                             list_of_media.forEachIndexed { index, s ->
-                                if (index == strmedia?.toInt()) {
+                                if (index == str_media?.toInt()) {
                                     mediaPosition = index
                                     return@forEachIndexed
                                 }
@@ -1062,10 +1076,10 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             disqualify.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             sp_disqualify.adapter = disqualify
 
-                            val provider1 = response.body()?.Response?.get(0)?.otherDetail?.ExistingServiceProvider1
+                            str_ext_serv_pro_one = response.body()?.Response?.get(0)?.otherDetail?.ExistingServiceProvider1
                             var provOnePosition = 0
                             ext_serv_one_value.forEachIndexed { index, s ->
-                                if (s == provider1) {
+                                if (s == str_ext_serv_pro_one) {
                                     provOnePosition = index
                                     return@forEachIndexed
                                 }
@@ -1076,10 +1090,10 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_other_details.sp_ex_serv.setSelection(provOnePosition)
                             serv1.notifyDataSetChanged()
 
-                            val provider2 = response.body()?.Response?.get(0)?.otherDetail?.ExistingServiceProvider2
+                            str_serv_pro_two = response.body()?.Response?.get(0)?.otherDetail?.ExistingServiceProvider2
                             var provTwePosition = 0
                             ext_serv_one_value.forEachIndexed { index, s ->
-                                if (s == provider2) {
+                                if (s == str_serv_pro_two) {
                                     provTwePosition = index
                                     return@forEachIndexed
                                 }
@@ -1090,10 +1104,10 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_other_details.sp_ext_serv_two.setSelection(provTwePosition)
                             serv2.notifyDataSetChanged()
 
-                            val servproOne = response.body()?.Response?.get(0)?.otherDetail?.ServiceFromServiceProvider1
+                            str_cust_serv_one = response.body()?.Response?.get(0)?.otherDetail?.ServiceFromServiceProvider1
                             var servproOnePosition = 0
                             ext_serv_val.forEachIndexed { index, s ->
-                                if (s == servproOne) {
+                                if (s == str_cust_serv_one) {
                                     servproOnePosition = index
                                     return@forEachIndexed
                                 }
@@ -1104,10 +1118,10 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_other_details.sp_serv_pro_one.setSelection(servproOnePosition)
                             servOneAdap.notifyDataSetChanged()
 
-                            val servproTwo = response.body()?.Response?.get(0)?.otherDetail?.ServiceFromServiceProvider2
+                            str_cust_serv_two = response.body()?.Response?.get(0)?.otherDetail?.ServiceFromServiceProvider2
                             var servproTwoPosition = 0
                             ext_serv_val.forEachIndexed { index, s ->
-                                if (s == servproTwo) {
+                                if (s == str_cust_serv_two) {
                                     servproTwoPosition = index
                                     return@forEachIndexed
                                 }
@@ -1117,63 +1131,64 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_other_details.sp_serv_pro_two?.adapter = servTwoAdap
                             updatelayout_lead_other_details.sp_serv_pro_two.setSelection(servproTwoPosition)
                             servTwoAdap.notifyDataSetChanged()
-                            val data = response.body()?.Response?.get(0)?.otherDetail?.IsDatacenter
+                            str_data = response.body()?.Response?.get(0)?.otherDetail?.IsDatacenter?.toString()
 
                             val dataadpter = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, list_of_option)
                             dataadpter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             updatelayout_lead_other_details.sp_intrsteddata_center?.adapter = dataadpter
-                            if (data == true) {
+                            if (str_data.equals("true")) {
                                 updatelayout_lead_other_details.sp_intrsteddata_center.setSelection(1)
                             } else {
                                 updatelayout_lead_other_details.sp_intrsteddata_center.setSelection(2)
                             }
                             dataadpter.notifyDataSetChanged()
 
-                            val strFirewall = response.body()?.Response?.get(0)?.otherDetail?.IsFirewall
+                            str_cust_frwl = response.body()?.Response?.get(0)?.otherDetail?.IsFirewall.toString()
                             val frwaladpter = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, list_of_option)
                             frwaladpter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             updatelayout_lead_other_details.sp_intrs_frwal?.adapter = frwaladpter
 
-                            if (strFirewall == true) {
+                            if (str_cust_frwl.equals("true")) {
                                 updatelayout_lead_other_details.sp_intrs_frwal.setSelection(1)
                             } else {
                                 updatelayout_lead_other_details.sp_intrs_frwal.setSelection(2)
                             }
                             frwaladpter.notifyDataSetChanged()
 
-                            val strVpnServ = response.body()?.Response?.get(0)?.otherDetail?.IsVPN
+                            str_cust_vpn = response.body()?.Response?.get(0)?.otherDetail?.IsVPN.toString()
                             val vpnadpter = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, list_of_option)
                             vpnadpter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             updatelayout_lead_other_details.sp_vpn_serv?.adapter = vpnadpter
-                            if (strVpnServ == true) {
+                            if (str_cust_vpn.equals("true")) {
                                 updatelayout_lead_other_details.sp_vpn_serv.setSelection(1)
                             } else {
                                 updatelayout_lead_other_details.sp_vpn_serv.setSelection(2)
                             }
                             vpnadpter.notifyDataSetChanged()
 
-                            val strVoip = response.body()?.Response?.get(0)?.otherDetail?.IsVOIP
+                            str_voip = response.body()?.Response?.get(0)?.otherDetail?.IsVOIP.toString()
                             val voipadpter = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, list_of_option)
                             voipadpter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             updatelayout_lead_other_details.sp_cst_voip?.adapter = voipadpter
-                            if (strVoip == true) {
+                            if (str_voip.equals("true")) {
                                 updatelayout_lead_other_details.sp_cst_voip.setSelection(1)
                             } else {
                                 updatelayout_lead_other_details.sp_cst_voip.setSelection(2)
                             }
                             voipadpter.notifyDataSetChanged()
 
-                            val strManage = response.body()?.Response?.get(0)?.otherDetail?.IsManagesWiFi
+                            str_wifi = response.body()?.Response?.get(0)?.otherDetail?.IsManagesWiFi.toString()
                             val wifipadpter = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, list_of_option)
                             wifipadpter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             updatelayout_lead_other_details.sp_cust_wifi?.adapter = wifipadpter
-                            if (strManage == true) {
+                            if (str_wifi.equals("true") ) {
                                 updatelayout_lead_other_details.sp_cust_wifi.setSelection(1)
                             } else {
                                 updatelayout_lead_other_details.sp_cust_wifi.setSelection(2)
                             }
                             wifipadpter.notifyDataSetChanged()
-
+                            str_inst_state = response.body()?.Response?.get(0)?.installationAddress?.InstallState.toString()
+                            getCity(str_inst_state.toString())
                             val strstate = response.body()?.Response?.get(0)?.installationAddress?.InstallStateName.toString()
                             var statePosition = 0
                             list_of_state.forEachIndexed { index, s ->
@@ -1198,10 +1213,10 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
 
                             val sal = response.body()?.Response?.get(0)?.SalutationId
-                            val firm = response.body()?.Response?.get(0)?.companyDetail?.FirmType
+                            str_firm_type = response.body()?.Response?.get(0)?.companyDetail?.FirmType
                             var firmPosition = 0
                             list_firm_type.forEachIndexed { index, s ->
-                                if (index == firm?.toInt()) {
+                                if (index == str_firm_type?.toInt()) {
                                     firmPosition = index
                                     return@forEachIndexed
                                 }
@@ -1244,13 +1259,19 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             if (strStatus == "1") {
                                 locked()
                                 oppurtunity.visibility= View.VISIBLE
+                                lead_updatesave.visibility=View.GONE
                             } else if(strStatus == "2"){
                                 locked()
                                 oppurtunity.visibility= View.GONE
+                                lead_updatesave.visibility = View.GONE
+
                             } else {
                                 oppurtunity.visibility= View.GONE
+                                lead_updatesave.visibility = View.VISIBLE
+
                                 Calender()
                             }
+
                             linearcontactinfo.visibility = View.VISIBLE
                             linear_insta_addres.visibility = View.GONE
                             linadd.visibility = View.GONE
@@ -1912,7 +1933,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
            str_cust_serv_one = ext_serv_val.get(position )
         }else if(parent?.id == R.id.sp_serv_pro_two){
             updatelayout_lead_other_details.et_srv_pv_two.setText(ext_serv.get(position))
-            str_cust_serv_two = ext_serv_val.get(position )
+            str_cust_serv_two = ext_serv_val.get(position)
         }else if(parent?.id == R.id.sp_state){
             updatelayout_lead_installation_address.et_state.setText(list_of_state.get(position))
             str_state = list_of_state.get(position)
@@ -2068,7 +2089,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             othercityCode!!.add(item.CityCode)
                         }
                         var cityPosition=0
-                        othercity?.forEachIndexed { index, s ->
+                        othercityCode?.forEachIndexed { index, s ->
                             if(s== strCurLocation)cityPosition=index
                         }
 

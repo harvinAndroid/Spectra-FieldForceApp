@@ -167,11 +167,13 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         initOne();
         runthread();
         Type();
+        getWcrInfo();
         getFmsList();
+
     }
 
     private void initOne(){
-        getWcrInfo();
+
 
         ActivityCompat.requestPermissions( getActivity(),
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
@@ -291,15 +293,102 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             t1.commit();
         });
 
+
+
         binding.tvWcrSave.setOnClickListener(v -> {
+                    strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
+                    String idb = Objects.requireNonNull(binding.layoutAssociatedDetails.etIdbLength.getText()).toString();
+                    String link = Objects.requireNonNull(binding.layoutAssociatedDetails.etLinkBudget.getText()).toString();
                     String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
                     String misc = Objects.requireNonNull(binding.etMisc.getText()).toString();
-                    if (remark.isEmpty()) {
+                    String custEnd = Objects.requireNonNull(binding.layoutWcrFms.etCustomerEndFmsSec.getText()).toString();
+                    String custEndFms = Objects.requireNonNull(binding.layoutWcrFms.etPodEnd.getText()).toString();
+                    String PortNumCx = Objects.requireNonNull(binding.layoutWcrFms.etPortNumCx.getText()).toString();
+                    String PortnumEnd = Objects.requireNonNull(binding.layoutWcrFms.etPortnumEnd.getText()).toString();
+                    strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
+                    if (strSegment.equals("Business")) {
+                        if (idb.isEmpty()) {
+                            Toast.makeText(getContext(), "Please Enter IDB Length", Toast.LENGTH_LONG).show();
+                        } else if (link.isEmpty()) {
+                            Toast.makeText(getContext(), "Please Enter Link Budget", Toast.LENGTH_LONG).show();
+                        } else if (Objects.requireNonNull(binding.layoutWcrFms.etCustomerEndFms.getText()).toString().equals("Select Fms Type")) {
+                            Toast.makeText(getContext(), "Please Select Fms Type", Toast.LENGTH_LONG).show();
+                        } else if (custEnd.equals("Select Customer End FMS(Second Level)") || custEnd.equals("")) {
+                            Toast.makeText(getContext(), "Please Select Customer End FMS(Second Level)", Toast.LENGTH_LONG).show();
+                        } else if (custEndFms.equals("POD End FMS No.") || custEndFms.equals("")) {
+                            Toast.makeText(getContext(), "Please Enter Pod End Fms", Toast.LENGTH_LONG).show();
+                        } else if (PortNumCx.equals("Port Number (Cx End)") || PortNumCx.equals("")) {
+                            Toast.makeText(getContext(), "Please Enter Port Number CX End", Toast.LENGTH_LONG).show();
+                        } else if (PortnumEnd.equals("Port Number (POD End)") || PortnumEnd.equals("")) {
+                            Toast.makeText(getContext(), "Please Enter Port Number Pod End", Toast.LENGTH_LONG).show();
+                        }
+                        if (remark.isEmpty()) {
+                            Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
+                        } else if (misc.isEmpty()) {
+                            Toast.makeText(getContext(), "Please Enter The Misc Work Cost", Toast.LENGTH_LONG).show();
+                        } else {
+                            try {
+                                getLastLocation();
+                                if (strSegment.equals("Business")) {
+                                    if (manHoleDetails.size() == 0 || manHoleDetails == null) {
+                                        Toast.makeText(getContext(), "Please Add Manhole", Toast.LENGTH_LONG).show();
+                                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        updateWcrComplete(remark, latitude, longitude, misc);
+                                    }
+                                } else if (strSegment.equals("Home")) {
+                                    if (equipmentDetailsLists.size() == 0 || equipmentDetailsLists == null) {
+                                        Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
+                                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        updateWcrComplete(remark, latitude, longitude, misc);
+                                    }
+                                }
+                                // }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else if (strSegment.equals("Home")) {
+                        if (strInsta.isEmpty() || strInsta.equals("Installation Code")) {
+                            Toast.makeText(getContext(), "Please Enter Installation Code", Toast.LENGTH_LONG).show();
+                        }
+                        if (remark.isEmpty()) {
+                            Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
+                        } else if (misc.isEmpty()) {
+                            Toast.makeText(getContext(), "Please Enter The Misc Work Cost", Toast.LENGTH_LONG).show();
+                        } else {
+                            try {
+                                getLastLocation();
+                                if (strSegment.equals("Business")) {
+                                    if (manHoleDetails.size() == 0 || manHoleDetails == null) {
+                                        Toast.makeText(getContext(), "Please Add Manhole", Toast.LENGTH_LONG).show();
+                                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        updateWcrComplete(remark, latitude, longitude, misc);
+                                    }
+                                } else if (strSegment.equals("Home")) {
+                                    if (equipmentDetailsLists.size() == 0 || equipmentDetailsLists == null) {
+                                        Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
+                                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        updateWcrComplete(remark, latitude, longitude, misc);
+                                    }
+                                }
+                                // }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }/*else if (remark.isEmpty()) {
                         Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
                     }else if (misc.isEmpty()) {
                         Toast.makeText(getContext(), "Please Enter The Misc Work Cost", Toast.LENGTH_LONG).show();
-            }
-                    else {
+            } else {
                         try {
                                 getLastLocation();
                                 if (strSegment.equals("Business")) {
@@ -324,8 +413,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             e.printStackTrace();
                         }
                     }
-                }
-        );
+                }*/
+                });
         binding.layoutCustomerNetwork.etSpeedWifi.setOnClickListener(view -> {
             checkPermission(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_ONE);
         });
@@ -353,7 +442,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         binding.tvResendNav.setOnClickListener(view -> resendNav());
 
         binding.layoutInstallationparam.tvSaveQualityParam.setOnClickListener((View v) -> {
-
             String ont = Objects.requireNonNull(binding.layoutInstallationparam.etOntLogin.getText()).toString();
             String face = Objects.requireNonNull(binding.layoutInstallationparam.etFacePlate.getText()).toString();
             String wifi = Objects.requireNonNull(binding.layoutInstallationparam.etWifiSsid.getText()).toString();
@@ -550,11 +638,21 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
     }
 
-    private void getItemStatus(){
+    private void inProgress(){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void outProgress(){
+        outAnimation = new AlphaAnimation(1f, 0f);
+        outAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+    }
+    private void getItemStatus(){
+        inProgress();
         ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
         resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
         resendActivationCodeRequest.setAction(Constants.GET_ITEM_STATUS);
@@ -566,12 +664,12 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonMessageResponse> call, Response<CommonMessageResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
-                        if(response.body().getStatusCode()==200){
+                        if(response.body().getStatusCode().equals("403")){
+                            binding.tvWcrItemStatus.setVisibility(View.GONE);
+                        }
+                        else if(response.body().getStatusCode().equals("200")){
                             binding.tvWcrItemStatus.setText("Item Status : "+ response.body().getMessage());
                             binding.tvWcrItemStatus.setVisibility(View.VISIBLE);
                             // Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -608,7 +706,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             }
         }, 100);
     }
-
 
     private void init(){
         binding.layoutWcrFms.etCustomerEndFms.setOnClickListener(v-> binding.layoutWcrFms.spCustomerEndFms.performClick());
@@ -864,10 +961,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
     public void getFmsList() {
         //getItemStatus();
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_FMS_LIST);
@@ -878,10 +972,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<GetFmsListResponse> call, Response<GetFmsListResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
                         fmsList = response.body().getResponse().getFMSList();
                         firstFmsID = new ArrayList<>();
@@ -911,10 +1002,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     public void getHoldReason() {
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.WCR_HOLD_CATEGORY);
@@ -925,10 +1013,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<HoldReasonResponse> call, Response<HoldReasonResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         holdList = response.body().getResponse().getWCRHoldCategory();
                         holdCategoryId = new ArrayList<>();
@@ -1062,10 +1147,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     public void getWcrInfo() {
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_WCR_INFO);
@@ -1079,10 +1161,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<WcrResponse> call, Response<WcrResponse> response) {
                 if (response.isSuccessful() && response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     if(response.body().getStatus().equals("Success")) {
                         try {
                             binding.tvWcrStatus.setText("WCR Status: " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
@@ -1101,7 +1180,8 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             add = "0";
                             strProductSegment = response.body().getResponse().getWcr().getProductSegment();
                             strSegment = response.body().getResponse().getWcr().getBusinessSegment();
-                            if (strProductSegment.equals("Managed Wi-Fi Business")) {
+                            if (strProductSegment.equals("Managed Wi-Fi Business")||strProductSegment.equals("Managed Office Solution")||
+                                    strProductSegment.equals("Secured Managed Internet")) {
                                 binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.GONE);
                             } else {
                                 binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.VISIBLE);
@@ -1416,7 +1496,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             }
 
                             getHoldReason();
-
+                         //  getItemStatus();
 
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
@@ -1463,10 +1543,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateAssociateDetails(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         AssociatedResquest associatedResquest = new AssociatedResquest();
         associatedResquest.setAuthkey(Constants.AUTH_KEY);
         associatedResquest.setAction(Constants.UPDATE_ASSOCIATE);
@@ -1480,10 +1557,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 @Override
                 public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                     if (response.isSuccessful()&& response.body()!=null) {
-                        outAnimation = new AlphaAnimation(1f, 0f);
-                        outAnimation.setDuration(200);
-                        binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                        binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                       outProgress();
                         try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -1508,10 +1582,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
 
     private void updateWcrComplete(String remark, String latitude, String longitude, String misc){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         WcrCompleteRequest wcrCompleteRequest = new WcrCompleteRequest();
         wcrCompleteRequest.setAuthkey(Constants.AUTH_KEY);
         wcrCompleteRequest.setAction(Constants.WCR_COMPLETE);
@@ -1532,10 +1603,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -1560,10 +1628,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateCustomerNetwork(String rxpower, String speedlan, String speedwifi, String wifissd, String txpower){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         UpdateCustomerNetwork updateCustomerNetwork = new UpdateCustomerNetwork();
         updateCustomerNetwork.setAuthkey(Constants.AUTH_KEY);
         updateCustomerNetwork.setAction(Constants.UPDATE_CUSTOMER_NETWORK);
@@ -1581,10 +1646,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -1645,10 +1707,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }else{
             speed1 = "111260001";
         }
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         UpdateQualityParamRequest updateQualityParamRequest = new UpdateQualityParamRequest();
         updateQualityParamRequest.setAuthkey(Constants.AUTH_KEY);
         updateQualityParamRequest.setAction(Constants.UPDATE_POSTHOLD_IRQUALITY);
@@ -1667,10 +1726,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -1695,11 +1751,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateFmsDetails(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
-
+        inProgress();
         UpdateFmsRequest updateFmsRequest = new UpdateFmsRequest();
         updateFmsRequest.setAuthkey(Constants.AUTH_KEY);
         updateFmsRequest.setAction(Constants.UPDATE_FMS_DETAILS);
@@ -1717,10 +1769,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -1747,10 +1796,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateWcrEnginer(String insta){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
         updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
         updateWcrEnggRequest.setAction(Constants.UPDATE_WCR_ENGINER);
@@ -1765,10 +1811,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -1795,10 +1838,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
 
     private void SubmitApproval(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         SubmitApprovalRequest submitApprovalRequest = new SubmitApprovalRequest();
         submitApprovalRequest.setAuthkey(Constants.AUTH_KEY);
         submitApprovalRequest.setAction(Constants.SUBMIT_FOR_APPROVAL);
@@ -1811,10 +1851,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -1840,10 +1877,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
 
     private void resendNav(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVWCR,strGuuId,"Business","","");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -1852,10 +1886,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -1880,10 +1911,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateHoldCategoryStatus(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
         holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
         holdWcrRequest.setAction(Constants.HOLD_ORDER_INSTALLATION);
@@ -1898,17 +1926,13 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1926,10 +1950,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     private void updateHoldCategory(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
         holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
         holdWcrRequest.setAction(Constants.HOLD_WCR);
@@ -1944,10 +1965,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -1975,14 +1993,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         String encodedImage="",encodedImage1="";
 
         try {
-          if(str_ext1!=null && bitmap1!=null){
+           if(str_ext1!=null && bitmap1!=null){
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap1.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream);
                 byte[] imageInByte = byteArrayOutputStream.toByteArray();
                 encodedImage =  Base64.encodeToString(imageInByte,Base64.NO_WRAP);
             }
 
-          if(str_ext2!=null && bitmap2!=null){
+           if(str_ext2!=null && bitmap2!=null){
                 ByteArrayOutputStream byteArrayOutputStream1 = new ByteArrayOutputStream();
                 bitmap2.compress(Bitmap.CompressFormat.JPEG,75, byteArrayOutputStream1);
                 byte[] imageInByte1 = byteArrayOutputStream1.toByteArray();
@@ -2014,7 +2032,5 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         }
     }
 
-    private void status(){
-        getItemStatus();
-    }
+
 }

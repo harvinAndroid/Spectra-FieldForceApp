@@ -218,12 +218,22 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         fromDateString = sendDateFormat.format(mCalendar.getTime());
     }
 
-
-    private void SubmitApproval(){
+    private void inProgress(){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void outProgress(){
+        outAnimation = new AlphaAnimation(1f, 0f);
+        outAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+    }
+
+    private void SubmitApproval(){
+        inProgress();
         SubmitApprovalRequest submitApprovalRequest = new SubmitApprovalRequest();
         submitApprovalRequest.setAuthkey(Constants.AUTH_KEY);
         submitApprovalRequest.setAction(Constants.SUBMIT_FOR_APPROVAL);
@@ -236,10 +246,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                        outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -318,11 +325,54 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         });
 
         binding.tvIrComplete.setOnClickListener(v -> {
+            String insta = binding.layoutEnggDetails.etInstallationCode.getText().toString();
             String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
-            if(remark.isEmpty()){
+            String ipattach = Objects.requireNonNull(binding.layoutGeneralDetails.etIrAttached.getText()).toString();
+            String dns = Objects.requireNonNull(binding.layoutInstallationparam.etDns.getText()).toString();
+            String virus = Objects.requireNonNull(binding.layoutInstallationparam.etEducationAntivirus.getText()).toString();
+            String ip = Objects.requireNonNull(binding.layoutInstallationparam.etIp.getText()).toString();
+            String mrtg = Objects.requireNonNull(binding.layoutInstallationparam.etMrtg.getText()).toString();
+            String speed = Objects.requireNonNull(binding.layoutInstallationparam.etSpeedTest.getText()).toString();
+            String selfcare = Objects.requireNonNull(binding.layoutInstallationparam.etSelfcare.getText()).toString();
+
+            if(ipattach.equals("Select IR Type")){
+                Toast.makeText(getContext(), "Please Select IR Type", Toast.LENGTH_LONG).show();
+            }
+            else if(dns.equals("Please Select  DNS")){
+                Toast.makeText(getContext(), "Please Select  DNS", Toast.LENGTH_LONG).show();
+            }else if(virus.equals("Please Select  Virus")){
+                Toast.makeText(getContext(), "Please Select  Virus", Toast.LENGTH_LONG).show();
+            }else if(ip.equals("Please Select IP")){
+                Toast.makeText(getContext(), "Please Select IP", Toast.LENGTH_LONG).show();
+            }else if(mrtg.equals("Please Select  MRTG")){
+                Toast.makeText(getContext(), "Please Select  MRTG", Toast.LENGTH_LONG).show();
+            }else if(speed.equals("Please Select Speed test")){
+                Toast.makeText(getContext(), "Please Select Speed test", Toast.LENGTH_LONG).show();
+            }else if(selfcare.equals("Please Select Education customer")){
+                Toast.makeText(getContext(), "Please Select Education customer", Toast.LENGTH_LONG).show();
+            } else if (strProdSeg.equals("Managed Wi-Fi Business")||strProdSeg.equals("Managed Office Solution")||
+                    strProdSeg.equals("Secured Managed Internet")) {
+                if(remark.isEmpty()){
+                    Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
+                }else{
+                    getLastLocation();
+
+                    if (installationItemLists.size() == 0 || installationItemLists == null) {
+                        Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
+                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
+                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
+                    } else {
+                        updateIR(remark,latitude,longitude);
+                    }
+                    //   }
+                }
+            }else if(insta.isEmpty()){
+                Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
+            }else if(remark.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
             }else{
                 getLastLocation();
+
                     if (installationItemLists.size() == 0 || installationItemLists == null) {
                         Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
                     } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
@@ -352,7 +402,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
 
         binding.layoutEnggDetails.saveEnggDetails.setOnClickListener(v -> {
             String insta = binding.layoutEnggDetails.etInstallationCode.getText().toString();
-          if (strProdSeg.equals("Managed Wi-Fi Business")) {
+          if (strProdSeg.equals("Managed Wi-Fi Business")||strProdSeg.equals("Managed Office Solution")||
+                  strProdSeg.equals("Secured Managed Internet")) {
               updateIrEnginer(insta);
             }else if(insta.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
@@ -361,12 +412,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             }
         });
 
-        /*Managed Office Solution
-
-   MBB
-
-Secured Managed Internet
-*/
         binding.layoutInstallationparam.tvSaveQualityParam.setOnClickListener((View v) -> {
             String dns = Objects.requireNonNull(binding.layoutInstallationparam.etDns.getText()).toString();
             String virus = Objects.requireNonNull(binding.layoutInstallationparam.etEducationAntivirus.getText()).toString();
@@ -392,15 +437,14 @@ Secured Managed Internet
         });
     }
 
-    private void getItemStatus(String strGuuId){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+
+
+    private void getItemStatus(){
+       inProgress();
         ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
         resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
         resendActivationCodeRequest.setAction(Constants.GET_ITEM_STATUS);
-        resendActivationCodeRequest.setId(strGuuId);
+        resendActivationCodeRequest.setId(strGuiID);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonMessageResponse> call = apiService.getItemCodeStatus(resendActivationCodeRequest);
@@ -408,16 +452,16 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonMessageResponse> call, Response<CommonMessageResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
-                        if(response.body().getStatusCode()==200){
+                        if(response.body().getStatusCode().equals("403")){
+                            binding.tvWcrItemStatus.setVisibility(View.GONE);
+                        }else if(response.body().getStatusCode().equals("200")){
                             binding.tvWcrItemStatus.setText("Item Status : "+ response.body().getMessage());
                             binding.tvWcrItemStatus.setVisibility(View.VISIBLE);
                             // Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                        }else {
+                        }
+                        else {
                             binding.tvWcrItemStatus.setVisibility(View.GONE);
                         }
                     } catch (Exception e) {
@@ -439,10 +483,7 @@ Secured Managed Internet
 
 
     private void updateHoldCategoryStatus(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
         holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
         holdWcrRequest.setAction(Constants.HOLD_ORDER_INSTALLATION);
@@ -457,10 +498,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -484,10 +522,7 @@ Secured Managed Internet
     }
 
     public void getHoldReason() {
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.WCR_HOLD_CATEGORY);
@@ -498,10 +533,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<HoldReasonResponse> call, Response<HoldReasonResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                  outProgress();
                     try {
                         holdList = response.body().getResponse().getWCRHoldCategory();
                         holdCategoryId = new ArrayList<>();
@@ -533,10 +565,7 @@ Secured Managed Internet
 
 
     public void resendCode() {
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         ResendCodeIRRequest resendActivationCodeRequest = new ResendCodeIRRequest();
         resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
         resendActivationCodeRequest.setAction(Constants.RESEND_NAVIR);
@@ -550,10 +579,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -608,10 +634,7 @@ Secured Managed Internet
         }else{
             self1 = "111260001";
         }
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+      inProgress();
         UpdateQualityParamIRequest updateQualityParamRequest = new UpdateQualityParamIRequest();
         updateQualityParamRequest.setAuthkey(Constants.AUTH_KEY);
         updateQualityParamRequest.setAction(Constants.UPDATE_IRINSTALLATION);
@@ -629,10 +652,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -658,10 +678,7 @@ Secured Managed Internet
 
 
     private void getIrInfo(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_IR_INFO);
@@ -674,10 +691,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<IrInfoResponse> call, Response<IrInfoResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     if(response.body().getStatus().equals("Success")) {
                     try {
                         binding.layoutCustomerDetails.setCustomerDetails(response.body().getResponse().getIr());
@@ -691,6 +705,12 @@ Secured Managed Internet
                         strSegment = response.body().getResponse().getIr().getBusinessSegment();
                         str_provisionId = response.body().getResponse().getGeneral().getProvisionId();
                         strProdSeg = response.body().getResponse().getIr().getProductSegment();
+                        if (strProdSeg.equals("Managed Wi-Fi Business")||strProdSeg.equals("Managed Office Solution")||
+                                strProdSeg.equals("Secured Managed Internet")){
+                            binding.layoutEnggDetails.code.setVisibility(View.GONE);
+                        }else{
+                            binding.layoutEnggDetails.code.setVisibility(View.VISIBLE);
+                        }
                         String strHold = response.body().getResponse().getIr().getShowHold();
                         if (strHold.equals("true")) {
                             binding.linea18.setVisibility(View.VISIBLE);
@@ -972,6 +992,7 @@ Secured Managed Internet
                             binding.layoutInstallationparam.spSelfcare.setAdapter(adapter);
                         }
                         getHoldReason();
+                      //  getItemStatus();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -994,10 +1015,7 @@ Secured Managed Internet
     }
 
     private void resendNav(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVIR,"","Business","",strGuiID);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.submitNavWcr(resendNavRequest);
@@ -1005,10 +1023,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -1218,10 +1233,7 @@ Secured Managed Internet
     }
 
     public void updateGeneralDetails(String ipattach) {
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         if(ipattach.equals("Yes")){
             ipattach = "1";
         }else if(ipattach.equals("No")) {
@@ -1250,10 +1262,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -1279,10 +1288,7 @@ Secured Managed Internet
     private void updateIrEnginer(String insta){
         String input = binding.layoutEnggDetails.etCreatedOn.getText().toString();
         String date = input.substring(0, 10);
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         UpdateIREngineer updateIREngineer = new UpdateIREngineer();
         updateIREngineer.setAuthkey(Constants.AUTH_KEY);
         updateIREngineer.setAction(Constants.ENGINER_UPDATE);
@@ -1297,10 +1303,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -1418,10 +1421,7 @@ Secured Managed Internet
     }
 
     private void updateCpeMac(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         UpdateCpeMacRequest updateCpeMacRequest = new UpdateCpeMacRequest();
         updateCpeMacRequest.setAuthkey(Constants.AUTH_KEY);
         updateCpeMacRequest.setAction(Constants.SHARED_CPEMAC);
@@ -1433,10 +1433,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();
@@ -1460,10 +1457,7 @@ Secured Managed Internet
     }
 
     private void updateIR(String remark, String latitude, String longitude){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         IRCompleteRequest irCompleteRequest = new IRCompleteRequest();
         irCompleteRequest.setAuthkey(Constants.AUTH_KEY);
         irCompleteRequest.setAction(Constants.IR_COMPLETE);
@@ -1481,10 +1475,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                  outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                            nextScreen();
@@ -1508,10 +1499,7 @@ Secured Managed Internet
     }
 
     private void updateHoldCategory(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
         holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
         holdWcrRequest.setAction(Constants.HOLD_IR);
@@ -1526,10 +1514,7 @@ Secured Managed Internet
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                  outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             moveNext();

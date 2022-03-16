@@ -1,10 +1,13 @@
 package com.spectra.fieldforce.activity;
 
+import static com.spectra.fieldforce.activity.LoginActivity.PREF;
+
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -47,6 +50,7 @@ import java.util.List;
 public class SpectraFfaActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static PrefConfig prefConfig;
+    public static final String PREF ="Login";
     private static final String TAG = "MainActivity";
     private DrawerLayout drawerLayout;
     private static final int REQ_CODE_VERSION_UPDATE = 530;
@@ -283,6 +287,10 @@ public class SpectraFfaActivity extends BaseActivity implements NavigationView.O
                 MainActivity.prefConfig.writeLoginStatus(false);
                 MainActivity.prefConfig.LoginStatus(false);
                 MainActivity.prefConfig.writeName("User");
+                SharedPreferences sp = getSharedPreferences(PREF , 0);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.clear();
+                editor.commit();
                 startActivity(new Intent(activity, LoginActivity.class));
                 finish();
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new LoginFragment()).commit();

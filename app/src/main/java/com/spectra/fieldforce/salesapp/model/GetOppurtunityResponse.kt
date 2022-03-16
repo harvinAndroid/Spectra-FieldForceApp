@@ -60,5 +60,13 @@ data class OppurtunityData(
     val StateId:String?,
     val SpecificArea:String?,
     val SpecificBuilding:String?,
-    val ProductSegment:String?
+    val ProductSegment:String?,
+    val ApprovalRequiredFlag:String?,
+    val NoOfUsers:String?,
+    val NoOfBeds:String?,
+    val IndustryId:String?,
+    val CityId:String?,
+    val AreaId:String?,
+    val BuildingId:String?,
+    val Statuscode:String?
 )

@@ -3,14 +3,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.spectra.fieldforce.databinding.GetAllFeasibiltyAdapterBinding
 import com.spectra.fieldforce.databinding.GetFeasibiltyadapterBinding
+import com.spectra.fieldforce.model.SaveQuestionareList.Answer
 import com.spectra.fieldforce.salesapp.model.FeasData
 
 
 class GetAllFeasibiltyAdapter(private val items: List<FeasData>, private val context: Context?) : RecyclerView.Adapter<GetAllFeasibiltyAdapter.ViewHolder>() {
 
     lateinit var binding: GetFeasibiltyadapterBinding
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -62,5 +63,8 @@ class GetAllFeasibiltyAdapter(private val items: List<FeasData>, private val con
             }
 
         }
+    }
+    interface Feasibility {
+        fun test(pos: Int, answer: Answer?)
     }
 }

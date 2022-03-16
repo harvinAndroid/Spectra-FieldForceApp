@@ -13,5 +13,6 @@ data class Other_Detail(
         val Media: String,
         val ServiceFromServiceProvider1: String,
         val ServiceFromServiceProvider2: String,
-        val TargetInstallationPeriod: String
+        val TargetInstallationPeriod: String,
+        val CurrentWorkingLocationId:String
 )

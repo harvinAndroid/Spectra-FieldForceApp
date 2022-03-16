@@ -149,7 +149,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
 
     private void initOne(){
         getWcrInfo();
-        getItemStatus(strGuuId);
+
         binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.GONE);
 
         binding.tvResendService.setOnClickListener(view -> resendService("Activation"));
@@ -403,11 +403,21 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void resendNav(){
+    private void inProgress(){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressLayout.progressOverlay.setAnimation(inAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void outProgress(){
+        outAnimation = new AlphaAnimation(1f, 0f);
+        outAnimation.setDuration(200);
+        binding.progressLayout.progressOverlay.setAnimation(outAnimation);
+        binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+    }
+    private void resendNav(){
+        inProgress();
         ResendNavRequest resendNavRequest = new ResendNavRequest(Constants.AUTH_KEY,Constants.RESEND_NAVWCR,strGuuId,"Business","","");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -416,17 +426,13 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                            nextScreen();
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -444,10 +450,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
     }
 
     public void getWcrInfo() {
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_WCR_INFO);
@@ -461,10 +464,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             @Override
             public void onResponse(Call<WcrResponse> call, Response<WcrResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     if(response.body().getStatus().equals("Success")) {
                         try {
                             binding.tvConsumptionStatus.setText("Consumption Status : " + response.body().getResponse().getWcr().getWCRConsumptionStatus());
@@ -484,7 +484,8 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
                             if(consumptionStatus.equals("Material not Available")){
                                 binding.tvResendNav.setVisibility(View.VISIBLE);
                             }
-                            if (strProductSegment.equals("Managed Wi-Fi Business")) {
+                            if (strProductSegment.equals("Managed Wi-Fi Business")||strProductSegment.equals("Managed Office Solution")||
+                                    strProductSegment.equals("Secured Managed Internet")) {
                                 binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.GONE);
                             } else {
                                 binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.VISIBLE);
@@ -596,6 +597,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
                                     adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
                                 }
+                            getItemStatus();
 
                            /* }catch (Exception ex){
                                 ex.getMessage();
@@ -628,10 +630,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
     }
 
     private void resendService(String type){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+        inProgress();
         ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
         resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
         resendActivationCodeRequest.setAction(Constants.RESEND_CODE);
@@ -645,10 +644,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -670,11 +666,8 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
         });
     }
 
-    private void getItemStatus(String strGuuId){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+    private void getItemStatus(){
+        inProgress();
         ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
         resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
         resendActivationCodeRequest.setAction(Constants.GET_ITEM_STATUS);
@@ -686,12 +679,9 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             @Override
             public void onResponse(Call<CommonMessageResponse> call, Response<CommonMessageResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                   outProgress();
                     try {
-                        if(response.body().getStatusCode()==200){
+                        if(response.body().getStatusCode().equals("200")){
                             binding.tvWcrItemStatus.setText("Item Status : "+ response.body().getMessage());
                             binding.tvWcrItemStatus.setVisibility(View.VISIBLE);
                             // Toast.makeText(getContext(),response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
@@ -716,10 +706,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
 
 
     private void resendInstallation(){
-        inAnimation = new AlphaAnimation(0f, 1f);
-        inAnimation.setDuration(200);
-        binding.progressLayout.progressOverlay.setAnimation(inAnimation);
-        binding.progressLayout.progressOverlay.setVisibility(View.VISIBLE);
+       inProgress();
         ResendActivationCodeRequest resendActivationCodeRequest = new ResendActivationCodeRequest();
         resendActivationCodeRequest.setAuthkey(Constants.AUTH_KEY);
         resendActivationCodeRequest.setAction(Constants.RESEND_CODE);
@@ -733,10 +720,7 @@ public class WcrCompletedFragment extends Fragment implements View.OnClickListen
             @Override
             public void onResponse(Call<CommonClassResponse> call, Response<CommonClassResponse> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
-                    outAnimation = new AlphaAnimation(1f, 0f);
-                    outAnimation.setDuration(200);
-                    binding.progressLayout.progressOverlay.setAnimation(outAnimation);
-                    binding.progressLayout.progressOverlay.setVisibility(View.GONE);
+                    outProgress();
                     try {
                         if(response.body().getStatus().equals("Success")){
                             // moveNext();

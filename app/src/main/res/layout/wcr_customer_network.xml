@@ -12,7 +12,6 @@
         <variable
             name="customerNetwork"
             type="com.spectra.fieldforce.model.gpon.response.WcrResponse.CusotmerNetwork"/>
-
     </data>
 
 <LinearLayout android:id="@+id/linear12"
@@ -29,7 +28,6 @@
         android:layout_height="wrap_content"
         android:textColorHint="@color/colorPrimary"
         app:hintTextAppearance="@style/AppearanceText">
-
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_wifi_ssd"

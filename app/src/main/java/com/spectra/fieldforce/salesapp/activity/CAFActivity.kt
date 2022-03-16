@@ -70,7 +70,7 @@ import java.util.regex.Pattern
 class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemSelectedListener {
     var strCafId : String? = null
     var strOppId :String?=null
-    private var cityList : ArrayList<CityData>? = null
+    private var cityList : ArrayList<BillData>? = null
     private var city : ArrayList<String>? = null
     private var cityCode : ArrayList<String>? = null
     private var billingcity : ArrayList<String>? = null
@@ -80,13 +80,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     private val PERMISSION_REQUEST_CODE = 200
     var strCity: String? = null
     var strProductId: String? = null
-    var strBlCity:String?=null
-    var strAthCity:String?=null
+
+
     var strPaymentStatus:String?=null
-    var strArea: String? = null
-    var strBuilding: String? = null
-    var strBlArea: String? = null
-    var strBlBuilding: String? = null
     var strBankName: String? = null
 
     var str_PrfCom:String? = null
@@ -135,6 +131,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     var date1:String?=null
     var userName:String? = null
     var password:String?=null
+    var amount:String? = null
     private var buildingList : ArrayList<BuildData>? = null
     private var building : ArrayList<String>? = null
     private var buildingCode : ArrayList<String>? = null
@@ -462,7 +459,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val instemail = layout_cafinstal_address.et_cafemail.text.toString()
         val instmobile = layout_cafinstal_address.et_cafmbnum.text.toString()
         val instpin = layout_cafinstal_address.et_cafpin.text.toString()
-        val amount = layout_payment.et_totalamt.text.toString()
+         amount = layout_payment.et_totalamt.text.toString()
         val approvalcode = layout_payment.et_appcode.text.toString()
         val brnch = layout_payment.et_brnch.text.toString()
         val checkdd = layout_payment.et_chkdate.text.toString()
@@ -555,7 +552,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             Toast.makeText(this, "Please Enter Security Deposit Type", Toast.LENGTH_SHORT).show()
         } else if(srcdepst.isBlank()){
             Toast.makeText(this, "Please enter Security Deposit", Toast.LENGTH_SHORT).show()
-        } else if(amount.isBlank()){
+        } else if(amount?.isBlank()==true){
             Toast.makeText(this, "Please enter Amount", Toast.LENGTH_SHORT).show()
         }else if((str_payslip=="5"||str_payslip=="4"||str_payslip=="11")&&(txtty.isBlank())){
                 Toast.makeText(this, "Please enter Transaction Refrence ID", Toast.LENGTH_SHORT).show()
@@ -594,7 +591,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         }else {
                 createCaf(createcaf,strbusinessSegment,subbssegment,customername,phonenumber,polock,ponext,authemail,authfather,
                 authmobile,authname,authaddress,authpincode,buildingnumber,customername,email,floor,phonenumber,
-                pincode,instemail,instmobile,instpin,amount,approvalcode,brnch,checkdd,checknum,carddgts,
+                pincode,instemail,instmobile,instpin,approvalcode,brnch,checkdd,checknum,carddgts,
                 paymntdt,txtty,srcdepst,creditcrd,pan,tan,gstnum)
         }
     }
@@ -703,7 +700,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         instemail: String,
         instmobile: String,
         instpin: String,
-        amount: String,
         approvalcode: String,
         brnch: String,
         checkdd: String,
@@ -743,6 +739,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 "", instemail,"0","0","0",
                 instmobile, "0", str_add_area,str_inst_building_nm,str_city_code,"10001", instpin,
                 str_inststateId, strProductId)
+        if(amount=="0"){
+            amount="0.000"
+        }
 
         val paymentDetail = PaymentDetail("", amount, approvalcode, str_bankid,
                 brnch, checkdate, checknum, creditcrd, carddgts,str_payslip, cafpaydate,"", srcdepst,str_sctype,
@@ -885,43 +884,44 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             layout_payment.et_gstnum.setText(response.body()?.Response?.Data?.GstNumberDetial)
                           */
                             strProductId= response.body()?.Response?.Data?.ProductId
-                            val strContactstate = response.body()?.Response?.Data?.installationAddresses?.Inst_State
-                            val strBlstate = response.body()?.Response?.Data?.billingAddress?.Bill_State
-                            val strSubBusSeg = response.body()?.Response?.Data?.SubBussinessSegment
-                            val strPrefred = response.body()?.Response?.Data?.PreferredCommMode
-                            val strCompanySelf = response.body()?.Response?.Data?.otherinformations?.CompanySelfPo
-                            val strProvider = response.body()?.Response?.Data?.otherinformations?.ExistingServiceProvider
-                            val strFirewall = response.body()?.Response?.Data?.otherinformations?.FireWall
-                            val strfirmType = response.body()?.Response?.Data?.companyDetail?.FirmType
-                            val strAtstate = response.body()?.Response?.Data?.authSigDetails?.Auth_State
-                            val strPaySlip = response.body()?.Response?.Data?.payments?.PayInSlip
-                            val strWrkngDays = response.body()?.Response?.Data?.BusinessDays
+                            str_inststateId= response.body()?.Response?.Data?.installationAddresses?.Inst_State
+                            str_blinststateId = response.body()?.Response?.Data?.billingAddress?.Bill_State
+                            str_sub_bus = response.body()?.Response?.Data?.SubBussinessSegment
+                            str_PrfCom = response.body()?.Response?.Data?.PreferredCommMode
+                            str_cmpnyself = response.body()?.Response?.Data?.otherinformations?.CompanySelfPo
+                            str_provider = response.body()?.Response?.Data?.otherinformations?.ExistingServiceProvider
+                            str_frwall = response.body()?.Response?.Data?.otherinformations?.FireWall
+                            str_firmtype= response.body()?.Response?.Data?.companyDetail?.FirmType
+                            str_atinststateId = response.body()?.Response?.Data?.authSigDetails?.Auth_State
+                            str_payslip = response.body()?.Response?.Data?.payments?.PayInSlip
+                            str_wrkngdays = response.body()?.Response?.Data?.BusinessDays
                             val strNetwork = response.body()?.Response?.Data?.NtwMonitAlert
-                            val strCustomerCategory = response.body()?.Response?.Data?.installationAddresses?.Inst_CategoryofCustomer
+                            str_customercategory = response.body()?.Response?.Data?.installationAddresses?.Inst_CategoryofCustomer
                             val strWrkngHrs = response.body()?.Response?.Data?.CustomerWorkingHours
-                            val strVoip = response.body()?.Response?.Data?.installationAddresses?.Inst_VoidPort
-                            val strBillType = response.body()?.Response?.Data?.installationAddresses?.Inst_BillType
-                            val strSecrtyType = response.body()?.Response?.Data?.payments?.SecurityDepositType
-                            val strGST = response.body()?.Response?.Data?.GstNumber
-                            strCity = response.body()?.Response?.Data?.installationAddresses?.Inst_City
-                            strBlCity = response.body()?.Response?.Data?.billingAddress?.Bill_City
-                            strAthCity = response.body()?.Response?.Data?.authSigDetails?.Auth_City
-                            strArea= response.body()?.Response?.Data?.installationAddresses?.Inst_Area
-                            strBuilding = response.body()?.Response?.Data?.installationAddresses?.Inst_BuildingName
-                            strBlArea= response.body()?.Response?.Data?.billingAddress?.Bill_Area
-                            strBlBuilding = response.body()?.Response?.Data?.billingAddress?.Bill_BuildingName
+                            str_voip = response.body()?.Response?.Data?.installationAddresses?.Inst_VoidPort
+                            str_billtype = response.body()?.Response?.Data?.installationAddresses?.Inst_BillType
+                            str_sctype= response.body()?.Response?.Data?.payments?.SecurityDepositType
+                            str_gstval = response.body()?.Response?.Data?.GstNumber
+                            str_city_code = response.body()?.Response?.Data?.installationAddresses?.Inst_City
+                            str_blcity_code = response.body()?.Response?.Data?.billingAddress?.Bill_City
+                            str_atcity_code = response.body()?.Response?.Data?.authSigDetails?.Auth_City
+                            str_add_area= response.body()?.Response?.Data?.installationAddresses?.Inst_Area
+                            str_inst_building_nm = response.body()?.Response?.Data?.installationAddresses?.Inst_BuildingName
+                            str_bladd_area= response.body()?.Response?.Data?.billingAddress?.Bill_Area
+                            str_blinst_building_nm = response.body()?.Response?.Data?.billingAddress?.Bill_BuildingName
                             strCompany = response.body()?.Response?.Data?.Company.toString()
                             strRelation = response.body()?.Response?.Data?.Relationship.toString()
                             strGroup = response.body()?.Response?.Data?.Group.toString()
-                            strIndustry = response.body()?.Response?.Data?.companyDetail?.IndustryType
+                            str_indusid = response.body()?.Response?.Data?.companyDetail?.IndustryType
 
                             getCompany(strCompany)
                             getRelation(strRelation)
                             getIndustryTpe()
 
+
                             var cntstatePosition = 0
-                            resources.getStringArray(R.array.list_of_state).forEachIndexed { index, s ->
-                                if (s == strContactstate) cntstatePosition = index
+                            resources.getStringArray(R.array.list_state_code).forEachIndexed { index, s ->
+                                if (s == str_inststateId) cntstatePosition = index
                             }
                             val cntstateAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.list_of_state))
                             cntstateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -930,9 +930,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             cntstateAdapter.notifyDataSetChanged()
 
                             var atstatePos = 0
-                            resources.getStringArray(R.array.list_of_state).forEachIndexed {
+                            resources.getStringArray(R.array.list_state_code).forEachIndexed {
                                 index, s ->
-                                if (s == strAtstate)
+                                if (s == str_atinststateId)
                                     atstatePos = index
                             }
                             val atstateAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.list_of_state))
@@ -941,8 +941,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             layout_cafothr_details.sp_cafauthostate.setSelection(atstatePos)
                             atstateAdapter.notifyDataSetChanged()
                             var blstatePosition = 0
-                            resources.getStringArray(R.array.list_of_state).forEachIndexed { index, s ->
-                                if (s == strBlstate) blstatePosition = index
+                            resources.getStringArray(R.array.list_state_code).forEachIndexed { index, s ->
+                                if (s == str_blinststateId) blstatePosition = index
+                                return@forEachIndexed
                             }
                             val blstateAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.list_of_state))
                             blstateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -952,7 +953,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var sbBusPosition = 0
                             resources.getStringArray(R.array.list_of_subBusSegment).forEachIndexed { index, s ->
-                                if (s == strSubBusSeg) sbBusPosition = index
+                                if (s == str_sub_bus) sbBusPosition = index
                             }
                             val sbBusAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_subBusSegment))
                             sbBusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -962,7 +963,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var prfPosition = 0
                             resources.getStringArray(R.array.list_of_prefferedvalue).forEachIndexed { index, s ->
-                                if (s == strPrefred) prfPosition = index
+                                if (s == str_PrfCom) prfPosition = index
                             }
                             val prefAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_preffered))
                             prefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -972,7 +973,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var selfPosition = 0
                             resources.getStringArray(R.array.list_of_boolean_values).forEachIndexed { index, s ->
-                                if (s == strCompanySelf) selfPosition = index
+                                if (s == str_cmpnyself) selfPosition = index
                             }
                             val selfAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_boolean))
                             selfAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -982,7 +983,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var firmPosition = 0
                             resources.getStringArray(R.array.list_firm_type_value).forEachIndexed { index, s ->
-                                if (s == strfirmType) firmPosition = index
+                                if (s == str_firmtype) firmPosition = index
                             }
                             val firmtypeAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_firm_type))
                             firmtypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -992,7 +993,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var providerPosition = 0
                             resources.getStringArray(R.array.ext_serv_one_values).forEachIndexed { index, s ->
-                                if (s == strProvider) providerPosition = index
+                                if (s == str_provider) providerPosition = index
                             }
                             val provAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.ext_serv_one))
                             provAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1002,7 +1003,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var firewallPosition = 0
                             resources.getStringArray(R.array.list_of_boolean_values).forEachIndexed { index, s ->
-                                if (s == strFirewall) firewallPosition = index
+                                if (s == str_frwall) firewallPosition = index
                             }
                             val firewallAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_boolean))
                             firewallAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1012,7 +1013,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var workingPosition = 0
                             resources.getStringArray(R.array.list_of_wrkngdaysvalues).forEachIndexed { index, s ->
-                                if (s == strWrkngDays) workingPosition = index
+                                if (s == str_wrkngdays) workingPosition = index
                             }
                             val workingAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_wrkngdays))
                             workingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1032,7 +1033,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var customerPosition = 0
                             resources.getStringArray(R.array.list_of_cstctgryvalues).forEachIndexed { index, s ->
-                                if (s == strCustomerCategory) customerPosition = index
+                                if (s == str_customercategory) customerPosition = index
                             }
                             val customerAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_cstmrcategory))
                             customerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1052,7 +1053,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var voipPosition = 0
                             resources.getStringArray(R.array.list_of_cstctgryvalues).forEachIndexed { index, s ->
-                                if (s == strVoip) voipPosition = index
+                                if (s == str_voip) voipPosition = index
                             }
                             val voipAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_monitoring))
                             voipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1062,7 +1063,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var billtypePosition = 0
                             resources.getStringArray(R.array.list_of_boolean_values).forEachIndexed { index, s ->
-                                if (s == strBillType) billtypePosition = index
+                                if (s == str_billtype) billtypePosition = index
                             }
                             val billtypeAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_billtype))
                             billtypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1072,7 +1073,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var payslipPosition = 0
                             resources.getStringArray(R.array.list_of_payslipval).forEachIndexed { index, s ->
-                                if (s == strPaySlip) payslipPosition = index
+                                if (s == str_payslip) payslipPosition = index
                             }
                             val payslipAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_payslip))
                             payslipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1082,7 +1083,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var securityPosition = 0
                             resources.getStringArray(R.array.list_of_boolean_values).forEachIndexed { index, s ->
-                                if (s == strSecrtyType) securityPosition = index
+                                if (s == str_sctype) securityPosition = index
                             }
                             val securityAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_Deposit))
                             securityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1092,7 +1093,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
 
                             var gstPosition = 0
                             resources.getStringArray(R.array.listDNCVal).forEachIndexed { index, s ->
-                                if (s == strGST) gstPosition = index
+                                if (s == str_gstval) gstPosition = index
                             }
                             val gstAdapter = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.list_of_gst))
                             gstAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -1698,8 +1699,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             industryid.add(item.IndTypeId)
                         }
                         var industryPosition=0
-                        instryname.forEachIndexed { index, s ->
-                            if(s==strIndustry)industryPosition=index
+                        industryid.forEachIndexed { index, s ->
+                            if(s==str_indusid)industryPosition=index
                             return@forEachIndexed
                         }
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, instryname)
@@ -1943,9 +1944,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,stateCode,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
-        val call = apiService.getCityList(getCityRequest)
-        call.enqueue(object : Callback<GetCityResponse?> {
-            override fun onResponse(call: Call<GetCityResponse?>, response: Response<GetCityResponse?>) {
+        val call = apiService.getBillingCityList(getCityRequest)
+        call.enqueue(object : Callback<CafBillingCityResponse?> {
+            override fun onResponse(call: Call<CafBillingCityResponse?>, response: Response<CafBillingCityResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val img = response.body()?.Response?.Message
@@ -1960,8 +1961,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             cityCode?.add(item.CityCode)
                         }
                         var cityPosition=0
-                        city?.forEachIndexed { index, s ->
-                            if(s==strCity)cityPosition=index
+                        cityCode?.forEachIndexed { index, s ->
+                            if(s==str_city_code)cityPosition=index
                             return@forEachIndexed
                         }
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, city!!)
@@ -1975,19 +1976,19 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 }
             }
 
-            override fun onFailure(call: Call<GetCityResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<CafBillingCityResponse?>, t: Throwable) {
                 Log.e("RetroError", t.toString())
             }
         })
     }
 
-    fun getBillingCity(stateCode: String) {
+    fun getBillingCity(stateCode: String?) {
         val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,stateCode,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
-        val call = apiService.getCityList(getCityRequest)
-        call.enqueue(object : Callback<GetCityResponse?> {
-            override fun onResponse(call: Call<GetCityResponse?>, response: Response<GetCityResponse?>) {
+        val call = apiService.getBillingCityList(getCityRequest)
+        call.enqueue(object : Callback<CafBillingCityResponse?> {
+            override fun onResponse(call: Call<CafBillingCityResponse?>, response: Response<CafBillingCityResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val img = response.body()?.Response?.Message
@@ -2002,8 +2003,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             billingcityCode?.add(item.CityCode)
                         }
                         var cityPosition=0
-                        billingcity!!.forEachIndexed { index, s ->
-                            if(s==strBlCity)cityPosition=index
+                        billingcityCode?.forEachIndexed { index, s ->
+                            if(s==str_blcity_code)
+                              cityPosition=index
                             return@forEachIndexed
                         }
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, billingcity!!)
@@ -2011,13 +2013,13 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                         caf_contact_person_row.sp_cfblcity.adapter = adapter12
                         caf_contact_person_row.sp_cfblcity.setSelection(cityPosition)
                         adapter12.notifyDataSetChanged()
-                    } catch (e: java.lang.Exception) {
+                    } catch (e:java.lang.Exception) {
                         e.printStackTrace()
                     }
                 }
             }
 
-            override fun onFailure(call: Call<GetCityResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<CafBillingCityResponse?>, t: Throwable) {
                 Log.e("RetroError", t.toString())
             }
         })
@@ -2027,9 +2029,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,stateCode,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
-        val call = apiService.getCityList(getCityRequest)
-        call.enqueue(object : Callback<GetCityResponse?> {
-            override fun onResponse(call: Call<GetCityResponse?>, response: Response<GetCityResponse?>) {
+        val call = apiService.getBillingCityList(getCityRequest)
+        call.enqueue(object : Callback<CafBillingCityResponse?> {
+            override fun onResponse(call: Call<CafBillingCityResponse?>, response: Response<CafBillingCityResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val img = response.body()?.Response?.Message
@@ -2044,8 +2046,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             authocityCode?.add(item.CityCode)
                         }
                         var cityPosition=0
-                        authocity?.forEachIndexed { index, s ->
-                            if(s==strAthCity)cityPosition=index
+                        authocityCode?.forEachIndexed { index, s ->
+                            if(s==str_atcity_code)cityPosition=index
                             return@forEachIndexed
                         }
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, authocity!!)
@@ -2059,7 +2061,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 }
             }
 
-            override fun onFailure(call: Call<GetCityResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<CafBillingCityResponse?>, t: Throwable) {
                 Log.e("RetroError", t.toString())
             }
         })
@@ -2087,8 +2089,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             item.AreaCode?.let { areaCode?.add(it) }
                         }
                         var areaPosition=0
-                        area?.forEachIndexed { index, s ->
-                            if(s==strArea)areaPosition=index
+                        areaCode?.forEachIndexed { index, s ->
+                            if(s==str_add_area)areaPosition=index
                             return@forEachIndexed
                         }
 
@@ -2129,8 +2131,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             item.AreaCode?.let { billingareaCode?.add(it) }
                         }
                         var areaPosition=0
-                        billingarea!!.forEachIndexed { index, s ->
-                            if(s==strBlArea)areaPosition=index
+                        billingareaCode!!.forEachIndexed { index, s ->
+                            if(s==str_bladd_area)areaPosition=index
+                            return@forEachIndexed
                         }
 
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, billingarea!!)
@@ -2173,8 +2176,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                         }
 
                         var buildPosition=0
-                        building?.forEachIndexed { index, s ->
-                            if(s==strBuilding)buildPosition=index
+                        buildingCode?.forEachIndexed { index, s ->
+                            if(s==str_inst_building_nm)buildPosition=index
                         }
 
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, building!!)
@@ -2217,8 +2220,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             }
                         }
                         var buildPosition=0
-                        billingbuilding?.forEachIndexed { index, s ->
-                            if(s==strBlBuilding)buildPosition=index
+                        billingbuildingCode?.forEachIndexed { index, s ->
+                            if(s==str_blinst_building_nm)buildPosition=index
+                            return@forEachIndexed
                         }
 
                         val adapter12 = ArrayAdapter(this@CAFActivity, android.R.layout.simple_spinner_item, billingbuilding!!)
@@ -2244,7 +2248,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
       if (parent?.id == R.id.sp_preffered_cmmnctn) {
             caf_contactinfo_layout.et_prfcom.setText(resources.getStringArray(R.array.list_of_preffered).get(position))
-            str_PrfCom = resources.getStringArray(R.array.list_of_prefferedvalue).get(position)
+            str_PrfCom = resources.getStringArray(R.array.list_of_prefferedvalue)[position]
         }else if(parent?.id == R.id.sp_cafcompany){
             caf_contactinfo_layout.et_cafcmpny.setText(company?.get(position))
             str_cmp =  companyId?.get(position )
@@ -2258,18 +2262,18 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             caf_contactinfo_layout.et_cafrelation.setText(relation?.get(position))
             str_rltn =  relationId?.get(position )
         }else if(parent?.id == R.id.sp_cafcmpny_self){
-            layout_otherinfo.et_cafcmpny_self.setText(resources.getStringArray(R.array.list_of_boolean).get(position))
+            layout_otherinfo.et_cafcmpny_self.setText(resources.getStringArray(R.array.list_of_boolean)[position])
             str_cmpnyself =  resources.getStringArray(R.array.list_of_boolean_values).get(position )
         } else if(parent?.id == R.id.sp_caffirm_type){
-            layout_cafcompany_details.et_caffirm_type.setText(resources.getStringArray(R.array.list_firm_type).get(position))
-            str_firmtype =  resources.getStringArray(R.array.list_firm_type_value).get(position )
+            layout_cafcompany_details.et_caffirm_type.setText(resources.getStringArray(R.array.list_firm_type)[position])
+            str_firmtype = resources.getStringArray(R.array.list_firm_type_value)[position]
         }else if(parent?.id == R.id.sp_cafindustype){
-            layout_cafcompany_details.et_cafindus_type.setText(instryname.get(position))
-            str_indusid =  industryid.get(position )
+            layout_cafcompany_details.et_cafindus_type.setText(instryname[position])
+            str_indusid = industryid[position]
         }else if(parent?.id == R.id.sp_cafstate){
-            layout_cafinstal_address.et_cafstate.setText(resources.getStringArray(R.array.list_of_state).get(position))
-            str_statename = resources.getStringArray(R.array.list_of_state).get(position)
-             str_inststateId= resources.getStringArray(R.array.list_state_code).get(position)
+            layout_cafinstal_address.et_cafstate.setText(resources.getStringArray(R.array.list_of_state)[position])
+            str_statename = resources.getStringArray(R.array.list_of_state)[position]
+             str_inststateId= resources.getStringArray(R.array.list_state_code)[position]
             getInstallCity(str_inststateId.toString())
         }else if(parent?.id == R.id.sp_cafcity){
             layout_cafinstal_address.et_add_cafcity.setText(city?.get(position))
@@ -2286,52 +2290,53 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             str_inst_building_nm =  buildingCode?.get(position )
           //  val buildingname = building?.get(position)
         }else if(parent?.id == R.id. sp_cafstatus){
-            layout_cafinstal_address.et_cafbuilding_status.setText(resources.getStringArray(R.array.list_Of_Status).get(position))
-            str_inst_statusid =  resources.getStringArray(R.array.list_Of_StatusId).get(position)
+            layout_cafinstal_address.et_cafbuilding_status.setText(resources.getStringArray(R.array.list_Of_Status)[position])
+            str_inst_statusid = resources.getStringArray(R.array.list_Of_StatusId)[position]
          //   val installstatus = resources.getStringArray(R.array.list_Of_Status).get(position)
         }else if (parent?.id == R.id.sp_cafsbbus) {
-            caf_contactinfo_layout.et_sb_bs_sgmnt.setText( resources.getStringArray(R.array.list_of_subBusSegment).get(position))
-            str_sub_bus =  resources.getStringArray(R.array.list_of_subBusSegment).get(position)
+            caf_contactinfo_layout.et_sb_bs_sgmnt.setText(resources.getStringArray(R.array.list_of_subBusSegment)[position])
+            str_sub_bus = resources.getStringArray(R.array.list_of_subBusSegment)[position]
         }else if (parent?.id == R.id.sp_bnknam) {
-            layout_payment.et_bnknm.setText(bankname.get(position))
-            str_bankid =  bankid.get(position)
+            layout_payment.et_bnknm.setText(bankname[position])
+            str_bankid = bankid[position]
         }
         else if(parent?.id == R.id.sp_cfblstate){
-            caf_contact_person_row.et_cfblstate.setText(resources.getStringArray(R.array.list_of_state).get(position))
-            str_blstatename = resources.getStringArray(R.array.list_of_state).get(position)
-            str_blinststateId= resources.getStringArray(R.array.list_state_code).get(position)
-            if(str_blstatename!="Select State"|| caf_contact_person_row.et_cfblstate.text?.isNotEmpty() == true) {
-                getBillingCity(str_blinststateId.toString())
-            }
+            caf_contact_person_row.et_cfblstate.setText(resources.getStringArray(R.array.list_of_state)[position])
+            str_blstatename = resources.getStringArray(R.array.list_of_state)[position]
+            str_blinststateId= resources.getStringArray(R.array.list_state_code)[position]
+            getBillingCity(str_blinststateId)
+           /* if(str_blstatename!="Select State"|| caf_contact_person_row.et_cfblstate.text?.isNotEmpty() == true) {
+                getBillingCity(str_blinststateId)
+            }*/
         }else if(parent?.id == R.id.sp_cfblcity){
             caf_contact_person_row.et_cfblcity.setText(billingcity?.get(position))
             str_blcity = billingcity?.get(position).toString()
-            str_blcity_code =  billingcityCode?.get(position )
+            str_blcity_code =  billingcityCode?.get(position)
             getBillingArea(str_blcity, str_blcity_code)
         } else if(parent?.id == R.id.sp_cfblcnarea){
             caf_contact_person_row.et_cfblarea.setText(billingarea?.get(position))
-            str_bladd_area = billingareaCode?.get(position )
+            str_bladd_area = billingareaCode?.get(position)
             val cntareaname = billingarea?.get(position).toString()
             getBillingBuilding(cntareaname,str_bladd_area)
         } else if(parent?.id == R.id. sp_cfblbuilding_nm){
             caf_contact_person_row.et_cfblbuilding.setText(billingbuilding?.get(position))
-            str_blinst_building_nm =  billingbuildingCode?.get(position )
+            str_blinst_building_nm =  billingbuildingCode?.get(position)
            // val buildingname = billingbuilding?.get(position)
         }else if(parent?.id == R.id.sp_caf_pro){
-            layout_otherinfo.et_provider.setText(resources.getStringArray(R.array.ext_serv_one).get(position))
-            str_provider =  resources.getStringArray(R.array.ext_serv_one_values).get(position )
+            layout_otherinfo.et_provider.setText(resources.getStringArray(R.array.ext_serv_one)[position])
+            str_provider = resources.getStringArray(R.array.ext_serv_one_values)[position]
         }else if(parent?.id == R.id.sp_caffrwal){
-            layout_otherinfo.et_caffrwl.setText(resources.getStringArray(R.array.list_of_boolean).get(position))
-            str_frwall =  resources.getStringArray(R.array.list_of_boolean_values).get(position )
-          if(resources.getStringArray(R.array.list_of_boolean).get(position)=="Yes"){
+            layout_otherinfo.et_caffrwl.setText(resources.getStringArray(R.array.list_of_boolean)[position])
+            str_frwall = resources.getStringArray(R.array.list_of_boolean_values)[position]
+          if(resources.getStringArray(R.array.list_of_boolean)[position] =="Yes"){
               layout_otherinfo.tv_frws.visibility= View.VISIBLE
           }else{
               layout_otherinfo.tv_frws.visibility= View.GONE
           }
         }else if(parent?.id == R.id.sp_cafauthostate){
-            layout_cafothr_details.et_cafauthstate.setText(resources.getStringArray(R.array.list_of_state).get(position))
-            str_atstatename = resources.getStringArray(R.array.list_of_state).get(position)
-            str_atinststateId= resources.getStringArray(R.array.list_state_code).get(position)
+            layout_cafothr_details.et_cafauthstate.setText(resources.getStringArray(R.array.list_of_state)[position])
+            str_atstatename = resources.getStringArray(R.array.list_of_state)[position]
+            str_atinststateId= resources.getStringArray(R.array.list_state_code)[position]
             if(str_blstatename!="Select State"|| layout_cafothr_details.et_cafauthstate.text?.isNotEmpty() == true) {
                 getAuthorizedCity(str_atinststateId.toString())
             }
@@ -2340,29 +2345,29 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             str_atcity = authocity?.get(position).toString()
             str_atcity_code =  authocityCode?.get(position )
         }else if(parent?.id == R.id.sp_wrkng_days){
-            caf_contactinfo_layout.et_wrkngdys.setText(resources.getStringArray(R.array.list_of_wrkngdays).get(position))
-            str_wrkngdays = resources.getStringArray(R.array.list_of_wrkngdaysvalues).get(position).toString()
+            caf_contactinfo_layout.et_wrkngdys.setText(resources.getStringArray(R.array.list_of_wrkngdays)[position])
+            str_wrkngdays = resources.getStringArray(R.array.list_of_wrkngdaysvalues)[position].toString()
         }else if(parent?.id == R.id.sp_ntwrkmtr){
-            caf_contactinfo_layout.et_ntwrkmtr.setText(resources.getStringArray(R.array.list_of_monitoring).get(position))
-            str_ntwrk = resources.getStringArray(R.array.list_of_monitoringvalues).get(position).toString()
+            caf_contactinfo_layout.et_ntwrkmtr.setText(resources.getStringArray(R.array.list_of_monitoring)[position])
+            str_ntwrk = resources.getStringArray(R.array.list_of_monitoringvalues)[position].toString()
         }else if(parent?.id == R.id.sp_custctgry){
-            layout_cafinstal_address.et_custctgry.setText(resources.getStringArray(R.array.list_of_cstmrcategory).get(position))
-            str_customercategory = resources.getStringArray(R.array.list_of_cstctgryvalues).get(position).toString()
+            layout_cafinstal_address.et_custctgry.setText(resources.getStringArray(R.array.list_of_cstmrcategory)[position])
+            str_customercategory = resources.getStringArray(R.array.list_of_cstctgryvalues)[position].toString()
         }else if (parent?.id == R.id.sp_cstmrwrknghrs) {
-            caf_contactinfo_layout.et_cstmrwrknghrs.setText( resources.getStringArray(R.array.list_of_wrknghours).get(position))
-            str_wrknghrs =  resources.getStringArray(R.array.list_of_wrknghoursval).get(position)
+            caf_contactinfo_layout.et_cstmrwrknghrs.setText(resources.getStringArray(R.array.list_of_wrknghours)[position])
+            str_wrknghrs = resources.getStringArray(R.array.list_of_wrknghoursval)[position]
         }else if (parent?.id == R.id.sp_voip) {
-            layout_cafinstal_address.et_cafvoip.setText( resources.getStringArray(R.array.list_of_monitoring).get(position))
-            str_voip =  resources.getStringArray(R.array.list_of_cstctgryvalues).get(position)
+            layout_cafinstal_address.et_cafvoip.setText(resources.getStringArray(R.array.list_of_monitoring)[position])
+            str_voip = resources.getStringArray(R.array.list_of_cstctgryvalues)[position]
         }else if (parent?.id == R.id.sp_cafbilltype) {
-            layout_cafinstal_address.et_cafbiltype.setText( resources.getStringArray(R.array.list_of_billtype).get(position))
-            str_billtype =  resources.getStringArray(R.array.list_of_boolean_values).get(position)
+            layout_cafinstal_address.et_cafbiltype.setText(resources.getStringArray(R.array.list_of_billtype)[position])
+            str_billtype = resources.getStringArray(R.array.list_of_boolean_values)[position]
         }else if (parent?.id == R.id.sp_securitytype) {
-            layout_payment.et_sctype.setText(resources.getStringArray(R.array.list_of_Deposit).get(position))
-            str_sctype = resources.getStringArray(R.array.list_of_boolean_values).get(position)
+            layout_payment.et_sctype.setText(resources.getStringArray(R.array.list_of_Deposit)[position])
+            str_sctype = resources.getStringArray(R.array.list_of_boolean_values)[position]
         }else if (parent?.id == R.id.sp_gst) {
-            binding.layoutPayment.etGst.setText(resources.getStringArray(R.array.list_of_gst).get(position))
-            str_gstval = resources.getStringArray(R.array.listDNCVal).get(position)
+            binding.layoutPayment.etGst.setText(resources.getStringArray(R.array.list_of_gst)[position])
+            str_gstval = resources.getStringArray(R.array.listDNCVal)[position]
             if(str_gstval=="569480000"){
                 layout_payment.et_gsttnum.visibility=View.VISIBLE
             }else{
@@ -2370,9 +2375,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             }
         }
         else if (parent?.id == R.id.sp_payslip) {
-            layout_payment.et_payslip.setText( resources.getStringArray(R.array.list_of_payslip).get(position))
-            str_payslip =  resources.getStringArray(R.array.list_of_payslipval).get(position)
-            val pay = resources.getStringArray(R.array.list_of_payslip).get(position)
+            layout_payment.et_payslip.setText(resources.getStringArray(R.array.list_of_payslip)[position])
+            str_payslip = resources.getStringArray(R.array.list_of_payslipval)[position]
+            val pay = resources.getStringArray(R.array.list_of_payslip)[position]
             if(pay=="Select Option"){
                 layout_payment.frbnk.visibility=View.GONE
                 layout_payment.et_brnchname.visibility=View.GONE

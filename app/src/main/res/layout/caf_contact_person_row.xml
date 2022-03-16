@@ -176,7 +176,7 @@
                                 android:layout_height="wrap_content"
                                 android:drawableEnd="@drawable/ic_expand_down"
                                 android:focusable="false"
-                                android:hint="@string/city"
+                                android:hint="@string/citybl"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/_12sdp"

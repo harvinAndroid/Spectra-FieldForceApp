@@ -149,61 +149,7 @@ public class DocumentCafAct extends BaseActivity {
         });
 
         binding.savedoc.setOnClickListener(view -> {
-            if(binding.ckTan.isChecked()){
-                chtann=true;
-            }else{
-                chtann=false;
-            }
-            if(binding.chkTin.isChecked()){
-                chk_tin=true;
-            }else{
-                chk_tin=false;
-            }
-            if(binding.chkCaf.isChecked()){
-                chk_caf=true;
-            }else{
-                chk_caf=false;
-            }
-            if(binding.chkPo.isChecked()){
-                chk_po=true;
-            }else{
-                chk_po=false;
-            }
-            if(binding.chkApnic.isChecked()){
-                chk_apnic=true;
-            }else{
-                chk_apnic=false;
-            }
-            if(binding.chkPhoto.isChecked()){
-                chk_photo=true;
-            }else{
-                chk_photo=false;
-            }
-            if(binding.chkOsp.isChecked()){
-                chk_osp=true;
-            }else{
-                chk_osp=false;
-            }
-            if(binding.chkNetwrk.isChecked()){
-                chk_netwrk=true;
-            }else{
-                chk_netwrk=false;
-            }
-            if(binding.chkAdproof.isChecked()){
-                chk_adproof=true;
-            }else{
-                chk_adproof=false;
-            }
-            if(binding.chkDeed.isChecked()){
-                chk_deed=true;
-            }else{
-                chk_deed=false;
-            }
-            if(binding.chkPan.isChecked()){
-                chk_pan=true;
-            }else{
-                chk_pan=false;
-            }
+
 
             updateDoc();
         });
@@ -370,6 +316,61 @@ public class DocumentCafAct extends BaseActivity {
 
     private void updateDoc() {
         inProgress();
+        if(binding.ckTan.isChecked()){
+            chtann=true;
+        }else{
+            chtann=false;
+        }
+        if(binding.chkTin.isChecked()){
+            chk_tin=true;
+        }else{
+            chk_tin=false;
+        }
+        if(binding.chkCaf.isChecked()){
+            chk_caf=true;
+        }else{
+            chk_caf=false;
+        }
+        if(binding.chkPo.isChecked()){
+            chk_po=true;
+        }else{
+            chk_po=false;
+        }
+        if(binding.chkApnic.isChecked()){
+            chk_apnic=true;
+        }else{
+            chk_apnic=false;
+        }
+        if(binding.chkPhoto.isChecked()){
+            chk_photo=true;
+        }else{
+            chk_photo=false;
+        }
+        if(binding.chkOsp.isChecked()){
+            chk_osp=true;
+        }else{
+            chk_osp=false;
+        }
+        if(binding.chkNetwrk.isChecked()){
+            chk_netwrk=true;
+        }else{
+            chk_netwrk=false;
+        }
+        if(binding.chkAdproof.isChecked()){
+            chk_adproof=true;
+        }else{
+            chk_adproof=false;
+        }
+        if(binding.chkDeed.isChecked()){
+            chk_deed=true;
+        }else{
+            chk_deed=false;
+        }
+        if(binding.chkPan.isChecked()){
+            chk_pan=true;
+        }else{
+            chk_pan=false;
+        }
        // Log.e("name",name.toString());
 
         DocumentRequired doc = new DocumentRequired(chk_adproof,chk_apnic,chk_caf,true,chk_pan,

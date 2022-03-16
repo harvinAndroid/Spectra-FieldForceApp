@@ -81,6 +81,7 @@ import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.model.questionAnsResponse.QuestionAnswerList;
 import com.spectra.fieldforce.salesapp.model.AddProductRequest;
 import com.spectra.fieldforce.salesapp.model.BankListResponse;
+import com.spectra.fieldforce.salesapp.model.CafBillingCityResponse;
 import com.spectra.fieldforce.salesapp.model.CafDetailResponse;
 import com.spectra.fieldforce.salesapp.model.CafPdfRequest;
 import com.spectra.fieldforce.salesapp.model.CafRequest;
@@ -561,6 +562,11 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<GetCityResponse> getCityList(@Body GetCityRequest getCityRequest);
+
+    @POST ("index.php")
+    Call<CafBillingCityResponse> getBillingCityList(@Body GetCityRequest getCityRequest);
+
+
 
     @POST ("index.php")
     Call<QualifyLeadResponse> qualifyReq(@Body QualifiedLeadRequest qualifiedLeadRequest);

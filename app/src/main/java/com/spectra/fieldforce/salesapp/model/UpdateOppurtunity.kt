@@ -36,5 +36,7 @@ data class UpdateOppurtunity(
     val reason:String,
     val createAreaOrBuilding: Boolean?,
     val specificArea:String,
-    val specificBuilding:String
+    val specificBuilding:String,
+    val noOfUsers:String?,
+    val noOfBeds:String
 )
