@@ -35,7 +35,8 @@ import android.content.SharedPreferences
 import android.text.format.DateFormat
 
 import android.widget.DatePicker
-
+import kotlinx.android.synthetic.main.lead_demo_fragment.*
+import kotlinx.android.synthetic.main.lead_other_details_row.view.*
 
 
 class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener,DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
@@ -154,8 +155,44 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
 
         et_Subject.setText("FLR for Lead $str_LeadId")
         try{
+            try{
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                et_est_dt.setOnClickListener {
+                    val dpd = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
+                        val mn = monthOfYear+1
+                        et_est_dt.setText("$dayOfMonth-$mn-$year")
+                        val trgt =  et_est_dt.text.toString()
+                        val split = trgt.split("-")
+                        val dateee = split[0]
+                        val month1 = split[1]
+                        val year1 = split[2]
+                        et_est_dt.setText("$year1-$month1-$dateee")
+                    }, year, month, day)
+                    dpd.show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            try{
+                et_prf_date_tm.setOnClickListener {
+                    val calendar: Calendar = Calendar.getInstance()
+                    day = calendar.get(Calendar.DAY_OF_MONTH)
+                    month = calendar.get(Calendar.MONTH)
+                    year = calendar.get(Calendar.YEAR)
+                    val datePickerDialog =
+                        DatePickerDialog(requireContext(), this, year!!, month!!, day!!)
+                    datePickerDialog.show()
+                }
 
-        et_est_dt.setOnClickListener {
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+       /* et_prf_date_tm.setOnClickListener {
             val calendar = Calendar.getInstance()
             year = calendar[Calendar.YEAR]
             month = calendar[Calendar.MONTH]
@@ -170,25 +207,7 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
                 } }
             datePickerDialog?.show()
 
-        }
-
-
-        et_prf_date_tm.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            year = calendar[Calendar.YEAR]
-            month = calendar[Calendar.MONTH]
-            day = calendar[Calendar.DAY_OF_MONTH]
-            val datePickerDialog =
-                year?.let { it1 -> month?.let { it2 ->
-                    day?.let { it3 ->
-                        DatePickerDialog(requireContext(), this, it1,
-                            it2, it3
-                        )
-                    }
-                } }
-            datePickerDialog?.show()
-
-        }
+        }*/
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
@@ -205,7 +224,7 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
     }
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         myYear = year
-        myday = day
+       myday = dayOfMonth
         myMonth = month+1
         val c = Calendar.getInstance()
         hour = c[Calendar.HOUR]
@@ -223,7 +242,6 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         myHour = hourOfDay
         myMinute = minute
-        et_est_dt.setText(myYear.toString()+"-"+myMonth+"-"+myday+" "+myHour+":"+myMinute+":"+"00".trimIndent())
         et_prf_date_tm.setText(myYear.toString()+"-"+myMonth+"-"+myday+" "+myHour+":"+myMinute+":"+"00".trimIndent())
     }
 

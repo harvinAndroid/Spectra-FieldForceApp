@@ -23,19 +23,20 @@ data class FeasData(
     val EstimatedDoneBy: Boolean?,
     val FeasibilityId: String?,
     val FeasibilityStatus: String?,
-    val IspName: Any?,
+    val IspName: String?,
     val LastMileType: String?,
     val MobileNo: String?,
     val Opportunity: String?,
     val OpportunityId: String?,
-    val Otc: Any?,
+    val Otc: String?,
     val Owner: String?,
     val RedunancyRequired: Boolean?,
     val Remark: String?,
     val RouteType: Boolean?,
     val SubReason: String?,
     val ThirdPartyFeasibilityRequired: Boolean?,
-    val TotalCalculatedCost: Any?
+    val TotalCalculatedCost: String?,
+    val ApprovalStatus:String?
 )
 
 /*

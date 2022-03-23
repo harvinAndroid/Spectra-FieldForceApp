@@ -53,6 +53,22 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_12sdp" />
             <TextView
+                android:id="@+id/approveStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:textColor="@color/colorBlack"
+                android:visibility="gone"
+                android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:id="@+id/subReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_12sdp" />
+            <TextView
                 android:id="@+id/owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

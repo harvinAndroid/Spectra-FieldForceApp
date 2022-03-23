@@ -844,6 +844,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                                 linearwcr.visibility=View.GONE
                                 linearnp.visibility=View.GONE
                                 lineareir.visibility=View.GONE
+                                linearten.visibility=View.GONE
                             }else{
                                 tv_create.visibility=View.GONE
                                 tv_update.visibility=View.VISIBLE
@@ -853,6 +854,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                                 linearwcr.visibility=View.VISIBLE
                                 linearnp.visibility=View.VISIBLE
                                 lineareir.visibility=View.VISIBLE
+                                linearten.visibility=View.VISIBLE
                                 getwcr()
                                 getIr()
                                 getNP()

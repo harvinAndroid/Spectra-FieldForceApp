@@ -8,7 +8,11 @@ import com.spectra.fieldforce.model.SaveQuestionareList.Answer
 import com.spectra.fieldforce.salesapp.model.FeasData
 
 
-class GetAllFeasibiltyAdapter(private val items: List<FeasData>, private val context: Context?) : RecyclerView.Adapter<GetAllFeasibiltyAdapter.ViewHolder>() {
+class GetAllFeasibiltyAdapter(
+    private val items: List<FeasData>,
+    private val context: Context?,
+    val productseg: String?
+) : RecyclerView.Adapter<GetAllFeasibiltyAdapter.ViewHolder>() {
 
     lateinit var binding: GetFeasibiltyadapterBinding
 
@@ -32,9 +36,16 @@ class GetAllFeasibiltyAdapter(private val items: List<FeasData>, private val con
                 binding.FeasibilityStatus.text= "Feasibility Status : " +"Feasible"
             }else if(fsstatus=="2"){
                 binding.FeasibilityStatus.text= "Feasibility Status : " +"Not Feasible"
+                if(productseg=="Secured Managed Internet"){
+                    binding.approveStatus.visibility=View.VISIBLE
+                    binding.subReason.visibility=View.VISIBLE
+                    binding.subReason.text="Sub Reason : "+ item.SubReason
+                    binding.approveStatus.text="Approval Status : " + item.ApprovalStatus
+                }
             }else if(fsstatus=="0"){
                 binding.FeasibilityStatus.text= "Feasibility Status : " +""
             }
+
             binding.Opportunity.text = "Owner : " +item.Owner
             val route = item.RouteType
             if(route!!){
@@ -55,7 +66,6 @@ class GetAllFeasibiltyAdapter(private val items: List<FeasData>, private val con
                     binding.RouteType.text = "Total Calculated Cost : " + item.TotalCalculatedCost
                 }else{
                     binding.RouteType.text = "Total Calculated Cost : " + ""
-
                 }
                 binding.RouteType.visibility=View.VISIBLE
                 binding.EstimatedDoneBy.visibility=View.GONE
@@ -64,7 +74,5 @@ class GetAllFeasibiltyAdapter(private val items: List<FeasData>, private val con
 
         }
     }
-    interface Feasibility {
-        fun test(pos: Int, answer: Answer?)
-    }
+
 }

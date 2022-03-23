@@ -12,7 +12,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -27,7 +26,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.textfield.TextInputLayout
 import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
@@ -289,42 +287,6 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             reOpen()
         }
 
-        tv_opp_submit.setOnClickListener{
-            if(fesstatus=="1") {
-                if(strOperationCity=="true"){
-                    if(strArea == "Other" || strBuilding == "Other" && (strCreateAreaOrBuilding=="false")) {
-                        Toast.makeText(this@OpportunityActivity, "For DOA submission you need to add Area or Building as they are still showing as Other", Toast.LENGTH_SHORT).show()
-                    }else{
-                        submitApproval()
-                    }
-                }else if(strOperationCity=="false"){
-                    if (/* strBusinessSement != "SDWAN"
-                        &&*/ (strArea == "Other") && (strBuilding == "Other")
-                        && (strCreateAreaOrBuilding=="false")/* && strTPFeasibilty.isNotBlank()*/){
-                        fab_create_society.visibility=View.VISIBLE
-                    }else{
-                        submitApproval()
-                    }
-                }
-            }else if(strOperationCity=="true"){
-                if ((strBuildingStatus == "C-RFS" || strBuildingStatus == "P-RFS" ||
-                            strBuildingStatus == "B-RFS" || strBuildingStatus == "A-RFS") && (redundancy == false)) {
-                    submitApproval()
-                }else{
-                    Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-
-        fab_create_society.setOnClickListener{
-            if(fesstatus=="1") {
-                str_createbuilding = true
-                save()
-            }else{
-                Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-            }
-        }
 
         et_lost.setOnClickListener { sp_lost.performClick() }
         sp_lost.onItemSelectedListener = this
@@ -530,9 +492,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                             fab_create_society.visibility=View.VISIBLE
                                         }
                                     }
-                                }else{
+                                }/*else{
                                     Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-                                }
+                                }*/
                             }else if(allFeasibility?.size==2) {
                                 layout_other.et_redundancy_required.isEnabled= false
                                 fesstatus = allFeasibility?.get(0)?.FeasibilityStatus
@@ -549,9 +511,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                             Log.e("ButtonFes", "1")
                                         }
                                     }
-                                }else{
+                                }/*else{
                                     Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-                                }
+                                }*/
                             }
                             reas = layout_product_line.et_op_reason.text?.trim().toString()
                             if(allFeasibility?.size!=null){
@@ -587,7 +549,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         binding.feasibility.rvAddFes.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = allFeasibility?.let { GetAllFeasibiltyAdapter(it,context) }
+            adapter = allFeasibility?.let { GetAllFeasibiltyAdapter(it,context,productseg) }
             adapter?.notifyDataSetChanged()
         }
     }
@@ -755,6 +717,43 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                 }
             }
         }
+        tv_opp_submit.setOnClickListener{
+            if(fesstatus=="1") {
+                if(strOperationCity=="true"){
+                    if(strArea == "Other" || strBuilding == "Other" && (strCreateAreaOrBuilding=="false")) {
+                        Toast.makeText(this@OpportunityActivity, "For DOA submission you need to add Area or Building as they are still showing as Other", Toast.LENGTH_SHORT).show()
+                    }else{
+                        submitApproval()
+                    }
+                }else if(strOperationCity=="false"){
+                    if (/* strBusinessSement != "SDWAN"
+                        &&*/ (strArea == "Other") && (strBuilding == "Other")
+                        && (strCreateAreaOrBuilding=="false")/* && strTPFeasibilty.isNotBlank()*/){
+                        fab_create_society.visibility=View.VISIBLE
+                    }else{
+                        submitApproval()
+                    }
+                }
+            }else if(strOperationCity=="true"){
+                if ((strBuildingStatus == "C-RFS" || strBuildingStatus == "P-RFS" ||
+                            strBuildingStatus == "B-RFS" || strBuildingStatus == "A-RFS") && (redundancy == false)) {
+                    submitApproval()
+                }else{
+                    Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+        fab_create_society.setOnClickListener{
+            if(fesstatus=="1") {
+                str_createbuilding = true
+                save()
+            }else{
+                Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
+            }
+        }
+
 
 
     }
@@ -1366,10 +1365,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                  if ((strBuildingStatus == "C-RFS" || strBuildingStatus == "P-RFS" ||
                                      strBuildingStatus == "B-RFS" || strBuildingStatus == "A-RFS") && (redundancy == false)) {
                                      binding.feasibility.addFes.visibility = View.GONE
-                                    /* if ((strReason != null) && (strApprovalStatus!="No")) {
-                                         Log.e("Button3", "3")
-                                         createApproval()
-                                     }*/
+
                                  }else if ((strBuildingStatus == "C-RFS" || strBuildingStatus == "P-RFS" ||
                                      strBuildingStatus == "B-RFS" || strBuildingStatus == "A-RFS") && (redundancy == true)) {
                                      binding.feasibility.addFes.visibility = View.VISIBLE
@@ -1393,7 +1389,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                      tv_opp_submit.visibility = View.GONE
                                  }else if(code.equals("In Progress")){
                                          tv_won.visibility=View.VISIBLE
-                                }
+                                 }
                                 if(strStatus=="Lost"||strStatus=="Won"){
                                     tv_opp_save.visibility=View.GONE
                                     tv_won.visibility = View.GONE
