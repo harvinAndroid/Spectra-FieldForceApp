@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -65,6 +66,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringTokenizer;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,7 +98,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     private ArrayList<String> rc3Name;
     private ArrayList<QuestionAnswerList.Response> questionareResponse;
     private List<ArrayList<String>> itemlist = new ArrayList<ArrayList<String>>();
-    private String srNumber, customerId,customerNetworkTech,status,StrSubSubType,selectedMediaPath;
+    private String srNumber, customerId,customerNetworkTech,status,StrSubSubType,selectedMediaPath,RCOnee;
     private JSONArray result;
     private String mFilepaths;
     private AlphaAnimation inAnimation;
@@ -129,6 +132,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         baseActivity = ((BaseActivity) this);
         init();
         getRC1();
+        getRC2(RCOnee);
         getQuestionList();
         resolveButton();
         listener();
@@ -150,7 +154,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         contact.add(YES);
         contact.add(NO);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, contact);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.resolveContacted.setAdapter(adapter);
     }
 
@@ -192,7 +196,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                             }
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, rc2Name);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.rc2.setAdapter(adapter);
                     }
                 } catch (Exception e) {
@@ -208,19 +212,6 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
     }
 
     private void listener() {
-        binding.rc1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int itemPosition = binding.rc1.getSelectedItemPosition();
-                String rc1Id = rc1Code.get(itemPosition).toString();
-                getRC2(rc1Id);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         binding.rc2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -237,6 +228,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         });
         binding.btnUnifySession.setOnClickListener(v ->
                 getUnifySession());
+
     }
 
 
@@ -537,7 +529,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                             }
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, rc3Name);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         binding.rc3.setAdapter(adapter);
                     }
                 } catch (Exception e) {
@@ -576,19 +568,36 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                                 if (result != null) {
                                     rc1Code = new ArrayList<String>();
                                     rc1Name = new ArrayList<String>();
-                                    rc1Code.add("0");
-                                    rc1Name.add("Select Resolution Code 1");
-                                    for (int i = 0; i < result.length(); i++) {
+                                 /*   rc1Code.add("0");
+                                    rc1Name.add("Select Resolution Code 1");*/
+                                    for (int i = 0; i < result.length(); i++){
                                         JSONObject jsonData = new JSONObject(String.valueOf(result.getString(i)));
                                         Log.d("RC1Response", jsonData.toString());
                                         String code = jsonData.getString("rc_oneId");
                                         String name = jsonData.getString("rootCauseOne");
                                         rc1Code.add(code);
-                                        rc1Name.add(name);
+                                        rc1Name.add(name+" ("+code +")");
                                     }
                                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(Activity_Resolve.this, android.R.layout.simple_spinner_item, rc1Name);
-                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.rc1.setAdapter(adapter);
+                                    binding.rc1.setAdapter(adapter);
+                                    binding.rc1.setTextColor(Color.BLACK);
+
+                                    binding.rc1.setOnItemClickListener((adapterView, view, i, l) -> {
+                                        String rc11 = adapter.getItem(i);
+                                        String rc1 = binding.rc1.getText().toString();
+                                        if(rc1!=null/*||rc1.equals("Select Resolution Code 1 (0)")*/) {
+                                            StringTokenizer tokens = new StringTokenizer(rc11, "(");
+                                            String first = tokens.nextToken();
+                                            String second = tokens.nextToken();
+                                            StringTokenizer tok = new StringTokenizer(second, ")");
+                                            RCOnee = tok.nextToken();
+                                            getRC2(RCOnee);
+                                            //   Toast.makeText(Activity_Resolve.this, onee, Toast.LENGTH_LONG).show();
+
+                                        }
+                                    });
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -615,7 +624,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
             itemlist1 = new ArrayList<>();
 
 
-            if (binding.rc1.getSelectedItem().toString().equals("Select Resolution Code 1")) {
+            if (binding.rc1.getText().toString().equals("Select Resolution Code 1")) {
                 isValid = false;
                 Toast.makeText(Activity_Resolve.this, "Please select Resolution Code 1", Toast.LENGTH_LONG).show();
             } else if (binding.rc2.getSelectedItem().toString().equals("Select Resolution Code 2")) {
@@ -679,8 +688,8 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
 
 
     private void submitOnResolve() {
-        int itemPosition = binding.rc1.getSelectedItemPosition();
-        String rc1Id = rc1Code.get(itemPosition).toString();
+        int itemPosition = binding.rc2.getSelectedItemPosition();
+       // String rc1Id = binding.rc1.getText().toString();
         itemPosition = binding.rc2.getSelectedItemPosition();
         String rc2Id = rc2Code.get(itemPosition).toString();
         itemPosition = binding.rc3.getSelectedItemPosition();
@@ -692,7 +701,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         srRequest.setAction(Constants.SAVE_RC_DETAILS);
         srRequest.setEmailId( MainActivity.prefConfig.readName());
         srRequest.setSrNumber(srNumber);
-        srRequest.setRConeId(rc1Id);
+        srRequest.setRConeId(RCOnee);
         srRequest.setRCtwoId(rc2Id);
         srRequest.setRCthirdId(rc3Id);
         srRequest.setReasonOf(binding.rfo.getText().toString());

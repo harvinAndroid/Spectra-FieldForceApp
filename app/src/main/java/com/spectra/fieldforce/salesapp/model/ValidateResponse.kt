@@ -12,5 +12,5 @@ data class ResponseX(
     val installation: String,
     val name: String,
     val userId: String,
-    val vendorCode: Any
+    val vendorCode: String
 )

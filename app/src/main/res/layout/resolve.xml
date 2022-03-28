@@ -48,14 +48,26 @@
             android:layout_marginTop="10dp"
             android:text="@string/rc_1"
             android:textStyle="bold" />
-
-        <Spinner
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/rc1"
             android:layout_width="180dp"
+            android:textColorHint="@color/colorBlack"
+            android:hint="Select Resolution Code 1"
+            android:drawableEnd="@drawable/search"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_12sdp"
+            android:completionThreshold="1"
             android:layout_below="@id/btnUnifySession"
             android:layout_marginStart="140dp"
-            android:layout_marginTop="10dp" />
+            />
+
+        <!-- <Spinner
+             android:id="@+id/rc1"
+             android:layout_width="180dp"
+             android:layout_height="wrap_content"
+             android:layout_below="@id/btnUnifySession"
+             android:layout_marginStart="140dp"
+             android:layout_marginTop="10dp" />-->
 
         <TextView
             android:layout_width="135dp"

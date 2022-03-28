@@ -236,7 +236,7 @@
     <string name="service_consumption">Service Consumption</string>
     <string name="misc_work_cost">Misc Work Cost</string>
     <string name="assigned">Assigned</string>
-    <string name="sales_app">Sales App</string>
+    <string name="sales_app">Sales (Business)</string>
     <string name="contact_information">Contact Information</string>
     <string name="lead_channel_source"><![CDATA[Lead Channel & Source]]></string>
     <string name="installation_address">Installation Address</string>

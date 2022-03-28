@@ -78,6 +78,7 @@
                 android:layout_height="@dimen/_28sdp"
                 android:text="Share"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_weight=".6"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"

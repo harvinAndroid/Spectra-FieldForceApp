@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
     @Override
     public void performLogin(String email, String name) {
         prefConfig.writeName(email);
-        prefConfig.writeUserName(name);
+        prefConfig.writeUserName(strUserName);
         startActivity(new Intent(activity, MainActivity.class));
         finish();
     }
@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
     @Override
     public void Login(String email, String name) {
         prefConfig.writeName(email);
-        prefConfig.writeUserName(name);
+        prefConfig.writeUserName(strUserName);
         finish();
         performLogin(email, name);
         startActivity(new Intent(activity, MainActivity.class));
@@ -147,13 +147,14 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                                 MainActivity.prefConfig.LoginStatus(true);
                                 SharedPreferences sp = getSharedPreferences(PREF , 0);
                                 SharedPreferences.Editor myEdit = sp.edit();
-                                myEdit.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
+                              /*myEdit.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
                                 myEdit.putString("FFA", response.body().getResponse().getFfaAuth());
                                 myEdit.putString("VenderCode", response.body().getResponse().getVendorCode());
                                 myEdit.putString("EnggId", response.body().getResponse().getUserID());
                                 myEdit.putString("EnggName",response.body().getResponse().getUsername());
                                 myEdit.putString("EmailId",response.body().getResponse().getName());
-                                myEdit.putString("EnggName",response.body().getResponse().getUsername());
+                                myEdit.putString("EnggName",response.body().getResponse().getUsername());*/
+                                myEdit.putString("EmailId",response.body().getResponse().getName());
                                 myEdit.putString("UserName",strUserName);
                                 myEdit.putString("Password",strPassword);
                                 myEdit.commit();

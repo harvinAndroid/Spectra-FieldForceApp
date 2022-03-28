@@ -850,7 +850,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                                 tv_update.visibility=View.VISIBLE
                                 tv_submit.visibility=View.VISIBLE
                                 binding.searchtoolbarcaf.downloadpdf.visibility = View.VISIBLE
-                                binding.searchtoolbarcaf.share.visibility = View.VISIBLE
+                                binding.searchtoolbarcaf.share.visibility = View.GONE
                                 linearwcr.visibility=View.VISIBLE
                                 linearnp.visibility=View.VISIBLE
                                 lineareir.visibility=View.VISIBLE

@@ -53,7 +53,8 @@ public class DashboardFragment extends Fragment {
         password = sp1.getString("Password", null);
         binding.linearSales.setOnClickListener(view1 -> validateSalesUser("S"));
         binding.linearFfa.setOnClickListener(view13 -> validateffa("F"));
-        binding.linearGpon.setOnClickListener(view12 -> validateGpon("I"));
+        binding.linearGpon.setOnClickListener(view12 ->
+                validateGpon("I"));
 
     }
 
@@ -69,6 +70,13 @@ public class DashboardFragment extends Fragment {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             if(response.body().getStatus().equals("Success")) {
+                                SharedPreferences sp = getActivity().getSharedPreferences(PREF , 0);
+                                SharedPreferences.Editor myEdit = sp.edit();
+                                myEdit.putString("VenderCode", response.body().getResponse().get(0).getVendorCode());
+                                myEdit.putString("EnggId", response.body().getResponse().get(0).getUserId());
+                                myEdit.putString("EnggName",response.body().getResponse().get(0).getName());
+                                myEdit.putString("EmailId",response.body().getResponse().get(0).getEmailId());
+                                myEdit.commit();
                                 Intent i = new Intent(getActivity(), SpectraFfaActivity.class);
                                 startActivity(i);
                                 getActivity().finish();
@@ -84,6 +92,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ValidateResponse> call, Throwable t) {
+               Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -101,6 +110,13 @@ public class DashboardFragment extends Fragment {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             if(response.body().getStatus().equals("Success")) {
+                                SharedPreferences sp = getActivity().getSharedPreferences(PREF , 0);
+                                SharedPreferences.Editor myEdit = sp.edit();
+                                myEdit.putString("VenderCode", response.body().getResponse().get(0).getVendorCode());
+                                myEdit.putString("EnggId", response.body().getResponse().get(0).getUserId());
+                                myEdit.putString("EnggName",response.body().getResponse().get(0).getName());
+                                myEdit.putString("EmailId",response.body().getResponse().get(0).getEmailId());
+                                myEdit.commit();
                                 Intent i = new Intent(getActivity(), BucketTabActivity.class);
                                 startActivity(i);
                                 getActivity().finish();
@@ -116,6 +132,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ValidateResponse> call, Throwable t) {
+               Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -133,6 +150,12 @@ public class DashboardFragment extends Fragment {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             if (response.body().getResponse().getStatusCode() == 200) {
+                                SharedPreferences sp = getActivity().getSharedPreferences(PREF , 0);
+                                SharedPreferences.Editor myEdit = sp.edit();
+                                myEdit.putString("EnggId", response.body().getResponse().getData().getEmployeeID());
+                                myEdit.putString("EnggName",response.body().getResponse().getData().getUserName());
+                                myEdit.putString("EmailId",response.body().getResponse().getData().getPrimaryEmail());
+                                myEdit.commit();
                                 Intent i = new Intent(getActivity(), SalesDashboard.class);
                                 startActivity(i);
                                 getActivity().finish();
@@ -148,7 +171,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ValidateSalesResponse> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
             }
         });
     }
