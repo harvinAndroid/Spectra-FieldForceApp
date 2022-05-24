@@ -9,7 +9,8 @@ data class UploadDocRequest(
     val groupId: String?,
     val password: String?,
     val relationshipId: String?,
-    val userName: String?
+    val userName: String?,
+    val safNo:String?
 )
 
 data class DocumentRequired(

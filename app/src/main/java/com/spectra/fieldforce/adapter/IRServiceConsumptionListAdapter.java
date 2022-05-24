@@ -114,21 +114,16 @@ public class IRServiceConsumptionListAdapter extends RecyclerView.Adapter<IRServ
                     try {
                         if (response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                              /*  AppCompatActivity activity1 = (AppCompatActivity) context;
-                                Bundle b = new Bundle();
-                                b.putString("canId", id);
-                                myFragment.setArguments(b);
-                                activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), WcrFragment.class.getSimpleName()).addToBackStack(null
-                                ).commit();*/
 
                             Bundle b = new Bundle();
                             b.putString("canId", canid);
                             b.putString("OrderId",orderId);
-
                             AppCompatActivity activity = (AppCompatActivity) context;
                             Fragment myFragment = new IRFragment();
                             myFragment.setArguments(b);
                             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
+                        }else if (response.body().getResponse().getStatusCode()==201) {
+                            Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
                         }
 
                     } catch (NumberFormatException e) {

@@ -25,11 +25,11 @@ import android.view.animation.AlphaAnimation
 
 import com.spectra.fieldforce.salesapp.activity.EditProduct
 
-class GetAllProductItemAdapter(private val items: List<ItemData>, private val activity: Context?,val OppId: String?,val Status: String?) : RecyclerView.Adapter<GetAllProductItemAdapter.ViewHolder>() {
+class GetAllProductItemAdapter(private val items: List<ItemData>, private val activity: Context?,var OppId: String?,var Opp: String?,val Status: String?) : RecyclerView.Adapter<GetAllProductItemAdapter.ViewHolder>() {
 
     lateinit var binding:ItemProductListBinding
-    private var inAnimation: AlphaAnimation? = null
-    private var outAnimation: AlphaAnimation? = null
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemProductListBinding.inflate(inflater)
@@ -54,12 +54,16 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
                 binding.tvEdit.visibility=View.VISIBLE
             }
 
-            val ProId:String = item.ProductId
+            val productId: String? = item.ProductId
             binding.imgDelete.setOnClickListener() {
                 val sp1: SharedPreferences? = activity?.getSharedPreferences("Login", 0)
-               val  userName = sp1?.getString("UserName", null)
+                val  userName = sp1?.getString("UserName", null)
                 val password = sp1?.getString("Password", null)
-                val addProductRequest = OppId?.let { it1 -> AddProductRequest(Constants.DELETE_OPPPRODUCT, Constants.AUTH_KEY, it1, password, ProId, userName) }
+
+                if(item.SiteId?.isNotEmpty() == true){
+                    Opp=""
+                }
+                val addProductRequest = Opp?.let { it1 -> AddProductRequest(Constants.DELETE_OPPPRODUCT, Constants.AUTH_KEY, it1, password, productId, userName,item.SiteId) }
                 val apiService = ApiClient.getClient().create(ApiInterface::class.java)
                 val call = apiService.deleteProduct(addProductRequest)
                 call.enqueue(object : Callback<DeleteProductResponse?> {
@@ -82,7 +86,6 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
                     }
 
                     override fun onFailure(call: Call<DeleteProductResponse?>, t: Throwable) {
-
                         Log.e("RetroError", t.toString())
                     }
                 })
@@ -91,10 +94,10 @@ class GetAllProductItemAdapter(private val items: List<ItemData>, private val ac
                 val intent = Intent(activity, EditProduct::class.java)
                 val bundle = Bundle()
                 bundle.putString("ProductName",item.ProductId )
-               // bundle.putString("Unit",item.Unit )
+                bundle.putString("SiteID",item.SiteId)
                 bundle.putString("Price",item.PricePerUnit )
                 bundle.putString("Discount",item.Discount )
-                bundle.putString("OppId",OppId )
+                bundle.putString("OppId",OppId)
                 intent.putExtras(bundle)
                 activity?.startActivity(intent)
             }

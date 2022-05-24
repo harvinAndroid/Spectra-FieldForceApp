@@ -105,8 +105,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> QualityParamFace;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private String strGuuId,strSegment, strHold,doa,strInsta,strfmsId,strSecFmsId,strCanId ,strholdId="",strProductSegment,straddition,OrderId,StatusOfReport;
+    private String strGuuId,strSegment,doa,strInsta,strfmsId,strSecFmsId,strCanId ,strholdId="",strProductSegment,straddition,OrderId,StatusOfReport;
     private ArrayList<String> itemType;
+    private Boolean strHold;
     private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
     private ArrayList<WcrResponse.ItemConsumtion> itemConsumtions;
     private ArrayList<WcrResponse.EquipmentDetailsList> equipmentDetailsLists;
@@ -321,8 +322,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             Toast.makeText(getContext(), "Please Enter Port Number CX End", Toast.LENGTH_LONG).show();
                         } else if (PortnumEnd.equals("Port Number (POD End)") || PortnumEnd.equals("")) {
                             Toast.makeText(getContext(), "Please Enter Port Number Pod End", Toast.LENGTH_LONG).show();
-                        }
-                        if (remark.isEmpty()) {
+                        }else if (remark.isEmpty()) {
                             Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
                         } else if (misc.isEmpty()) {
                             Toast.makeText(getContext(), "Please Enter The Misc Work Cost", Toast.LENGTH_LONG).show();
@@ -354,8 +354,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     } else if (strSegment.equals("Home")) {
                         if (strInsta.isEmpty() || strInsta.equals("Installation Code")) {
                             Toast.makeText(getContext(), "Please Enter Installation Code", Toast.LENGTH_LONG).show();
-                        }
-                        if (remark.isEmpty()) {
+                        } else if (remark.isEmpty()) {
                             Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
                         } else if (misc.isEmpty()) {
                             Toast.makeText(getContext(), "Please Enter The Misc Work Cost", Toast.LENGTH_LONG).show();
@@ -424,7 +423,16 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         });
         binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
             strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
-            if (strSegment.equals("Business")) {
+
+            if (strProductSegment.equals("Managed Wi-Fi Business")||strProductSegment.equals("Managed Office Solution")||
+                    strProductSegment.equals("Secured Managed Internet")) {
+                updateWcrEnginer(strInsta);
+            }/*else if(strInsta.isEmpty()|| strInsta.equals("Installation Code")){
+                Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
+            }*/else{
+                updateWcrEnginer(strInsta);
+            }
+           /* if (strSegment.equals("Business")) {
                 updateWcrEnginer(strInsta);
             } else if (strSegment.equals("Home")&& strProductSegment.equals("Managed Wi-Fi Business")) {
                     updateWcrEnginer(strInsta);
@@ -434,7 +442,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                 }else{
                     updateWcrEnginer(strInsta);
                 }
-            }
+            }*/
         });
 
         binding.tvWcrApproval.setOnClickListener(view -> SubmitApproval());
@@ -936,7 +944,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linea13.setVisibility(View.VISIBLE);
             binding.linea15.setVisibility(View.VISIBLE);
             binding.linearService.setVisibility(View.VISIBLE);
-            binding.linea18.setVisibility(View.VISIBLE);
+          //  binding.linea18.setVisibility(View.VISIBLE);
             binding.tvWcrApproval.setVisibility(View.GONE);
             binding.linearEquipment.setVisibility(View.GONE);
             binding.linearCustomerNetwork.setVisibility(View.GONE);
@@ -953,7 +961,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearSix.setVisibility(View.GONE);
             binding.linea13.setVisibility(View.GONE);
             binding.linea15.setVisibility(View.VISIBLE);
-            binding.linea18.setVisibility(View.VISIBLE);
+          //  binding.linea18.setVisibility(View.VISIBLE);
             binding.linea20.setVisibility(View.VISIBLE);
             binding.linearService.setVisibility(View.VISIBLE);
         }
@@ -1147,7 +1155,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     public void getWcrInfo() {
-       inProgress();
+        inProgress();
         AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
         accountInfoRequest.setAuthkey(Constants.AUTH_KEY);
         accountInfoRequest.setAction(Constants.GET_WCR_INFO);
@@ -1172,9 +1180,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutWcrFragmentCustomerDetails.setCustomer(response.body().getResponse().getWcr());
                             strGuuId = response.body().getResponse().getWcr().getWcrguidid();
                             strHold = response.body().getResponse().getWcr().getShowHold();
-                            if (strHold.equals("true")) {
+                            if (strHold==true) {
                                 binding.linea18.setVisibility(View.VISIBLE);
-                            } else {
+                            }else if(strHold==false){
                                 binding.linea18.setVisibility(View.GONE);
                             }
                             add = "0";

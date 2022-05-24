@@ -424,22 +424,7 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                                                 NRGP.add(itemName.getNRGP());
                                                 TemplateId.add(itemName.getTemplateId());
                                             }
-                                           /* for (ItemConsumptionDetails.Item itemName : itemlist)
-                                                item.add(itemName.getItemName());
-                                            for (ItemConsumptionDetails.Item sub_item : itemlist)
-                                                subItem.add(sub_item.getSub_item_name());
-                                            for (ItemConsumptionDetails.Item itemId : itemlist)
-                                                ItemID.add(itemId.getItemCode());
-                                            for (ItemConsumptionDetails.Item sub_itemId : itemlist)
-                                                SubItemID.add(sub_itemId.getSubItemCode());
-                                            for (ItemConsumptionDetails.Item maxacapp : itemlist)
-                                                MaxCap.add(maxacapp.getMaxcap());
-                                            for (ItemConsumptionDetails.Item itemType : itemlist)
-                                                ItemType.add(itemType.getItemType());
-                                            for (ItemConsumptionDetails.Item itemType : itemlist)
-                                                NRGP.add(itemType.getNRGP());
-                                            for (ItemConsumptionDetails.Item templateId : itemlist)
-                                                TemplateId.add(templateId.getTemplateId());*/
+
                                         }
                                     } else {
                                         if (equipmentresponselist != null || equipmentresponselist.size()!=0) {
@@ -453,23 +438,6 @@ public class ItemConsumptionFragment extends Fragment implements AdapterView.OnI
                                                 NRGP.add(itemName.getNRGP());
                                                 TemplateId.add(itemName.getTemplateId());
                                             }
-
-                                           /* for (ItemConsumptionDetails.Equipment itemName : equipmentresponselist)
-                                                item.add(itemName.getItemName());
-                                            for (ItemConsumptionDetails.Equipment sub_item : equipmentresponselist)
-                                                subItem.add(sub_item.getSub_item_name());
-                                            for (ItemConsumptionDetails.Equipment itemId : equipmentresponselist)
-                                                ItemID.add(itemId.getItemCode());
-                                            for (ItemConsumptionDetails.Equipment sub_itemId : equipmentresponselist)
-                                                SubItemID.add(sub_itemId.getSubItemCode());
-                                            for (ItemConsumptionDetails.Equipment maxxcapp : equipmentresponselist)
-                                                MaxCap.add(maxxcapp.getMaxcap());
-                                            for (ItemConsumptionDetails.Equipment itemType1 : equipmentresponselist)
-                                                ItemType.add(itemType1.getItemType());
-                                            for (ItemConsumptionDetails.Equipment nrgp : equipmentresponselist)
-                                                NRGP.add(nrgp.getNRGP());
-                                            for (ItemConsumptionDetails.Equipment templateId : equipmentresponselist)
-                                                TemplateId.add(templateId.getTemplateId());*/
                                         }
                                     }
                                     if (getActivity() != null) {

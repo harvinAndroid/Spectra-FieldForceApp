@@ -62,8 +62,7 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/company_name"
-                                android:text="@{company.data.Companyname}"
-
+                                android:text="@{company.data.get(0).companyname}"
                                 android:drawableEnd="@drawable/lock"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
@@ -167,7 +166,7 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/no_of_beds"
-                                android:text="@{company.data.noOfBeds}"
+                                android:text="@{company.data.get(0).noOfBeds}"
 
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
@@ -194,7 +193,7 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/no_of_users"
-                                android:text="@{company.data.noOfUsers}"
+                                android:text="@{company.data.get(0).noOfUsers}"
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
                                 android:textColor="@color/colorPrimaryDark"
@@ -222,9 +221,114 @@
                                 android:focusableInTouchMode="false"
                                 android:focusable="false"
                                 android:drawableEnd="@drawable/lock"
-                                android:text="@{company.data.businesssegment}"
+                                android:text="@{company.data.get(0).businesssegment}"
                                 android:imeOptions="actionNext"
                                 android:inputType="numberDecimal"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:id="@+id/vertical"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="@string/vertical"
+                                    android:imeOptions="actionNext"
+                                    android:focusable="false"
+                                    app:hintEnabled="true"
+                                    android:focusableInTouchMode="false"
+                                    android:drawableEnd="@drawable/lock"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:id="@+id/TypeOrder"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spTypeOrder"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etTypeOrder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="@string/type_order"
+                                    android:imeOptions="actionNext"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:drawableEnd="@drawable/ic_expand_down"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </FrameLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/poc"
+                            android:visibility="gone"
+                            android:textColorHint="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_wifi_ssd"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPoc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/poc_closure_date"
+                                android:imeOptions="actionNext"
+                                android:drawableEnd="@drawable/calender"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
@@ -250,7 +354,7 @@
                                 android:focusableInTouchMode="false"
                                 android:focusable="false"
                                 android:drawableEnd="@drawable/lock"
-                                android:text="@{company.data.subbusinesssegment}"
+                                android:text="@{company.data.get(0).subbusinesssegment}"
                                 android:imeOptions="actionNext"
                                 android:inputType="numberDecimal"
                                 android:textColor="@color/colorPrimaryDark"
@@ -316,7 +420,7 @@
                                 android:drawableEnd="@drawable/lock"
                                 android:focusableInTouchMode="false"
                                 android:focusable="false"
-                                android:text="@{company.data.lastMileType}"
+                                android:text="@{company.data.get(0).lastMileType}"
                                 android:imeOptions="actionNext"
                                 android:inputType="numberDecimal"
                                 android:textColor="@color/colorPrimaryDark"

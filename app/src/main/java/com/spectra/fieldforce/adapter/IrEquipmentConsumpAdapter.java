@@ -108,12 +108,6 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
                     try {
                         if (response.body().getResponse().getStatusCode()==200){
                             Toast.makeText(context,response.body().getResponse().getMessage(),Toast.LENGTH_LONG).show();
-                              /*  AppCompatActivity activity1 = (AppCompatActivity) context;
-                                Bundle b = new Bundle();
-                                b.putString("canId", id);
-                                myFragment.setArguments(b);
-                                activity1.getSupportFragmentManager().beginTransaction().add(R.id.frag_container, new WcrFragment(), WcrFragment.class.getSimpleName()).addToBackStack(null
-                                ).commit();*/
 
                             Bundle b = new Bundle();
                             b.putString("canId", canid);
@@ -121,9 +115,8 @@ public class IrEquipmentConsumpAdapter extends RecyclerView.Adapter<IrEquipmentC
                             AppCompatActivity activity = (AppCompatActivity) context;
                             Fragment myFragment = new IRFragment();
                             myFragment.setArguments(b);
+
                             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
-
-
                         }
 
                     } catch (NumberFormatException e) {

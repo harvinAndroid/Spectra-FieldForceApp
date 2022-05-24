@@ -48,10 +48,17 @@ interface AppConstants {
         const val UPDATE_CONTACT = "Update Contact"
         const val FEASIBILITY ="Feasbility"
         const val UPDATEPRODUCT = "Update Product"
+        const val SITE = "Site"
         const val GENERATEQUOTE ="Generate Quote"
         const val APPROVAL="DOA Approval"
         const val CAF = "All CAF"
         const val Caf = "CAF"
         const val BUSINESS="Business"
+        const val ADD_WAN ="Add Wan"
+        const val ADD_LAN="Add Lan"
+        const val CREATE_PRETASK ="Create Pre Sales"
+        const val ALL_SAF="ALL SAF"
+        const val SAF="SAF"
+
     }
 }

@@ -1,8 +1,5 @@
 package com.spectra.fieldforce.salesapp.activity;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.spectra.fieldforce.utils.AppConstants.EMPTY;
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_ONE;
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CODE_ONE;
 
@@ -16,7 +13,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -26,11 +22,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.webkit.MimeTypeMap;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -39,24 +32,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
-import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.activity.BaseActivity;
-import com.spectra.fieldforce.adapter.MyBucketListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.databinding.DocCafFragBinding;
-import com.spectra.fieldforce.model.gpon.response.GetMyBucketList;
 import com.spectra.fieldforce.salesapp.adapter.DocAdapter;
 import com.spectra.fieldforce.salesapp.model.AttachDoc;
-import com.spectra.fieldforce.salesapp.model.CafPdfRequest;
 import com.spectra.fieldforce.salesapp.model.CafRequest;
 import com.spectra.fieldforce.salesapp.model.DeleteProductResponse;
-import com.spectra.fieldforce.salesapp.model.DocResponse;
 import com.spectra.fieldforce.salesapp.model.DocumentData;
 import com.spectra.fieldforce.salesapp.model.DocumentRequired;
 import com.spectra.fieldforce.salesapp.model.GetDocCafResponse;
-import com.spectra.fieldforce.salesapp.model.GetPdfResponse;
-import com.spectra.fieldforce.salesapp.model.ReportResponse;
 import com.spectra.fieldforce.salesapp.model.UploadDocRequest;
 import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
@@ -66,18 +52,15 @@ import com.spectra.fieldforce.utils.PermissionUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+
 import java.util.Objects;
-import java.util.Random;
-import java.util.StringTokenizer;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,10 +80,9 @@ public class DocumentCafAct extends BaseActivity {
     private AlphaAnimation outAnimation;
    /* private  ViewDocumentAdapter myBucketListAdapter;*/
     private String userName,password;
-    Bitmap bitmap1,bitmap5;
+    Bitmap bitmap1;
     ArrayList<DocumentData> name;
      ArrayList<String> mFilepaths;
-    ArrayList<String> img;
     String encodedImage="";
     Boolean chtann,chk_tin,chk_caf,chk_po,chk_apnic,chk_photo,chk_osp,chk_netwrk,chk_adproof,chk_pan,chk_deed;
 
@@ -116,6 +98,9 @@ public class DocumentCafAct extends BaseActivity {
             strOppId = extras.getString("OppId");
             status= extras.getString("Status");
         }
+        binding.etSafnum.setVisibility(View.GONE);
+        binding.chkSaf.setVisibility(View.GONE);
+
         SharedPreferences sp1=this.getSharedPreferences("Login",0);
         userName =sp1.getString("UserName", null);
         password = sp1.getString("Password", null);
@@ -128,7 +113,7 @@ public class DocumentCafAct extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String att =  binding.etAttachfile.getText().toString();
+                String att =  Objects.requireNonNull(binding.etAttachfile.getText()).toString();
                 if(!att.isEmpty()){
                     Toast.makeText(DocumentCafAct.this,"Please wait while Uploading....",Toast.LENGTH_LONG).show();
                    UploadDoc();
@@ -149,7 +134,6 @@ public class DocumentCafAct extends BaseActivity {
         });
 
         binding.savedoc.setOnClickListener(view -> {
-
 
             updateDoc();
         });
@@ -173,7 +157,7 @@ public class DocumentCafAct extends BaseActivity {
                 encodedImage = Base64.encodeToString(pdfInBytes, Base64.NO_WRAP);
                 Calendar c = Calendar.getInstance();
                 int seconds = c.get(Calendar.SECOND);
-                String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
+               // String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
               //  currentImagePath =(seconds)+"/"+ "file";
                 currentImagePath = "file"+"doc("+(seconds)+"/)";
 
@@ -186,7 +170,7 @@ public class DocumentCafAct extends BaseActivity {
                 str_ext1=".jpg";
                 Calendar c = Calendar.getInstance();
                 int seconds = c.get(Calendar.SECOND);
-                String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
+             //   String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
                 currentImagePath =  "file"+"img("+(seconds)+"/)";
             }
          /*   String str = binding.etAttachfile.getText().toString();
@@ -220,7 +204,7 @@ public class DocumentCafAct extends BaseActivity {
     private void getDocumentDetails() {
         inProgress();
         CafRequest cafRequest = new CafRequest(Constants.GETDOCUMENT,Constants.AUTH_KEY,strCafId,
-                strOppId,password,userName);
+                strOppId,password,userName,"");
          ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<GetDocCafResponse> call = apiService.getDoc(cafRequest);
         call.enqueue(new Callback<GetDocCafResponse>() {
@@ -231,7 +215,8 @@ public class DocumentCafAct extends BaseActivity {
                         outProgress();
                         if (response.body().getStatus().equals("Success")) {
                             binding.setCafdoc(response.body().getResponse().getData());
-                            strCafId = response.body().getResponse().getData().getCafId();
+                           // strCafId = response.body().getResponse().getData().getCafId();
+                            binding.etCafnum.setText(strCafId);
                             if(response.body().getResponse().getData().getAccordingtoFirmType().getTanNo().equals("1")){
                                 binding.ckTan.setChecked(true);
                             }
@@ -378,7 +363,7 @@ public class DocumentCafAct extends BaseActivity {
                 chk_deed,chk_photo,"","","",chtann, chk_tin);
 
         UploadDocRequest uploadDocRequest = new UploadDocRequest(Constants.UPDATEDOCUMENT,Constants.AUTH_KEY,
-                strCafId,"",doc,"",password,"",userName);
+                "",strCafId,doc,"",password,"",userName,"");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<DeleteProductResponse> call = apiService.uploadDoc(uploadDocRequest);
         call.enqueue(new Callback<DeleteProductResponse>() {
@@ -508,17 +493,6 @@ public class DocumentCafAct extends BaseActivity {
                             }else if(filepath.contains("xl")){
                                 str_ext1=".docx";
                             }
-                           /* Uri file = Uri.fromFile(new File(filepath));
-                            str_ext1 = MimeTypeMap.getFileExtensionFromUrl(file.toString());
-                            binding.etAttachfile.setText(filepath);
-                            try {
-                                bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show();
-                            }*/
-                           // Uri pickedImage = data.getData();
-                            // Let's read picked image path using content resolver
                             String[] filePath = { MediaStore.Images.Media.DATA };
                             Cursor cursor = getContentResolver().query(uri, filePath, null, null, null);
                             cursor.moveToFirst();
@@ -553,42 +527,7 @@ public class DocumentCafAct extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-           /* if (requestCode == REQUEST_CODE_ONE) {
-                try {
-                    uri = data.getData();
-                    filepath = FilePath.getPath(this, uri);
-                    if (filepath != null) {
-                        if (FileUtils.checkExtension(this, uri)) {
-                            Uri file = Uri.fromFile(new File(filepath));
-                            String ext = MimeTypeMap.getFileExtensionFromUrl(file.toString());
-                            binding.etAttachfile.setText(filepath);
-                            mFilepaths.add(filepath);
-                            currentImagePath = filepath;
 
-                            try {
-                                bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show();
-                            }
-                        }else {
-                            displayToast(R.string.valid_formats);
-                        }
-                    }else {
-                        displayToast(R.string.upload_files_message);
-                    }
-                } catch (Exception EX) {
-                    EX.getStackTrace();
-                }
-            }else if (requestCode == REQUEST_CAMERA_PERMISSION_ONE) {
-                try {
-                    bitmap5 = BitmapFactory.decodeFile(currentImagePath);
-                    binding.etAttachfile.setText(currentImagePath);
-                    mFilepaths.add(currentImagePath);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }*/
             }
         }
     }

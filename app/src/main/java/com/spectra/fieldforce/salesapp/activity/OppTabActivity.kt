@@ -18,6 +18,7 @@ class OppTabActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.provision_fault_tab_screen)
         searchtoolbar.rl_back.setOnClickListener(this)
         searchtoolbar.tv_lang.text= AppConstants.ALL_OPPURTUNITY
+
         tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("All Opportunity")) }
         tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("Open")) }
         tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("Won")) }
@@ -28,9 +29,10 @@ class OppTabActivity : AppCompatActivity(), View.OnClickListener {
         viewPager.adapter = adapter
 
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-
+        viewPager.offscreenPageLimit=4
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
+
                 viewPager.currentItem = tab.position
             }
             override fun onTabUnselected(tab: TabLayout.Tab) {

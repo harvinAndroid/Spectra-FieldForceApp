@@ -19,19 +19,13 @@ import com.spectra.fieldforce.salesapp.model.UpdateProductRequest
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.edit_product_details.*
-import kotlinx.android.synthetic.main.flr_fragment.*
-import kotlinx.android.synthetic.main.lead_contact_info.view.*
-import kotlinx.android.synthetic.main.lead_demo_fragment.*
-import kotlinx.android.synthetic.main.op_product_line_item_row.view.*
-import kotlinx.android.synthetic.main.oppurtunity_contact_info_row.view.*
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.*
 import kotlinx.android.synthetic.main.toolbar.view.*
 
 class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnItemSelectedListener{
     lateinit var  binding:EditProductDetailsBinding
-    var str_Opp_Id : String? = null
+    var strOppId : String? = null
     var str_Product : String? = null
-    var str_Unit : String? = null
+    var strSiteId : String? = null
     var str_Price : String? = null
     var str_Discount : String? = null
     var str_pricing :String?= null
@@ -51,13 +45,15 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
         password = sp1.getString("Password", null)
         val extras = intent.extras
         if (extras != null) {
-            str_Opp_Id = extras.getString("OppId")
+            strOppId = extras.getString("OppId")
             str_Product = extras.getString("ProductName")
             str_Price = extras.getString("Price")
             str_Discount = extras.getString("Discount")
+            strSiteId = extras.getString("SiteID")
             binding.etProNm.setText(str_Product)
             binding.etPrice.setText(str_Price)
             binding.etDiscount.setText(str_Discount)
+
             bt_pro_submit.setOnClickListener {
                 updateProduct()
             }
@@ -72,17 +68,23 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
         sp_pricing.adapter = pricingAdapter
     }
 
-    fun updateProduct () {
+    private fun updateProduct () {
 
         val discount = et_discount.text.toString()
         val price = et_price.text.toString()
         val product = et_pro_nm.text.toString()
+        var str_Opp_Id:String?=null
+        str_Opp_Id=strOppId
 
-        val updateProductRequest = str_Opp_Id?.let {
+
+        if(strSiteId?.isNotBlank() == true){
+            str_Opp_Id=""
+        }
+        val updateProductRequest =
             str_pricing?.let { it1 ->
-                UpdateProductRequest(Constants.UPDATE_OPPPRODUCT, Constants.AUTH_KEY,discount,it,
-                        password,price, it1,product,"",userName)
-            }
+                UpdateProductRequest(Constants.UPDATE_OPPPRODUCT, Constants.AUTH_KEY,discount,str_Opp_Id,
+                        password,price, it1,product,"",userName,strSiteId)
+
         }
 
 
@@ -97,7 +99,7 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
                             Toast.makeText(this@EditProduct,img,Toast.LENGTH_LONG).show()
                             Log.e("image", img)
                             val intent = Intent(this@EditProduct, OpportunityActivity::class.java)
-                            intent.putExtra("OppId",str_Opp_Id)
+                            intent.putExtra("OppId",strOppId)
                             startActivity(intent)
                             finish()
                         } catch (e: Exception) {

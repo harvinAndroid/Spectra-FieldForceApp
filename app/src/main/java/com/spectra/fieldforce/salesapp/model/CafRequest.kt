@@ -6,5 +6,6 @@ data class CafRequest(
         val cafNo: String?,
         val oppid: String?,
         val password: String?,
-        val userName: String?
+        val userName: String?,
+        val safNo: String?
 )

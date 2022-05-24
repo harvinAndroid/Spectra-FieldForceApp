@@ -23,6 +23,9 @@ import com.spectra.fieldforce.salesapp.activity.SalesDashboard
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,14 +34,13 @@ import kotlin.collections.ArrayList
 
 class GetAllCAFFrag : Fragment(),View.OnClickListener {
     lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
-    private var lead : ArrayList<String>? = null
     private var allCaf: ArrayList<CafData>? = null
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
-    var strtag :String?=null
-    var str_Search :String?=null
-    var userName: String? = null
-    var password : String? = null
+    private var strTag :String?=null
+    private var strSearch :String?=null
+    private var userName: String? = null
+    private var password : String? = null
     companion object {
         fun newInstance(): GetAllCAFFrag {
             return newInstance()
@@ -57,49 +59,66 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bundle = arguments
-        str_Search = bundle?.getString("STATUS")
-        strtag = bundle?.getString("TAG")
+        strSearch = bundle?.getString("STATUS")
+        strTag = bundle?.getString("TAG")
         val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
         userName = sp1?.getString("UserName", null)
         password = sp1?.getString("Password", null)
-        if(strtag=="1"){
+        if(strTag=="1"){
             linearrrrr.visibility=View.GONE
         }
-        getCAFList("")
-        tv_count.setOnClickListener{
-            val search = tv_search.text.toString()
-            getCAFList(search)
-        }
+        executeSearch()
+        executeTask()
 
         fab_create_lead.visibility =View.GONE
-        tv_search.addTextChangedListener(object : TextWatcher {
 
-            override fun afterTextChanged(s: Editable) {
+    }
+
+    private fun executeTask(){
+        CoroutineScope(Dispatchers.IO).launch {
+
+            getCAFList("")
+
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            tv_count.setOnClickListener{
                 val search = tv_search.text.toString()
-                if(search.isBlank()){
-                    tv_msg.visibility=View.GONE
-                    getCAFList("")
+                getCAFList(search)
+            }
+        }
+    }
+    private fun executeSearch(){
+        CoroutineScope(Dispatchers.IO).launch {
+            tv_search.addTextChangedListener(object : TextWatcher {
+
+                override fun afterTextChanged(s: Editable) {
+                    val search = tv_search.text.toString()
+                    if(search.isBlank()){
+                        tv_msg.visibility=View.GONE
+                        getCAFList("")
+                    }
                 }
-            }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
+                override fun beforeTextChanged(s: CharSequence, start: Int,
+                                               count: Int, after: Int) {
+                }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+                override fun onTextChanged(s: CharSequence, start: Int,
+                                           before: Int, count: Int) {
 
-            }
-        })
+                }
+            })
+        }
     }
 
 
     fun getCAFList(search: String) {
+        try{
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCAF, Constants.AUTH_KEY,str_Search,password,userName,search)
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCAF, Constants.AUTH_KEY,strSearch,password,userName,search)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllCAF(getAllLeadRequest)
@@ -133,6 +152,9 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
                 Log.e("RetroError", t.toString())
             }
         })
+        }catch (E: Exception){
+            E.printStackTrace()
+        }
     }
 
     private fun setAdapter(allCaf: ArrayList<CafData>, context: Context?) {

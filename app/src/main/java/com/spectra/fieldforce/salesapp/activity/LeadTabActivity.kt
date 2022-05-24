@@ -12,6 +12,9 @@ import com.spectra.fieldforce.salesapp.adapter.LeadTabAdapter
 import com.spectra.fieldforce.utils.AppConstants
 import kotlinx.android.synthetic.main.provision_fault_tab_screen.*
 import kotlinx.android.synthetic.main.toolbar.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LeadTabActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -21,27 +24,32 @@ class LeadTabActivity : AppCompatActivity(), View.OnClickListener {
         searchtoolbar.rl_back.setOnClickListener(this)
         searchtoolbar.tv_lang.text= AppConstants.ALL_LEADS
 
-        tabLayout.addTab(tabLayout.newTab().setText("All Leads"))
-        tabLayout.addTab(tabLayout.newTab().setText("Open"))
-        tabLayout.addTab(tabLayout.newTab().setText("Qualified"))
-        tabLayout.addTab(tabLayout.newTab().setText("DisQualified"))
-        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+            tabLayout.addTab(tabLayout.newTab().setText("All Leads"))
+            tabLayout.addTab(tabLayout.newTab().setText("Open"))
+            tabLayout.addTab(tabLayout.newTab().setText("Qualified"))
+            tabLayout.addTab(tabLayout.newTab().setText("DisQualified"))
+            tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
-        val adapter = LeadTabAdapter(this, supportFragmentManager, tabLayout.tabCount)
+            val adapter = LeadTabAdapter(this, supportFragmentManager, tabLayout.tabCount)
+        CoroutineScope(Dispatchers.IO).launch {
         viewPager.adapter = adapter
+            viewPager.offscreenPageLimit = 4
+            viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+            tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
 
-        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-        tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager.currentItem = tab.position
-            }
-            override fun onTabUnselected(tab: TabLayout.Tab) {
+                    viewPager.currentItem = tab.position
+                }
 
-            }
-            override fun onTabReselected(tab: TabLayout.Tab) {
+                override fun onTabUnselected(tab: TabLayout.Tab) {
 
-            }
-        })
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab) {
+
+                }
+            })
+        }
 
     }
 

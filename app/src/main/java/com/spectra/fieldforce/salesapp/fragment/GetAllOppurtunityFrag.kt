@@ -28,11 +28,15 @@ import kotlinx.android.synthetic.main.fragment_all_lead_list.tv_count
 import kotlinx.android.synthetic.main.fragment_all_lead_list.tv_msg
 import kotlinx.android.synthetic.main.fragment_all_lead_list.tv_search
 import kotlinx.android.synthetic.main.fragment_all_oppurtunity_list.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 
 class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
     lateinit var  binding: FragmentAllOppurtunityListBinding
@@ -44,6 +48,7 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
     var password : String? = null
     var strtag :String?=null
     var str_Search :String?=null
+
     companion object {
         fun newInstance(): GetAllOppurtunityFrag {
             return newInstance()
@@ -71,31 +76,49 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
         if(strtag=="1"){
             linearrrrr.visibility=View.GONE
         }
-        tv_count.setOnClickListener{
-            val search = tv_oppsearch.text.toString()
-            getAlloppurtunityList(search)
+       excuteSearch()
+        excuteTask()
+
+
+    }
+
+    private fun excuteSearch(){
+        CoroutineScope(Dispatchers.IO).launch {
+            getAlloppurtunityList("")
+
         }
-        getAlloppurtunityList("")
-        tv_oppsearch.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable) {
+        CoroutineScope(Dispatchers.IO).launch {
+            tv_count.setOnClickListener{
                 val search = tv_oppsearch.text.toString()
-                if(search.isBlank()){
-                    tv_msg.visibility=View.GONE
-                    getAlloppurtunityList("")
+                getAlloppurtunityList(search)
+            }
+        }
+
+    }
+
+    fun excuteTask(){
+        CoroutineScope(Dispatchers.IO).launch {
+            tv_oppsearch.addTextChangedListener(object : TextWatcher {
+
+                override fun afterTextChanged(s: Editable) {
+                    val search = tv_oppsearch.text.toString()
+                    if(search.isBlank()){
+                        tv_msg.visibility=View.GONE
+                        getAlloppurtunityList("")
+                    }
                 }
-            }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
+                override fun beforeTextChanged(s: CharSequence, start: Int,
+                                               count: Int, after: Int) {
+                }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+                override fun onTextChanged(s: CharSequence, start: Int,
+                                           before: Int, count: Int) {
 
-            }
-        })
+                }
+            })
 
+        }
     }
 
     fun getAlloppurtunityList(search: String) {
@@ -119,7 +142,9 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
                         val msg = response.body()?.Response?.Message
                         if(response.body()?.Response?.StatusCode==200) {
                             alloppurtunity = response.body()?.Response?.Data
-                            setAdapter(alloppurtunity, context)
+                            if(alloppurtunity!=null) {
+                                setAdapter(alloppurtunity, context)
+                            }
                         }else if(response.body()?.Response?.StatusCode==400) {
                             Toast.makeText(context,msg, Toast.LENGTH_LONG).show()
                             tv_msg.visibility=View.GONE

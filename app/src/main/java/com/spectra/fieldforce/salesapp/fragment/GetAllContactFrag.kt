@@ -28,11 +28,15 @@ import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
 import kotlinx.android.synthetic.main.lead_contact_info.view.*
 import kotlinx.android.synthetic.main.lead_demo_fragment.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 
 class GetAllContactFrag : Fragment(),View.OnClickListener {
 lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
@@ -73,18 +77,14 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
             linearrrrr.visibility=View.GONE
             fab_create_lead.visibility=View.GONE
         }
+        excuteSearch()
+        excuteTask()
        /* searchtoolbarlead_list.rl_back.setOnClickListener(this)
         searchtoolbarlead_list.tv_lang.text= AppConstants.ALL_LEADS
 
      */
        //
-         getAllLeadList("")
-       // init()
 
-        tv_count.setOnClickListener{
-            val search = tv_search.text.toString()
-            getAllLeadList(search)
-        }
 
         fab_create_lead.setOnClickListener {
             try {
@@ -98,31 +98,51 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         }
        // val search = tv_search.text.toString()
 
-        tv_search.addTextChangedListener(object : TextWatcher {
 
-            override fun afterTextChanged(s: Editable) {
+
+    }
+    fun excuteSearch(){
+        CoroutineScope(Dispatchers.IO).launch {
+            getAllLeadList("")
+
+
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            tv_count.setOnClickListener{
                 val search = tv_search.text.toString()
-                if(search.isBlank()){
-                    tv_msg.visibility=View.GONE
-                    getAllLeadList("")
+                getAllLeadList(search)
+            }
+        }
+
+        }
+
+    fun excuteTask(){
+        CoroutineScope(Dispatchers.IO).launch {
+            tv_search.addTextChangedListener(object : TextWatcher {
+
+                override fun afterTextChanged(s: Editable) {
+                    val search = tv_search.text.toString()
+                    if(search.isBlank()){
+                        tv_msg.visibility=View.GONE
+                        getAllLeadList("")
+                    }
                 }
-            }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
+                override fun beforeTextChanged(s: CharSequence, start: Int,
+                                               count: Int, after: Int) {
+                }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+                override fun onTextChanged(s: CharSequence, start: Int,
+                                           before: Int, count: Int) {
 
-            }
-        })
-
+                }
+            })
+        }
     }
 
 
-
     fun getAllLeadList(srch: String) {
+        try{
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
@@ -161,6 +181,9 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
                 Log.e("RetroError", t.toString())
             }
         })
+        }catch (E: Exception){
+            E.printStackTrace()
+        }
     }
    /* private fun init() {
         leadContactInfoBinding.swipeRefreshLayout.setEnabled(true)

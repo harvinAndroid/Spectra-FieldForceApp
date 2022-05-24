@@ -74,13 +74,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Notification -->
+        </activity>
         <service android:name=".service.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service
             android:name="com.google.android.gms.measurement.AppMeasurementService"
             android:enabled="true"
@@ -99,45 +100,65 @@
         <activity
             android:name=".activity.Activity_Resolve"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".salesapp.activity.EditProduct"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.DashBoardActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".salesapp.activity.DocumentSafActivity"
+            android:screenOrientation="portrait" />
+
+
         <activity
             android:name=".salesapp.activity.UpdateLeadActivity"
             android:screenOrientation="portrait" />
-          <!--  android:label="Update Flr"-->
 
         <activity
             android:name=".activity.ProvisioningTabActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".salesapp.activity.OpportunityActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".salesapp.activity.DocumentCafAct"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".salesapp.activity.SiteOpportunityAct"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.BucketTabActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.GetInsActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.ProvisioningScreenActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
         <activity
             android:name=".activity.SpectraFfaActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.ProvisioningMainActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".salesapp.activity.SalesDashboard"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".salesapp.activity.CAFActivity"
             android:screenOrientation="portrait" />
@@ -149,9 +170,11 @@
         <activity
             android:name=".salesapp.activity.CafTabActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".salesapp.activity.OppTabActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".salesapp.activity.ContactTabActivity"
             android:screenOrientation="portrait" />
@@ -160,14 +183,24 @@
             android:name=".salesapp.activity.UpdateContactActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".salesapp.activity.SafTabActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".salesapp.activity.SAFActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
+
         </provider>
 
     </application>

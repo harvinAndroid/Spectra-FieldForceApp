@@ -64,8 +64,8 @@ public class DocAdapter extends RecyclerView.Adapter<DocAdapter.MyViewHolder> {
     ActivityAllDocumentListBinding binding;
     String gallery;
 
-    public DocAdapter(DocumentCafAct activity, ArrayList<AttachDoc> docResponses) {
-        this.context=activity;
+    public DocAdapter(Context context, ArrayList<AttachDoc> docResponses) {
+        this.context=context;
         this.attachDocs=docResponses;
     }
 

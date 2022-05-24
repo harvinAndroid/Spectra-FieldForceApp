@@ -4,9 +4,11 @@ data class CreateLeadRequest(
     val Action: String?,
     val Authkey: String?,
     val leadId:String?,
+    val verticalID:String?,
     val CompanyDetail: CompanyDetail?,
     val ContactAddress: ContactAddress?,
     val InstallationAddress: InstallationAddress?,
+    val SDWAN:SDWAN?,
     val businessSegment: String?,
     val companyID: String?,
     val contactPersonName: String?,
@@ -37,6 +39,26 @@ data class CompanyDetail(
     val firmType: String?,
     val industryType: String?,
     val jobTitle: String?
+)
+
+data class SDWAN(
+    val noOfLocation:String?,
+    val customerILLservices:String?,
+    val numberOfLinksIll:String?,
+    val customerBroadbandServices:String?,
+    val numberOfLinksBroadbandServices:String?,
+    val linksManagedLinks:String?,
+    val customerRoutingServices:String?,
+    val firewallSetToExpire:String?,
+    val indicationITSpent:String?,
+    val currentOperationalCity:String?,
+    val networkSecurityServices:String?,
+    val applicationsHosted:String?,
+    val itSupport:String?,
+    val redundancyMPLS:String?,
+    val mPLSBackbone:String?,
+    val mPLSContract:String?,
+    val sdwanRemarks:String?,
 )
 
 data class ContactAddress(

@@ -23,11 +23,8 @@ import com.spectra.fieldforce.salesapp.model.UpdateFlrRequest
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.flr_fragment.*
-import kotlinx.android.synthetic.main.opp_other_info_row.view.*
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.*
 import kotlinx.android.synthetic.main.toolbar.view.*
 import java.util.*
-import com.spectra.fieldforce.activity.MainActivity
 import android.widget.TimePicker
 
 import android.app.TimePickerDialog
@@ -35,8 +32,6 @@ import android.content.SharedPreferences
 import android.text.format.DateFormat
 
 import android.widget.DatePicker
-import kotlinx.android.synthetic.main.lead_demo_fragment.*
-import kotlinx.android.synthetic.main.lead_other_details_row.view.*
 
 
 class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener,DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
@@ -192,22 +187,6 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
                 e.printStackTrace()
             }
 
-       /* et_prf_date_tm.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            year = calendar[Calendar.YEAR]
-            month = calendar[Calendar.MONTH]
-            day = calendar[Calendar.DAY_OF_MONTH]
-            val datePickerDialog =
-                year?.let { it1 -> month?.let { it2 ->
-                    day?.let { it3 ->
-                        DatePickerDialog(requireContext(), this, it1,
-                            it2, it3
-                        )
-                    }
-                } }
-            datePickerDialog?.show()
-
-        }*/
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }

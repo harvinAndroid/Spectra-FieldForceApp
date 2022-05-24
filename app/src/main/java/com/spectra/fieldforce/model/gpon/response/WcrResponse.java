@@ -732,11 +732,11 @@ public class WcrResponse {
 
         private String DOAFlag;
 
-        public String getShowHold() {
+        public Boolean getShowHold() {
             return ShowHold;
         }
 
-        private String  ShowHold;
+        private Boolean  ShowHold;
 
         public String getBusinessSegment() {
             return businessSegment;

@@ -3,7 +3,9 @@ package com.spectra.fieldforce.salesapp.activity
 
 import GetAllFeasibiltyAdapter
 import GetAllQuoteAdapter
+import GetAllSiteAdapter
 import GetDOAViewAdapter
+import GetPreSaleTaskAdapter
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -29,38 +31,44 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
-import com.spectra.fieldforce.databinding.OppurtunityDemoFragmentBinding
+import com.spectra.fieldforce.databinding.OppurtunityFragmentBinding
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse
 import com.spectra.fieldforce.salesapp.adapter.GetAllProductItemAdapter
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
+import kotlinx.android.synthetic.main.main_site.*
 import kotlinx.android.synthetic.main.op_product_line_item_row.*
 import kotlinx.android.synthetic.main.op_product_line_item_row.view.*
 import kotlinx.android.synthetic.main.opp_add_doa.*
 import kotlinx.android.synthetic.main.opp_company_details_row.*
 import kotlinx.android.synthetic.main.opp_company_details_row.view.*
-import kotlinx.android.synthetic.main.opp_company_details_row.view.et_firm_type
 import kotlinx.android.synthetic.main.opp_other_info_row.*
 import kotlinx.android.synthetic.main.opp_other_info_row.view.*
-import kotlinx.android.synthetic.main.opp_other_info_row.view.et_media
+import kotlinx.android.synthetic.main.opp_sales_task.view.*
+import kotlinx.android.synthetic.main.opp_site.view.*
+import kotlinx.android.synthetic.main.opp_site_details.view.*
 import kotlinx.android.synthetic.main.oppurtunity_contact_info_row.*
 import kotlinx.android.synthetic.main.oppurtunity_contact_info_row.view.*
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.*
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linadd
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linear_companydetails
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linear_contact_person_address
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linear_insta_addres
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linearcontactinfo
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linearfive
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linearfouraddres
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linearsix
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.linearthree
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.lineartwo
-import kotlinx.android.synthetic.main.oppurtunity_demo_fragment.tv_opp_save
+import kotlinx.android.synthetic.main.oppurtunity_fragment.*
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linadd
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linear_companydetails
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linear_contact_person_address
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linear_insta_addres
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linearcontactinfo
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linearfive
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linearfouraddres
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linearsix
+import kotlinx.android.synthetic.main.oppurtunity_fragment.linearthree
+import kotlinx.android.synthetic.main.oppurtunity_fragment.lineartwo
+import kotlinx.android.synthetic.main.oppurtunity_fragment.tv_opp_save
 import kotlinx.android.synthetic.main.oppurtunity_detail_row.view.*
 import kotlinx.android.synthetic.main.update_leadtoolbar.*
 import kotlinx.android.synthetic.main.update_leadtoolbar.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,16 +79,19 @@ import kotlin.collections.ArrayList
 
 class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.OnItemSelectedListener{
 
-    lateinit var  binding: OppurtunityDemoFragmentBinding
-    var str_Opp_Id : String? = null
-    var str_Lead_Id : String? = null
+    lateinit var  binding: OppurtunityFragmentBinding
+    private var strOppId : String? = null
+    private var subBusSegment:String?=null
+    private var strLeadId : String? = null
     private var cityList : ArrayList<CityData>? = null
     private var city : ArrayList<String>? = null
     private var cityCode : ArrayList<String>? = null
     private var Oprationcity : ArrayList<String>? = null
     private var generatequote: ArrayList<QuoteData>? = null
+    private var allSiteList: ArrayList<SiteData>? = null
     private var allFeasibility: ArrayList<FeasData>? = null
     private var allApproval: ArrayList<AppData>? = null
+    private var allPreSales: ArrayList<PreSaleData>? = null
     var strOperationCity = ""
     var strCity = ""
     var strArea= ""
@@ -88,13 +99,13 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     var strBuilding = ""
     var strPrice = ""
     var strIndustry =""
-    var strRedundancy =""
+    private var strRedundancy =""
     var strBusinessSement =""
     var strCreateAreaOrBuilding=""
     var strTPFeasibilty =""
     var redundancy :Boolean? = null
     var strApprovalStatus :String? = null
-    var str_salutation :String? = null
+    var strSalutation :String? = null
     var str_customer_segmentid :String? = null
     var str_serv_pro : String? = null
     var str_createbuilding : Boolean? = null
@@ -106,11 +117,10 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     var strcontact_state:String? = null
     var strcontact_stateCode:String? = null
     var str_city_code : String? = null
-    var  buildingname : String? = null
+    var buildingname : String? = null
     var areaname: String?=null
     var isdiscount:Boolean=false
     var isStatus:Boolean=false
-    var isRejected:Boolean=false
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
     private var allProductItem: ArrayList<ItemData>? = null
@@ -123,6 +133,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     var str_cmpnyself : String? = null
     var str_price : String? = null
     var str_product : String? = null
+    private var strType :String ? = null
     var strLost = ""
     var status :String? = null
     var strStatus :String ? = null
@@ -130,7 +141,26 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     var frwaws:String? = null
     var renewal:String? = null
     var polockdate:String? = null
+    var Poc:String?=null
+    var mpls :String ?=null
+    var firesSet :String ?=null
     var reas:String? = null
+    var strVertical:String ? = null
+    var strIllServices :String? = null
+    var strCityReqd :String? = null
+    var strNetworkSecurity :String? = null
+    var strHosted :String? = null
+    var strBackBone:String ? = null
+    var strCustomer:String? = null
+    var strContract :String? = null
+    var strRoutingServices :String? = null
+    var strBroadServices :String? = null
+    var strLinksManaged :String? = null
+    private var RequiredCity : ArrayList<String>? = null
+    private var RequiredCityCode :ArrayList<String>? = null
+    private var verticalList : ArrayList<VerticalData>? = null
+    private var vertical : ArrayList<String>? = null
+    private var verticalId : ArrayList<String>? = null
     private var areaList : ArrayList<AreaData>? = null
     private var area : ArrayList<String>? = null
     private var areaCode : ArrayList<String>? = null
@@ -148,8 +178,8 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     var list_of_salutation = arrayOf("Select Salutation","Mr.", "Mrs.", "Miss")
     var list_of_salutation_id = arrayOf("0","1","2","3")
     var str_media : String? = null
-    var userName : String? = null
-    var password : String? = null
+    private var userName : String? = null
+    private var password : String? = null
     var list_of_redundancy = arrayOf("Select Option","Yes","No")
     var list_of_redundancy_value = arrayOf("","1","0")
     var list_of_media = arrayOf("Select Media","Fibre","RF")
@@ -194,7 +224,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.oppurtunity_demo_fragment)
+        binding = DataBindingUtil.setContentView(this, R.layout.oppurtunity_fragment)
         searchtoolbaropp.rl_back.setOnClickListener(this)
         searchtoolbaropp.tv_lang.text= AppConstants.OPPURTUNUTY
         val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
@@ -202,28 +232,158 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         password = sp1.getString("Password", null)
         val extras = intent.extras
         if (extras != null) {
-             str_Opp_Id = extras.getString("OppId")
-             str_Lead_Id = extras.getString("LeadId")
+            strOppId = extras.getString("OppId")
+            strLeadId = extras.getString("LeadId")
         }
-        listener()
-        getOppurtunity()
-        getProductAddedList()
-        init()
-        getAllfeasList()
+        funcall()
+
       //swipe()
         flr.setOnClickListener {
-           caf()
+            CoroutineScope(Dispatchers.IO).launch {
+                if(subBusSegment=="SDWAN"){
+                    saf()
+                }else {
+                    caf()
+                }
+            }
         }
         if (checkPermission()) {
           //  Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
         } else {
-            requestPermission()
+            CoroutineScope(Dispatchers.IO).launch {
+                requestPermission()
+            }
+        }
+        binding.oppSite.addSite.setOnClickListener {
+
+            val intent = Intent(this@OpportunityActivity, SiteOpportunityAct::class.java)
+            val bundle = Bundle()
+            bundle.putString("OppId",strOppId )
+            //bundle.putString("SiteID", )
+            bundle.putString("Status","1")
+            intent.putExtras(bundle)
+            startActivity(intent)
+            finish()
         }
     }
+    fun funcall(){
+
+            listener()
+            init()
+        CoroutineScope(Dispatchers.IO).launch{
+            getOppurtunity()
+            getProductAddedList()
+            getAllfeasList()
+        }
+        buttonlistener()
+    }
+
+    private fun buttonlistener(){
+        layout_product_line.add_procuct.setOnClickListener{
+            val product = layout_product_line.et_product_list.text.toString()
+            if(product.isBlank()||product==("Select Product")){
+                Toast.makeText(this, "Please Select Product", Toast.LENGTH_SHORT).show()
+            }else{
+                addProduct()
+            }
+        }
+
+        binding.feasibility.addFes.setOnClickListener{
+                addFeasibility()
+        }
+
+        binding.quote.addQuote.setOnClickListener{
+                addQuote()
+
+        }
+
+        tv_won.setOnClickListener{
+                wonOpp()
+        }
+
+        tv_reopen.setOnClickListener{
+                reOpen()
+        }
+
+
+        et_lost.setOnClickListener {
+                sp_lost.performClick()
+
+        }
+
+        oppSale.add_preTask.setOnClickListener {
+                    createPreTask()
+        }
+
+        sp_lost.onItemSelectedListener = this
+
+        tv_opp_save.setOnClickListener  {
+                save()
+        }
+
+        tv_opp_submit.setOnClickListener{
+            if(fesstatus=="1") {
+                if(strOperationCity=="true"){
+                    if(strArea == "Other" || strBuilding == "Other" && (strCreateAreaOrBuilding=="false")) {
+                        Toast.makeText(this@OpportunityActivity, "For DOA submission you need to add Area or Building as they are still showing as Other", Toast.LENGTH_SHORT).show()
+                    }else{
+                        CoroutineScope(Dispatchers.IO).launch {
+                            submitApproval()
+                        }
+                    }
+                }else if(strOperationCity=="false"){
+                    if (/* strBusinessSement != "SDWAN"
+                        &&*/ (strArea == "Other") && (strBuilding == "Other")
+                        && (strCreateAreaOrBuilding=="false")/* && strTPFeasibilty.isNotBlank()*/){
+                        fab_create_society.visibility=View.VISIBLE
+                    }else{
+                        CoroutineScope(Dispatchers.IO).launch {
+                            submitApproval()
+                        }
+                    }
+                }
+            }else if(strOperationCity=="true") {
+                if ((strBuildingStatus == "C-RFS" || strBuildingStatus == "P-RFS" ||
+                            strBuildingStatus == "B-RFS" || strBuildingStatus == "A-RFS") && (redundancy == false)) {
+                    submitApproval()
+                } else if (subBusSegment == "SDWAN") {
+                    submitApproval()
+                } else {
+                    Toast.makeText(
+                        this@OpportunityActivity,
+                        "Please Complete the Feasibility Record",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+
+        fab_create_society.setOnClickListener{
+            if(fesstatus=="1") {
+                str_createbuilding = true
+                CoroutineScope(Dispatchers.IO).launch {
+                    save()
+                }
+            }else{
+                Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
     fun caf(){
         val intent = Intent(this, CAFActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("OppId", str_Opp_Id)
+        bundle.putString("OppId", strOppId)
+        intent.putExtras(bundle)
+        startActivity(intent)
+        finish()
+    }
+    fun saf(){
+        val intent = Intent(this, SAFActivity::class.java)
+        val bundle = Bundle()
+        bundle.putString("OppId", strOppId)
         intent.putExtras(bundle)
         startActivity(intent)
         finish()
@@ -260,50 +420,55 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         binding.layoutProductLine.spPrice.onItemSelectedListener = this
         layout_product_line.et_product_list.setOnClickListener {  layout_product_line.sp_opproduct.performClick() }
         layout_product_line.sp_opproduct.onItemSelectedListener = this
+        binding.layoutOppComyDetails.etVertical.setOnClickListener { binding.layoutOppComyDetails.spVertical.performClick() }
+        binding.layoutOppComyDetails.spVertical.onItemSelectedListener = this
+        binding.layoutLeadSdQuestionare.etCityRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spCityRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spCityRequired.onItemSelectedListener = this
 
-        layout_product_line.add_procuct.setOnClickListener{
-            val product = layout_product_line.et_product_list.text.toString()
-            if(product.isBlank()||product==("Select Product")){
-                Toast.makeText(this, "Please Select Product", Toast.LENGTH_SHORT).show()
-            }else{
-                addProduct()
-            }
-        }
+        binding.layoutLeadSdQuestionare.etCustomerUsingIllServices.setOnClickListener { binding.layoutLeadSdQuestionare.spCustomerUsingIllServices.performClick() }
+        binding.layoutLeadSdQuestionare.spCustomerUsingIllServices.onItemSelectedListener = this
 
+        binding.layoutLeadSdQuestionare.etBroadServices.setOnClickListener { binding.layoutLeadSdQuestionare.spBroadServices.performClick() }
+        binding.layoutLeadSdQuestionare.spBroadServices.onItemSelectedListener = this
 
+        binding.layoutLeadSdQuestionare.etLinksManged.setOnClickListener { binding.layoutLeadSdQuestionare.spLinksManged.performClick() }
+        binding.layoutLeadSdQuestionare.spLinksManged.onItemSelectedListener = this
 
-        binding.feasibility.addFes.setOnClickListener{
-            addFeasibility()
-        }
-        binding.quote.addQuote.setOnClickListener{
-            addQuote()
-        }
+        binding.layoutLeadSdQuestionare.etRoutingServices.setOnClickListener { binding.layoutLeadSdQuestionare.spRoutingServices.performClick() }
+        binding.layoutLeadSdQuestionare.spRoutingServices.onItemSelectedListener = this
 
-        tv_won.setOnClickListener{
-            wonOpp()
-        }
+        binding.layoutLeadSdQuestionare.etNetworkSecurity.setOnClickListener { binding.layoutLeadSdQuestionare.spNetworkSecurity.performClick() }
+        binding.layoutLeadSdQuestionare.spNetworkSecurity.onItemSelectedListener = this
 
-        tv_reopen.setOnClickListener{
-            reOpen()
-        }
+        binding.layoutLeadSdQuestionare.etHostedRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spHostedRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spHostedRequired.onItemSelectedListener = this
 
+        binding.layoutLeadSdQuestionare.etCustomerRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spCustomerRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spCustomerRequired.onItemSelectedListener = this
 
-        et_lost.setOnClickListener { sp_lost.performClick() }
-        sp_lost.onItemSelectedListener = this
+        binding.layoutLeadSdQuestionare.etBackboneRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spBackboneRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spBackboneRequired.onItemSelectedListener = this
 
-        tv_opp_save.setOnClickListener  {
-            save()
-        }
+        binding.layoutLeadSdQuestionare.etContractRenewed.setOnClickListener { binding.layoutLeadSdQuestionare.spContractRenewed.performClick() }
+        binding.layoutLeadSdQuestionare.spContractRenewed.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etCityRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spCityRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spCityRequired.onItemSelectedListener = this
+
+        binding.layoutOppComyDetails.etTypeOrder.setOnClickListener { binding.layoutOppComyDetails.spTypeOrder.performClick() }
+        binding.layoutOppComyDetails.spTypeOrder.onItemSelectedListener = this
+
     }
 
     private fun save(){
         val topic = opp_contact_info_row.et_op_toptic.text.toString()
         val oppId =opp_contact_info_row.et_oppurtunity_ID.text.toString()
-        val salutation = str_salutation.toString()
+        val salutation = strSalutation.toString()
         val mobile = layout_opp_cntct_person.et_mob_num.text.toString()
         val media = str_media.toString()
         val industry = str_industry_type.toString()
         val noOfUser = layout_opp_comy_details.et_num_Users.text.toString()
+        val POCC= layout_opp_comy_details.etPoc.text.toString()
         val noOfBeds = layout_opp_comy_details.et_num_beds.text.toString()
         val floor = layout_opp_cntct_person.et_floor.text.toString()
         val firmtype = str_firm_type.toString()
@@ -328,6 +493,13 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         val state = strcontact_stateCode.toString()
         val price = str_price.toString()
         val reason = layout_product_line.et_op_reason.text.toString()
+        val location = binding.layoutLeadSdQuestionare.etNoOfLocation.text.toString()
+        val mentionNum = binding.layoutLeadSdQuestionare.etMentionNum.text.toString()
+        val links = binding.layoutLeadSdQuestionare.etLinks.text.toString()
+        val itSpent = binding.layoutLeadSdQuestionare.etItSpent.text.toString()
+        val questionareRemark = binding.layoutLeadSdQuestionare.etRemarkk.text.toString()
+
+
         if(topic.isBlank()){
             Toast.makeText(this@OpportunityActivity, "Please enter Topic", Toast.LENGTH_SHORT).show()
         }else if(salutation.isBlank()||salutation=="Select Salutation"){
@@ -382,13 +554,49 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             Toast.makeText(this@OpportunityActivity, "Please enter Po Next", Toast.LENGTH_SHORT).show()
         }else if(strPrice.isBlank()||strPrice=="Select Price List"||(strPrice=="null")){
             Toast.makeText(this@OpportunityActivity, "Please enter Price ", Toast.LENGTH_SHORT).show()
-        }else if(isdiscount&&reason.isBlank()){
+        }else if(isdiscount&&reason.isBlank()&&subBusSegment!="SDWAN"){
             Toast.makeText(this@OpportunityActivity, "Please enter Reason ", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && strType== "0" ||strType=="null"){
+            Toast.makeText(this, "Please Enter the Type Of Order",Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && strType== "122050000"&&POCC.isBlank()){
+            Toast.makeText(this, "Please Select The POC",Toast.LENGTH_SHORT).show()
         }
-        else {
+        else if(subBusSegment=="SDWAN" &&location.isBlank()||location=="null"){
+            Toast.makeText(this, "Please Enter the Location", android.widget.Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && strIllServices?.isBlank() == true ||strIllServices=="null"||strIllServices=="0"){
+            Toast.makeText(this, "Please Select Customer Using ILL Services", Toast.LENGTH_SHORT).show()
+        }else if((strIllServices=="122050000") && mentionNum.isBlank()){
+            Toast.makeText(this, "Please Enter Mention Number of Links", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && (strBroadServices?.isBlank() == true) ||strBroadServices=="null"||strBroadServices=="0"){
+            Toast.makeText(this, "Please Enter the BroadBand Services", Toast.LENGTH_SHORT).show()
+        }else if(links.isBlank() && (strBroadServices=="122050000")){
+            Toast.makeText(this, "Please Enter the NO. of Links", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && (strLinksManaged?.isBlank()== true)||strLinksManaged=="null"||strLinksManaged=="0"){
+            Toast.makeText(this, "Please Enter the Managed Links ", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && (strRoutingServices?.isBlank()== true)||strRoutingServices=="null"||strRoutingServices=="0"){
+            Toast.makeText(this, "Please Enter the Routing Services", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && (firesSet?.isBlank()== true)||firesSet=="null"){
+            Toast.makeText(this, "Please Select Firewall set tpo expire", Toast.LENGTH_SHORT).show()
+        } else if(subBusSegment=="SDWAN" && (strCityReqd?.isBlank()== true)||strCityReqd=="null"||strCityReqd=="Select Option"){
+            Toast.makeText(this, "Please Enter the City Required", Toast.LENGTH_SHORT).show()
+        } else if(subBusSegment=="SDWAN" && (strNetworkSecurity?.isBlank()== true)||strNetworkSecurity=="null"||strNetworkSecurity=="0"){
+            Toast.makeText(this, "Please Enter the Network Security", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && (strHosted?.isBlank()== true)||strHosted=="null"||strHosted=="0"){
+            Toast.makeText(this, "Please Enter the Hosted", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && (strCustomer?.isBlank()== true)||strCustomer=="null"||strCustomer=="0"){
+            Toast.makeText(this, "Please Enter the Customer", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" && (strContract?.isBlank()== true)||strContract=="null"||strContract=="0"){
+            Toast.makeText(this, "Please Enter the Contract", Toast.LENGTH_SHORT).show()
+        }
+        else if(subBusSegment=="SDWAN" &&(strBackBone?.isBlank()== true)||strBackBone=="null"||strBackBone=="0"){
+            Toast.makeText(this, "Please Enter the Back Bone", Toast.LENGTH_SHORT).show()
+        }else if(subBusSegment=="SDWAN" &&(mpls?.isBlank()== true)||mpls=="null"){
+            Toast.makeText(this, "Please Enter the Mpls", Toast.LENGTH_SHORT).show()
+        } else {
                 updateOppurtunity(topic,oppId,salutation,mobile,media,industry,floor,firmtype,extprovider,email,
-                city,area,building,pincode,buildingnumber,contactperson,customersegment,uptmsla,frwal,comanyself
-                    ,redundancy,state,price,reason,specificArea,specificBuilding,noOfUser,noOfBeds)
+                city,area,building,pincode,buildingnumber,contactperson,customersegment,uptmsla,frwal,comanyself,
+                redundancy,state,price,reason,specificArea,specificBuilding,noOfUser,noOfBeds,location,
+                mentionNum,links,itSpent,questionareRemark)
         }
     }
 
@@ -397,9 +605,10 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         return pattern.matcher(email).matches()
     }
 
-    fun getGenerateQuote () {
+    fun  getGenerateQuote () {
+
         //inProgress()
-        val getProductListRequest = str_Opp_Id?.let { GetProductListRequest(Constants.GET_QUOTE, Constants.AUTH_KEY, it,password,userName) }
+        val getProductListRequest = strOppId?.let { GetProductListRequest(Constants.GET_QUOTE, Constants.AUTH_KEY, it,password,userName,"") }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getQuote(getProductListRequest)
         call.enqueue(object : Callback<GenQuoteResponse?> {
@@ -420,6 +629,39 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
             override fun onFailure(call: Call<GenQuoteResponse?>, t: Throwable) {
               //  binding.opprogressLayout.progressOverlay.visibility=View.GONE
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+
+    fun  getAllSites () {
+
+        //inProgress()
+        val getAllSiteReq = strOppId?.let { GetAllSiteReq(Constants.GETALL_SITE_DETAILS, Constants.AUTH_KEY,it,password,userName) }
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getAllSiteDetails(getAllSiteReq)
+        call.enqueue(object : Callback<GetAllSiteRes?> {
+            override fun onResponse(call: Call<GetAllSiteRes?>, response: Response<GetAllSiteRes?>) {
+                // OutProgress()
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        if(response.body()?.Response?.StatusCode==200) {
+                            //  val msg = response.body()!!.Response.Message
+                            allSiteList = response.body()?.Response?.Data
+                            if(allSiteList!=null) {
+                                oppSale.add_preTask.visibility=View.VISIBLE
+                                binding.oppSite.rvAddSite.visibility=View.VISIBLE
+                                setAllSiteListAdapter(allSiteList!!, this@OpportunityActivity)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetAllSiteRes?>, t: Throwable) {
+                //  binding.opprogressLayout.progressOverlay.visibility=View.GONE
                 Log.e("RetroError", t.toString())
             }
         })
@@ -449,13 +691,13 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.size > 0) {
+            if (grantResults.isNotEmpty()) {
                 val writeStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED
                 val readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED
                 if (writeStorage && readStorage) {
                     //  Toast.makeText(this, "Permission Granted..", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Permission Denined.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Permission Denied.", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -464,7 +706,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
     fun getAllfeasList () {
        // inProgress()
-        val getProductListRequest = str_Opp_Id?.let { GetProductListRequest(Constants.GET_FEASIBILITY, Constants.AUTH_KEY, it,password,userName) }
+        val getProductListRequest = strOppId?.let { GetProductListRequest(Constants.GET_FEASIBILITY, Constants.AUTH_KEY, it,password,userName,"") }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllFeasibility(getProductListRequest)
         call.enqueue(object : Callback<GetFeasibiltyResponse?> {
@@ -486,15 +728,12 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                             Toast.makeText(this@OpportunityActivity, "For DOA submission you need to add Area or Building as they are still showing as Other", Toast.LENGTH_SHORT).show()
                                         }
                                     }else if(strOperationCity=="false"){
-                                        if (/* strBusinessSement != "SDWAN"
-                        &&*/        (strArea == "Other") && (strBuilding == "Other")
+                                        if ((strArea == "Other") && (strBuilding == "Other")
                                             && (strCreateAreaOrBuilding=="false")/* && strTPFeasibilty.isNotBlank()*/){
                                             fab_create_society.visibility=View.VISIBLE
                                         }
                                     }
-                                }/*else{
-                                    Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-                                }*/
+                                }
                             }else if(allFeasibility?.size==2) {
                                 layout_other.et_redundancy_required.isEnabled= false
                                 fesstatus = allFeasibility?.get(0)?.FeasibilityStatus
@@ -511,9 +750,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                             Log.e("ButtonFes", "1")
                                         }
                                     }
-                                }/*else{
-                                    Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-                                }*/
+                                }
                             }
                             reas = layout_product_line.et_op_reason.text?.trim().toString()
                             if(allFeasibility?.size!=null){
@@ -554,10 +791,50 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         }
     }
 
+    fun getPreSales () {
+        //inProgress()
+        val createPreTaskReq = strOppId?.let { CreatePreTaskReq(Constants.GET_PRETASK, Constants.AUTH_KEY, it,password,"",userName) }
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getPreTaskList(createPreTaskReq)
+        call.enqueue(object : Callback<GetPreSaleDetail?> {
+            override fun onResponse(call: Call<GetPreSaleDetail?>, response: Response<GetPreSaleDetail?>) {
+                // OutProgress()
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        if(response.body()?.Response?.StatusCode==200) {
+                            allPreSales = response.body()?.Response?.Data
+
+                            if(allPreSales?.size!=null) {
+                                oppSale.rv_addTask.visibility=View.VISIBLE
+                                setPreSalesAdapter(allPreSales, this@OpportunityActivity)
+                            }
+                        }else  if(response.body()?.Response?.StatusCode==400){
+                          //  Toast.makeText(this@OpportunityActivity,response.body()?.Response?.Message,Toast.LENGTH_LONG).show()
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetPreSaleDetail?>, t: Throwable) {
+                //   binding.opprogressLayout.progressOverlay.visibility=View.GONE
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+
+    private fun setPreSalesAdapter(allSales: ArrayList<PreSaleData>?, context: Context?) {
+        oppSale.rv_addTask.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            adapter = allSales?.let { GetPreSaleTaskAdapter(it,context) }
+        }
+    }
 
     fun getDOA () {
        //inProgress()
-        val getProductListRequest = str_Opp_Id?.let { GetProductListRequest(Constants.GETAPPROVAL, Constants.AUTH_KEY, it,password,userName) }
+        val getProductListRequest = strOppId?.let { GetProductListRequest(Constants.GETAPPROVAL, Constants.AUTH_KEY, it,password,userName,"") }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getApproval(getProductListRequest)
         call.enqueue(object : Callback<GetApprovalRersponse?> {
@@ -566,20 +843,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         if(response.body()?.Response?.StatusCode==200) {
-                          //  val msg = response.body()!!.Response.Message
                             allApproval = response.body()?.Response?.Data
-                           /* if(allApproval?.isNotEmpty()==true) {
-                                allApproval?.forEachIndexed { _, itemData ->
-                                    if(itemData.Status.startsWith("Inactive")||itemData.Status.startsWith("Pending")||itemData.Status.startsWith("Waiting")) {
-                                        isStatus=true
-                                        Log.e("Statusss", isStatus.toString())
-                                        return@forEachIndexed
-                                    }
-                                }
-
-                            }*/
-
-
                             setDOAAdapter(allApproval, this@OpportunityActivity)
                         }
                     } catch (e: Exception) {
@@ -599,7 +863,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
        rv_add_doa.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = allApproval?.let { GetDOAViewAdapter(it,context,str_Opp_Id) }
+            adapter = allApproval?.let { GetDOAViewAdapter(it,context,strOppId) }
         }
     }
 
@@ -607,7 +871,15 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         binding.quote.rvAddQuote.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = str_Opp_Id?.let { GetAllQuoteAdapter(generatequote,context, it) }
+            adapter = strOppId?.let { GetAllQuoteAdapter(generatequote,context, it) }
+        }
+    }
+
+    private fun setAllSiteListAdapter(siteList: ArrayList<SiteData>, context: Context?) {
+        binding.oppSite.rvAddSite.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            adapter = strOppId?.let { GetAllSiteAdapter(siteList,context, it) }
         }
     }
 
@@ -624,6 +896,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_fesdetails.visibility=View.GONE
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
         }
         linearthree.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -634,6 +909,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_fesdetails.visibility=View.GONE
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
         }
         linearfouraddres.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -644,6 +922,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_fesdetails.visibility=View.GONE
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
         }
         linearfive.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -654,6 +935,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_fesdetails.visibility=View.GONE
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
         }
         linearsix.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -664,6 +948,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_fesdetails.visibility=View.GONE
             linear_quotedetails.visibility= View.GONE
             linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
         }
 
         linearfes.setOnClickListener {
@@ -675,6 +962,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             linear_quotedetails.visibility= View.GONE
             linear_fesdetails.visibility=View.VISIBLE
             linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
         }
         linearequote.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -685,6 +975,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             binding.linearQuotedetails.visibility=View.VISIBLE
             linear_fesdetails.visibility=View.GONE
             linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
         }
         lineardao.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -695,13 +988,55 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             binding.linearQuotedetails.visibility=View.GONE
             linear_fesdetails.visibility=View.GONE
             linear_daodetails.visibility=View.VISIBLE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
+        }
+        binding.linearqustionare.setOnClickListener {
+            linearcontactinfo.visibility = View.GONE
+            linear_insta_addres.visibility = View.GONE
+            linadd.visibility = View.GONE
+            linear_contact_person_address.visibility = View.GONE
+            linear_companydetails.visibility= View.GONE
+            binding.linearQuotedetails.visibility=View.GONE
+            linear_fesdetails.visibility=View.GONE
+            linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.VISIBLE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.GONE
+        }
+        binding.linearSite.setOnClickListener {
+            linearcontactinfo.visibility = View.GONE
+            linear_insta_addres.visibility = View.GONE
+            linadd.visibility = View.GONE
+            linear_contact_person_address.visibility = View.GONE
+            linear_companydetails.visibility= View.GONE
+            binding.linearQuotedetails.visibility=View.GONE
+            linear_fesdetails.visibility=View.GONE
+            linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.VISIBLE
+            binding.linearPreTaskDetails.visibility = View.GONE
+        }
+        binding.linearPreTask.setOnClickListener {
+            linearcontactinfo.visibility = View.GONE
+            linear_insta_addres.visibility = View.GONE
+            linadd.visibility = View.GONE
+            linear_contact_person_address.visibility = View.GONE
+            linear_companydetails.visibility= View.GONE
+            binding.linearQuotedetails.visibility=View.GONE
+            linear_fesdetails.visibility=View.GONE
+            linear_daodetails.visibility=View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
+            binding.linearSiteDetails.visibility = View.GONE
+            binding.linearPreTaskDetails.visibility = View.VISIBLE
         }
 
         layout_opp_cntct_person.et_eml_id.setOnFocusChangeListener { _, hasFocus ->
             if(!hasFocus)
             {
                 val email =  layout_opp_cntct_person.et_eml_id.text.toString()
-                val isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+                val isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 if (!isValid) {
                     Toast.makeText(this, "Invalid Email", Toast.LENGTH_LONG).show()
                 }
@@ -711,48 +1046,13 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             if(!hasFocus)
             {
                 val mobile = layout_opp_cntct_person.et_mob_num.text.toString()
-                val isValid = Patterns.PHONE.matcher(mobile).matches();
+                val isValid = Patterns.PHONE.matcher(mobile).matches()
                 if (!isValid) {
                     Toast.makeText(this, "Invalid Mobile Number", Toast.LENGTH_LONG).show()
                 }
             }
         }
-        tv_opp_submit.setOnClickListener{
-            if(fesstatus=="1") {
-                if(strOperationCity=="true"){
-                    if(strArea == "Other" || strBuilding == "Other" && (strCreateAreaOrBuilding=="false")) {
-                        Toast.makeText(this@OpportunityActivity, "For DOA submission you need to add Area or Building as they are still showing as Other", Toast.LENGTH_SHORT).show()
-                    }else{
-                        submitApproval()
-                    }
-                }else if(strOperationCity=="false"){
-                    if (/* strBusinessSement != "SDWAN"
-                        &&*/ (strArea == "Other") && (strBuilding == "Other")
-                        && (strCreateAreaOrBuilding=="false")/* && strTPFeasibilty.isNotBlank()*/){
-                        fab_create_society.visibility=View.VISIBLE
-                    }else{
-                        submitApproval()
-                    }
-                }
-            }else if(strOperationCity=="true"){
-                if ((strBuildingStatus == "C-RFS" || strBuildingStatus == "P-RFS" ||
-                            strBuildingStatus == "B-RFS" || strBuildingStatus == "A-RFS") && (redundancy == false)) {
-                    submitApproval()
-                }else{
-                    Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
 
-
-        fab_create_society.setOnClickListener{
-            if(fesstatus=="1") {
-                str_createbuilding = true
-                save()
-            }else{
-                Toast.makeText(this@OpportunityActivity, "Please Complete the Feasibility Record", Toast.LENGTH_SHORT).show()
-            }
-        }
 
 
 
@@ -773,15 +1073,22 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         city: String, area: String, building: String, pincode: String, buildingnumber: String,
         contactperson: String, customersegment: String, uptmsla: String, frwal: String,
         comanyself: String, redundancy: String, state: String, price: String, reason: String,
-        specificArea: String, specficBuilding: String, noOfUser: String?, numBeds: String
+        specificArea: String, specficBuilding: String, noOfUser: String?, numBeds: String, location: String,
+        mentionNum: String,
+        links: String,
+        itSpent: String,
+        questionareRemark: String
     ) {
+        val sdwanOpp = SDWANOpp(location,strIllServices,mentionNum,strBroadServices,
+            links,strLinksManaged,strRoutingServices,firesSet,
+            itSpent,strCityReqd,strNetworkSecurity,strHosted,strCustomer,
+            strContract,strBackBone,mpls,questionareRemark)
 
           val updateOppurtunity = UpdateOppurtunity(Constants.UPDATE_OPPURTUNITY,Constants.AUTH_KEY,
-                area,buildingnumber,building,city,comanyself,contactperson,"10001",customersegment,
-                email,extprovider,frwal,frwaws,firmtype,floor,industry,"",media,mobile,oppId,
-                password,
-              polockdate,renewal,pincode,price,redundancy,salutation,state,topic.trim(),uptmsla,userName,reason,
-              str_createbuilding,specificArea,specficBuilding,noOfUser,numBeds)
+              area,buildingnumber,building,city,comanyself,contactperson,"10001",customersegment,
+              email,extprovider,frwal,frwaws,firmtype,floor,industry,"",media,mobile,oppId, password,
+              polockdate,renewal,pincode,price,redundancy,salutation,state,topic.trim(),uptmsla,userName,
+              reason, str_createbuilding,specificArea,specficBuilding,noOfUser,numBeds,strType,Poc,sdwanOpp)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.updateOppurtunity(updateOppurtunity)
@@ -794,7 +1101,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                         Toast.makeText(this@OpportunityActivity, img, Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
                         val bundle = Bundle()
-                        bundle.putString("OppId",str_Opp_Id )
+                        bundle.putString("OppId",strOppId )
                         intent.putExtras(bundle)
                         startActivity(intent)
                         finish()
@@ -814,7 +1121,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     fun addProduct() {
         //inProgress()
         val addProductRequest = str_product?.let {
-            str_Opp_Id?.let { it1 -> AddProductRequest(Constants.CREATE_OPPPRODUCT,Constants.AUTH_KEY, it1,password,it,userName) } }
+            strOppId?.let { it1 -> AddProductRequest(Constants.CREATE_OPPPRODUCT,Constants.AUTH_KEY, it1,password,it,userName,"") } }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.addProduct(addProductRequest)
@@ -826,7 +1133,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                       //  Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                         val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
                         val bundle = Bundle()
-                        bundle.putString("OppId",str_Opp_Id )
+                        bundle.putString("OppId",strOppId )
                         intent.putExtras(bundle)
                         startActivity(intent)
                         finish()
@@ -844,23 +1151,23 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     }
 
 
-    fun addFeasibility() {
+    private fun addFeasibility() {
         inProgress()
        val addProductRequest =
-        str_Opp_Id?.let { it1 -> AddProductRequest(Constants.GENERATE_FEASIBILITY,Constants.AUTH_KEY, it1,password,"",userName)  }
+           strOppId?.let { it1 -> AddProductRequest(Constants.GENERATE_FEASIBILITY,Constants.AUTH_KEY, it1,password,"",userName,"")  }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.addProduct(addProductRequest)
         call.enqueue(object : Callback<ProdctResponse?> {
             override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
-                OutProgress()
+                outProgress()
                 val msg = response.body()?.Response?.Message
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
                         Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                         val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
                         val bundle = Bundle()
-                        bundle.putString("OppId",str_Opp_Id )
+                        bundle.putString("OppId",strOppId )
                         intent.putExtras(bundle)
                         startActivity(intent)
                         finish()
@@ -878,23 +1185,23 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
 
 
-    fun addQuote() {
+    private fun addQuote() {
       inProgress()
         val createQuoteRequest =
-                str_Opp_Id?.let { it1 -> CreateQuoteRequest(Constants.CREATE_QUOTE,Constants.AUTH_KEY, it1,password,userName)  }
+            strOppId?.let { it1 -> CreateQuoteRequest(Constants.CREATE_QUOTE,Constants.AUTH_KEY, it1,password,userName)  }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.addQuote(createQuoteRequest)
         call.enqueue(object : Callback<ProdctResponse?> {
             override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
                 val msg = response.body()?.Response?.Message
-               OutProgress()
+               outProgress()
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
                         Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                         val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
                         val bundle = Bundle()
-                        bundle.putString("OppId",str_Opp_Id )
+                        bundle.putString("OppId",strOppId )
                         intent.putExtras(bundle)
                         startActivity(intent)
                         finish()
@@ -911,10 +1218,41 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         })
     }
 
+    fun createPreTask() {
+        //  inProgress()
+        val createPreTaskReq =
+            strOppId?.let { it1 -> CreatePreTaskReq(Constants.CREATE_PRETASK,Constants.AUTH_KEY, it1,password,"",userName)  }
+
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.createPreTask(createPreTaskReq)
+        call.enqueue(object : Callback<ProdctResponse?> {
+            override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
+                val msg = response.body()?.Response?.Message
+                //  OutProgress()
+                if (response.body()?.Response?.StatusCode==200) {
+                    try {
+                        Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
+                        // OppAct()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }else{
+                    //  Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ProdctResponse?>, t: Throwable) {
+                //    binding.opprogressLayout.progressOverlay.visibility=View.GONE
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+
+
     fun createApproval() {
         //  inProgress()
         val getProductListRequest =
-                str_Opp_Id?.let { it1 -> GetProductListRequest(Constants.CREATEAPPROVAL,Constants.AUTH_KEY, it1,password,userName)  }
+            strOppId?.let { it1 -> GetProductListRequest(Constants.CREATEAPPROVAL,Constants.AUTH_KEY, it1,password,userName,"")  }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.won(getProductListRequest)
@@ -941,21 +1279,24 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         })
     }
 
-    fun wonOpp() {
+    private fun wonOpp() {
         inProgress()
         val getProductListRequest =
-                str_Opp_Id?.let { it1 -> GetProductListRequest(Constants.WON_OPPURTUNITY,Constants.AUTH_KEY, it1,password,userName)  }
+            strOppId?.let { it1 -> GetProductListRequest(Constants.WON_OPPURTUNITY,Constants.AUTH_KEY, it1,password,userName,"")  }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.won(getProductListRequest)
         call.enqueue(object : Callback<ProdctResponse?> {
             override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
                 val msg = response.body()?.Response?.Message
-                OutProgress()
+                outProgress()
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
                         Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
-                        caf()
+                        val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
+                        intent.putExtra("OppId",strOppId)
+                        startActivity(intent)
+                        finish()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -971,17 +1312,17 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         })
     }
 
-    fun reOpen() {
+    private fun reOpen() {
         inProgress()
         val getOppurtunityRequest =
-            str_Opp_Id?.let { it1 -> GetOppurtunityRequest(Constants.REOPEN_OPP,Constants.AUTH_KEY, it1,password,userName,"")  }
+            strOppId?.let { it1 -> GetOppurtunityRequest(Constants.REOPEN_OPP,Constants.AUTH_KEY, it1,password,userName,"")  }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.reOpenOpp(getOppurtunityRequest)
         call.enqueue(object : Callback<ProdctResponse?> {
             override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
                 val msg = response.body()?.Response?.Message
-                OutProgress()
+                outProgress()
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
                         Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
@@ -990,7 +1331,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                         Toast.makeText(this@OpportunityActivity, img, Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
                         val bundle = Bundle()
-                        bundle.putString("OppId",str_Opp_Id )
+                        bundle.putString("OppId",strOppId )
                         intent.putExtras(bundle)
                         startActivity(intent)
                         finish()
@@ -1009,22 +1350,22 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         })
     }
 
-    fun submitApproval() {
+    private fun submitApproval() {
         inProgress()
         val getProductListRequest =
-                str_Opp_Id?.let { it1 -> GetProductListRequest(Constants.CREATEAPPROVAL,Constants.AUTH_KEY, it1,password,userName)  }
+            strOppId?.let { it1 -> GetProductListRequest(Constants.CREATEAPPROVAL,Constants.AUTH_KEY, it1,password,userName,"")  }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.won(getProductListRequest)
         call.enqueue(object : Callback<ProdctResponse?> {
             override fun onResponse(call: Call<ProdctResponse?>, response: Response<ProdctResponse?>) {
                 val msg = response.body()?.Response?.Message
-                OutProgress()
+                outProgress()
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
                         Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                         val intent = Intent(this@OpportunityActivity, OpportunityActivity::class.java)
                         val bundle = Bundle()
-                        bundle.putString("OppId",str_Opp_Id)
+                        bundle.putString("OppId",strOppId)
                         intent.putExtras(bundle)
                         startActivity(intent)
                         finish()
@@ -1050,7 +1391,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         binding.opprogressLayout.progressOverlay.visibility = View.VISIBLE
     }
 
-    fun OutProgress(){
+    fun outProgress(){
         outAnimation = AlphaAnimation(1f, 0f)
         outAnimation?.duration =200
         binding.opprogressLayout.progressOverlay.animation = outAnimation
@@ -1059,7 +1400,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
     fun getProductAddedList() {
       //  inProgress()
-        val getProductListRequest = GetProductListRequest(Constants.GET_OPPPRODUCT,Constants.AUTH_KEY,str_Opp_Id.toString(),password,userName)
+        val getProductListRequest = GetProductListRequest(Constants.GET_OPPPRODUCT,Constants.AUTH_KEY,strOppId.toString(),password,userName,"")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.addProductItem(getProductListRequest)
@@ -1075,7 +1416,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                 allProductItem = response.body()?.Response?.Data
                                 if(allProductItem?.isNotEmpty()==true) {
                                     allProductItem?.forEachIndexed { _, itemData ->
-                                        if(!itemData.Discount.startsWith("0.0")) {
+                                        if(!itemData.Discount?.startsWith("0.0")!!) {
                                             isdiscount=true
                                             return@forEachIndexed
                                         }
@@ -1116,19 +1457,19 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         rv_product_list?.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = allProductItem?.let { GetAllProductItemAdapter(it,context,str_Opp_Id,status) }
+            adapter = allProductItem?.let { GetAllProductItemAdapter(it,context,strOppId,strOppId,status) }
         }
     }
 
-    fun lostOppurtunity(loststatus: String) {
+    private fun lostOppurtunity(loststatus: String) {
         inProgress()
-        val lostOppurtunityRequest = LostOppurtunityRequest(Constants.LOST_OPPURTUNITY,Constants.AUTH_KEY,str_Opp_Id.toString(),password,loststatus,userName)
+        val lostOppurtunityRequest = LostOppurtunityRequest(Constants.LOST_OPPURTUNITY,Constants.AUTH_KEY,strOppId.toString(),password,loststatus,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.lostOppurtunityRequest(lostOppurtunityRequest)
         call.enqueue(object : Callback<CommonClassResponse?> {
             override fun onResponse(call: Call<CommonClassResponse?>, response: Response<CommonClassResponse?>) {
-                OutProgress()
+                outProgress()
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val msg = response.body()?.response?.message
@@ -1149,9 +1490,9 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         })
     }
 
-    fun getOppurtunity () {
+    private fun getOppurtunity () {
         inProgress()
-        val getOppurtunityRequest = GetOppurtunityRequest(Constants.GET_OPPURTUNITY,Constants.AUTH_KEY,str_Opp_Id,password,userName,str_Lead_Id)
+        val getOppurtunityRequest = GetOppurtunityRequest(Constants.GET_OPPURTUNITY,Constants.AUTH_KEY,strOppId,password,userName,strLeadId)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getOppurtunity(getOppurtunityRequest)
@@ -1159,32 +1500,86 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             override fun onResponse(call: Call<GetOppurtunityResponse?>, response: Response<GetOppurtunityResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
-                          OutProgress()
+                          outProgress()
                          if(response.body()?.Response?.StatusCode==200) {
                             binding.oppContactInfoRow.oppDetail = response.body()?.Response
                             binding.layoutOppCntctPerson.contact = response.body()?.Response
                             binding.layoutOppComyDetails.company = response.body()?.Response
                             binding.layoutOther.other = response.body()?.Response
-                            binding.layoutProductLine.etOpReason.setText(response.body()?.Response?.Data?.Reason.toString())
-                            strArea = response.body()?.Response?.Data?.Area.toString()
-                            strCity = response.body()?.Response?.Data?.City.toString()
-                            val strContactstate = response.body()?.Response?.Data?.State
-                            val stateId = response.body()?.Response?.Data?.StateId
-                             strApprovalStatus = response.body()?.Response?.Data?.ApprovalRequiredFlag
+                            binding.layoutProductLine.etOpReason.setText(response.body()?.Response?.Data?.get(0)?.Reason.toString())
+                            strArea = response.body()?.Response?.Data?.get(0)?.Area.toString()
+                            strCity = response.body()?.Response?.Data?.get(0)?.City.toString()
+                            val strContactstate = response.body()?.Response?.Data?.get(0)?.State
+                            val stateId = response.body()?.Response?.Data?.get(0)?.StateId
+                             strApprovalStatus = response.body()?.Response?.Data?.get(0)?.ApprovalRequiredFlag
                             getCity(stateId)
-                            strBuilding = response.body()?.Response?.Data?.Buildingname.toString()
-                            strIndustry = response.body()?.Response?.Data?.Industry.toString()
-                            strPrice = response.body()?.Response?.Data?.PriceList.toString()
-                            strStatus  = response.body()?.Response?.Data?.Status.toString()
-                            strReason = response.body()?.Response?.Data?.Reason.toString()
-                            str_Opp_Id = response.body()?.Response?.Data?.OppId.toString()
-                            strBuildingStatus = response.body()?.Response?.Data?.Building_BuildingStatus.toString()
-                            strBusinessSement = response.body()?.Response?.Data?.CustomerSegment.toString()
-                            strCreateAreaOrBuilding =  response.body()?.Response?.Data?.CreateAreaOrBuilding.toString()
-                            strTPFeasibilty =  response.body()?.Response?.Data?.TPFeasibilty.toString()
-                             getAllfeasList()
+                            strBuilding = response.body()?.Response?.Data?.get(0)?.Buildingname.toString()
+                            strIndustry = response.body()?.Response?.Data?.get(0)?.Industry.toString()
+                            strPrice = response.body()?.Response?.Data?.get(0)?.PriceList.toString()
+                            strStatus  = response.body()?.Response?.Data?.get(0)?.Status.toString()
+                            strReason = response.body()?.Response?.Data?.get(0)?.Reason.toString()
+                             strOppId = response.body()?.Response?.Data?.get(0)?.OppId.toString()
 
-                             productseg =  response.body()?.Response?.Data?.ProductSegment
+                              subBusSegment = response.body()?.Response?.Data?.get(0)?.Subbusinesssegment.toString()
+                             binding.quote.addQuote.visibility=View.VISIBLE
+                             if(subBusSegment=="SDWAN") {
+                                 CoroutineScope(Dispatchers.IO).launch {
+                                     getVertcal()
+                                     getRequiredCity()
+                                     getPreSales()
+                                 }
+                                 layout_other.sp_opredundancy.isEnabled=false
+                                 layout_other.et_redundancy_required.isEnabled=false
+                                 binding.layoutOppComyDetails.vertical.visibility=View.VISIBLE
+                                 binding.layoutOppComyDetails.etVertical.isEnabled=false
+                                 binding.linearqustionare.visibility=View.VISIBLE
+                                 binding.linearSite.visibility=View.VISIBLE
+                                 binding.linearPreTask.visibility=View.VISIBLE
+                                 binding.linearsix.visibility=View.GONE
+                                 binding.linearfes.visibility=View.GONE
+                                 binding.linearcontactinfo.relation.visibility=View.GONE
+                                 binding.layoutOppComyDetails.TypeOrder.visibility=View.VISIBLE
+                             }else{
+                                 binding.layoutOppComyDetails.vertical.visibility=View.GONE
+                                 binding.linearqustionare.visibility=View.GONE
+                                 binding.linearSite.visibility=View.GONE
+                                 binding.linearPreTask.visibility=View.GONE
+                                 binding.linearsix.visibility=View.VISIBLE
+                                 binding.linearcontactinfo.relation.visibility=View.VISIBLE
+                                 binding.layoutOppComyDetails.TypeOrder.visibility=View.GONE
+                                 binding.linearfes.visibility=View.VISIBLE
+
+                             }
+                             if(strOppId.isNullOrBlank()){
+                                 binding.linearSite.visibility=View.GONE
+                                 binding.linearPreTask.visibility=View.GONE
+                             }
+                             strVertical = response.body()?.Response?.Data?.get(0)?.VerticalID
+                             strCityReqd = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.CurrentOperationalCity
+
+                              strIllServices = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.NumberOfLinksIll
+                              strIllServices = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.CustomerILLservices.toString()
+                              strBroadServices  = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.CustomerBroadbandServices.toString()
+                              strLinksManaged = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.LinksManagedLinks.toString()
+                              strRoutingServices  = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.CustomerRoutingServices.toString()
+                              strNetworkSecurity  = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.NetworkSecurityServices.toString()
+                              strHosted = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.ApplicationsHosted.toString()
+                              strCustomer  = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.ItSupport.toString()
+                              strBackBone = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.MPLSBackbone.toString()
+                              strContract  = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.RedundancyMPLS.toString()
+                              binding.layoutLeadSdQuestionare.etNoOfLocation.setText(response.body()?.Response?.Data?.get(0)?.sdwanOpp?.NoOfLocation.toString())
+                              binding.layoutLeadSdQuestionare.etLinks.setText(response.body()?.Response?.Data?.get(0)?.sdwanOpp?.NumberOfLinksBroadbandServices.toString())
+                              binding.layoutLeadSdQuestionare.etItSpent.setText(response.body()?.Response?.Data?.get(0)?.sdwanOpp?.IndicationITSpent.toString())
+                              binding.layoutLeadSdQuestionare.etRemarkk.setText(response.body()?.Response?.Data?.get(0)?.sdwanOpp?.SdwanRemarks.toString())
+                              binding.layoutLeadSdQuestionare.etMentionNum.setText(response.body()?.Response?.Data?.get(0)?.sdwanOpp?.NumberOfLinksIll.toString())
+                             strBuildingStatus = response.body()?.Response?.Data?.get(0)?.Building_BuildingStatus.toString()
+                             strBusinessSement = response.body()?.Response?.Data?.get(0)?.CustomerSegment.toString()
+                             strCreateAreaOrBuilding =  response.body()?.Response?.Data?.get(0)?.CreateAreaOrBuilding.toString()
+                             strTPFeasibilty =  response.body()?.Response?.Data?.get(0)?.TPFeasibilty.toString()
+                             getAllfeasList()
+                             strType = response.body()?.Response?.Data?.get(0)?.TypeOfOrder.toString()
+
+                             productseg =  response.body()?.Response?.Data?.get(0)?.ProductSegment
                              if(productseg=="Managed Office Solution"||productseg=="Secured Managed Internet"){
                                  layout_other.sp_opredundancy.isEnabled=false
                                  layout_other.et_redundancy_required.isEnabled=false
@@ -1196,28 +1591,41 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                              }else if((productseg=="Managed Wi-Fi Business")&&(strIndustry=="Co-Working")){
                                  layout_opp_comy_details.numUsers.visibility=View.VISIBLE
                              }
-                             str_salutation= response.body()?.Response?.Data?.Salutation
+                             strSalutation= response.body()?.Response?.Data?.get(0)?.Salutation
                              if(strBuilding.isNotEmpty()){
-                                 strBuilding.let { getPriceList(it) }
+                                 getPriceList(strBuilding)
                              }
                              getIndustryTpe(strIndustry)
                              var salutationPosition = 0
                              list_of_salutation_id.forEachIndexed { index, _ ->
-                                if (index == str_salutation?.toInt()) {
+                                if (index == strSalutation?.toInt()) {
                                     salutationPosition = index
                                     return@forEachIndexed
                                 }
                             }
+                             var typePosition = 0
+                             resources.getStringArray(R.array.siteTypeVal).forEachIndexed { index, s ->
+                                 if (s == strType) typePosition = index
+                                 return@forEachIndexed
+                             }
+
+                             val typeAdapter = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item,resources.getStringArray(R.array.typeOrder))
+                             typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutOppComyDetails.spTypeOrder.adapter = typeAdapter
+                             binding.layoutOppComyDetails.spTypeOrder.setSelection(typePosition)
+                             typeAdapter.notifyDataSetChanged()
+
                             val salutationAdapter = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, list_of_salutation)
                             salutationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             layout_opp_cntct_person.sp_opsalutation?.adapter = salutationAdapter
                             layout_opp_cntct_person.sp_opsalutation.setSelection(salutationPosition)
                             salutationAdapter.notifyDataSetChanged()
-                             strcontact_stateCode = response.body()?.Response?.Data?.StateId
-                             str_inst_area = response.body()?.Response?.Data?.AreaId
-                             str_inst_building_nm = response.body()?.Response?.Data?.BuildingId
-                             str_industry_type = response.body()?.Response?.Data?.IndustryId
-                             str_city_code = response.body()?.Response?.Data?.CityId
+
+                             strcontact_stateCode = response.body()?.Response?.Data?.get(0)?.StateId
+                             str_inst_area = response.body()?.Response?.Data?.get(0)?.AreaId
+                             str_inst_building_nm = response.body()?.Response?.Data?.get(0)?.BuildingId
+                             str_industry_type = response.body()?.Response?.Data?.get(0)?.IndustryId
+                             str_city_code = response.body()?.Response?.Data?.get(0)?.CityId
 
                             var cntstatePosition = 0
                             list_of_state.forEachIndexed { index, s ->
@@ -1229,7 +1637,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             layout_opp_cntct_person.sp_opstate.setSelection(cntstatePosition)
                             cntstateAdapter.notifyDataSetChanged()
 
-                            str_firm_type= response.body()?.Response?.Data?.Firmtype
+                            str_firm_type= response.body()?.Response?.Data?.get(0)?.Firmtype
                             var firmPosition = 0
                             list_firm_type_value.forEachIndexed { index, _ ->
                                 if (index == str_firm_type?.toInt()) {
@@ -1243,7 +1651,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             layout_opp_comy_details.sp_opfrmtype.setSelection(firmPosition)
                             firmAdapter.notifyDataSetChanged()
 
-                             str_customer_segmentid = response.body()?.Response?.Data?.CustomerSegment
+                             str_customer_segmentid = response.body()?.Response?.Data?.get(0)?.CustomerSegment
                             var customersegPosition = 0
                             list_cust_seg_value.forEachIndexed { index, s ->
                                 if (s == str_customer_segmentid) {
@@ -1258,7 +1666,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             layout_opp_comy_details.sp_opcustseg.setSelection(customersegPosition)
                             custSeg.notifyDataSetChanged()
 
-                             str_media = response.body()?.Response?.Data?.Media
+                             str_media = response.body()?.Response?.Data?.get(0)?.Media
                             var mediaPosition = 0
                             list_of_selfpo_value.forEachIndexed { index, s ->
                                 if (index == str_media?.toInt()) {
@@ -1275,7 +1683,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             val lostadapter = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, lost)
                             lostadapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             sp_lost.adapter = lostadapter
-                             str_serv_pro = response.body()?.Response?.Data?.Existingprovider
+                             str_serv_pro = response.body()?.Response?.Data?.get(0)?.Existingprovider
                             var provOnePosition = 0
                             ext_serv_one_value.forEachIndexed { index, s ->
                                 if (s == str_serv_pro) {
@@ -1289,7 +1697,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             layout_other.sp_opexservice.setSelection(provOnePosition)
                             serv1.notifyDataSetChanged()
 
-                             str_cmpnyself = response.body()?.Response?.Data?.CompanySelf
+                             str_cmpnyself = response.body()?.Response?.Data?.get(0)?.CompanySelf
                             var companySelfPosition = 0
                             list_of_selfpo_value.forEachIndexed { index, s ->
                                 if (index == str_cmpnyself?.toInt()) {
@@ -1304,7 +1712,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             layout_other.sp_opselfpo.setSelection(companySelfPosition)
                             companySelfadpter.notifyDataSetChanged()
 
-                             str_cust_frwl = response.body()?.Response?.Data?.Firewall
+                             str_cust_frwl = response.body()?.Response?.Data?.get(0)?.Firewall
                             var FirewallPosition = 0
                             list_of_selfpo_value.forEachIndexed { index, s ->
                                 if (index == str_cust_frwl?.toInt()) {
@@ -1318,8 +1726,8 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                             layout_other.sp_opfirewal?.adapter = frwaladpter
                             layout_other.sp_opfirewal.setSelection(FirewallPosition)
                             frwaladpter.notifyDataSetChanged()
-                             redundancy = response.body()?.Response?.Data?.Redunancy
-                             str_redundancy = response.body()?.Response?.Data?.Redunancy.toString()
+                             redundancy = response.body()?.Response?.Data?.get(0)?.Redunancy
+                             str_redundancy = response.body()?.Response?.Data?.get(0)?.Redunancy.toString()
                             val redundancyadpter = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, list_of_redundancy)
                             redundancyadpter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             layout_other.sp_opredundancy?.adapter = redundancyadpter
@@ -1329,7 +1737,142 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                 layout_other.sp_opredundancy.setSelection(2)
                             }
                             redundancyadpter.notifyDataSetChanged()
-                             val polockDate = response.body()?.Response?.Data?.PoLock
+                             var illServicesPosition = 0
+                             resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                 if (s == strIllServices) illServicesPosition = index
+                                 return@forEachIndexed
+                             }
+                             val illServices = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                             illServices.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spCustomerUsingIllServices.adapter = illServices
+                             binding.layoutLeadSdQuestionare.spCustomerUsingIllServices.setSelection(illServicesPosition)
+                             illServices.notifyDataSetChanged()
+
+
+
+                             var broadServicesPosition = 0
+                             resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                 if (s == strBroadServices) {
+                                     broadServicesPosition = index
+                                     return@forEachIndexed
+                                 }
+                             }
+                             val broadServices = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                             broadServices.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spBroadServices.adapter = broadServices
+                             binding.layoutLeadSdQuestionare.spBroadServices.setSelection(broadServicesPosition)
+                             broadServices.notifyDataSetChanged()
+
+                             var linkPosition = 0
+                             resources.getStringArray(R.array.listMangedLinkVal).forEachIndexed { index, s ->
+                                 if (s == strLinksManaged) {
+                                     linkPosition = index
+                                     return@forEachIndexed
+                                 }
+                             }
+                             val linkManaged = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listManagedLink))
+                             linkManaged.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spLinksManged.adapter = linkManaged
+                             binding.layoutLeadSdQuestionare.spLinksManged.setSelection(linkPosition)
+                             linkManaged.notifyDataSetChanged()
+
+                             var routingPosition = 0
+                             resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                 if (s == strRoutingServices) {
+                                     routingPosition = index
+                                     return@forEachIndexed
+                                 }
+                             }
+                             val routingService = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                             routingService.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spRoutingServices.adapter = routingService
+                             binding.layoutLeadSdQuestionare.spRoutingServices.setSelection(routingPosition)
+                             routingService.notifyDataSetChanged()
+
+                             var securityPosition = 0
+                             resources.getStringArray(R.array.listMangedLinkVal).forEachIndexed { index, s ->
+                                 if (s == strNetworkSecurity) {
+                                     securityPosition = index
+                                     return@forEachIndexed
+                                 }
+                             }
+                             val networkSecurity = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listNetworkSecurity))
+                             networkSecurity.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spNetworkSecurity.adapter = networkSecurity
+                             binding.layoutLeadSdQuestionare.spNetworkSecurity.setSelection(securityPosition)
+                             networkSecurity.notifyDataSetChanged()
+
+                             var hostedPosition = 0
+                             resources.getStringArray(R.array.listApplicantsVal).forEachIndexed { index, s ->
+                                 if (s == strHosted) {
+                                     hostedPosition = index
+                                     return@forEachIndexed
+                                 }
+                             }
+                             val hosted = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listApplicants))
+                             hosted.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spHostedRequired.adapter = hosted
+                             binding.layoutLeadSdQuestionare.spHostedRequired.setSelection(hostedPosition)
+                             hosted.notifyDataSetChanged()
+
+                             var customerPosition = 0
+                             resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                 if (s == strCustomer) {
+                                     customerPosition = index
+                                     return@forEachIndexed
+                                 }
+                             }
+                             val customerReq = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listInHouse))
+                             customerReq.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spCustomerRequired.adapter = customerReq
+                             binding.layoutLeadSdQuestionare.spCustomerRequired.setSelection(customerPosition)
+                             customerReq.notifyDataSetChanged()
+
+                             var backBonePosition = 0
+                             resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                 if (s == strLinksManaged) {
+                                     backBonePosition = index
+                                     return@forEachIndexed
+                                 }
+                             }
+                             val backBone = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                             backBone.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spBackboneRequired.adapter = backBone
+                             binding.layoutLeadSdQuestionare.spBackboneRequired.setSelection(backBonePosition)
+                             backBone.notifyDataSetChanged()
+
+                             var contractPosition = 0
+                             resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                 if (s == strContract) {
+                                     contractPosition = index
+                                     return@forEachIndexed
+                                 }
+                             }
+                             val contract = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                             contract.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                             binding.layoutLeadSdQuestionare.spContractRenewed.adapter = contract
+                             binding.layoutLeadSdQuestionare.spContractRenewed.setSelection(contractPosition)
+                             contract.notifyDataSetChanged()
+
+                             val firewallSet = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.FirewallSetToExpire.toString()
+                             if(firewallSet.isNotEmpty()){
+                                 val split = firewallSet.split("-")
+                                 val date = split[0]
+                                 val month = split[1]
+                                 val year = split[2]
+                                 binding.layoutLeadSdQuestionare.etFireSet.setText("$date-$month-$year")
+                                 firesSet=("$year-$month-$date")
+                             }
+                             val redundancyMPLS = response.body()?.Response?.Data?.get(0)?.sdwanOpp?.MPLSContract.toString()
+                             if(redundancyMPLS.isNotEmpty()){
+                                 val split = redundancyMPLS.split("-")
+                                 val date = split[0]
+                                 val month = split[1]
+                                 val year = split[2]
+                                 binding.layoutLeadSdQuestionare.etMplsRequired.setText("$date-$month-$year")
+                                 mpls=("$year-$month-$date")
+                             }
+                             val polockDate = response.body()?.Response?.Data?.get(0)?.PoLock
                              if(polockDate?.isNotEmpty()==true){
                                  val split1 = polockDate.split("-")
                                  val date1 = split1[0]
@@ -1338,7 +1881,16 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                  layout_other.et_polock.setText("$date1-$month1-$year1")
                                  polockdate=("$year1-$month1-$date1")
                              }
-                             val ponextdate = response.body()?.Response?.Data?.PoNext
+                             val pocDate = response.body()?.Response?.Data?.get(0)?.PocClosureDate
+                             if(pocDate?.isNotEmpty()==true){
+                                 val split1 = pocDate.split("-")
+                                 val date1 = split1[0]
+                                 val month1 = split1[1]
+                                 val year1 = split1[2]
+                                 binding.layoutOppComyDetails.etPoc.setText("$date1-$month1-$year1")
+                                 Poc=("$year1-$month1-$date1")
+                             }
+                             val ponextdate = response.body()?.Response?.Data?.get(0)?.PoNext
                              if(ponextdate?.isNotEmpty()==true){
                                  val split2 = ponextdate.split("-")
                                  val date2 = split2[0]
@@ -1347,7 +1899,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                  layout_other.et_oprenewal.setText("$date2-$month2-$year2")
                                  renewal=("$year2-$month2-$date2")
                              }
-                             val frwcdate = response.body()?.Response?.Data?.FirewallAwc
+                             val frwcdate = response.body()?.Response?.Data?.get(0)?.FirewallAwc
                              if(frwcdate?.isNotEmpty() == true){
                                  val fr = frwcdate.split("-")
                                  val date = fr[0]
@@ -1356,27 +1908,27 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                  layout_other.et_frwalaws.setText("$date-$month-$year")
                                  frwaws=("$year-$month-$date")
                              }
-                             getProductAddedList()
-                             getGenerateQuote()
-
-                             getProductList()
-                             getDOA()
+                             CoroutineScope(Dispatchers.IO).launch {
+                                 getProductAddedList()
+                                 getGenerateQuote()
+                                 getAllSites()
+                                 getProductList()
+                                 getDOA()
+                             }
                             // if(strOperationCity=="true") {
                                  if ((strBuildingStatus == "C-RFS" || strBuildingStatus == "P-RFS" ||
                                      strBuildingStatus == "B-RFS" || strBuildingStatus == "A-RFS") && (redundancy == false)) {
                                      binding.feasibility.addFes.visibility = View.GONE
-
                                  }else if ((strBuildingStatus == "C-RFS" || strBuildingStatus == "P-RFS" ||
                                      strBuildingStatus == "B-RFS" || strBuildingStatus == "A-RFS") && (redundancy == true)) {
                                      binding.feasibility.addFes.visibility = View.VISIBLE
-
                                  }else if((strArea == "Other" || strBuilding == "Other") && (strCreateAreaOrBuilding=="false") &&(strBuildingStatus == "Non-RFS")&&(strTPFeasibilty=="Show Create Area or Building button") ){
                                      if(allFeasibility!=null||fesstatus=="1"){
                                          fab_create_society.visibility = View.VISIBLE
                                          Log.e("ButtonFes", "4")
                                      }
                                  }
-                                 val code = response.body()?.Response?.Data?.Statuscode
+                                 val code = response.body()?.Response?.Data?.get(0)?.Statuscode
                                  if(code.equals("Waiting for Approval")){
                                      tv_opp_submit.visibility = View.GONE
                                      tv_won.visibility=View.VISIBLE
@@ -1414,10 +1966,10 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                                 tv_won.visibility=View.VISIBLE
                                 tv_opp_save.visibility=View.VISIBLE
                                 layout_product_line.add_procuct.visibility=View.VISIBLE
-                                binding.quote.addQuote.visibility=View.VISIBLE
+                               // binding.quote.addQuote.visibility=View.VISIBLE
                                 flr.visibility=View.GONE
                                 status="2"
-                                Calender()
+                                calender()
                                }
                             }else{
                               Toast.makeText(this@OpportunityActivity, response.body()?.Response?.Message,Toast.LENGTH_LONG).show()
@@ -1435,6 +1987,91 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             }
         })
     }
+
+    fun getRequiredCity() {
+        val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,"",userName)
+
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getCityList(getCityRequest)
+        call.enqueue(object : Callback<GetCityResponse?> {
+            override fun onResponse(call: Call<GetCityResponse?>, response: Response<GetCityResponse?>) {
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        val img = response.body()?.Response?.Message
+                        img?.let { Log.e("image", it) }
+                        cityList = response.body()?.Response?.Data
+                        RequiredCity = ArrayList<String>()
+                        RequiredCityCode =ArrayList<String>()
+                        RequiredCity?.add("Select City")
+                        RequiredCityCode?.add("")
+                        for (item in cityList!!) {
+                            RequiredCity?.add(item.CityName)
+                            RequiredCityCode?.add(item.CityCode)
+                        }
+                        var requiredCityPosition=0
+                        RequiredCityCode!!.forEachIndexed { index, s ->
+                            if(s==strCityReqd)requiredCityPosition=index
+                        }
+
+                        val adapter12 = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, RequiredCity!!)
+                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                        binding.layoutLeadSdQuestionare.spCityRequired.adapter = adapter12
+                        binding.layoutLeadSdQuestionare.spCityRequired.setSelection(requiredCityPosition)
+                        adapter12.notifyDataSetChanged()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetCityResponse?>, t: Throwable) {
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+
+
+    fun getVertcal() {
+        val getCityRequest = GetCityRequest(Constants.GETVERTICAL,Constants.AUTH_KEY,password,"",userName)
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getVertical(getCityRequest)
+        call.enqueue(object : Callback<GetVerticalData?> {
+            override fun onResponse(call: Call<GetVerticalData?>, response: Response<GetVerticalData?>) {
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        val img = response.body()?.Response?.Message
+                        img?.let { Log.e("image", it) }
+                        verticalList = response.body()?.Response?.Data
+                        vertical = java.util.ArrayList<String>()
+                        verticalId = java.util.ArrayList<String>()
+                        vertical?.add("Select Vertical")
+                        verticalId?.add("")
+                        for (item in verticalList!!) {
+                            vertical?.add(item.VerticalName)
+                            verticalId?.add(item.VerticalId)
+                        }
+                        var verticalPosition=0
+                        verticalId!!.forEachIndexed { index, s ->
+                            if(s==strVertical)verticalPosition=index
+                        }
+
+                        val adapter12 = ArrayAdapter(this@OpportunityActivity, android.R.layout.simple_spinner_item, vertical!!)
+                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                        binding.layoutOppComyDetails.spVertical.adapter = adapter12
+                        binding.layoutOppComyDetails.spVertical.setSelection(verticalPosition)
+                        adapter12.notifyDataSetChanged()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetVerticalData?>, t: Throwable) {
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+
 
     fun locked(){
         opp_contact_info_row.et_op_toptic.isFocusableInTouchMode= false
@@ -1529,7 +2166,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     }
 
 
-    fun getBuilding(areaname: String?, areaCode: String?) {
+    private fun getBuilding(areaname: String?, areaCode: String?) {
         val getLeadBuildingRequest = GetLeadBuildingRequest(Constants.GET_BUILDING,Constants.AUTH_KEY,areaCode.toString(),areaname,password,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -1576,7 +2213,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
 
     fun getProductList() {
 
-        val getProductListRequest = str_Opp_Id?.let { GetProductListRequest(Constants.GET_PRODUCTLIST,Constants.AUTH_KEY, it,password,userName) }
+        val getProductListRequest = strOppId?.let { GetProductListRequest(Constants.GET_PRODUCTLIST,Constants.AUTH_KEY, it,password,userName,"") }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getProductList(getProductListRequest)
@@ -1661,14 +2298,15 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
         })
     }
     @SuppressLint("SetTextI18n")
-    fun  Calender(){
+    fun  calender(){
         try{
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         layout_other.et_polock.setOnClickListener {
-            val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
+
                 val mnth = monthOfYear+1
                 layout_other.et_polock.setText("$dayOfMonth-$mnth-$year")
                 val trgt =  layout_other.et_polock.text.toString()
@@ -1676,13 +2314,29 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                 val dateee = split[0]
                 val month1 = split[1]
                 val year1 = split[2]
-                polockdate=(year1+ "-" + month1+"-" +dateee)
+                polockdate=("$year1-$month1-$dateee")
             }, year, month, day)
-            dpd.show()
+             dpd.show()
         }
 
+            binding.layoutOppComyDetails.etPoc.setOnClickListener {
+                val dpd = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
+                    val mnth = monthOfYear+1
+                    binding.layoutOppComyDetails.etPoc.setText("$dayOfMonth-$mnth-$year")
+                    val trgt =  binding.layoutOppComyDetails.etPoc.text.toString()
+                    val split = trgt.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    Poc=("$year1-$month1-$dateee")
+                }, year, month, day)
+                dpd.show()
+            }
+
+
+
         layout_other.et_oprenewal.setOnClickListener {
-            val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
                 val mnth = monthOfYear+1
                 layout_other.et_oprenewal.setText("$dayOfMonth-$mnth-$year")
                 val trgt =  layout_other.et_oprenewal.text.toString()
@@ -1690,13 +2344,13 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                 val dateee = split[0]
                 val month1 = split[1]
                 val year1  = split[2]
-                renewal=(year1+ "-" +month1+ "-" + dateee)
+                renewal=("$year1-$month1-$dateee")
             }, year, month, day)
             dpd.show()
         }
 
         layout_other.et_frwalaws.setOnClickListener {
-            val dpd = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
                 val mnth = monthOfYear+1
                 layout_other.et_frwalaws.setText("$dayOfMonth-$mnth-$year")
                 val trgt =  layout_other.et_frwalaws.text.toString()
@@ -1704,11 +2358,40 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
                 val dateee = split[0]
                 val month1 = split[1]
                 val year1 =  split[2]
-                frwaws=(year1+ "-" +month1+ "-" +dateee)
+                frwaws=("$year1-$month1-$dateee")
             }, year, month, day)
             dpd.show()
         }
-        } catch (e: java.lang.Exception) {
+
+            binding.layoutLeadSdQuestionare.etFireSet.setOnClickListener {
+                val dpd = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
+                    val mn = monthOfYear+1
+                    binding.layoutLeadSdQuestionare.etFireSet.setText("$dayOfMonth-$mn-$year")
+                    val fire =   binding.layoutLeadSdQuestionare.etFireSet.text.toString()
+                    val split = fire.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    firesSet=("$year1-$month1-$dateee")
+                }, year, month, day)
+                dpd.show()
+            }
+
+            binding.layoutLeadSdQuestionare.etMplsRequired.setOnClickListener {
+                val dpd = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
+                    val mn = monthOfYear+1
+                    binding.layoutLeadSdQuestionare.etMplsRequired.setText("$dayOfMonth-$mn-$year")
+                    val mplsRequired =  binding.layoutLeadSdQuestionare.etMplsRequired.text.toString()
+                    val split = mplsRequired.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    mpls=("$year1-$month1-$dateee")
+                }, year, month, day)
+            dpd.show()
+
+            }
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -1716,8 +2399,56 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (parent?.id == R.id.sp_opsalutation) {
             layout_opp_cntct_person.et_opsalutation.setText(list_of_salutation[position])
-            str_salutation = list_of_salutation_id[position]
-        }else if (parent?.id == R.id.sp_opcustseg) {
+            strSalutation = list_of_salutation_id[position]
+        }else if(parent?.id ==R.id.sp_vertical){
+            binding.layoutOppComyDetails.etVertical.setText(vertical?.get(position))
+            strVertical = verticalId?.get(position)
+        }
+        else if(parent?.id ==R.id.sp_cityRequired){
+            binding.layoutLeadSdQuestionare.etCityRequired.setText(RequiredCity?.get(position) )
+            strCityReqd =(RequiredCityCode?.get(position))
+        }else if(parent?.id ==R.id.sp_customerUsingIllServices){
+            binding.layoutLeadSdQuestionare.etCustomerUsingIllServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strIllServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+            if(strIllServices.equals("122050000")){
+                binding.layoutLeadSdQuestionare.mention.visibility=View.VISIBLE
+            }else{
+                binding.layoutLeadSdQuestionare.mention.visibility=View.GONE
+            }
+        }
+        else if(parent?.id ==R.id.sp_broadServices){
+            binding.layoutLeadSdQuestionare.etBroadServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strBroadServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+            if(strBroadServices.equals("122050000")){
+                binding.layoutLeadSdQuestionare.links.visibility=View.VISIBLE
+            }else{
+                binding.layoutLeadSdQuestionare.links.visibility=View.GONE
+            }
+        }
+        else if(parent?.id ==R.id.sp_linksManged){
+            binding.layoutLeadSdQuestionare.etLinksManged.setText(resources.getStringArray(R.array.listManagedLink)[position])
+            strLinksManaged =resources.getStringArray(R.array.listMangedLinkVal)[position]
+        }
+        else if(parent?.id ==R.id.sp_routingServices){
+            binding.layoutLeadSdQuestionare.etRoutingServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strRoutingServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+        }
+        else if(parent?.id ==R.id.sp_networkSecurity){
+            binding.layoutLeadSdQuestionare.etNetworkSecurity.setText(resources.getStringArray(R.array.listNetworkSecurity)[position])
+            strNetworkSecurity =resources.getStringArray(R.array.listMangedLinkVal)[position]
+        }else if(parent?.id ==R.id.sp_hostedRequired){
+            binding.layoutLeadSdQuestionare.etHostedRequired.setText(resources.getStringArray(R.array.listApplicants)[position])
+            strHosted =resources.getStringArray(R.array.listApplicantsVal)[position]
+        }else if(parent?.id ==R.id.sp_customerRequired){
+            binding.layoutLeadSdQuestionare.etCustomerRequired.setText(resources.getStringArray(R.array.listInHouse)[position])
+            strCustomer =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+        }else if(parent?.id ==R.id.sp_backboneRequired){
+            binding.layoutLeadSdQuestionare.etBackboneRequired.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strBackBone =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+        }else if(parent?.id ==R.id.sp_contractRenewed){
+            binding.layoutLeadSdQuestionare.etContractRenewed.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strContract =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+        } else if (parent?.id == R.id.sp_opcustseg) {
             layout_opp_comy_details.et_cust_segmnt.setText(list_of_cust_segment[position])
             str_customer_segmentid = list_cust_seg_value[position]
         }else if(parent?.id == R.id.sp_opmedia){
@@ -1814,7 +2545,16 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             layout_product_line.et_product_list.setText(productId?.get(position))
             str_product =  productId?.get(position)
         }
+        else if(parent?.id == R.id.spTypeOrder){
+            binding.layoutOppComyDetails.etTypeOrder.setText(resources.getStringArray(R.array.typeOrder)[position])
+            strType = resources.getStringArray(R.array.siteTypeVal)[position]
+            if(strType.equals("122050000")){
+                binding.layoutOppComyDetails.poc.visibility=View.VISIBLE
+            }else{
+                binding.layoutOppComyDetails.poc.visibility=View.GONE
+            }
 
+        }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

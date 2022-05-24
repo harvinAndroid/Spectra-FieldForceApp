@@ -51,7 +51,12 @@ class SalesDashboard:AppCompatActivity(),View.OnClickListener{
                 finish()
             }
         }
-
+        cardSaf.setOnClickListener {
+            Intent(this, SafTabActivity::class.java).also {
+                startActivity(it)
+                finish()
+            }
+        }
     }
 
     override fun onClick(p0: View?) {

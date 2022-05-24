@@ -56,7 +56,6 @@
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
                                 android:text="@{updateCompany.companyName}"
-
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />

@@ -39,6 +39,29 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp">
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_lead_id"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/lead_id"
+                                android:text="@{updateContact.response.get(0).leadId}"
+                                android:drawableEnd="@drawable/lock"
+                                android:focusableInTouchMode="false"
+                                android:imeOptions="actionNext"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -126,6 +149,46 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
+                            android:id="@+id/vertical"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:visibility="invisible" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/color_light_blue"
+                                    android:hint="@string/vertical"
+                                    android:imeOptions="actionNext"
+                                    android:focusable="false"
+                                    app:hintEnabled="true"
+                                    android:focusableInTouchMode="false"
+                                    android:drawableEnd="@drawable/ic_expand_down"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_height="wrap_content">
 
@@ -165,27 +228,6 @@
                             android:textColorHint="@color/colorPrimary"
                             app:hintTextAppearance="@style/AppearanceText">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_lead_id"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/color_light_blue"
-                                android:hint="@string/lead_id"
-                                android:text="@{updateContact.response.get(0).leadId}"
-                                android:drawableEnd="@drawable/lock"
-                                android:focusableInTouchMode="false"
-                                android:imeOptions="actionNext"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:hintTextAppearance="@style/AppearanceText">
-
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_contact_person"
@@ -194,7 +236,6 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/contact_person_name"
                                 android:text="@{updateContact.response.get(0).contactPersonName}"
-
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -387,6 +428,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
                         </FrameLayout>
                         <FrameLayout
+                            android:id="@+id/relation"
                             android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:layout_marginTop="@dimen/_5sdp"

@@ -3,12 +3,11 @@ package com.spectra.fieldforce.utils;
 public class Constants {
 
    /* PRODUCATION URL*/
-    public static final String BASE_URL="https://ffamwapi.spectra.co";
-    public static final String BASE_URL1="https://custappmw.spectra.co";
-
+   /* public static final String BASE_URL="https://ffamwapi.spectra.co";
+    public static final String BASE_URL1="https://custappmw.spectra.co";*/
   /*  Local URL */
-  /*  public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
-    public static final String BASE_URL1="https://custappmwuat.spectra.co/";*/
+    public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
+    public static final String BASE_URL1="https://custappmwuat.spectra.co/";
     public static final String AUTH_KEY ="ac7b51de9d888e1458dd53d8aJAN3ba6f";
     public static final String GET_ACTION_CODEMST  ="getActioncodeMst";
     public static final String GETASR_BY_SRNUMBER= "getASRBySrNumber";
@@ -162,16 +161,35 @@ public class Constants {
     public static final String REOPEN_OPP="reopenOpportunity";
     public static final String GETALLCONTACT="getAllContact";
     public static final String getRFS = "getRFS";
-
     public static final String getCONTACT = "getContact";
     public static final String GET_COMPETITOR = "getCompetitor";
     public static final String GETPLAN_CATEGORY = "getPlanCategory";
     public static final String UPDATECONTACT = "updateContact";
     public static final String CREATECONTACT = "createContact";
     public static final String GETCONTACT = "getContact";
-
-
-
+    public static final String GETVERTICAL = "getVertical";
+    public static final String GETALL_SITE_DETAILS = "getAllSiteDetails";
+    public static final  String GET_SITE="getSite";
+    public static final String CREATE_SITE ="createSite";
+    public static final String UPDATE_SITE ="updateSite";
+    public static final String CREATE_LAN ="createLan";
+    public static final String  UPDATE_LAN="updateLan";
+    public static final String GET_LAN ="getLan";
+    public static final String GET_ALLLAN ="getAllLan";
+    public static final String CREATE_WAN ="createWan";
+    public static final String UPDATE_WAN = "updateWan";
+    public static final String GET_WAN ="getWan";
+    public static final String GET_ALLWAN ="getAllWan";
+    public static final String CREATE_PRETASK ="createPreTask";
+    public static final String GET_PRETASK="getPreTask";
+    public static final String GET_ALLSAF ="getAllSaf";
+    public static final String CREATE_SAF ="createSaf";
+    public static final String UPDATE_SAF ="updateSaf";
+    public static final String GET_SAF ="getSaf";
+    public static final String SUBMIT_SAF ="submitSaf";
+    public static final String GETALL_WORKORDER="getAllWorkOrder";
+    public static final String GET_SAFPRETASK="getSAFPretask";
+   // public static final String CREATE_OPPPRODUCT ="createOppProduct";
 
 
 

@@ -127,7 +127,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
 
 
     private void updateEnginer(String updateWCREngineer, String wcrId){
-        SharedPreferences sp1=context.getSharedPreferences("Login",0);
+        SharedPreferences sp1 = context.getSharedPreferences("Login",0);
         String enggName =sp1.getString("EnggName", null);
         UpdateWcrEnggRequest updateWcrEnggRequest = new UpdateWcrEnggRequest();
         updateWcrEnggRequest.setAuthkey(Constants.AUTH_KEY);
@@ -241,10 +241,6 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             }
         });
     }
-
-
-
-
 
 
     @Override

@@ -26,6 +26,7 @@ import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.lead_company_details_row.view.*
 import kotlinx.android.synthetic.main.lead_contact_info.view.*
 import kotlinx.android.synthetic.main.lead_demo_fragment.*
+import kotlinx.android.synthetic.main.lead_sdquestionare_details_row.view.*
 
 import kotlinx.android.synthetic.main.toolbar.view.*
 import kotlinx.android.synthetic.main.update_lead_channel_source_row.*
@@ -108,6 +109,9 @@ import kotlinx.android.synthetic.main.updatelead_contact_personadd_row.view.sp_c
 
 import kotlinx.android.synthetic.main.updatelead_contact_personadd_row.view.sp_salutation
 import kotlinx.android.synthetic.main.updatelead_contact_personadd_row.view.sp_sub_bus
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -136,7 +140,14 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     private var buildingCode : ArrayList<String>? = null
     private var cntbuilding : ArrayList<String>? = null
     private var cntbuildingCode : ArrayList<String>? = null
+    private var RequiredCity : java.util.ArrayList<String>? = null
+    private var RequiredCityCode : java.util.ArrayList<String>? = null
+    private var verticalList : java.util.ArrayList<VerticalData>? = null
+    private var vertical : java.util.ArrayList<String>? = null
+    private var verticalId : java.util.ArrayList<String>? = null
     private var trgtdate:String?=null
+    var mpls :String ?=null
+    var firesSet :String ?=null
     var str_city: String? = null
     var str_city_code : String? = null
     var str_Contactcity: String? = null
@@ -146,6 +157,17 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     var str_lead_chnl : String? = null
     var str_lead_src : String? = null
     var str_sub_bus : String? = null
+    var strVertical:String ? = null
+    var strIllServices :String? = null
+    var strCityReqd :String? = null
+    var strNetworkSecurity :String? = null
+    var strHosted :String? = null
+    var strBackBone:String ? = null
+    var strCustomer:String? = null
+    var strContract :String? = null
+    var strRoutingServices :String? = null
+    var strBroadServices :String? = null
+    var strLinksManaged :String? = null
     var str_firm_type :String? = null
     var str_industry_type :String? = null
     var str_salutation :String? = null
@@ -185,7 +207,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     var str_inst_build_name : String? = null
     var str_add_area : String? = null
     var cntareaname : String? = null
-
     var str_customer_segmentid :String? = null
     private var industryList : ArrayList<IndustryResponse>? = null
     private var instryname = ArrayList<String>()
@@ -262,7 +283,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     "Wrong Number","Not Contactable","Language Barrier")
 
     override fun onCreate(savedInstanceState: Bundle?) {
-       // setTheme(R.style.AppThemee);
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.update_lead_demo_fragment)
         searchtoolbarlead_update.rl_back.setOnClickListener(this)
@@ -283,19 +303,23 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         linear_companydetails.visibility= View.VISIBLE
         linearother_details.visibility = View.VISIBLE
         linearremark_details.visibility = View.VISIBLE
+        CoroutineScope(Dispatchers.IO).launch {
+            init()
 
-        init()
+        }
         itemListener()
-
         flr.visibility= View.VISIBLE
-        getLead()
-      //  getOtherCity()
+        CoroutineScope(Dispatchers.IO).launch {
+            getLead()
+        }
 
-        tv_qualify.setOnClickListener { v ->
-          qualifyLead()
+        tv_qualify.setOnClickListener {
+
+                qualifyLead()
+
       }
 
-      et_disquslify.setOnClickListener { v ->
+      et_disquslify.setOnClickListener {
           val dis :String = et_disquslify.text.toString()
           if(strDisqualify==""||strDisqualify==""||dis==("Disqualify")){
               et_disquslify.setOnClickListener { sp_disqualify.performClick() }
@@ -304,12 +328,12 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
           }
       }
 
-        flr.setOnClickListener { v ->
+        flr.setOnClickListener {
             val fragment = FlrFrag()
             showFragmentflr(fragment)
         }
 
-        oppurtunity.setOnClickListener { v ->
+        oppurtunity.setOnClickListener {
             val intent = Intent (this@UpdateLeadActivity, OpportunityActivity::class.java)
             intent.putExtra("LeadId", str_lead_Id)
             startActivity(intent)
@@ -319,7 +343,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
 
 
-    fun showFragmentflr(fragment: FlrFrag){
+    private fun showFragmentflr(fragment: FlrFrag){
         val fram = supportFragmentManager.beginTransaction()
         val mBundle = Bundle()
         mBundle.putString("LeadId",str_lead_Id)
@@ -344,7 +368,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             updatelayout_lead_installation_address.et_add_build_num.isFocusableInTouchMode = false
             updatelayout_lead_installation_address.et_add_floor.isFocusableInTouchMode = false
             updatelayout_lead_installation_address.et_pin_code.isFocusableInTouchMode = false
-           updatelayout_lead_installation_address.et_upad_block.isFocusableInTouchMode = false
+            updatelayout_lead_installation_address.et_upad_block.isFocusableInTouchMode = false
             update_lead_contact_address.et_cnt_buildng_num.isFocusableInTouchMode = false
             update_lead_contact_address.et_cnt_pin_code.isFocusableInTouchMode = false
             update_lead_contact_address.et_cnt_floor.isFocusableInTouchMode = false
@@ -356,6 +380,23 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             update_lead_contact_address.et_upcnt_block.isFocusableInTouchMode = false
             updatelayout_lead_installation_address.et_upspefc_area.isFocusableInTouchMode = false
             updatelayout_lead_installation_address.et_upspecfcbuilding_num.isFocusableInTouchMode = false
+            binding.layoutLeadSdQuestionare.etNoOfLocation.isEnabled=false
+            binding.layoutLeadSdQuestionare.etLinks.isEnabled=false
+            binding.layoutLeadSdQuestionare.etItSpent.isEnabled=false
+            binding.layoutLeadSdQuestionare.etRemarkk.isEnabled=false
+            binding.layoutLeadSdQuestionare.etMentionNum.isEnabled=false
+            binding.layoutLeadSdQuestionare.etCustomerUsingIllServices.isEnabled=false
+            binding.layoutLeadSdQuestionare.etBroadServices.isEnabled=false
+            binding.layoutLeadSdQuestionare.etLinksManged.isEnabled=false
+            binding.layoutLeadSdQuestionare.etRoutingServices.isEnabled=false
+            binding.layoutLeadSdQuestionare.etFireSet.isEnabled=false
+            binding.layoutLeadSdQuestionare.etCityRequired.isEnabled=false
+            binding.layoutLeadSdQuestionare.etNetworkSecurity.isEnabled=false
+            binding.layoutLeadSdQuestionare.etHostedRequired.isEnabled=false
+            binding.layoutLeadSdQuestionare.etCustomerRequired.isEnabled=false
+            binding.layoutLeadSdQuestionare.etBackboneRequired.isEnabled=false
+            binding.layoutLeadSdQuestionare.etContractRenewed.isEnabled=false
+            binding.layoutLeadSdQuestionare.etMplsRequired.isEnabled=false
 
             flr.visibility= View.GONE
             tv_qualify.visibility= View.GONE
@@ -369,35 +410,35 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             et_customer_seg.isEnabled=false
             et_country.isEnabled=false
             et_lead_name.isEnabled=false
-        updatelayout_contactinfo_layout.et_updtcompany.isEnabled=false
-        update_lead_contact_address.et_upcnt_block.isEnabled=false
-        et_state.isEnabled=false
-        et_add_city.isEnabled=false
-        et_cntarea.isEnabled=false
-        et_building.isEnabled=false
-        et_cnt_country.isEnabled=false
-        et_cnt_state.isEnabled=false
-        et_cnt_city.isEnabled=false
-        et_contacttarea.isEnabled=false
-        et_cnt_building.isEnabled=false
-        et_crt_wrk.isEnabled = false
-        et_firm_type.isEnabled=false
-        et_indus_type.isEnabled=false
-        et_media.isEnabled=false
-        et_ext_srv.isEnabled=false
-        et_ext_srv_two.isEnabled=false
-        et_is_cus.isEnabled=false
-        et_indus_firewl.isEnabled=false
-        et_vpn_srv.isEnabled=false
-        et_service_pv_one.isEnabled=false
-        et_srv_pv_two.isEnabled=false
-        et_cust_void.isEnabled=false
-        et_cust_wifi.isEnabled=false
-        dis.visibility=View.GONE
-        et_disquslify.visibility = View.GONE
-        sp_disqualify.isEnabled = false
-        sp_disqualify.visibility = View.GONE
-        sp_work_location.isEnabled = false
+            updatelayout_contactinfo_layout.et_updtcompany.isEnabled=false
+            update_lead_contact_address.et_upcnt_block.isEnabled=false
+            et_state.isEnabled=false
+            et_add_city.isEnabled=false
+            et_cntarea.isEnabled=false
+            et_building.isEnabled=false
+            et_cnt_country.isEnabled=false
+            et_cnt_state.isEnabled=false
+            et_cnt_city.isEnabled=false
+            et_contacttarea.isEnabled=false
+            et_cnt_building.isEnabled=false
+            et_crt_wrk.isEnabled = false
+            et_firm_type.isEnabled=false
+            et_indus_type.isEnabled=false
+            et_media.isEnabled=false
+            et_ext_srv.isEnabled=false
+            et_ext_srv_two.isEnabled=false
+            et_is_cus.isEnabled=false
+            et_indus_firewl.isEnabled=false
+            et_vpn_srv.isEnabled=false
+            et_service_pv_one.isEnabled=false
+            et_srv_pv_two.isEnabled=false
+            et_cust_void.isEnabled=false
+            et_cust_wifi.isEnabled=false
+            dis.visibility=View.GONE
+            et_disquslify.visibility = View.GONE
+            sp_disqualify.isEnabled = false
+            sp_disqualify.visibility = View.GONE
+            sp_work_location.isEnabled = false
      //   oppurtunity.visibility = View.GONE
 
       //  }
@@ -471,7 +512,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             val other_target = updatelayout_lead_other_details.et_trgt_period.text.toString()
             val general_chnl = str_lead_chnl.toString()
             val general_src= str_lead_src.toString()
-
             val gnl_sub = str_sub_bus.toString()
             val salutation = str_salutation.toString()
             val cnt_info_cnt_person = updatelayout_contactinfo_layout.et_contact_person.text.toString()
@@ -483,6 +523,11 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             val group = str_grp.toString()
             val relation = str_rltn.toString()
             val companyid = str_cmp.toString()
+            val location = binding.layoutLeadSdQuestionare.etNoOfLocation.text.toString()
+            val mentionNum = binding.layoutLeadSdQuestionare.etMentionNum.text.toString()
+            val links = binding.layoutLeadSdQuestionare.etLinks.text.toString()
+            val itSpent = binding.layoutLeadSdQuestionare.etItSpent.text.toString()
+            val questionareRemark = binding.layoutLeadSdQuestionare.etRemarkk.text.toString()
 
             if(topic.isBlank()){
                 Toast.makeText(this, "Please Enter Topic", Toast.LENGTH_SHORT).show()
@@ -504,8 +549,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please Select Company", Toast.LENGTH_SHORT).show()
             }else if(group.isBlank()||group=="Select Group"||(group=="null")){
                 Toast.makeText(this, "Please enter Group", Toast.LENGTH_SHORT).show()
-            }else if(relation.isBlank()||relation=="Select Relation"||(relation=="null")){
-                Toast.makeText(this, "Please Select Relation", Toast.LENGTH_SHORT).show()
+            }
+            else if(relation.isBlank()||relation=="Select Relation"||(relation=="null")||(gnl_sub!="SDWAN")){
+                Toast.makeText(this, "Please Select RTelation", Toast.LENGTH_SHORT).show()
             }else if((general_chnl.isBlank())||(general_chnl=="Select Channel")||(general_chnl=="null")){
                 Toast.makeText(this, "Please Select Channel", Toast.LENGTH_SHORT).show()
             }else if(general_src.isBlank()||(general_src=="null")){
@@ -582,6 +628,38 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please Select Manage Wifi ", Toast.LENGTH_SHORT).show()
             }else if(other_target.isBlank()||(other_target=="null")){
                 Toast.makeText(this, "Please Select Target Installation Period ", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" &&location.isBlank()||location=="null"){
+                Toast.makeText(this, "Please Enter the Location", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" && strIllServices?.isBlank() == true ||strIllServices=="null"||strIllServices=="0"){
+            Toast.makeText(this, "Please Select Customer Using ILL Services", Toast.LENGTH_SHORT).show()
+            }else if((strIllServices=="122050000") && mentionNum.isBlank()){
+                Toast.makeText(this, "Please Enter Mention Number of Links", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" && (strBroadServices?.isBlank() == true) ||strBroadServices=="null"||strBroadServices=="0"){
+                Toast.makeText(this, "Please Enter the BroadBand Services", Toast.LENGTH_SHORT).show()
+            }else if(links.isBlank()&&(strBroadServices=="122050000")){
+                Toast.makeText(this, "Please Enter the NO. of Links", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" &&(strLinksManaged?.isBlank()== true)||strLinksManaged=="null"||strLinksManaged=="0"){
+                Toast.makeText(this, "Please Enter the Managed Links ", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" &&(strRoutingServices?.isBlank()== true)||strRoutingServices=="null"||strRoutingServices=="0"){
+                Toast.makeText(this, "Please Enter the Routing Services", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" &&(firesSet?.isBlank()== true)||firesSet=="null"){
+            Toast.makeText(this, "Please Select Firewall set tpo expire", Toast.LENGTH_SHORT).show()
+           }
+           else if(str_sub_bus=="SDWAN" &&(strCityReqd?.isBlank()== true)||strCityReqd=="null"||strCityReqd=="Select Option"){
+                Toast.makeText(this, "Please Enter the City Required", Toast.LENGTH_SHORT).show()
+            } else if(str_sub_bus=="SDWAN" &&(strNetworkSecurity?.isBlank()== true)||strNetworkSecurity=="null"||strNetworkSecurity=="0"){
+                Toast.makeText(this, "Please Enter the Network Security", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" &&(strHosted?.isBlank()== true)||strHosted=="null"||strHosted=="0"){
+                Toast.makeText(this, "Please Enter the Hosted", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" &&(strCustomer?.isBlank()== true)||strCustomer=="null"||strCustomer=="0"){
+                Toast.makeText(this, "Please Enter the Customer", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" &&(strContract?.isBlank()== true)||strContract=="null"||strContract=="0"){
+                Toast.makeText(this, "Please Enter the Contract", Toast.LENGTH_SHORT).show()
+            }
+            else if(str_sub_bus=="SDWAN" &&(strBackBone?.isBlank()== true)||strBackBone=="null"||strBackBone=="0"){
+                Toast.makeText(this, "Please Enter the Back Bone", Toast.LENGTH_SHORT).show()
+            }else if(str_sub_bus=="SDWAN" &&(mpls?.isBlank()== true)||mpls=="null"){
+                Toast.makeText(this, "Please Enter the Mpls", Toast.LENGTH_SHORT).show()
             }
             else {
                      update_Lead(remark,company,firmtype,industrytype,jbtitle,area,addres_build,city,
@@ -591,7 +669,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         other_pro_two,other_date,other_firewal,other_wifi,other_voip,other_vpn,other_media,
                         other_cust_one,cust_two,other_target,general_chnl,general_src,gnl_sub,
                         salutation,cnt_info_cnt_person,topic,gnl_phn_num,general_email,genral_name,
-                        customer_seg, group,relation,companyid,buildingnum)
+                        customer_seg, group,relation,companyid,buildingnum,location,mentionNum,links,itSpent,questionareRemark)
             }
         }
     }
@@ -601,10 +679,100 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         return pattern.matcher(email).matches()
     }
 
+    private fun getRequiredCity() {
+        val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,"",userName)
+
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getCityList(getCityRequest)
+        call.enqueue(object : Callback<GetCityResponse?> {
+            override fun onResponse(call: Call<GetCityResponse?>, response: Response<GetCityResponse?>) {
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        val img = response.body()?.Response?.Message
+                        img?.let { Log.e("image", it) }
+                        cityList = response.body()?.Response?.Data
+                        RequiredCity = ArrayList<String>()
+                        RequiredCityCode =ArrayList<String>()
+                        RequiredCity?.add("Select City")
+                        RequiredCityCode?.add("")
+                        for (item in cityList!!) {
+                            RequiredCity?.add(item.CityName)
+                            RequiredCityCode?.add(item.CityCode)
+                        }
+                        var requiredCityPosition=0
+                        RequiredCityCode!!.forEachIndexed { index, s ->
+                            if(s==strCityReqd)requiredCityPosition=index
+                        }
+
+                        val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, RequiredCity!!)
+                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                        binding.layoutLeadSdQuestionare.spCityRequired.adapter = adapter12
+                        binding.layoutLeadSdQuestionare.spCityRequired.setSelection(requiredCityPosition)
+                        adapter12.notifyDataSetChanged()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetCityResponse?>, t: Throwable) {
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+
+    private fun getVertcal() {
+        val getCityRequest = GetCityRequest(Constants.GETVERTICAL,Constants.AUTH_KEY,password,"",userName)
+
+        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
+        val call = apiService.getVertical(getCityRequest)
+        call.enqueue(object : Callback<GetVerticalData?> {
+            override fun onResponse(call: Call<GetVerticalData?>, response: Response<GetVerticalData?>) {
+                if (response.isSuccessful && response.body() != null) {
+                    try {
+                        val img = response.body()?.Response?.Message
+                        img?.let { Log.e("image", it) }
+                        verticalList = response.body()?.Response?.Data
+                        vertical = java.util.ArrayList<String>()
+                        verticalId = java.util.ArrayList<String>()
+                        vertical?.add("Select Vertical")
+                        verticalId?.add("")
+                        for (item in verticalList!!) {
+                            vertical?.add(item.VerticalName)
+                            verticalId?.add(item.VerticalId)
+                        }
+                        var verticalPosition=0
+                        verticalId!!.forEachIndexed { index, ss ->
+                            if(ss==strVertical)verticalPosition=index
+                            return@forEachIndexed
+                        }
+
+                        val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, vertical!!)
+                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                        binding.updatelayoutContactinfoLayout.spVertical.adapter = adapter12
+                        binding.updatelayoutContactinfoLayout.spVertical.setSelection(verticalPosition)
+                        adapter12.notifyDataSetChanged()
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetVerticalData?>, t: Throwable) {
+                Log.e("RetroError", t.toString())
+            }
+        })
+    }
+
     fun itemListener(){
         updatelayout_contactinfo_layout.et_business_seg.setText(AppConstants.BUSINESS)
-        updatelayout_contactinfo_layout.et_sub_busiessseg.setOnClickListener { updatelayout_contactinfo_layout.sp_sub_bus.performClick() }
+        updatelayout_contactinfo_layout.et_sub_busiessseg.setOnClickListener {
+            updatelayout_contactinfo_layout.sp_sub_bus.performClick() }
         updatelayout_contactinfo_layout.sp_sub_bus.onItemSelectedListener = this
+        binding.updatelayoutContactinfoLayout.etVertical.setOnClickListener { binding.updatelayoutContactinfoLayout.spVertical.performClick() }
+        binding.updatelayoutContactinfoLayout.spVertical.onItemSelectedListener = this
+
         updatelayout_contactinfo_layout.et_saluation.setOnClickListener { updatelayout_contactinfo_layout.sp_salutation.performClick() }
         updatelayout_contactinfo_layout.sp_salutation.onItemSelectedListener = this
         updatelayout_channel_source.et_lead_channel.setOnClickListener { updatelayout_channel_source.sp_leadchnl.performClick() }
@@ -682,7 +850,40 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         updatelayout_contactinfo_layout.et_uprelation.setOnClickListener { updatelayout_contactinfo_layout.sp_rltn.performClick() }
         updatelayout_contactinfo_layout.sp_rltn.onItemSelectedListener = this
 
-        updatelayout_contactinfo_layout.et_emailid.setOnFocusChangeListener { v, hasFocus ->
+        binding.layoutLeadSdQuestionare.etCustomerUsingIllServices.setOnClickListener { binding.layoutLeadSdQuestionare.spCustomerUsingIllServices.performClick() }
+        binding.layoutLeadSdQuestionare.spCustomerUsingIllServices.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etBroadServices.setOnClickListener { binding.layoutLeadSdQuestionare.spBroadServices.performClick() }
+        binding.layoutLeadSdQuestionare.spBroadServices.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etLinksManged.setOnClickListener { binding.layoutLeadSdQuestionare.spLinksManged.performClick() }
+        binding.layoutLeadSdQuestionare.spLinksManged.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etRoutingServices.setOnClickListener { binding.layoutLeadSdQuestionare.spRoutingServices.performClick() }
+        binding.layoutLeadSdQuestionare.spRoutingServices.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etCityRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spCityRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spCityRequired.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etNetworkSecurity.setOnClickListener { binding.layoutLeadSdQuestionare.spNetworkSecurity.performClick() }
+        binding.layoutLeadSdQuestionare.spNetworkSecurity.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etHostedRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spHostedRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spHostedRequired.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etCustomerRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spCustomerRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spCustomerRequired.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etBackboneRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spBackboneRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spBackboneRequired.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etContractRenewed.setOnClickListener { binding.layoutLeadSdQuestionare.spContractRenewed.performClick() }
+        binding.layoutLeadSdQuestionare.spContractRenewed.onItemSelectedListener = this
+
+        binding.layoutLeadSdQuestionare.etCityRequired.setOnClickListener { binding.layoutLeadSdQuestionare.spCityRequired.performClick() }
+        binding.layoutLeadSdQuestionare.spCityRequired.onItemSelectedListener = this
+
+        updatelayout_contactinfo_layout.et_emailid.setOnFocusChangeListener { _, hasFocus ->
             if(!hasFocus)
             {
                 val email = updatelayout_contactinfo_layout.et_emailid.text.toString()
@@ -692,13 +893,25 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 }
             }
         }
-        updatelayout_contactinfo_layout.et_upmobile_num.setOnFocusChangeListener { v, hasFocus ->
+
+        updatelayout_contactinfo_layout.et_upmobile_num.setOnFocusChangeListener { _, hasFocus ->
             if(!hasFocus)
             {
                 val mobile = updatelayout_contactinfo_layout.et_upmobile_num.text.toString()
                 val isValid = Patterns.PHONE.matcher(mobile).matches();
                 if (!isValid) {
                     Toast.makeText(this, "Invalid Mobile Number", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        updatelayout_contactinfo_layout.et_updtcompany.setOnFocusChangeListener { _, hasFocus ->
+            if(!hasFocus)
+            {
+                val strCompanyName = updatelayout_contactinfo_layout.et_updtcompany.text.toString()
+                if (strCompanyName.contentEquals("New Company (CNew)")||strCompanyName=="Select Company"){
+                    updatelayout_contactinfo_layout.et_lead_name.setText("")
+                    updatelayout_lead_company_details.et_company_name.setText("")
                 }
             }
         }
@@ -716,6 +929,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             linear_companydetails.visibility= View.GONE
             linearother_details.visibility = View.GONE
             linearremark_details.visibility = View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
         }
         linearthree.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -723,8 +937,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             linadd.visibility = View.GONE
             linear_contact_person_address.visibility = View.GONE
             linear_companydetails.visibility= View.GONE
-             linearother_details.visibility = View.GONE
+            linearother_details.visibility = View.GONE
             linearremark_details.visibility = View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
         }
         linearfouraddres.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -732,8 +947,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             linadd.visibility = View.VISIBLE
             linear_contact_person_address.visibility = View.GONE
             linear_companydetails.visibility= View.GONE
-             linearother_details.visibility = View.GONE
+            linearother_details.visibility = View.GONE
             linearremark_details.visibility = View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
         }
         linearfive.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -743,6 +959,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             linear_companydetails.visibility= View.GONE
             linearother_details.visibility = View.GONE
             linearremark_details.visibility = View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
         }
         linearsix.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -750,8 +967,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             linadd.visibility = View.GONE
             linear_contact_person_address.visibility = View.GONE
             linear_companydetails.visibility= View.VISIBLE
-             linearother_details.visibility = View.GONE
+            linearother_details.visibility = View.GONE
             linearremark_details.visibility = View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
         }
 
         lineareight.setOnClickListener {
@@ -762,6 +980,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             linear_companydetails.visibility= View.GONE
             linearother_details.visibility = View.VISIBLE
             linearremark_details.visibility = View.GONE
+            binding.linearquestionareDetails.visibility = View.GONE
         }
         linearnine.setOnClickListener {
             linearcontactinfo.visibility = View.GONE
@@ -771,6 +990,17 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             linear_companydetails.visibility= View.GONE
             linearother_details.visibility = View.GONE
             linearremark_details.visibility = View.VISIBLE
+            binding.linearquestionareDetails.visibility = View.GONE
+        }
+        binding.linearqustionare.setOnClickListener {
+            linearcontactinfo.visibility = View.GONE
+            linear_insta_addres.visibility = View.GONE
+            linadd.visibility = View.GONE
+            linear_contact_person_address.visibility = View.GONE
+            linear_companydetails.visibility= View.GONE
+            linearother_details.visibility = View.GONE
+            linearremark_details.visibility = View.GONE
+            binding.linearquestionareDetails.visibility = View.VISIBLE
         }
     }
 
@@ -835,7 +1065,12 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         group: String,
         relation: String,
         companyid: String,
-        buildingnum: String?
+        buildingnum: String?,
+        location: String,
+        mentionNum: String,
+        links: String,
+        itSpent: String,
+        questionareRemark: String
     ) {
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
@@ -859,9 +1094,15 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         val installationAddress= InstallationAddress(inst_block,inst_area,inst_build,
                 inst_city_code,"10001",inst_floor,inst_pincode,inst_buil,"0",
                 inst_sparea,inst_spbuild,inst_state)
+
+        val sdwan = SDWAN(location,strIllServices,mentionNum,strBroadServices,
+            links,strLinksManaged,strRoutingServices,firesSet,
+            itSpent,strCityReqd,strNetworkSecurity,strHosted,strCustomer,
+            strContract,strBackBone,mpls,questionareRemark)
+
         val createLeadRequest = CreateLeadRequest(Constants.UPDATE_LEAD,Constants.AUTH_KEY,
-                str_lead_Id,companyDetail,
-                contactAddress,installationAddress,"Business",str_cmp,
+                str_lead_Id,strVertical,companyDetail,
+                contactAddress,installationAddress,sdwan,"Business",str_cmp,
                 cnt_info_cnt_person,str_customer_segmentid,general_email,
                 "3",genral_name,str_grp,"",general_chnl,general_src,topic,
                 gnl_phn_num,otherDetail,password,"",str_rltn,
@@ -884,10 +1125,10 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                                 startActivity(it)
                                 finish()
                             }
-                           /* val intent = Intent (this@UpdateLeadActivity, UpdateLeadActivity::class.java)
+                            val intent = Intent (this@UpdateLeadActivity, UpdateLeadActivity::class.java)
                             intent.putExtra("LeadId", str_lead_Id)
                             startActivity(intent)
-                            finish()*/
+                            finish()
 
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -905,7 +1146,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             }
         })
     }
-
     private fun outProgress(){
         outAnimation = AlphaAnimation(1f, 0f)
         inAnimation?.duration = 200
@@ -936,6 +1176,34 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             }, year, month, day)
             dpd.show()
         }
+
+            binding.layoutLeadSdQuestionare.etFireSet.setOnClickListener {
+                val dpd = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
+                    val mn = monthOfYear+1
+                    binding.layoutLeadSdQuestionare.etFireSet.setText("$dayOfMonth-$mn-$year")
+                    val fire =   binding.layoutLeadSdQuestionare.etFireSet.text.toString()
+                    val split = fire.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    firesSet=("$year1-$month1-$dateee")
+                }, year, month, day)
+                dpd.show()
+            }
+
+            binding.layoutLeadSdQuestionare.etMplsRequired.setOnClickListener {
+                val dpd = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
+                    val mn = monthOfYear+1
+                    binding.layoutLeadSdQuestionare.etMplsRequired.setText("$dayOfMonth-$mn-$year")
+                    val mplsRequired =  binding.layoutLeadSdQuestionare.etMplsRequired.text.toString()
+                    val split = mplsRequired.split("-")
+                    val dateee = split[0]
+                    val month1 = split[1]
+                    val year1 = split[2]
+                    mpls=("$year1-$month1-$dateee")
+                }, year, month, day)
+                dpd.show()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -964,6 +1232,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                     try {
 
                         if(response.body()?.StatusCode==200) {
+                            outProgress()
                             str_lead_Id =  response.body()?.Response?.get(0)?.LeadId
                             // binding.updatelayoutChannelSource.updateChannel = response.body()
                             binding.updatelayoutContactinfoLayout.updateContact = response.body()
@@ -996,11 +1265,30 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             strBuilding = response.body()?.Response?.get(0)?.installationAddress?.InstallBuildingName.toString()
                             strContactArea = response.body()?.Response?.get(0)?.contactAddress?.ContactAreaName.toString()
                             strContactBuilding = response.body()?.Response?.get(0)?.contactAddress?.ContactBuilding.toString()
+                            strVertical = response.body()?.Response?.get(0)?.VerticalID
+                            strIllServices = response.body()?.Response?.get(0)?.sdwan?.CustomerILLservices.toString()
+                            strBroadServices  = response.body()?.Response?.get(0)?.sdwan?.CustomerBroadbandServices.toString()
+                            strLinksManaged = response.body()?.Response?.get(0)?.sdwan?.LinksManagedLinks.toString()
+                            strRoutingServices  = response.body()?.Response?.get(0)?.sdwan?.CustomerRoutingServices.toString()
+                            strCityReqd = response.body()?.Response?.get(0)?.sdwan?.CurrentOperationalCity.toString()
+                            strNetworkSecurity  = response.body()?.Response?.get(0)?.sdwan?.NetworkSecurityServices.toString()
+                            strHosted = response.body()?.Response?.get(0)?.sdwan?.ApplicationsHosted.toString()
+                            strCustomer  = response.body()?.Response?.get(0)?.sdwan?.ItSupport.toString()
+                            strBackBone = response.body()?.Response?.get(0)?.sdwan?.MPLSBackbone.toString()
+                            strContract  = response.body()?.Response?.get(0)?.sdwan?.RedundancyMPLS.toString()
+                            binding.layoutLeadSdQuestionare.etNoOfLocation.setText(response.body()?.Response?.get(0)?.sdwan?.NoOfLocation.toString())
+                            binding.layoutLeadSdQuestionare.etLinks.setText(response.body()?.Response?.get(0)?.sdwan?.NumberOfLinksBroadbandServices.toString())
+                            binding.layoutLeadSdQuestionare.etItSpent.setText(response.body()?.Response?.get(0)?.sdwan?.IndicationITSpent.toString())
+                            binding.layoutLeadSdQuestionare.etRemarkk.setText(response.body()?.Response?.get(0)?.sdwan?.SdwanRemarks.toString())
+                            binding.layoutLeadSdQuestionare.etMentionNum.setText(response.body()?.Response?.get(0)?.sdwan?.NumberOfLinksIll.toString())
+
+
                             getCompany(strCompany)
                             getOtherCity(str_othercity)
+
                             str_inst_building_nm = response.body()?.Response?.get(0)?.contactAddress?.ContactBuilding.toString()
                             str_inst_build_num =  response.body()?.Response?.get(0)?.installationAddress?.InstallBuilding.toString()
-                            outProgress()
+
                             str_city_code = response.body()?.Response?.get(0)?.installationAddress?.InstallCity.toString()
                             str_inst_area = response.body()?.Response?.get(0)?.installationAddress?.InstallArea.toString()
 
@@ -1098,6 +1386,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                                     return@forEachIndexed
                                 }
                             }
+
                             val serv2 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, ext_serv_one)
                             serv2.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             updatelayout_lead_other_details.sp_ext_serv_two?.adapter = serv2
@@ -1138,7 +1427,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_other_details.sp_intrsteddata_center?.adapter = dataadpter
                             if (str_data.equals("true")) {
                                 updatelayout_lead_other_details.sp_intrsteddata_center.setSelection(1)
-                            } else {
+                            } else  if (str_data.equals("false")) {
                                 updatelayout_lead_other_details.sp_intrsteddata_center.setSelection(2)
                             }
                             dataadpter.notifyDataSetChanged()
@@ -1150,7 +1439,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
                             if (str_cust_frwl.equals("true")) {
                                 updatelayout_lead_other_details.sp_intrs_frwal.setSelection(1)
-                            } else {
+                            } else  if (str_cust_frwl.equals("false")){
                                 updatelayout_lead_other_details.sp_intrs_frwal.setSelection(2)
                             }
                             frwaladpter.notifyDataSetChanged()
@@ -1161,7 +1450,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_other_details.sp_vpn_serv?.adapter = vpnadpter
                             if (str_cust_vpn.equals("true")) {
                                 updatelayout_lead_other_details.sp_vpn_serv.setSelection(1)
-                            } else {
+                            } else  if (str_cust_vpn.equals("false")) {
                                 updatelayout_lead_other_details.sp_vpn_serv.setSelection(2)
                             }
                             vpnadpter.notifyDataSetChanged()
@@ -1172,7 +1461,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_other_details.sp_cst_voip?.adapter = voipadpter
                             if (str_voip.equals("true")) {
                                 updatelayout_lead_other_details.sp_cst_voip.setSelection(1)
-                            } else {
+                            } else if (str_voip.equals("false")){
                                 updatelayout_lead_other_details.sp_cst_voip.setSelection(2)
                             }
                             voipadpter.notifyDataSetChanged()
@@ -1183,7 +1472,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_lead_other_details.sp_cust_wifi?.adapter = wifipadpter
                             if (str_wifi.equals("true") ) {
                                 updatelayout_lead_other_details.sp_cust_wifi.setSelection(1)
-                            } else {
+                            } else  if (str_wifi.equals("false") ) {
                                 updatelayout_lead_other_details.sp_cust_wifi.setSelection(2)
                             }
                             wifipadpter.notifyDataSetChanged()
@@ -1246,6 +1535,122 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             updatelayout_contactinfo_layout.sp_salutation?.adapter = salutationAdapter
                             updatelayout_contactinfo_layout.sp_salutation.setSelection(salutationPosition)
                             salutationAdapter.notifyDataSetChanged()
+
+                            var illServicesPosition = 0
+                            resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                if (s == strIllServices) illServicesPosition = index
+                                return@forEachIndexed
+                            }
+                            val illServices = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                            illServices.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spCustomerUsingIllServices.adapter = illServices
+                            binding.layoutLeadSdQuestionare.spCustomerUsingIllServices.setSelection(illServicesPosition)
+                            illServices.notifyDataSetChanged()
+
+                            var broadServicesPosition = 0
+                            resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                if (s == strBroadServices) {
+                                    broadServicesPosition = index
+                                    return@forEachIndexed
+                                }
+                            }
+                            val broadServices = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                            broadServices.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spBroadServices.adapter = broadServices
+                            binding.layoutLeadSdQuestionare.spBroadServices.setSelection(broadServicesPosition)
+                            broadServices.notifyDataSetChanged()
+
+                            var linkPosition = 0
+                            resources.getStringArray(R.array.listMangedLinkVal).forEachIndexed { index, s ->
+                                if (s == strLinksManaged) {
+                                    linkPosition = index
+                                    return@forEachIndexed
+                                }
+                            }
+                            val linkManaged = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listManagedLink))
+                            linkManaged.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spLinksManged.adapter = linkManaged
+                            binding.layoutLeadSdQuestionare.spLinksManged.setSelection(linkPosition)
+                            linkManaged.notifyDataSetChanged()
+
+                            var routingPosition = 0
+                            resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                if (s == strRoutingServices) {
+                                    routingPosition = index
+                                    return@forEachIndexed
+                                }
+                            }
+                            val routingService = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                            routingService.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spRoutingServices.adapter = routingService
+                            binding.layoutLeadSdQuestionare.spRoutingServices.setSelection(routingPosition)
+                            routingService.notifyDataSetChanged()
+
+                            var securityPosition = 0
+                            resources.getStringArray(R.array.listMangedLinkVal).forEachIndexed { index, s ->
+                                if (s == strNetworkSecurity) {
+                                    securityPosition = index
+                                    return@forEachIndexed
+                                }
+                            }
+                            val networkSecurity = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listNetworkSecurity))
+                            networkSecurity.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spNetworkSecurity.adapter = networkSecurity
+                            binding.layoutLeadSdQuestionare.spNetworkSecurity.setSelection(securityPosition)
+                            networkSecurity.notifyDataSetChanged()
+
+                            var hostedPosition = 0
+                            resources.getStringArray(R.array.listApplicantsVal).forEachIndexed { index, s ->
+                                if (s == strHosted) {
+                                    hostedPosition = index
+                                    return@forEachIndexed
+                                }
+                            }
+                            val hosted = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listApplicants))
+                            hosted.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spHostedRequired.adapter = hosted
+                            binding.layoutLeadSdQuestionare.spHostedRequired.setSelection(hostedPosition)
+                            hosted.notifyDataSetChanged()
+
+                            var customerPosition = 0
+                            resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                if (s == strCustomer) {
+                                    customerPosition = index
+                                    return@forEachIndexed
+                                }
+                            }
+                            val customerReq = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listInHouse))
+                            customerReq.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spCustomerRequired.adapter = customerReq
+                            binding.layoutLeadSdQuestionare.spCustomerRequired.setSelection(customerPosition)
+                            customerReq.notifyDataSetChanged()
+
+                            var backBonePosition = 0
+                            resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                if (s == strLinksManaged) {
+                                    backBonePosition = index
+                                    return@forEachIndexed
+                                }
+                            }
+                            val backBone = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                            backBone.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spBackboneRequired.adapter = backBone
+                            binding.layoutLeadSdQuestionare.spBackboneRequired.setSelection(backBonePosition)
+                            backBone.notifyDataSetChanged()
+
+                            var contractPosition = 0
+                            resources.getStringArray(R.array.listCustomerServiceVal).forEachIndexed { index, s ->
+                                if (s == strContract) {
+                                    contractPosition = index
+                                    return@forEachIndexed
+                                }
+                            }
+                            val contract = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.listCustomerService))
+                            contract.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                            binding.layoutLeadSdQuestionare.spContractRenewed.adapter = contract
+                            binding.layoutLeadSdQuestionare.spContractRenewed.setSelection(contractPosition)
+                            contract.notifyDataSetChanged()
+
                             val targetdate = response.body()?.Response?.get(0)?.otherDetail?.TargetInstallationPeriod.toString()
                              if(targetdate.isNotEmpty()){
                                  val split = targetdate.split("-")
@@ -1255,6 +1660,24 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                                  updatelayout_lead_other_details.et_trgt_period.setText("$date-$month-$year")
                                  trgtdate=("$year-$month-$date")
                              }
+                            val firewallSet = response.body()?.Response?.get(0)?.sdwan?.FirewallSetToExpire.toString()
+                            if(firewallSet.isNotEmpty()){
+                                val split = firewallSet.split("-")
+                                val date = split[0]
+                                val month = split[1]
+                                val year = split[2]
+                                binding.layoutLeadSdQuestionare.etFireSet.setText("$date-$month-$year")
+                                firesSet=("$year-$month-$date")
+                            }
+                            val redundancyMPLS = response.body()?.Response?.get(0)?.sdwan?.MPLSContract.toString()
+                            if(redundancyMPLS.isNotEmpty()){
+                                val split = redundancyMPLS.split("-")
+                                val date = split[0]
+                                val month = split[1]
+                                val year = split[2]
+                                binding.layoutLeadSdQuestionare.etMplsRequired.setText("$date-$month-$year")
+                                mpls=("$year-$month-$date")
+                            }
 
                             if (strStatus == "1") {
                                 locked()
@@ -1268,7 +1691,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             } else {
                                 oppurtunity.visibility= View.GONE
                                 lead_updatesave.visibility = View.VISIBLE
-
                                 Calender()
                             }
 
@@ -1359,7 +1781,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     }
 
 
-    fun getBuilding(areaname: String, areaCode: String?) {
+    private fun getBuilding(areaname: String, areaCode: String?) {
         val getLeadBuildingRequest = GetLeadBuildingRequest(Constants.GET_BUILDING,Constants.AUTH_KEY,areaCode.toString(),areaname,password,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -1403,10 +1825,10 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             }
         })
     }
-    fun getContactBuilding(areaname: String?, areaCode: String?) {
+    private fun getContactBuilding(areaname: String?, areaCode: String?) {
         val getLeadBuildingRequest = areaname?.let {
             GetLeadBuildingRequest(Constants.GET_BUILDING,Constants.AUTH_KEY,areaCode.toString(),
-                it,"Target@2021#@","manager1")
+                it,password,userName)
         }
 
 
@@ -1509,92 +1931,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         })
     }
 
-   /* fun getCompany() {
-        inProgress()
-        val getCompanyRequest = GetCompanyRequest(Constants.GET_COMPANY,Constants.AUTH_KEY,"",password,userName)
-        val apiService = ApiClient.getClient().create(ApiInterface::class.java)
-        val call = apiService.getComapnyList(getCompanyRequest)
-        call.enqueue(object : Callback<GetCompanyResponse?> {
-            override fun onResponse(call: Call<GetCompanyResponse?>, response: Response<GetCompanyResponse?>) {
-                if (response.isSuccessful && response.body() != null) {
-                    try {
-                        outProgress()
-                        val img = response.body()?.Response?.Message
-                        img?.let { Log.e("image", it) }
-                        companyList= response.body()?.Response?.Data
-                        company = java.util.ArrayList<String>()
-                        companyId = java.util.ArrayList<String>()
-                        company?.add("Select Company")
-                        companyId?.add("0")
-                        group = java.util.ArrayList<String>()
-                        groupId = java.util.ArrayList<String>()
-                        group?.add("Select Group")
-                        groupId?.add("0")
-                        for (item in companyList!!){
-                            // company?.add(item.Company_Name)
-                            company?.add(item.Company_Name +" ("+item.Company_ID+")")
-                            companyId?.add(item.Company_ID)
-                            group?.add(item.Group_Name +" ("+item.Group_ID+")")
-                            groupId?.add(item.Group_ID)
-                        }
-
-                        val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, company!!)
-                        updatelayout_contactinfo_layout.et_updateleadcompany.threshold=0
-                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        updatelayout_contactinfo_layout.et_updateleadcompany.setAdapter(adapter12)
-
-                        updatelayout_contactinfo_layout.et_updateleadcompany.setOnFocusChangeListener { _, b ->
-                            if (b) updatelayout_contactinfo_layout.et_updateleadcompany.showDropDown()
-                        }
-                        updatelayout_contactinfo_layout.et_updateleadcompany.onItemClickListener = AdapterView.OnItemClickListener {
-                                parent, _, position, _ ->
-                            strCompany = adapter12.getItem(position).toString()
-                            val split = strCompany.split("(")
-                            val compid = split.get(1)
-                            var compPosition=0
-                            company?.forEachIndexed { index, s ->
-                                if(s==strCompany)compPosition=index
-                                strCompany.let { Log.e("idddddddddd", it) }
-                                return@forEachIndexed
-                            }
-                            val companyidd = compid.split(")")
-                            str_cmp = companyidd.get(0)
-                            str_cmp?.let { Log.e("compid", it) }
-                            getRelation(str_cmp)
-                            if(strCompany!=null||strCompany=="Select Company") {
-                                if (strCompany.contentEquals("New Company (CNew)")||strCompany=="Select Company"){
-                                    updatelayout_contactinfo_layout.et_lead_name.setText("")
-                                    updatelayout_lead_company_details.et_company_name.setText("")
-                                    if(strCompany.contentEquals("New Company(CNew)")) {
-                                        Toast.makeText(this@UpdateLeadActivity, "Please search company name from drop-down before selecting New Company", Toast.LENGTH_SHORT).show()
-                                    }
-                                }else {
-                                    val name = strCompany.split("(")
-                                    val cmpname = name.get(0)
-                                    updatelayout_contactinfo_layout.et_lead_name.setText(cmpname)
-                                    updatelayout_lead_company_details.et_company_name.setText(cmpname)
-                                }
-                                val adapter1 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, group!!)
-                                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                                updatelayout_contactinfo_layout.sp_upgroup.adapter = adapter1
-                                updatelayout_contactinfo_layout.sp_upgroup.setSelection(compPosition)
-                                adapter1.notifyDataSetChanged()
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GetCompanyResponse?>, t: Throwable) {
-                binding.updateleadProgressLayout.progressOverlay.visibility = View.GONE
-                Log.e("RetroError", t.toString())
-            }
-        })
-    }
-*/
-    fun getRelation(str_cmny: String?) {
+     fun getRelation(str_cmny: String?) {
         val getCompanyRequest = GetCompanyRequest(Constants.GET_RELATIONSHIP,Constants.AUTH_KEY,str_cmny.toString(),password,userName)
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getRelationList(getCompanyRequest)
@@ -1638,7 +1975,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
     }
 
-    fun getSource(str_lead_chnl: String?) {
+    private fun getSource(str_lead_chnl: String?) {
         val getLeadSourceRequest =
                 str_lead_chnl?.let {
                     GetLeadSourceRequest(Constants.GET_SOURCE,Constants.AUTH_KEY,
@@ -1715,7 +2052,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     }
 
 
-    fun getCntArea(str_city: String?, str_city_code: String) {
+    private fun getCntArea(str_city: String?, str_city_code: String) {
         val getLeadAreaRequest =   GetLeadAreaRequest(Constants.Get_AREA,Constants.AUTH_KEY,
                 str_city_code, str_city.toString() ,"",userName,password,false)
 
@@ -1801,7 +2138,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         })
     }
 
-    fun getContactCity(strcontact_stateCode: String) {
+    private fun getContactCity(strcontact_stateCode: String) {
         val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,strcontact_stateCode,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -1845,13 +2182,74 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (parent?.id == R.id.sp_sub_bus) {
             updatelayout_contactinfo_layout.et_sub_busiessseg.setText(list_of_subBusSegment.get(position))
-            str_sub_bus = list_of_subBusSegment.get(position)
-        }else if(parent?.id == R.id.sp_salutation){
-            updatelayout_contactinfo_layout.et_saluation.setText(list_of_salutation.get(position))
-            str_salutation = list_of_salutation_id.get(position )
+            str_sub_bus = list_of_subBusSegment[position]
+            if(str_sub_bus=="SDWAN") {
+                str_rltn="0"
+                CoroutineScope(Dispatchers.IO).launch {
+                    getVertcal()
+                    getRequiredCity()
+                }
+                binding.updatelayoutContactinfoLayout.relation.visibility=View.GONE
+                binding.updatelayoutContactinfoLayout.vertical.visibility=View.VISIBLE
+                binding.linearqustionare.visibility=View.VISIBLE
+            }else{
+                binding.updatelayoutContactinfoLayout.relation.visibility=View.VISIBLE
+                binding.updatelayoutContactinfoLayout.vertical.visibility=View.GONE
+                binding.linearqustionare.visibility=View.GONE
+            }
+        }else if(parent?.id ==R.id.sp_vertical){
+            binding.updatelayoutContactinfoLayout.etVertical.setText(vertical?.get(position))
+            strVertical = verticalId?.get(position)
+        }else if(parent?.id ==R.id.sp_customerUsingIllServices){
+            binding.layoutLeadSdQuestionare.etCustomerUsingIllServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strIllServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+            if(strIllServices.equals("122050000")){
+                binding.layoutLeadSdQuestionare.mention.visibility=View.VISIBLE
+            }else{
+                binding.layoutLeadSdQuestionare.mention.visibility=View.GONE
+            }
+        }
+        else if(parent?.id ==R.id.sp_broadServices){
+            binding.layoutLeadSdQuestionare.etBroadServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strBroadServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+            if(strBroadServices.equals("122050000")){
+                binding.layoutLeadSdQuestionare.links.visibility=View.VISIBLE
+            }else{
+                binding.layoutLeadSdQuestionare.links.visibility=View.GONE
+            }
+        }
+        else if(parent?.id ==R.id.sp_linksManged){
+            binding.layoutLeadSdQuestionare.etLinksManged.setText(resources.getStringArray(R.array.listManagedLink)[position])
+            strLinksManaged =resources.getStringArray(R.array.listMangedLinkVal)[position]
+        }
+        else if(parent?.id ==R.id.sp_routingServices){
+            binding.layoutLeadSdQuestionare.etRoutingServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strRoutingServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+        }
+        else if(parent?.id ==R.id.sp_cityRequired){
+            binding.layoutLeadSdQuestionare.etCityRequired.setText(RequiredCity?.get(position) )
+            strCityReqd =(RequiredCityCode?.get(position))
+        } else if(parent?.id ==R.id.sp_networkSecurity){
+            binding.layoutLeadSdQuestionare.etNetworkSecurity.setText(resources.getStringArray(R.array.listNetworkSecurity)[position])
+            strNetworkSecurity =resources.getStringArray(R.array.listMangedLinkVal)[position]
+        }else if(parent?.id ==R.id.sp_hostedRequired){
+            binding.layoutLeadSdQuestionare.etHostedRequired.setText(resources.getStringArray(R.array.listApplicants)[position])
+            strHosted =resources.getStringArray(R.array.listApplicantsVal)[position]
+        }else if(parent?.id ==R.id.sp_customerRequired){
+            binding.layoutLeadSdQuestionare.etCustomerRequired.setText(resources.getStringArray(R.array.listInHouse)[position])
+            strCustomer =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+        }else if(parent?.id ==R.id.sp_backboneRequired){
+            binding.layoutLeadSdQuestionare.etBackboneRequired.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strBackBone =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+        }else if(parent?.id ==R.id.sp_contractRenewed){
+            binding.layoutLeadSdQuestionare.etContractRenewed.setText(resources.getStringArray(R.array.listCustomerService)[position])
+            strContract =resources.getStringArray(R.array.listCustomerServiceVal)[position]
+        } else if(parent?.id == R.id.sp_salutation){
+            updatelayout_contactinfo_layout.et_saluation.setText(list_of_salutation[position])
+            str_salutation = list_of_salutation_id[position]
         }else if(parent?.id ==R.id.sp_leadchnl){
-            updatelayout_channel_source.et_lead_channel.setText(list_of_channel.get(position))
-            str_lead_chnl = list_of_channel.get(position)
+            updatelayout_channel_source.et_lead_channel.setText(list_of_channel[position])
+            str_lead_chnl = list_of_channel[position]
             getSource(str_lead_chnl)
         }else if(parent?.id ==R.id.sp_lead_src){
             updatelayout_channel_source.et_lead_source.setText(source?.get(position))
@@ -1879,6 +2277,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 getContactBuilding(cntareaname, str_add_area)
             }
         }
+
         else if(parent?.id == R.id. sp_cnt_building_nm){
             update_lead_contact_address.et_cnt_building.setText(cntbuilding?.get(position))
             str_inst_building_nm =  cntbuildingCode?.get(position )
@@ -1913,68 +2312,68 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             getCntArea(str_Contactcity, str_ContactcityCode.toString())
         }
        else if(parent?.id == R.id.sp_cntry){
-            updatelayout_lead_installation_address.et_country.setText(country_name.get(position))
-            str_inst_country = country_name.get(position)
+            updatelayout_lead_installation_address.et_country.setText(country_name[position])
+            str_inst_country = country_name[position]
         }else if(parent?.id == R.id.sp_cust_seg){
-            updatelayout_contactinfo_layout.et_customer_seg.setText(list_of_cust_segment.get(position))
-           str_customer_segmentid = list_cust_seg_value.get(position )
+            updatelayout_contactinfo_layout.et_customer_seg.setText(list_of_cust_segment[position])
+           str_customer_segmentid = list_cust_seg_value[position]
         }else if(parent?.id == R.id.sp_cust_wifi){
-            updatelayout_lead_other_details.et_cust_wifi.setText(list_of_option.get(position))
-            str_wifi =  list_of_booleanvalue.get(position )
+            updatelayout_lead_other_details.et_cust_wifi.setText(list_of_option[position])
+            str_wifi = list_of_booleanvalue[position]
         }else if(parent?.id == R.id.sp_ex_serv){
-            updatelayout_lead_other_details.et_ext_srv.setText(ext_serv_one.get(position))
-            str_ext_serv_pro_one =  ext_serv_one_value.get(position )
+            updatelayout_lead_other_details.et_ext_srv.setText(ext_serv_one[position])
+            str_ext_serv_pro_one = ext_serv_one_value[position]
         }
         else if(parent?.id == R.id.sp_ext_serv_two){
-            updatelayout_lead_other_details.et_ext_srv_two.setText(ext_serv_one.get(position))
-           str_serv_pro_two =  ext_serv_one_value.get(position )
+            updatelayout_lead_other_details.et_ext_srv_two.setText(ext_serv_one[position])
+           str_serv_pro_two = ext_serv_one_value[position]
         }else if(parent?.id == R.id.sp_serv_pro_one){
-            updatelayout_lead_other_details.et_service_pv_one.setText(ext_serv.get(position))
-           str_cust_serv_one = ext_serv_val.get(position )
+            updatelayout_lead_other_details.et_service_pv_one.setText(ext_serv[position])
+           str_cust_serv_one = ext_serv_val[position]
         }else if(parent?.id == R.id.sp_serv_pro_two){
-            updatelayout_lead_other_details.et_srv_pv_two.setText(ext_serv.get(position))
-            str_cust_serv_two = ext_serv_val.get(position)
+            updatelayout_lead_other_details.et_srv_pv_two.setText(ext_serv[position])
+            str_cust_serv_two = ext_serv_val[position]
         }else if(parent?.id == R.id.sp_state){
-            updatelayout_lead_installation_address.et_state.setText(list_of_state.get(position))
-            str_state = list_of_state.get(position)
+            updatelayout_lead_installation_address.et_state.setText(list_of_state[position])
+            str_state = list_of_state[position]
             Log.e("State",str_state.toString())
-            str_inst_state= list_state_code.get(position)
+            str_inst_state= list_state_code[position]
             Log.e("State",str_inst_state.toString())
             getCity(str_inst_state.toString())
         }else if(parent?.id == R.id.sp_cnt_state){
-            update_lead_contact_address.et_cnt_state.setText(list_of_state.get(position))
-            strcontact_state = list_of_state.get(position)
-            strcontact_stateCode =  list_state_code.get(position)
+            update_lead_contact_address.et_cnt_state.setText(list_of_state[position])
+            strcontact_state = list_of_state[position]
+            strcontact_stateCode = list_state_code[position]
             getContactCity(strcontact_stateCode.toString())
         }
         else if(parent?.id == R.id.sp_cst_voip){
-            updatelayout_lead_other_details.et_cust_void.setText(list_of_boolean.get(position))
-            str_voip = list_of_booleanvalue.get(position)
+            updatelayout_lead_other_details.et_cust_void.setText(list_of_boolean[position])
+            str_voip = list_of_booleanvalue[position]
         }else if(parent?.id == R.id.sp_industype){
-            updatelayout_lead_company_details.et_indus_type.setText(instryname.get(position))
-            str_industry_type = industryid.get(position)
+            updatelayout_lead_company_details.et_indus_type.setText(instryname[position])
+            str_industry_type = industryid[position]
         }else if(parent?.id == R.id.sp_firm_type){
-            updatelayout_lead_company_details.et_firm_type.setText(list_firm_type.get(position))
+            updatelayout_lead_company_details.et_firm_type.setText(list_firm_type[position])
          //   str_firm_type =  list_firm_type_value.get(position-1)
-            str_firm_type = list_firm_type_value.get(position)
+            str_firm_type = list_firm_type_value[position]
         }
         else if(parent?.id == R.id.sp_media){
-            updatelayout_lead_other_details.et_media.setText(list_of_media.get(position))
-            str_media = list_of_mediavalue.get(position)
+            updatelayout_lead_other_details.et_media.setText(list_of_media[position])
+            str_media = list_of_mediavalue[position]
         }else if(parent?.id == R.id.sp_intrsteddata_center){
-            updatelayout_lead_other_details.et_is_cus.setText(list_of_boolean.get(position))
-            str_data = list_of_booleanvalue.get(position)
+            updatelayout_lead_other_details.et_is_cus.setText(list_of_boolean[position])
+            str_data = list_of_booleanvalue[position]
         }else if(parent?.id == R.id.sp_intrs_frwal){
-            updatelayout_lead_other_details.et_indus_firewl.setText(list_of_option.get(position))
-            str_cust_frwl = list_of_booleanvalue.get(position )
+            updatelayout_lead_other_details.et_indus_firewl.setText(list_of_option[position])
+            str_cust_frwl = list_of_booleanvalue[position]
         }else if(parent?.id == R.id.sp_vpn_serv){
-            updatelayout_lead_other_details.et_vpn_srv.setText(list_of_boolean.get(position))
-          str_cust_vpn =  list_of_booleanvalue.get(position )
+            updatelayout_lead_other_details.et_vpn_srv.setText(list_of_boolean[position])
+          str_cust_vpn = list_of_booleanvalue[position]
         }else if(parent?.id == R.id.sp_disqualify){
-            if (position != 0) strDisqualify = "" + disqualifyCode.get(position - 1) else strDisqualify= " "
+            if (position != 0) strDisqualify = "" + disqualifyCode[position - 1] else strDisqualify= " "
             if(strDisqualify.isNotEmpty()) {
                 val disqualif:String
-                if (position != 0) disqualif = "" + disqualifyCode.get(position - 1) else disqualif= " "
+                if (position != 0) disqualif = "" + disqualifyCode[position - 1] else disqualif= " "
                 if(disqualif.isEmpty() || disqualif.isBlank()){
 
                 }else{
@@ -1988,8 +2387,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             updatelayout_contactinfo_layout.et_upgroup.setText(group?.get(position))
             val strCompanyName = company?.get(position)
             if (strCompanyName.contentEquals("New Company (CNew)")||strCompanyName=="Select Company"){
-                updatelayout_contactinfo_layout.et_lead_name.setText("")
-                updatelayout_lead_company_details.et_company_name.setText("")
+               // updatelayout_contactinfo_layout.et_lead_name.setText("")
+            //    updatelayout_lead_company_details.et_company_name.setText("")
                /* if(strCompanyName.contentEquals("New Company (CNew)")) {
                     Toast.makeText(this, "Please search company name from drop-down before selecting New Company", Toast.LENGTH_SHORT).show()
                 }*/
@@ -2020,7 +2419,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
     }
 
-    fun qualifyLead() {
+    private fun qualifyLead() {
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
         binding.updateleadProgressLayout.progressOverlay.animation = inAnimation
@@ -2063,11 +2462,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             }
         })
     }
- /*   fun showFragment(fragment: GetAllLeadFrag){
-        val fram = supportFragmentManager.beginTransaction()
-        fram.replace(R.id.fragment_lead,fragment)
-        fram.commit()
-    }*/
+
     fun getOtherCity(strCurLocation: String?) {
         val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,"",userName)
 
@@ -2101,6 +2496,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
+
                 }
             }
 
@@ -2109,7 +2505,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             }
         })
     }
-    fun disQualifyLead(disqualif: String) {
+
+    private fun disQualifyLead(disqualif: String) {
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
         binding.updateleadProgressLayout.progressOverlay.animation = inAnimation

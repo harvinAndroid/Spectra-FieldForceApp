@@ -38,5 +38,29 @@ data class UpdateOppurtunity(
     val specificArea:String,
     val specificBuilding:String,
     val noOfUsers:String?,
-    val noOfBeds:String
+    val noOfBeds:String,
+    val typeOfOrder:String?,
+    val pocClosureDate:String?,
+    val SDWANOpp:SDWANOpp?
 )
+
+data class SDWANOpp(
+    val noOfLocation:String?,
+    val customerILLservices:String?,
+    val numberOfLinksIll:String?,
+    val customerBroadbandServices:String?,
+    val numberOfLinksBroadbandServices:String?,
+    val linksManagedLinks:String?,
+    val customerRoutingServices:String?,
+    val firewallSetToExpire:String?,
+    val indicationITSpent:String?,
+    val currentOperationalCity:String?,
+    val networkSecurityServices:String?,
+    val applicationsHosted:String?,
+    val itSupport:String?,
+    val redundancyMPLS:String?,
+    val mPLSBackbone:String?,
+    val mPLSContract:String?,
+    val sdwanRemarks:String?,
+)
+

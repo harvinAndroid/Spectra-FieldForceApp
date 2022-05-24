@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/nest"
+            android:background="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nest"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <include
+                    android:id="@+id/toolbarSite"
+                    layout="@layout/update_leadtoolbar"
+                    android:layout_width="match_parent"
+                    android:background="@color/colorButton"
+                    android:layout_height="?attr/actionBarSize" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/toolbarSite"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+
+                <LinearLayout
+                    android:id="@+id/linearBasic"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <TextView
+                        android:id="@+id/tvBasicSite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/basic_site_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearBasicSiteDetail"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:background="@color/gray"
+                    app:layout_constraintTop_toBottomOf="@+id/linearBasic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <include
+                        android:id="@+id/siteDetails"
+                        layout="@layout/opp_site_details"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLan"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearBasicSiteDetail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/tvLan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="@string/lan_details"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:drawableEndCompat="@drawable/ic_expand_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLanDetail"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+
+                    android:background="@color/colorWhite"
+                     app:layout_constraintTop_toBottomOf="@+id/linearLan"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:cardElevation="@dimen/_5sdp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:background="@color/colorWhite"
+                        android:layout_height="wrap_content">
+
+                    <include
+                        android:id="@+id/layoutLan"
+                        layout="@layout/opp_add_doa"/>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linearWan"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLanDetail"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        >
+
+                        <TextView
+                            android:id="@+id/tvWan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:text="@string/wan_details"
+                            android:textColor="@color/colorPrimary"
+                            android:textColorHighlight="@color/colorPrimary"
+                            android:textSize="@dimen/_12sdp"
+                            app:drawableEndCompat="@drawable/ic_expand_down" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linearWanDetails"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:background="@color/colorWhite"
+                        app:layout_constraintTop_toBottomOf="@+id/linearWan"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        >
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            app:cardCornerRadius="@dimen/_5sdp"
+                            app:cardElevation="@dimen/_5sdp"
+                            app:cardUseCompatPadding="true"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:background="@color/colorWhite"
+                            android:layout_height="wrap_content">
+
+                        <include
+                            android:id="@+id/layoutWan"
+                            layout="@layout/opp_add_quote"
+                            />
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearProduct"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/linearWanDetails"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:text="@string/product_details"
+                            android:textColor="@color/colorPrimary"
+                            android:textColorHighlight="@color/colorPrimary"
+                            android:textSize="@dimen/_12sdp"
+                            app:drawableEndCompat="@drawable/ic_expand_down" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearProductDetail"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        android:background="@color/gray"
+                        app:layout_constraintTop_toBottomOf="@+id/linearProduct"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        >
+                        <include
+                            android:id="@+id/layoutProduct"
+                            layout="@layout/op_product_line_item_row"
+                            />
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+        <include layout="@layout/progress"
+            android:id="@+id/siteProgressLayout" />
+        <FrameLayout
+            android:id="@+id/fragmentSite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

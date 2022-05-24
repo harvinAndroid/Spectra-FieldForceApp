@@ -33,5 +33,9 @@ data class LeadData(
         val companyName: String,
         val contactAddress: UpdateContact_Address,
         val installationAddress: Installation_Address,
-        val otherDetail: Other_Detail
+        val otherDetail: Other_Detail,
+        val VerticalID:String,
+        val sdwan:SDWANRes
+
+
 )

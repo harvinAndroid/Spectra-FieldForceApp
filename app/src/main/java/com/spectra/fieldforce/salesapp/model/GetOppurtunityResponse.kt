@@ -7,10 +7,11 @@ data class GetOppurtunityResponse(
 )
 
 data class OppurtunityResponse(
-    val Data: OppurtunityData?,
+    val Data: List<OppurtunityData>?,
     val Message: String?,
     val StatusCode: Int?
 )
+
 
 data class OppurtunityData(
     val Area: String?,
@@ -43,6 +44,8 @@ data class OppurtunityData(
     val PoNext: String?,
     val PostalCode: String?,
     val Price: String?,
+    val TypeOfOrder:String?,
+    val PocClosureDate:String?,
     val PriceList: Any?,
     val Redunancy: Boolean?,
     val Relationship: String?,
@@ -68,5 +71,27 @@ data class OppurtunityData(
     val CityId:String?,
     val AreaId:String?,
     val BuildingId:String?,
-    val Statuscode:String?
+    val Statuscode:String?,
+    val VerticalID:String,
+    val sdwanOpp: SDOPP?
+)
+
+data class SDOPP(
+    val ApplicationsHosted: String,
+    val CurrentOperationalCity: String,
+    val CustomerBroadbandServices: String,
+    val CustomerILLservices: String,
+    val CustomerRoutingServices: String,
+    val FirewallSetToExpire: String,
+    val IndicationITSpent: String,
+    val ItSupport: String,
+    val LinksManagedLinks: String,
+    val MPLSBackbone: String,
+    val MPLSContract: String,
+    val NetworkSecurityServices: String,
+    val NoOfLocation: String,
+    val NumberOfLinksBroadbandServices: String,
+    val NumberOfLinksIll: String,
+    val RedundancyMPLS: String,
+    val SdwanRemarks: String
 )

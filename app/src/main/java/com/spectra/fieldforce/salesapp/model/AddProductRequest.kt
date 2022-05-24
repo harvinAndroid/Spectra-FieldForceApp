@@ -6,5 +6,6 @@ data class AddProductRequest(
     val oppid: String?,
     val password: String?,
     val productid: String?,
-    val userName: String?
+    val userName: String?,
+    val siteId:String?
 )

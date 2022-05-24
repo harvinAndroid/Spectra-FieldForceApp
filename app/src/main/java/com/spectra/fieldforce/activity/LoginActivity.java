@@ -15,10 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonElement;
 import com.spectra.fieldforce.databinding.ActivityLoginBinding;
 import com.spectra.fieldforce.model.LoginRequest;
@@ -183,7 +187,19 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
 
 
     private void getSaveToken() {
-        FirebaseInstanceId.getInstance().getInstanceId()
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+
+                    // Get new FCM registration token
+                    fcmToken= task.getResult();
+
+                    performSaveToken();
+                });
+      /*  FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
                         Log.w(TAG, "getInstanceId failed", task.getException());
@@ -192,7 +208,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                     fcmToken = Objects.requireNonNull(task.getResult()).getToken();
                     Log.d("FCMToken", fcmToken);
                     performSaveToken();
-                });
+                });*/
     }
 
 

@@ -70,6 +70,7 @@ public class WcrServiceConsumptionListAdapter extends RecyclerView.Adapter<WcrSe
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         WcrResponse.ServiceConsumtion item = serviceConsumtions.get(position);
         holder.binding.setItemConsumption(item);
         if(add.equals("1")){
@@ -117,7 +118,6 @@ public class WcrServiceConsumptionListAdapter extends RecyclerView.Adapter<WcrSe
                             myFragment.setArguments(b);
                             activity.getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, myFragment).addToBackStack(null).commit();
                         }
-
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
@@ -138,7 +138,6 @@ public class WcrServiceConsumptionListAdapter extends RecyclerView.Adapter<WcrSe
 
     class MyViewHolder extends RecyclerView.ViewHolder {
          WcrItemServiceBinding binding;
-
          MyViewHolder(WcrItemServiceBinding binding) {
            super(binding.getRoot());
            this.binding = binding;

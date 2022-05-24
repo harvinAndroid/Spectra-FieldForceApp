@@ -48,6 +48,7 @@
     <string name="mob_no">Mobile No*</string>
     <string name="slot_date_time">Slot Date Time:</string>
     <string name="address">Address:</string>
+    <string name="adds">Address*</string>
     <string name="segment">Segment:</string>
     <string name="type">Type:</string>
     <string name="sub_type">Sub Type:</string>
@@ -116,7 +117,7 @@
     <string name="get_profile_info">Get Profile info</string>
     <string name="customer_account_id">Can ID:</string>
     <string name="city">City:</string>
-    <string name="citybl">City</string>
+    <string name="citybl">City*</string>
     <string name="area_name">Area Name</string>
     <string name="building_society">Building/Society</string>
     <string name="provisioing">Provisioning</string>
@@ -148,7 +149,7 @@
     <string name="save">Save</string>
     <string name="installation_quality_parameters">Installation Quality Parameters</string>
     <string name="cable_crimped_to_the_wall_properly">Cable_crimped to the wall properly</string>
-    <string name="speed_test_results_shown_to_coustomer">Speed test results shown to coustomer</string>
+    <string name="speed_test_results_shown_to_coustomer">Speed test results shown to Customer</string>
     <string name="face_plate_mount_to_the_wall_properly">Face plate mount to the wall properly</string>
     <string name="ont_login_details_shared_with_customer">ONT login details shared with Customer</string>
     <string name="wi_fi_ssid_and_password_changed_info">Wi-Fi SSID and Password Changed info.</string>
@@ -156,7 +157,7 @@
     <string name="engineer_name">Engineer Name</string>
     <string name="on_hold">On Hold</string>
     <string name="hold_category">Hold Category</string>
-    <string name="remarks">Remarks</string>
+
     <string name="resend_otp">Resend OTP</string>
     <string name="cpe_mac">CPE MAC</string>
     <string name="cpe_mac_shared">CPE MAC shared</string>
@@ -194,7 +195,7 @@
     <string name="installation_code">Installation Code</string>
     <string name="created_on">Created On</string>
     <string name="wcr">WCR</string>
-    <string name="creat">Create</string>
+    <string name="create">Create</string>
     <string name="pod">POD :</string>
     <string name="education_customer_regarding_selfcare_portal">Education customer Regarding Selfcare Portal</string>
     <string name="update">UPDATE</string>
@@ -249,10 +250,9 @@
     <string name="customer_segment">Customer Segment*</string>
     <string name="topic">Topic*</string>
     <string name="lead_id">Lead Id</string>
-    <string name="contact_person_name">Contact Person Name*</string>
+
     <string name="salutation">Salutation*</string>
     <string name="email_id">Email ID*</string>
-    <string name="service_id">Service ID</string>
     <string name="account_name">Account Name</string>
     <string name="lead_category">Lead Category</string>
     <string name="campaign_code">Campaign Code</string>
@@ -317,7 +317,7 @@
     <string name="lead_source">Lead Source*</string>
     <string name="estimated_closure_date">Estimated Closure Date</string>
     <string name="oppurtunity_id">Opportunity ID*</string>
-    <string name="rack_required">Rack Required</string>
+    <string name="rack_required">Rack*</string>
     <string name="lead_name">Lead Name</string>
     <string name="account_id">Account ID</string>
     <string name="currency">Currency</string>
@@ -337,8 +337,8 @@
     <string name="redundancy_required">Redundancy Required</string>
     <string name="voip_port_activation">VOIP Port Activation</string>
     <string name="feasibility_type">Feasibility Type</string>
-    <string name="interface_required_second_level">Interface Required (Second Level)</string>
-    <string name="interface_required_first_level">Interface Required (First Level)</string>
+    <string name="interface_required_second_level">Interface (Second Level)*</string>
+    <string name="interface_required_first_level">Interface  (First Level)*</string>
     <string name="po_next_renewal_date">PO Next Renewal Date*</string>
     <string name="firewall_if_any">Firewall (if Any)*</string>
     <string name="product_list">Product List*</string>
@@ -394,20 +394,20 @@
     <string name="nationality">Nationality</string>
     <string name="parent_account">Parent Account</string>
     <string name="preffered_commu">Preffered communication mode</string>
-    <string name="network_monitoring_alertsrequired">Network Monitoring AlertsRequired*</string>
+    <string name="network_monitoring_alertsrequired">Network Monitoring Alerts*</string>
     <string name="caf_approval_date">CAF Approval Date</string>
-    <string name="business_daysrequired">Business DaysRequired*</string>
-    <string name="uptime_sla_required">Uptime SLA Committed (%)Required*</string>
-    <string name="po_lock_in_duration_required">PO Lock In Duration Reqd.*</string>
+    <string name="business_daysrequired">Business Days*</string>
+    <string name="uptime_sla_required">Uptime SLA Committed (%)*</string>
+    <string name="po_lock_in_duration_required">PO Lock In Duration*</string>
     <string name="india">India</string>
     <string name="bill_type">Bill Type</string>
     <string name="category_of_customer">Category of Customer*</string>
     <string name="building_status">Building Status*</string>
-    <string name="building_coderequired">Building CodeRequired*</string>
+    <string name="building_coderequired">Building Code*</string>
     <string name="billing_email_id">Billing Email ID*</string>
     <string name="phone_no">Phone No. *</string>
-    <string name="father_s_husband_s_namerequired">Father\'s/Husband\'s NameRequired*</string>
-    <string name="residential_address_required">Residential Address Required*</string>
+    <string name="father_s_husband_s_namerequired">Father\'s/Husband\'s Name*</string>
+    <string name="residential_address_required">Residential Address*</string>
     <string name="pincode">Pincode*</string>
     <string name="caf_num">CAF No.</string>
     <string name="other_info">Other Information</string>
@@ -422,7 +422,7 @@
     <string name="caf_no">CAF NO.*</string>
     <string name="account">Account*</string>
     <string name="tan_no">TAN No.*</string>
-    <string name="tin_no_hardware_sale_required">TIN no. (Hardware sale)Required</string>
+    <string name="tin_no_hardware_sale_required">TIN no. (Hardware sale)*</string>
     <string name="contact">Contact Management</string>
     <string name="lead">Lead</string>
 
@@ -453,8 +453,91 @@
     <string name="re_open_oppurtunity">Re-Open Oppurtunity</string>
     <string name="no_of_beds">No. of Beds</string>
     <string name="no_of_users">No. of Users</string>
+    <string name="questionnaries_for_sdwan">Questionnaries For SDWAN</string>
+    <string name="no_of_location">No. of location *</string>
+    <string name="is_customer_using_ill_services">Is customer using ILL services*</string>
+    <string name="is_customer_using_broadband_services">Is Customer using Broadband services</string>
+    <string name="are_these_links_being_managed_links">Are these links being managed links*</string>
+    <string name="is_customer_using_any_routing_services">Is customer using any Routing services*</string>
+    <string name="when_is_the_firewall_set_to_expire">When is the Firewall set to expire</string>
+    <string name="indication_of_it_spent">Indication of IT Spent</string>
+    <string name="current_operational_city">Current Operational City*</string>
+    <string name="network_security_services_used_by_customer">Network Security Services used by customer*</string>
+    <string name="where_are_the_applications_hosted">Where are the Applications Hosted*</string>
+    <string name="it_support_for_the_customer">IT support for the customer*</string>
+    <string name="is_there_any_redundancy_for_mpls">Is there any redundancy for MPLS*</string>
+    <string name="is_there_existing_mpls_backbone">Is there existing MPLS backbone*</string>
+    <string name="when_is_the_mpls_contract_to_be_renewed">When is the MPLS contract to be renewed?*</string>
+    <string name="remarks">Remarks</string>
+    <string name="opportunity_name">Opportunity Name*</string>
+    <string name="contact_person_name">Contact Person Name*</string>
+    <string name="customer_contact_number">Customer Contact Number*</string>
+    <string name="customer_emergency_contact_number">Customer Emergency Contact Number*</string>
+    <string name="customer_email_address">Customer Email Address*</string>
+    <string name="aggregated_bandwidth_mbps">Aggregated bandwidth (Mbps)</string>
+    <string name="solution_deployment_modes">Solution Deployment Modes</string>
+    <string name="ownr">Owner*</string>
+
+    <string name="site_category">Site Category</string>
+    <string name="pre_sale_id">Pre Sale ID</string>
+    <string name="saf_id">SAF ID</string>
+    <string name="type_order">Type OF Order*</string>
+    <string name="no_of_user_details">No. of User Details</string>
+    <string name="solution_type">Solution Type</string>
+    <string name="hardware_details">Hardware Details</string>
+     <string name="service_id">Service ID</string>
+    <string name="site_id">Site ID</string>
+    <string name="vertical">Vertical*</string>
+    <string name="please_mention_no_of_links">Please Mention No. of Links*</string>
+    <string name="site_details">Site Details</string>
+    <string name="add_site">Add Site</string>
+    <string name="basic_site_details">Basic Site Details</string>
+    <string name="multiple_location">Multiple Location</string>
+    <string name="lan_details">LAN Details</string>
+    <string name="wan_details">WAN Details</string>
+    <string name="no_of_wan_links">No. of WAN Links*</string>
+    <string name="no_of_lan_pools">No. of LAN Pools*</string>
+    <string name="work_order_id">Work Order ID</string>
+    <string name="lan_ip_allocation_to_user">LAN IP Allocation to User*</string>
+    <string name="lan_ip_pool">LAN IP Pool*</string>
+    <string name="lan_ip_address_isp_cpe">LAN IP address @ISP CPE*</string>
+    <string name="lan_ip_pool_gateway">LAN IP Pool Gateway*</string>
+    <string name="additional_ip_pool_between_isp_cpe_and_existing_fw">Additional IP Pool between ISP CPE and Existing FW*</string>
+    <string name="lan_ip_allocation_type_between_isp_cpe">LAN IP Allocation type between ISP CPE</string>
+    <string name="lan_ip_pool_between_isp_cpe_and_existing_l3">LAN IP Allocation type between ISP CPE and Existing L3</string>
+    <string name="lan_ip_pool_isp_cpe_and_existing_l3">LAN IP Pool ISP CPE and Existing L3*</string>
+    <string name="additional_ip_pool_allocation_type">Additional IP Pool Allocation Type*</string>
+    <string name="lan_ip_pool_between_isp_existing_l3">LAN IP Pool Between ISP Existing L3</string>
+    <string name="lan_ip_configured_as_isp_cpe">LAN IP Configured as ISP CPE*</string>
+    <string name="lan_gateway_address_at_isp_cpe">LAN Gateway Address at ISP CPE*</string>
+    <string name="additional_ip_configured_isp_cpe">Additional IP Configured @ ISP CPE*</string>
+    <string name="lan_ip_allocation_range">LAN IP Allocation Range*</string>
+    <string name="additional_ip_gateway_isp_cpe">Additional IP Gateway @ISP CPE*</string>
+    <string name="additional_ip_pool_between_isp_cpe">Additional IP Pool Between ISP CPE*</string>
+    <string name="lan_ip_allocation_to_users">LAN IP Allocation to Users</string>
+    <string name="customer_existing_lan_ip_pool">Customer Existing LAN IP Pool*</string>
+    <string name="customer_existing_ip_pool">Customer Existing LAN IP Pool</string>
+    <string name="create_pre_task">Create Pre-Task</string>
+    <string name="wan_ip_allocation_type">WAN IP Allocation Type*</string>
+    <string name="wan_type">WAN Type</string>
+    <string name="wan_bandwidth_mbps">WAN Bandwidth (Mbps)</string>
+    <string name="wan_gateway_isp_cpe_with_mask">WAN Gateway @ISP CPE with mask*</string>
+    <string name="ip_allocation_type_between_isp_cpe_and_existing">IP Allocation type between ISP CPE and Existing</string>
+    <string name="ip_configured_at_isp_cpe">IP configured at ISP CPE*</string>
+    <string name="wan_circuit_id">WAN Circuit ID</string>
+    <string name="wan_ip_address_isp_cpe_with_mask">WAN IP address @ISP CPE with mask*</string>
+    <string name="wan_bb_provider">WAN BB Provider*</string>
+    <string name="wan_bb_pro">WAN BB Provider</string>
+    <string name="gateway_address_at_isp_cpe">Gateway Address at ISP CPE</string>
+    <string name="ip_pool_between_isp_cpe_and_existing_l3_device">IP Pool between ISP CPE and Existing L3 Device</string>
+    <string name="saf">SAF</string>
+    <string name="saf_no">SAF No.</string>
+    <string name="poc_closure_date">POC Closure Date*</string>
+    <string name="work_order">Work Order</string>
+    <string name="lan_ip_allocation_type_between_isp_cpe_and_existing_l3_device">LAN IP Allocation type between ISP CPE and Existing L3 Device*</string>
+    <string name="site_type">Site Type</string>
+
     <!-- Array list for sales App-->
-    //////////////////
     <string-array name="list_of_boolean">
         <item>Select Option</item>
         <item>Yes</item>
@@ -536,6 +619,7 @@
         <item>SIP-Trunk</item>
         <item>VOIP</item>
     </string-array>
+
 
     <string-array name="list_firm_type">
         <item>Select Firm type</item>
@@ -695,6 +779,13 @@
         <item>Select Option</item>
         <item>10 AM to 6 PM</item>
         <item>6 PM to 2 AM</item>
+        <item>2 AM to 10 AM</item>
+    </string-array>
+
+    <string-array name="list_of_workingHours">
+        <item>Select Option</item>
+        <item>10 AM to 6 PM</item>
+        <item>6 PM to 2 PM</item>
         <item>2 AM to 10 AM</item>
     </string-array>
 
@@ -862,6 +953,131 @@
         <item>111260016</item>
         <item>111260017</item>
     </string-array>
+
+    <string-array name="listCustomerService">
+    <item>Select Option</item>
+    <item>Yes</item>
+    <item>No</item>
+    </string-array>
+
+    <string-array name="listCustomerServiceVal">
+        <item>0</item>
+        <item>122050000</item>
+        <item>122050001</item>
+    </string-array>
+
+    <string-array name="listManagedLink">
+        <item>Select Option</item>
+        <item>Yes</item>
+        <item>No</item>
+        <item>Partial</item>
+    </string-array>
+
+    <string-array name="listMangedLinkVal">
+        <item>0</item>
+        <item>122050000</item>
+        <item>122050001</item>
+        <item>122050002</item>
+    </string-array>
+
+    <string-array name="listNetworkSecurity">
+        <item>Select Option</item>
+        <item>Firewall (NGFW)</item>
+        <item>UTM</item>
+        <item>NA</item>
+    </string-array>
+
+    <string-array name="listApplicants">
+        <item>Select Option</item>
+        <item>Own Data center</item>
+        <item>Cloud</item>
+        <item>3rd Party DC</item>
+        <item>SaaS</item>
+    </string-array>
+
+    <string-array name="listApplicantsVal">
+        <item>0</item>
+        <item>122050000</item>
+        <item>122050001</item>
+        <item>122050002</item>
+        <item>122050003</item>
+    </string-array>
+
+    <string-array name="listSupportCustomer">
+    <item>Select Option</item>
+    <item>In house</item>
+    <item>Outsource</item>
+    </string-array>
+
+    <string-array name="listInHouse">
+        <item>Select Option</item>
+        <item>In house</item>
+        <item>Outsource</item>
+    </string-array>
+
+    <string-array name="typeOrder">
+        <item>Select Option</item>
+        <item>POC</item>
+        <item>Direct Order</item>
+    </string-array>
+
+    <string-array name="solutionDeployment">
+        <item>Select Option</item>
+        <item>WL</item>
+        <item>WR</item>
+        <item>RR</item>
+        <item>RL</item>
+    </string-array>
+
+    <string-array name="siteCategory">
+    <item>Select Option</item>
+    <item>On Cloud</item>
+    <item>On Premises</item>
+    </string-array>
+
+    <string-array name="siteType">
+        <item>Select Option</item>
+        <item>Hub</item>
+        <item>Branch</item>
+    </string-array>
+
+    <string-array name="siteTypeVal">
+        <item>0</item>
+        <item>122050000</item>
+        <item>122050001</item>
+    </string-array>
+
+    <string-array name="customerSegment">
+        <item>Select Customer Segment</item>
+        <item>SDWAN</item>
+        <item>SMB</item>
+        <item>Media</item>
+        <item>LA</item>
+        <item>SP</item>
+    </string-array>
+
+    <string-array name="listAllocation">
+        <item>Select Option</item>
+        <item>Static</item>
+        <item>DHCP</item>
+    </string-array>
+
+    <string-array name="wanType">
+        <item>Select Option</item>
+        <item>Broadband</item>
+        <item>ILL</item>
+        <item>LTE</item>
+        <item>MPLS</item>
+    </string-array>
+
+    <string-array name="wanTypeVal">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
 
 
 </resources>

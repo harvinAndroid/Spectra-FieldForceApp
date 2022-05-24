@@ -699,7 +699,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(Constants.AUTH_KEY);
         srRequest.setAction(Constants.SAVE_RC_DETAILS);
-        srRequest.setEmailId( MainActivity.prefConfig.readName());
+        srRequest.setEmailId(MainActivity.prefConfig.readName());
         srRequest.setSrNumber(srNumber);
         srRequest.setRConeId(RCOnee);
         srRequest.setRCtwoId(rc2Id);
@@ -707,9 +707,9 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         srRequest.setReasonOf(binding.rfo.getText().toString());
         srRequest.setCustomerID(customerId);
         srRequest.setNetworkType(customerNetworkTech);
-        if (isContacted.equals(YES)) {
+        if (isContacted.equals(YES)){
             srRequest.setResolveContacted(TRUE);
-        } else if (isContacted.equals(NO)) {
+        } else if (isContacted.equals(NO)){
             srRequest.setResolveContacted(FALSE);
         }
         srRequest.setSource(Constants.APP);
