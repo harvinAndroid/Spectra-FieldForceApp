@@ -3,133 +3,107 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/add.xml" value="0.22083333333333333" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/back_arrow.xml" value="0.22083333333333333" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/rectangle_background.xml" value="0.21666666666666667" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/round_corner.xml" value="0.21666666666666667" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/round_white_background.xml" value="0.21666666666666667" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/search.xml" value="0.21666666666666667" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/sr_details.xml" value="0.21666666666666667" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/textinputborder.xml" value="0.21666666666666667" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/activity_all_bucket_list.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/activity_dumm.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/adapter_irequipment_list.xml" value="0.2046875" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/button_background.xml" value="0.2035" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/drawable/button_purple.xml" value="0.2035" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/activity_all_bucket_list.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/activity_all_document_list.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/activity_login.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/adapter_manhole.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/adapter_manhole_list.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/adapter_wcrequipment.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/adapter_wcrequipment_list.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/add_manhole_details.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/adpter_all_bucket_list.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/adpter_all_lead_list.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/adpter_my_bucket_list.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/alert_dialog_canid.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_demo_fragment.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_detail_row.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/dialog_custom_layout.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/dialog_select_image.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/dummy.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/edit_product_details.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/example.xml" value="0.19114583333333332" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fault_tab_screen.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/flr_fragment.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_all_lead_list.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_all_oppurtunity_list.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_edititem_consumption.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_add_rfs.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_authorised_details.xml" value="0.33" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_company_details_row.xml" value="0.1" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_contact_info.xml" value="0.22" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_contact_person_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_demo_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_fragment.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_installation_address_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_otherinfo_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caf_payment_details_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/caftoolbar.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/contact_general_info.xml" value="0.25" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/contact_remarks_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/create_lan.xml" value="0.25" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/create_presale.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/create_wan.xml" value="0.25" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/doc_caf_frag.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/flr_fragment.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_all_lead_list.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_all_oppurtunity_list.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_itemadd_list.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_my_bucket_list.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_registration.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_s_r_detail.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/fragment_my_bucket_list.xml" value="0.19743589743589743" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_all_feasibilty_adapter.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_all_lead_adapter.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_all_oppurtunity_adapter.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/header_main.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_add_equipment.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_add_equipment_consumption.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_add_service.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_add_service_consumption.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_cpe_mac.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_item_consumption_details.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_item_cousumption.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_item_equipment_details.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_item_service.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ite_consumption_fragment.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/item_consumption_list.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/item_consumption_list_add.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/item_product_list.xml" value="0.1" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead__contact_person_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_channel_source_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_company_details_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_contact_info.xml" value="0.25" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_demo_fragment.xml" value="0.28659476117103233" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_fragment.xml" value="0.1885796545105566" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_general_info.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_installation_address_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_other_details_row.xml" value="0.25" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_produvt_detail_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_remarks_row.xml" value="0.19114583333333332" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/main_activity.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/main_dashborad.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/movie_list_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/op_product_add_item_row.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/op_product_line_item_row.xml" value="0.2046875" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_all_lead_adapter.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_all_oppurtunity_adapter.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_all_quote_adapter.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_feasibiltyadapter.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_rfs_adapter.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/get_siteadapter.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_engg_details.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/ir_fragment.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/item_product_list.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead__contact_person_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_company_details_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_contact_info.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_demo_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_installation_address_row.xml" value="0.22" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_other_details_row.xml" value="0.1" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_remarks_row.xml" value="0.1" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/lead_sdquestionare_details_row.xml" value="0.25" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/main_dashborad.xml" value="0.2006253256904638" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/main_site.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/op_product_line_item_row.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_add_doa.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_add_feasibility.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_add_quote.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_company_details_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_general_info.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_other_info_row.xml" value="0.33" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/oppurtunity_contact_info_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/oppurtunity_demo_fragment.xml" value="0.2046875" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_company_details_row.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_other_info_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_sales_task.xml" value="0.12222222222222222" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_salestask.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_site.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opp_site_details.xml" value="0.25" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/oppurtunity_contact_info_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/oppurtunity_demo_fragment.xml" value="0.22291666666666668" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/oppurtunity_detail_row.xml" value="0.25" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/oppurtunity_lead_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/opurtunity_fragment.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/sales_dashboard_activity.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/settings_activity.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/spinner_item.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/sr_details_list_adapter.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/toolbar.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead__contact_person_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_channel_source_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_company_details_row.xml" value="0.2046875" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/oppurtunity_fragment.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/provision_fault_tab_screen.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/provision_fragment.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/resolve.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_activity.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_authorised_details.xml" value="0.33" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_company_details_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_contact_info.xml" value="0.25" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_contact_person_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_detail_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_installation_address_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_otherinfo_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saf_payment_details_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/saftoolbar.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/sales_contact_address_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/sales_dashboard_activity.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/salescontact_address_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/salescontact_fragment.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/spinner_item.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/toolbar.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_channel_source_row.xml" value="0.1" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_company_details_row.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_demo_fragment.xml" value="0.25" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_general_info.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_installation_address_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_other_details_row.xml" value="0.25" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_produvt_detail_row.xml" value="0.33" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_remarks_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_toolbar.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_leadtoolbar.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/updatelead__contact_person_row.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/updatelead_contact_personadd_row.xml" value="0.33" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_add_item_consumption.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_add_service.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_complete_fragment.xml" value="0.2873030583873957" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_customer_network.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_engr_details.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_fragment.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_fragment_associated_details.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_fragment_customer_details.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_fragment_fms_details.xml" value="0.1" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_installation_quality.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_item_consumption_details.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_item_equipment_details.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_item_service.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_itemsconsumption_list.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_manhole_details.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_service_list.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/menu/flr_menu.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/menu/menu_main.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/menu/menu_test.xml" value="0.2046875" />
-        <entry key="..\:/Users/Harvinder/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.2046875" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_general_info.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_installation_address_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_other_details_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_lead_remarks_row.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/update_leadtoolbar.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/updatelead__contact_person_row.xml" value="0.33" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/updatelead_contact_personadd_row.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_add_service.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_complete_fragment.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_customer_network.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_fragment.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/layout/wcr_installation_quality.xml" value="0.19743589743589743" />
+        <entry key="..\:/Users/Harvinder/AndroidStudioProjects/Spectra-FFA/app/src/main/res/xml/root_preferences.xml" value="0.33" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
