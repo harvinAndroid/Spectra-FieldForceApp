@@ -10,6 +10,7 @@ interface AppConstants {
         const val REQUEST_CAMERA_PERMISSION_TWO = 2
         const val REQUEST_CAMERA_PERMISSION_THREE = 3
         const val REQUEST_CAMERA_PERMISSION_FOUR = 4
+         const val PERMISSION_REQUEST_CODE = 200
         const val REQUEST_CODE_ONE = 101
         const val REQUEST_CODE_TWO = 102
         const val REQUEST_CODE_THREE = 103
@@ -40,10 +41,10 @@ interface AppConstants {
         const val CONTACT_MANAGEMENT = "Contact Management"
         const val OPPURTUNUTY = "Opportunity"
         const val FLR = "FLR"
-        const val ALL_LEADS = "All Leads"
-        const val ALL_CONTACT = "All Contact"
-        const val ALL_OPPURTUNITY = "All Opportunity"
-        const val  DASHBOARD = "Dashboard"
+        const val ALL_LEADS = "Leads"
+        const val ALL_CONTACT = "Contacts"
+        const val ALL_OPPURTUNITY = "Opportunity"
+        const val  DASHBOARD = "My Dashboard"
         const val UPDATE_LEAD = "Update Lead"
         const val UPDATE_CONTACT = "Update Contact"
         const val FEASIBILITY ="Feasbility"
@@ -51,14 +52,26 @@ interface AppConstants {
         const val SITE = "Site"
         const val GENERATEQUOTE ="Generate Quote"
         const val APPROVAL="DOA Approval"
-        const val CAF = "All CAF"
+        const val CAF = "CAF"
         const val Caf = "CAF"
         const val BUSINESS="Business"
         const val ADD_WAN ="Add Wan"
         const val ADD_LAN="Add Lan"
         const val CREATE_PRETASK ="Create Pre Sales"
-        const val ALL_SAF="ALL SAF"
+        const val ALL_SAF="SAF"
         const val SAF="SAF"
+        const val COUNTRY_CODE="10001"
+        const val PREFERENCE_NAME = "preference_name"
+        const val USER_ID = "user_id"
+        const val DATE_FORMAT="yyyy-MM-dd"
+        const val DATE_CURRENT ="yyyy-MM-01"
+        const val COUNT_IN_CURRENT_MONTH = "Count In Current Month"
+        const val SRCOUNT="SR Count"
+        const val SDWAN ="SDWAN"
+        const val USERNAME="UserName"
+        const val PASSWORD="Password"
+        const val MENU ="Menu"
+
 
     }
 }

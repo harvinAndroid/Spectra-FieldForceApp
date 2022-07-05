@@ -34,7 +34,6 @@ class GetAllContactAdapter(private val items: List<ContactData>, private val con
             binding.tvEmail.text = "Email ID : "+item.EmailAddress
             binding.orderStatus.text = "Status : "+item.Status
             binding.linearLead.setOnClickListener(){
-
                 val intent = Intent(context, UpdateContactActivity::class.java)
                 val bundle = Bundle()
                 bundle.putString("ContactID",item.ContactId )

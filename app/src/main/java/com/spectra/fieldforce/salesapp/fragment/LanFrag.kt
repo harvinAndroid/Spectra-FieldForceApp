@@ -50,7 +50,7 @@ class LanFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
     private var strStatus:String ? = null
     private var strAction:String ? = null
     private var strSolutionMode :String? = null
-
+    private var screenStatus :String?=null
 
 
     override fun onCreateView(
@@ -70,11 +70,15 @@ class LanFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         strSiteID= bundle?.getString("SiteID")
         strStatus= bundle?.getString("Status")
         strLanNum =bundle?.getString("LanNum")
+        screenStatus =bundle?.getString("ScreenStatus")
 
         val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
         userName = sp1?.getString("UserName", null)
         password = sp1?.getString("Password", null)
         buttonListener()
+        if(screenStatus=="1"){
+            binding.addLan.visibility=View.GONE
+        }
         CoroutineScope(Dispatchers.IO).launch {
             getLanDetails()
         }
@@ -176,7 +180,6 @@ class LanFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
                         if(response.body()?.StatusCode=="200"){
                             Toast.makeText(context, response.body()?.Response?.Message, Toast.LENGTH_LONG).show()
                             next()
-
                         }else  if(response.body()?.StatusCode=="201"){
                             Toast.makeText(context, response.body()?.Response?.Message, Toast.LENGTH_LONG).show()
                         }
@@ -400,7 +403,7 @@ class LanFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
             }*/
             R.id.spAddAllocationType ->{
                 etAddAllocationType.setText(resources.getStringArray(R.array.listAllocation)[position])
-                strAddAllocationType =  resources.getStringArray(R.array.listCustomerServiceVal)[position]
+                strIpBet =  resources.getStringArray(R.array.listCustomerServiceVal)[position]
                 if( strSolutionMode=="RR"){
                     PoolBetIspExistingL3.visibility=View.VISIBLE
                     addAllocationType.visibility=View.VISIBLE

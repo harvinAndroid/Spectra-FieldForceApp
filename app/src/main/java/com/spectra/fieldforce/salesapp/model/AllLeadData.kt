@@ -7,5 +7,6 @@ data class AllLeadData(
         val LeadName: String?,
         val LeadStatus: Int?,
         val MobileNumber: String?,
-        val Status: String?
+        val Status: String?,
+        val Createdon:String?
 )

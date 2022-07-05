@@ -89,7 +89,7 @@ class GetQualifiedLeadFrag() : Fragment(),View.OnClickListener {
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
         val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,str_Search,password,userName,
-        "")
+        "","","")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllLead(getAllLeadRequest)

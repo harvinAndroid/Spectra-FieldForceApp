@@ -22,8 +22,6 @@ import com.spectra.fieldforce.salesapp.activity.SiteOpportunityAct
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
-import kotlinx.android.synthetic.main.create_lan.*
-import kotlinx.android.synthetic.main.create_lan.addLan
 import kotlinx.android.synthetic.main.create_wan.*
 import kotlinx.android.synthetic.main.update_leadtoolbar.view.*
 
@@ -52,6 +50,8 @@ class WanFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
     private var strStatus:String ? = null
     private var strAction:String ? = null
     private var strSolutionMode:String?=null
+    private var screenStatus:String?=null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,11 +70,15 @@ class WanFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         strSiteID= bundle?.getString("SiteID")
         strStatus= bundle?.getString("Status")
         strWanNum= bundle?.getString("WanNo")
-
+        screenStatus =bundle?.getString("ScreenStatus")
         val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
         userName = sp1?.getString("UserName", null)
         password = sp1?.getString("Password", null)
         buttonListener()
+
+        if(screenStatus=="1"){
+            binding.addLan.visibility=View.GONE
+        }
         CoroutineScope(Dispatchers.IO).launch {
            getWanDetails()
         }
@@ -165,7 +169,7 @@ class WanFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         iPPoolISPCPEExistingL3Device: String?
     ) {
         val createWanReq = CreateWanReq(strAction,Constants.AUTH_KEY,additionalIPGatewayCPE ,additionalIPPoolAllocationType,
-            additionalIPPoolCPEExist,iPConfigCPE,allBetCPEExisting,gatewayAddressISPCPE,
+            additionalIPPoolCPEExist,additionalIPConfigCPE/*iPConfigCPE*/,allBetCPEExisting,gatewayAddressISPCPE,
             iPPoolISPCPEExistingL3Device,iPConfigCPE /*additionalIPConfigCPE*/,password,strSiteID,userName,
             wANBBProvider1D,wANBBProvider2,
             wANBandMbps,wANCircuitID,wANGatewaySpectraCPEMask,wANIPAddressCPEMask,

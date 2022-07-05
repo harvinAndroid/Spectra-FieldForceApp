@@ -133,7 +133,6 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="City*"
-
                                 android:drawableEnd="@drawable/ic_expand_down"
 
                                 android:imeOptions="actionNext"
@@ -201,7 +200,7 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-
+<!--
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
@@ -222,22 +221,28 @@
 
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cnt_building"
+                  -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+
+                            android:id="@+id/et_cnt_building"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="Building Name*"
-
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:imeOptions="actionNext"
+                                android:textColorHint="@color/colorPrimary"
+                                android:text="@{updateContactAdd.contactBuildingName}"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
-
                         </com.google.android.material.textfield.TextInputLayout>
-                        </FrameLayout>
+                    <!--    </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>-->
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

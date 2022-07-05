@@ -41,8 +41,8 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
         searchtoolbar.rl_back.setOnClickListener(this)
         searchtoolbar.tv_lang.text= AppConstants.UPDATEPRODUCT
         val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
-        userName = sp1.getString("UserName", null)
-        password = sp1.getString("Password", null)
+        userName = sp1.getString(AppConstants.USERNAME, null)
+        password = sp1.getString(AppConstants.PASSWORD, null)
         val extras = intent.extras
         if (extras != null) {
             strOppId = extras.getString("OppId")
@@ -76,7 +76,6 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
         var str_Opp_Id:String?=null
         str_Opp_Id=strOppId
 
-
         if(strSiteId?.isNotBlank() == true){
             str_Opp_Id=""
         }
@@ -87,17 +86,16 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
 
         }
 
-
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.updateOppProduct(updateProductRequest)
         call.enqueue(object : retrofit2.Callback<ProdctResponse?> {
             override fun onResponse(call: retrofit2.Call<ProdctResponse?>, response: retrofit2.Response<ProdctResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
-                       val img = response.body()!!.Response.Message
+                       val img = response.body()?.Response?.Message
                     if(response.body()?.Response?.StatusCode==200) {
                         try {
                             Toast.makeText(this@EditProduct,img,Toast.LENGTH_LONG).show()
-                            Log.e("image", img)
+                            img?.let { Log.e("image", it) }
                             val intent = Intent(this@EditProduct, OpportunityActivity::class.java)
                             intent.putExtra("OppId",strOppId)
                             startActivity(intent)
@@ -124,9 +122,9 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (parent?.id == R.id.sp_pricing) {
-            et_pricing.setText(list_of_pricing.get(position))
-            str_pricing =  list_of_pricing.get(position)
-             val price = list_of_pricing.get(position)
+            et_pricing.setText(list_of_pricing[position])
+            str_pricing = list_of_pricing[position]
+             val price = list_of_pricing[position]
             if(price=="Use Default"){
                 et_price.isFocusable=false
                 et_price.isFocusableInTouchMode=false
@@ -135,10 +133,6 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
                 et_price.isFocusable=true
                 et_price.isFocusableInTouchMode=true
                 et_discount.isFocusableInTouchMode =false
-              /*  price should be higher from previous value
-              *   use default price by default set ho jaye.
-              *
-              * */
             }
         }
     }

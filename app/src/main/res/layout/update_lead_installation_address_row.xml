@@ -196,40 +196,25 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                             android:layout_height="wrap_content">
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_building_nm"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:visibility="invisible" />
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
                             app:hintTextAppearance="@style/AppearanceText">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_building"
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+
+                            android:id="@+id/et_building"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/building_name"
-                                android:drawableEnd="@drawable/ic_expand_down"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:imeOptions="actionNext"
+                                android:textColorHint="@color/colorPrimary"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
-
                         </com.google.android.material.textfield.TextInputLayout>
-                        </FrameLayout>
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

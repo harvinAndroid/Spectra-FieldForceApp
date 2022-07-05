@@ -126,7 +126,7 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
         inAnimation?.duration =200
         binding.progressLayout.progressOverlay.animation = inAnimation
         binding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllOPPURTUNITY, Constants.AUTH_KEY,str_Search,password,userName,search)
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllOPPURTUNITY, Constants.AUTH_KEY,str_Search,password,userName,search,"","")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllOppurtunity(getAllLeadRequest)

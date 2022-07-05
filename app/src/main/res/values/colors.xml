@@ -17,4 +17,8 @@
     <color name="green">#00FF00</color>
     <color name="yellow">#FFFF00</color>
     <color name="col">#FFC200</color>
+    <color name="orange">#FF4500</color>
+    <color name="blue">#15317E</color>
+    <color name="transparent">#00000000</color>
+    <color name="elect_blue">#9AFEFF</color>
 </resources>

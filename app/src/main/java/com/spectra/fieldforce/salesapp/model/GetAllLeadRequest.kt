@@ -6,5 +6,7 @@ data class GetAllLeadRequest(
     val status: String?,
     val password: String?,
     val userName: String?,
-    val searchBoxValue:String?
+    val searchBoxValue:String?,
+    val fromDate:String?,
+    val toDate:String?
 )

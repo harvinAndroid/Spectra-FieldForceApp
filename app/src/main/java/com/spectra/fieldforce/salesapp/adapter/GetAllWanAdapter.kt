@@ -22,7 +22,8 @@ import kotlinx.coroutines.launch
 
 class GetAllWanAdapter(
     private val items: List<WanData>,
-    private val context: Context?
+    private val context: Context?,
+    private val screenStatus: String?
 ) : RecyclerView.Adapter<GetAllWanAdapter.ViewHolder>() {
 
     lateinit var binding: GetFeasibiltyadapterBinding
@@ -55,6 +56,7 @@ class GetAllWanAdapter(
                     b.putString("SiteID", item.SiteId)
                     b.putString("Status", "2")
                     b.putString("WanNo", item.WanNo)
+                    b.putString("ScreenStatus",screenStatus)
                     val activity =context as AppCompatActivity
                     val wanFrag = WanFrag()
                     wanFrag.arguments=b

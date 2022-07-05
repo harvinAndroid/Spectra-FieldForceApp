@@ -24,15 +24,15 @@ class LeadTabActivity : AppCompatActivity(), View.OnClickListener {
         searchtoolbar.rl_back.setOnClickListener(this)
         searchtoolbar.tv_lang.text= AppConstants.ALL_LEADS
 
-            tabLayout.addTab(tabLayout.newTab().setText("All Leads"))
+            tabLayout.addTab(tabLayout.newTab().setText("All"))
             tabLayout.addTab(tabLayout.newTab().setText("Open"))
             tabLayout.addTab(tabLayout.newTab().setText("Qualified"))
             tabLayout.addTab(tabLayout.newTab().setText("DisQualified"))
             tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
             val adapter = LeadTabAdapter(this, supportFragmentManager, tabLayout.tabCount)
-        CoroutineScope(Dispatchers.IO).launch {
-        viewPager.adapter = adapter
+            CoroutineScope(Dispatchers.IO).launch {
+            viewPager.adapter = adapter
             viewPager.offscreenPageLimit = 4
             viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
             tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -83,8 +83,7 @@ class LeadTabActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun next(){
-        val intent = Intent(this, SalesDashboard::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, SalesDashboard::class.java))
         finish()
     }
 }

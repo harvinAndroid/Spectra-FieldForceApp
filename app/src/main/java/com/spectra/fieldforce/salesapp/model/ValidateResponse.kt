@@ -3,7 +3,7 @@ package com.spectra.fieldforce.salesapp.model
 data class ValidateResponse(
     val Response: List<ResponseX>,
     val Status: String,
-    val StatusCode: String
+    val StatusCode: Int
 )
 
 data class ResponseX(

@@ -80,8 +80,6 @@ import com.spectra.fieldforce.model.StarttimeRequest;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.model.questionAnsResponse.QuestionAnswerList;
 import com.spectra.fieldforce.salesapp.model.*;
-
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -444,6 +442,10 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<GetAllLeadResponse> getAllLead(@Body GetAllLeadRequest getAllLeadRequest);
+
+    @POST ("index.php")
+    Call<FFASRBarChartResponse> getSrCount(@Body FFASRBarChartReq ffasrBarChartReq);
+
 
     @POST ("index.php")
     Call<GetAllContactResponse> getAllContact(@Body GetAllLeadRequest getAllLeadRequest);

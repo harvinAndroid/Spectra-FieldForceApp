@@ -102,8 +102,8 @@ public class DocumentCafAct extends BaseActivity {
         binding.chkSaf.setVisibility(View.GONE);
 
         SharedPreferences sp1=this.getSharedPreferences("Login",0);
-        userName =sp1.getString("UserName", null);
-        password = sp1.getString("Password", null);
+        userName =sp1.getString(AppConstants.USERNAME, null);
+        password = sp1.getString(AppConstants.PASSWORD, null);
         mFilepaths = new ArrayList<>();
         binding.tlbrdoc.tvLang.setText(AppConstants.Caf);
         camera();
@@ -363,7 +363,7 @@ public class DocumentCafAct extends BaseActivity {
                 chk_deed,chk_photo,"","","",chtann, chk_tin);
 
         UploadDocRequest uploadDocRequest = new UploadDocRequest(Constants.UPDATEDOCUMENT,Constants.AUTH_KEY,
-                "",strCafId,doc,"",password,"",userName,"");
+                strCafId,"",doc,"",password,"",userName,"");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<DeleteProductResponse> call = apiService.uploadDoc(uploadDocRequest);
         call.enqueue(new Callback<DeleteProductResponse>() {

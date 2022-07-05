@@ -189,8 +189,8 @@ public class Constants {
     public static final String SUBMIT_SAF ="submitSaf";
     public static final String GETALL_WORKORDER="getAllWorkOrder";
     public static final String GET_SAFPRETASK="getSAFPretask";
-   // public static final String CREATE_OPPPRODUCT ="createOppProduct";
+    public static final String GET_DASHBOARDCASES ="getDashboardCases";
 
 
-
+ /*cvCalendar.maxDate = System.currentTimeMillis()*/
 }

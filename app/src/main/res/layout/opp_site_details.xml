@@ -615,7 +615,7 @@
                                 android:focusable="false"
                                 android:text="@{siteData.siteType}"
                                 android:focusableInTouchMode="false"
-                                android:drawableEnd="@drawable/ic_expand_down"
+                                android:drawableEnd="@drawable/lock"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
@@ -659,6 +659,27 @@
                                 android:inputType="text"
                                 android:maxLength="10"
                                 android:text="@{siteData.noOfLanPool}"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHighlight="@color/colorPrimary"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/colorPrimary"
+                            app:hintTextAppearance="@style/AppearanceText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etAmount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/color_light_blue"
+                                android:hint="@string/amount"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:drawableEnd="@drawable/lock"
+                                android:text="@{siteData.totalAmount}"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />

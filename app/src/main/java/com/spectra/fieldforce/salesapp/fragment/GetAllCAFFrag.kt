@@ -118,7 +118,7 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCAF, Constants.AUTH_KEY,strSearch,password,userName,search)
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCAF, Constants.AUTH_KEY,strSearch,password,userName,search,"","")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllCAF(getAllLeadRequest)

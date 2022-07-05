@@ -36,6 +36,7 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.BaseActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
+import com.spectra.fieldforce.application.App;
 import com.spectra.fieldforce.databinding.DocCafFragBinding;
 import com.spectra.fieldforce.salesapp.adapter.DocAdapter;
 import com.spectra.fieldforce.salesapp.model.AttachDoc;
@@ -100,8 +101,8 @@ public class DocumentSafActivity extends BaseActivity {
         binding.etCafnum.setVisibility(View.GONE);
         binding.chkCaf.setVisibility(View.GONE);
         SharedPreferences sp1=this.getSharedPreferences("Login",0);
-        userName =sp1.getString("UserName", null);
-        password = sp1.getString("Password", null);
+        userName =sp1.getString(AppConstants.USERNAME, null);
+        password = sp1.getString(AppConstants.PASSWORD, null);
         mFilepaths = new ArrayList<>();
         binding.tlbrdoc.tvLang.setText(AppConstants.SAF);
         camera();
@@ -215,8 +216,6 @@ public class DocumentSafActivity extends BaseActivity {
                             binding.etSafnum.setText(strSafId);
 
                           //  strSafId =  response.body().getResponse().getData().getSafNo();
-
-
                             if(response.body().getResponse().getData().getAccordingtoFirmType().getTanNo().equals("1")){
                                 binding.ckTan.setChecked(true);
                             }
@@ -362,7 +361,7 @@ public class DocumentSafActivity extends BaseActivity {
                 chk_deed,chk_photo,"","","",chtann, chk_tin);
 
         UploadDocRequest uploadDocRequest = new UploadDocRequest(Constants.UPDATEDOCUMENT,Constants.AUTH_KEY,
-                "","",doc,"",password,"",userName,/*"SAF_124"*/strSafId);
+                "","",doc,"",password,"",userName,strSafId);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<DeleteProductResponse> call = apiService.uploadDoc(uploadDocRequest);
         call.enqueue(new Callback<DeleteProductResponse>() {
@@ -502,9 +501,6 @@ public class DocumentSafActivity extends BaseActivity {
                             bitmap1 = BitmapFactory.decodeFile(filepath, options);
                             binding.etAttachfile.setText(filepath);
 
-                           // str_ext1=".jpg";
-                            // Do something with the bitmap
-                            // At the end remember to close the cursor or you will end with the RuntimeException!
                             cursor.close();
                         } else {
                             displayToast(R.string.valid_formats);
@@ -518,10 +514,8 @@ public class DocumentSafActivity extends BaseActivity {
             }else  if ( requestCode == REQUEST_CAMERA_PERMISSION_ONE) {
                 try {
                     bitmap1 = BitmapFactory.decodeFile(currentImagePath);
-                    //   Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
                     binding.etAttachfile.setText(currentImagePath);
                     str_ext1 = "jpg";
-                    //  image.setImageBitmap(bitmap5);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

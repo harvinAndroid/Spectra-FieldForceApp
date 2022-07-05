@@ -359,12 +359,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         btnUnhold.setOnClickListener(v ->
                 ChangeUnholdStatus());
 
-       /* holdReason.setOnItemClickListener((parent, view1, position, id) -> setActionCode());*/
-
-
-
-
-
         DateEdit.setOnClickListener(v -> {
             try {
                 final TimePickerDialog timePickerDialog = new TimePickerDialog(

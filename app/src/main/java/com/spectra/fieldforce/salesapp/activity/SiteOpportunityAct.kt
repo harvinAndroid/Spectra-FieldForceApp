@@ -80,6 +80,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
     private var strCityCode :String ? =null
     private var strStatus :String? = null
     private var strAction :String?=null
+    private var screenStatus:String?=null
     private var lanDataList: ArrayList<LanData>? = null
     private var wanDataList: ArrayList<WanData>? = null
     private var allProductItem: ArrayList<ItemData>? = null
@@ -89,6 +90,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
     var status :String? = null
     var strProduct : String? = null
     var strPrice : String? = null
+    var strAmount : String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,8 +98,8 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
         binding = DataBindingUtil.setContentView(this, R.layout.main_site)
         toolbarSite.rl_back.setOnClickListener(this)
         val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
-        userName = sp1.getString("UserName", null)
-        password = sp1.getString("Password", null)
+        userName = sp1.getString(AppConstants.USERNAME, null)
+        password = sp1.getString(AppConstants.PASSWORD, null)
 
         val extras = intent.extras
         if (extras != null) {
@@ -154,6 +156,10 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
 
     private fun listener() {
         linearBasicSiteDetail.visibility = View.VISIBLE
+        binding.layoutProduct.price.visibility=View.VISIBLE
+        binding.layoutProduct.reason.visibility=View.GONE
+        binding.layoutProduct.linearProductt.visibility=View.VISIBLE
+        binding.layoutProduct.rvProductList.visibility=View.VISIBLE
         linearBasic.setOnClickListener {
             linearBasicSiteDetail.visibility = View.VISIBLE
             linearLanDetail.visibility = View.GONE
@@ -184,10 +190,12 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
         CoroutineScope(Dispatchers.IO).launch {
             getSiteDetails()
         }
+
         CoroutineScope(Dispatchers.IO).launch {
             getLanList()
             getWanList()
         }
+
         tvCreateSite.setOnClickListener  {
             if(strStatus=="1") {
                 strAction = Constants.CREATE_SITE
@@ -199,7 +207,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                 siteDetails.et_siteRelationship.isEnabled=false
             }
 
-            CoroutineScope(Dispatchers.IO).launch {
+
                val name = siteDetails.et_contact_person_name.text
                val number = siteDetails.et_customer_contact_number.text
                val email = siteDetails.et_customerEmailId.text
@@ -208,6 +216,33 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                val lan = siteDetails.etLanPool.text
                val wan = siteDetails.etWanLinks.text
                val emergencyNum = siteDetails.et_customer_emergencyNum.text
+                if(name?.isBlank()==true){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Enter Name", Toast.LENGTH_SHORT).show()
+                }else  if(number?.isBlank()==true){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Enter Contact Number", Toast.LENGTH_SHORT).show()
+                }else  if(emergencyNum?.isBlank()==true){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Enter Emergency Contact No.", Toast.LENGTH_SHORT).show()
+                }else  if(email?.isBlank()==true){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Enter Email", Toast.LENGTH_SHORT).show()
+                }else if(strStateCode?.isBlank()==true||strStateCode=="0"||strStateCode=="null"){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Select State", Toast.LENGTH_SHORT).show()
+                }else if(strCityCode?.isBlank()==true||strCityCode==""||strCityCode=="null"){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Select City", Toast.LENGTH_SHORT).show()
+                }else  if(pinCode?.isBlank()==true){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Enter Pincode", Toast.LENGTH_SHORT).show()
+                }else  if(address?.isBlank()==true){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Enter Address", Toast.LENGTH_SHORT).show()
+                }else if(strDeployment?.isBlank()==true||strDeployment=="0"||strDeployment=="null"){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Select Solution Deployment Mode", Toast.LENGTH_SHORT).show()
+                }else if(strRelation?.isBlank()==true||strRelation==""||strRelation=="null"){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Select Relation", Toast.LENGTH_SHORT).show()
+                }else if(strCategory?.isBlank()==true||strCategory=="0"||strCategory=="null"){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Select Site Category", Toast.LENGTH_SHORT).show()
+                }else if(wan?.isBlank()==true){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Enter WAN Pools", Toast.LENGTH_SHORT).show()
+                }else if(lan?.isBlank()==true){
+                    Toast.makeText(this@SiteOpportunityAct, "Please Enter LAN Pools", Toast.LENGTH_SHORT).show()
+                }else{
                     createSite(
                         name?.toString(), number?.toString(), email?.toString(),
                         pinCode?.toString(), address?.toString(), emergencyNum?.toString(),
@@ -256,8 +291,8 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
     private fun  getLanList () {
         //inProgress()
         val getAllLan = strSiteId?.let {
-            GetAllLanReq(Constants.GET_ALLLAN, Constants.AUTH_KEY,"" /*it*/,"Target@2021#@"/*password*/,
-                it,"salesperson1"/*userName*/)
+            GetAllLanReq(Constants.GET_ALLLAN, Constants.AUTH_KEY,"" /*it*/,password,
+                it,userName)
         }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllLan(getAllLan)
@@ -267,7 +302,6 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         if(response.body()?.Response?.StatusCode==200) {
-                            //  val msg = response.body()!!.Response.Message
                             lanDataList = response.body()?.Response?.Data
                             if(lanDataList!=null) {
                                 rv_add_doa.visibility=View.VISIBLE
@@ -290,7 +324,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
         rv_add_doa.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = GetAllLanAdapter(lanData,context)
+            adapter = GetAllLanAdapter(lanData,context,screenStatus)
         }
     }
 
@@ -318,10 +352,10 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                                         }
                                         println("chk discount:"+itemData.Discount)
                                     }
-                                    if(allProductItem?.size==null){
+                                    if(allProductItem?.size!=null){
                                         Log.e("Button51", "51")
+                                        setAdapter(allProductItem, this@SiteOpportunityAct)
                                     }
-                                    setAdapter(allProductItem, this@SiteOpportunityAct)
                                 }
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -417,7 +451,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
         rv_add_quote.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter =  GetAllWanAdapter(wanDataList,context)
+            adapter =  GetAllWanAdapter(wanDataList,context,screenStatus)
         }
     }
 
@@ -431,11 +465,17 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
         lan: String?,
         wan: String?
     ) {
-
+        val siteType = siteDetails.et_siteType.text.toString()
+        var site:String?=null
+        if(siteType=="Hub"){
+            site="122050000"
+        }else if(siteType=="Branch"){
+            site ="122050001"
+        }
         val createSiteReq = CreateSiteReq(strAction,Constants.AUTH_KEY,address,strCityCode,
             name,number,email,emergencyNum,
             lan,wan,strOppId,password,pinCode,strPrice,strRelation, strCategory,strDeployment,
-            strStateCode,userName,strSiteId)
+            strStateCode,userName,strSiteId,site,strAmount)
       //  inProgress()
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.createSite(createSiteReq)
@@ -453,6 +493,9 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                             intent.putExtras(bundle)
                             startActivity(intent)
                             finish()
+                        }else if(response.body()?.Response?.StatusCode=="201"){
+                            Toast.makeText(this@SiteOpportunityAct, response.body()?.Response?.Message, Toast.LENGTH_SHORT
+                            ).show()
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -492,7 +535,6 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
         siteDetails.sp_siteSubBusSegment.onItemSelectedListener = this
         layoutProduct.et_product_list.setOnClickListener { layoutProduct.sp_opproduct.performClick() }
         layoutProduct.sp_opproduct.onItemSelectedListener = this
-
     }
 
 
@@ -516,6 +558,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                         strOppId =  response.body()?.Response?.Data?.get(0)?.OpportunityId
                         binding.siteDetails.siteData = response.body()?.Response?.Data?.get(0)
                         layoutProduct.et_price_list.setText(response.body()?.Response?.Data?.get(0)?.PriceList)
+                        strAmount =response.body()?.Response?.Data?.get(0)?.TotalAmount
                         strSiteId = response.body()?.Response?.Data?.get(0)?.SiteID
                         strCompany = response.body()?.Response?.Data?.get(0)?.Company
                         strPrice = response.body()?.Response?.Data?.get(0)?.PriceList
@@ -528,6 +571,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                         strSubBus = response.body()?.Response?.Data?.get(0)?.SubBusinessSegment
                         strType = response.body()?.Response?.Data?.get(0)?.TypeOFOrder
                         strCategory= response.body()?.Response?.Data?.get(0)?.SiteCategory
+
                         getCompany(strCompany)
                        // getRelation(strCompany)
                         var sbBusPosition = 0
@@ -594,10 +638,17 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                         siteDetails.sp_siteCustomerSegment.adapter = segmentAdapter
                         siteDetails.sp_siteCustomerSegment.setSelection(segPosition)
                         segmentAdapter.notifyDataSetChanged()
+                        screenStatus = response.body()?.Response?.Data?.get(0)?.OppStatus
 
                         CoroutineScope(Dispatchers.IO).launch {
                             getProductAddedList()
                             getProductList()
+                        }
+
+                        if(screenStatus=="Lost"||screenStatus=="Won"||screenStatus=="Waiting for Approval"){
+                            locked()
+                            status="1"
+                            screenStatus="1"
                         }
 
                     } catch (e: Exception) {
@@ -612,6 +663,33 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
             }
         })
     }
+
+    private fun locked(){
+        siteDetails.et_siteState.isEnabled=false
+        siteDetails.et_siteCity.isEnabled=false
+        siteDetails.et_siteCustomerSegment.isEnabled=false
+        siteDetails.et_siteCategory.isEnabled=false
+        siteDetails.et_siteCompany.isEnabled=false
+        siteDetails.et_siteGroup.isEnabled=false
+        siteDetails.et_siteRelationship.isEnabled=false
+        siteDetails.et_typeOrder.isEnabled=false
+        siteDetails.et_SiteDeploymentMode.isEnabled=false
+        siteDetails.et_siteSubBusSegment.isEnabled=false
+        siteDetails.et_contact_person_name.isEnabled=false
+        siteDetails.et_customer_contact_number.isEnabled=false
+        siteDetails.et_customer_emergencyNum.isEnabled=false
+        siteDetails.et_customerEmailId.isEnabled=false
+        siteDetails.et_sitePinCode.isEnabled=false
+        siteDetails.et_siteAddress.isEnabled=false
+        siteDetails.etWanLinks.isEnabled=false
+        siteDetails.etLanPool.isEnabled=false
+        siteDetails.tvCreateSite.visibility=View.GONE
+        layoutProduct.et_product_list.isEnabled=false
+        layoutProduct.add_procuct.visibility=View.GONE
+        layoutLan.add_dao.visibility=View.GONE
+        layoutWan.add_quote.visibility=View.GONE
+    }
+
     fun inProgress(){
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200

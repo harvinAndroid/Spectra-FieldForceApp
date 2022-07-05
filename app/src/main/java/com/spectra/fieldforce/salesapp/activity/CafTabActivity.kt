@@ -70,8 +70,7 @@ try {
     }
 
     private fun next(){
-        val intent = Intent(this, SalesDashboard::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, SalesDashboard::class.java))
         finish()
     }
 }

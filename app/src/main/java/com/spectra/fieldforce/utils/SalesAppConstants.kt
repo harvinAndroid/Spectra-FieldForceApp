@@ -45,5 +45,9 @@ interface SalesAppConstants {
         var list_of_mediavalue = arrayOf("1","2")
 
         var ext_serv_val = arrayOf("569480000","569480001","569480002","569480003")
+
+
+        //////////////////////////////////////////////////////////////////////////
+
     }
 }

@@ -79,11 +79,6 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         }
         excuteSearch()
         excuteTask()
-       /* searchtoolbarlead_list.rl_back.setOnClickListener(this)
-        searchtoolbarlead_list.tv_lang.text= AppConstants.ALL_LEADS
-
-     */
-       //
 
 
         fab_create_lead.setOnClickListener {
@@ -96,11 +91,7 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
 
             }
         }
-       // val search = tv_search.text.toString()
-
-
-
-    }
+        }
     fun excuteSearch(){
         CoroutineScope(Dispatchers.IO).launch {
             getAllLeadList("")
@@ -147,7 +138,7 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCONTACT, Constants.AUTH_KEY,strSearch,password,userName,srch)
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCONTACT, Constants.AUTH_KEY,strSearch,password,userName,srch,"","")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllContact(getAllLeadRequest)
@@ -185,18 +176,6 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
             E.printStackTrace()
         }
     }
-   /* private fun init() {
-        leadContactInfoBinding.swipeRefreshLayout.setEnabled(true)
-        leadContactInfoBinding.swipeRefreshLayout.setRefreshing(true)
-        leadContactInfoBinding.swipeRefreshLayout.setOnRefreshListener {
-            try {
-                leadContactInfoBinding.swipeRefreshLayout.setRefreshing(true)
-               getAllLeadList("")
-            } catch (ex: Exception) {
-                ex.message
-            }
-        }
-    }*/
 
 
     private fun setAdapter(allLead: ArrayList<ContactData>?, context: Context?) {
@@ -211,13 +190,4 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         val i = Intent(activity, SalesDashboard::class.java)
         startActivity(i)
     }
-
-
-   /* override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-
-    }*/
 }

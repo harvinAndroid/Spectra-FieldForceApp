@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.spectra.fieldforce.activity.BucketTabActivity;
-import com.spectra.fieldforce.activity.DashBoardActivity;
 import com.spectra.fieldforce.activity.SpectraFfaActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
@@ -24,6 +23,8 @@ import com.spectra.fieldforce.salesapp.model.ValidateSalesResponse;
 import com.spectra.fieldforce.salesapp.model.ValidateUserRequest;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,8 +47,7 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         prefConfig = new PrefConfig(getActivity());
-       // init();
-       // validateUser();
+
         SharedPreferences sp1=getActivity().getSharedPreferences("Login",0);
          emailId =sp1.getString("EmailId", null);
         password = sp1.getString("Password", null);
@@ -81,7 +81,7 @@ public class DashboardFragment extends Fragment {
                                 startActivity(i);
                                 getActivity().finish();
                                 }else if(response.body().getStatus().equals("Failure")) {
-                                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Access Denied", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -92,7 +92,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ValidateResponse> call, Throwable t) {
-               Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+               Toast.makeText(getContext(), "Access Denied", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -121,7 +121,7 @@ public class DashboardFragment extends Fragment {
                                 startActivity(i);
                                 getActivity().finish();
                             }else  if(response.body().getStatus().equals("Failure")) {
-                                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Access Denied", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -132,7 +132,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ValidateResponse> call, Throwable t) {
-               Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+               Toast.makeText(getContext(), "Access Denied", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -150,7 +150,7 @@ public class DashboardFragment extends Fragment {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             if (response.body().getResponse().getStatusCode() == 200) {
-                                SharedPreferences sp = getActivity().getSharedPreferences(PREF , 0);
+                                SharedPreferences sp = requireActivity().getSharedPreferences(PREF , 0);
                                 SharedPreferences.Editor myEdit = sp.edit();
                                 myEdit.putString("EnggId", response.body().getResponse().getData().getEmployeeID());
                                 myEdit.putString("EnggName",response.body().getResponse().getData().getUserName());
@@ -158,9 +158,9 @@ public class DashboardFragment extends Fragment {
                                 myEdit.commit();
                                 Intent i = new Intent(getActivity(), SalesDashboard.class);
                                 startActivity(i);
-                                getActivity().finish();
+                                requireActivity().finish();
                             } else if (response.body().getStatus().equals("Failure")) {
-                                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(requireContext(), "Access Denied", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -171,51 +171,9 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ValidateSalesResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Access Denied", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
-   /* private void init(){
-        SharedPreferences sp = getActivity().getSharedPreferences(PREF , 0);
-        String ffa =sp.getString("FFA", null);
-        String installationAuth =sp.getString("InstallationAuth", null);
-
-            binding.linearGpon.setOnClickListener(v -> {
-                if(installationAuth!=null) {
-                    if (installationAuth.equals("Y")) {
-                        Intent i = new Intent(getActivity(), BucketTabActivity.class);
-                        startActivity(i);
-                        getActivity().finish();
-                    } else if (installationAuth.equals("N")) {
-                        Toast.makeText(getActivity(), "Permission Required", Toast.LENGTH_LONG).show();
-                    }
-                }else{
-                    Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-            binding.linearFfa.setOnClickListener(v -> {
-                if(ffa!=null){
-                if(ffa.equals("Y")) {
-                    Intent i = new Intent(getActivity(), SpectraFfaActivity.class);
-                    startActivity(i);
-                    getActivity().finish();
-                }else if(ffa.equals("N")){
-                    Toast.makeText(getActivity(),"Permission Required",Toast.LENGTH_LONG).show();
-                }}else{
-                    Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_LONG).show();
-
-                }
-            });
-        binding.linearSales.setOnClickListener(view -> {
-            Intent i = new Intent(getActivity(), SalesDashboard.class);
-            startActivity(i);
-            getActivity().finish();
-        });
-    }
-*/
 
 }

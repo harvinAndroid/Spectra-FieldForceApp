@@ -400,7 +400,7 @@
     <string name="uptime_sla_required">Uptime SLA Committed (%)*</string>
     <string name="po_lock_in_duration_required">PO Lock In Duration*</string>
     <string name="india">India</string>
-    <string name="bill_type">Bill Type</string>
+    <string name="bill_type">Bill Type*</string>
     <string name="category_of_customer">Category of Customer*</string>
     <string name="building_status">Building Status*</string>
     <string name="building_coderequired">Building Code*</string>
@@ -436,7 +436,7 @@
     <string name="dnc_number">DNC Number</string>
     <string name="call_attempted">Call Attempted*</string>
     <string name="campaign_name">Campaign Name</string>
-    <string name="plan_category">Plan Category*</string>
+    <string name="plan_category">Product Category*</string>
     <string name="status_reason">Status Reason*</string>
     <string name="competitor_name">Competitor Name</string>
     <string name="rfs">RFS</string>
@@ -475,10 +475,10 @@
     <string name="customer_emergency_contact_number">Customer Emergency Contact Number*</string>
     <string name="customer_email_address">Customer Email Address*</string>
     <string name="aggregated_bandwidth_mbps">Aggregated bandwidth (Mbps)</string>
-    <string name="solution_deployment_modes">Solution Deployment Modes</string>
+    <string name="solution_deployment_modes">Solution Deployment Modes*</string>
     <string name="ownr">Owner*</string>
 
-    <string name="site_category">Site Category</string>
+    <string name="site_category">Site Category*</string>
     <string name="pre_sale_id">Pre Sale ID</string>
     <string name="saf_id">SAF ID</string>
     <string name="type_order">Type OF Order*</string>
@@ -536,6 +536,9 @@
     <string name="work_order">Work Order</string>
     <string name="lan_ip_allocation_type_between_isp_cpe_and_existing_l3_device">LAN IP Allocation type between ISP CPE and Existing L3 Device*</string>
     <string name="site_type">Site Type</string>
+    <string name="amount">Amount</string>
+    <string name="lead_count_in_current_month">Lead Count in Current Month</string>
+    <string name="sales_dashboard">My Dashboard</string>
 
     <!-- Array list for sales App-->
     <string-array name="list_of_boolean">
@@ -841,7 +844,7 @@
 
     <string-array name="list_of_gst">
         <item>Select Option</item>
-        <item>Yes</item>
+        <item>yes</item>
         <item>No</item>
     </string-array>
 

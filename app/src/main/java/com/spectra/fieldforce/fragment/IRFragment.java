@@ -86,7 +86,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> irCpeMac;
     private ArrayList<String> IrType;
     private ArrayList<String> irCpeMacid;
-    private String strCpe,IrStatusReport,strGuiID,strSegment,strCanId,str_provisionId,strholdId,strStatusofReport,straddition,attach,orderId;
+    private String strCpe,IrStatusReport,strGuiID,strSegment,strCanId,str_provisionId,strholdId,strStatusofReport,straddition,attach,orderId,strOtp,strDate;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
     private AlphaAnimation inAnimation,outAnimation;
@@ -112,6 +112,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private Calendar mCalendar;
     private String fromDateString = "";
     String type="",strProdSeg;
+    private String  strCpeMac,strdns,strvirus,strip,strmrtg,strspeed,strselfcare;
 
     public IRFragment() {
 
@@ -170,12 +171,11 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         IrType.add("Yes");
         IrType.add("No");
         adaptertype = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
-        adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_item);
         binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
         binding.tvApproval.setOnClickListener(view -> SubmitApproval());
         binding.etHoldCategory.setOnClickListener(v-> binding.spHoldCategory.performClick());
         binding.spHoldCategory.setOnItemSelectedListener(this);
-
         binding.layoutInstallationparam.etSpeedTest.setOnClickListener(v-> binding.layoutInstallationparam.spSpeedTest.performClick());
         binding.layoutInstallationparam.spSpeedTest.setOnItemSelectedListener(this);
         binding.layoutInstallationparam.etIp.setOnClickListener(v-> binding.layoutInstallationparam.spIp.performClick());
@@ -211,7 +211,6 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                 fromPickerDialog.show();
                 fromPickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
             } catch (Exception ex) {
-
             }
         });
         mCalendar = Calendar.getInstance();
@@ -315,48 +314,43 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.layoutCpemac.spCpeMacShared.setAdapter(adaptercpe);
 
         binding.tvResendOtp.setOnClickListener(v -> resendCode());
+
         binding.layoutCpemac.tvCustSave.setOnClickListener(v -> {
             String cpe = Objects.requireNonNull(binding.layoutGeneralDetails.etIrAttached.getText()).toString();
-            if(cpe.equals(" Select CPE Type")){
-                Toast.makeText(getContext(), "Please  Select CPE Type", Toast.LENGTH_LONG).show();
+            if(cpe.equals("Select CPE Type")){
+                Toast.makeText(getContext(), "Please Select CPE Type", Toast.LENGTH_LONG).show();
             }else {
                 updateCpeMac();
             }
         });
 
         binding.tvIrComplete.setOnClickListener(v -> {
-            String insta = binding.layoutEnggDetails.etInstallationCode.getText().toString();
             String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
-            String ipattach = Objects.requireNonNull(binding.layoutGeneralDetails.etIrAttached.getText()).toString();
-            String dns = Objects.requireNonNull(binding.layoutInstallationparam.etDns.getText()).toString();
-            String virus = Objects.requireNonNull(binding.layoutInstallationparam.etEducationAntivirus.getText()).toString();
-            String ip = Objects.requireNonNull(binding.layoutInstallationparam.etIp.getText()).toString();
-            String mrtg = Objects.requireNonNull(binding.layoutInstallationparam.etMrtg.getText()).toString();
-            String speed = Objects.requireNonNull(binding.layoutInstallationparam.etSpeedTest.getText()).toString();
-            String selfcare = Objects.requireNonNull(binding.layoutInstallationparam.etSelfcare.getText()).toString();
-
-            if(ipattach.equals("Select IR Type")){
-                Toast.makeText(getContext(), "Please Select IR Type", Toast.LENGTH_LONG).show();
+            if(strCpeMac.isEmpty()){
+                Toast.makeText(getContext(), "Please Save CPE MAC", Toast.LENGTH_LONG).show();
+            } else if(attach.equals("-1")||attach.isEmpty()){
+                Toast.makeText(getContext(), "Please Save IR Type before IR Save", Toast.LENGTH_LONG).show();
+            } else if(strdns.equals("Please Select  DNS")||strdns.isEmpty()){
+                Toast.makeText(getContext(), "Please Save  DNS before IR Save", Toast.LENGTH_LONG).show();
+            }else if(strvirus.equals("Please Select  Virus")||strvirus.isEmpty()){
+                Toast.makeText(getContext(), "Please Save  Virus before IR Save", Toast.LENGTH_LONG).show();
+            }else if(strip.equals("Please Select IP")||strip.isEmpty()){
+                Toast.makeText(getContext(), "Please Save IP before IR Save", Toast.LENGTH_LONG).show();
+            }else if(strmrtg.equals("Please Select  MRTG")||strmrtg.isEmpty()){
+                Toast.makeText(getContext(), "Please Save  MRTG before IR Save", Toast.LENGTH_LONG).show();
+            }else if(strspeed.equals("Please Select Speed test")||strspeed.isEmpty()){
+                Toast.makeText(getContext(), "Please Save Speed test before IR Save", Toast.LENGTH_LONG).show();
+            }else if(strselfcare.equals("Please Select Education customer")||strselfcare.isEmpty()){
+                Toast.makeText(getContext(), "Please Save Education customer before IR Save", Toast.LENGTH_LONG).show();
+            }else if(strDate.isEmpty()){
+                Toast.makeText(getContext(),"Please Save Installation Date before IR Save",Toast.LENGTH_LONG).show();
             }
-            else if(dns.equals("Please Select  DNS")){
-                Toast.makeText(getContext(), "Please Select  DNS", Toast.LENGTH_LONG).show();
-            }else if(virus.equals("Please Select  Virus")){
-                Toast.makeText(getContext(), "Please Select  Virus", Toast.LENGTH_LONG).show();
-            }else if(ip.equals("Please Select IP")){
-                Toast.makeText(getContext(), "Please Select IP", Toast.LENGTH_LONG).show();
-            }else if(mrtg.equals("Please Select  MRTG")){
-                Toast.makeText(getContext(), "Please Select  MRTG", Toast.LENGTH_LONG).show();
-            }else if(speed.equals("Please Select Speed test")){
-                Toast.makeText(getContext(), "Please Select Speed test", Toast.LENGTH_LONG).show();
-            }else if(selfcare.equals("Please Select Education customer")){
-                Toast.makeText(getContext(), "Please Select Education customer", Toast.LENGTH_LONG).show();
-            } else if (strProdSeg.equals("Managed Wi-Fi Business")||strProdSeg.equals("Managed Office Solution")||
-                    strProdSeg.equals("Secured Managed Internet")) {
+            else if (strProdSeg.equals("Managed Wi-Fi Business")||strProdSeg.equals("Managed Office Solution")||
+                strProdSeg.equals("Secured Managed Internet")) {
                 if(remark.isEmpty()){
                     Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
                 }else{
                     getLastLocation();
-
                     if (installationItemLists.size() == 0 || installationItemLists == null) {
                         Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
                     } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
@@ -364,14 +358,13 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                     } else {
                         updateIR(remark,latitude,longitude);
                     }
-                    //   }
                 }
-            }else if(insta.isEmpty()){
-                Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
+            }else if(strOtp.isEmpty()){
+                Toast.makeText(getContext(),"Please Save Installation Code before IR Save",Toast.LENGTH_LONG).show();
             }else if(remark.isEmpty()){
                 Toast.makeText(getContext(),"Please Enter Remark",Toast.LENGTH_LONG).show();
             }else{
-                getLastLocation();
+                    getLastLocation();
 
                     if (installationItemLists.size() == 0 || installationItemLists == null) {
                         Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
@@ -717,6 +710,16 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         } else {
                             binding.linea18.setVisibility(View.GONE);
                         }
+                        strOtp = response.body().getResponse().getEngineer().getOtp();
+                        strDate = response.body().getResponse().getEngineer().getInstallationDate();
+
+                        strCpeMac= response.body().getResponse().getIr().getMACShared();
+                        strdns = response.body().getResponse().getInstallationQty().getDns();
+                        strvirus = response.body().getResponse().getInstallationQty().getAntiVirus();
+                        strip = response.body().getResponse().getInstallationQty().getIp();
+                        strmrtg = response.body().getResponse().getInstallationQty().getMrtg();
+                        strspeed = response.body().getResponse().getInstallationQty().getSpeed();
+                        strselfcare = response.body().getResponse().getInstallationQty().getSelfCare();
                         strwcrguid = response.body().getResponse().getIr().getWcrGuid();
                         itemConsumtions = (ArrayList<IrInfoResponse.ItemConsumtion>) response.body().getResponse().getItemConsumtionList();
                         binding.layoutItemcousumption.rvIrItemlist.setHasFixedSize(true);
@@ -816,15 +819,15 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         binding.layoutCpemac.spCpeMacShared.setAdapter(adaptercpe);
                         attach = response.body().getResponse().getGeneral().getIRAttached();
                         if(attach!=null){
-                            if(response.body().getResponse().getGeneral().getIRAttached().equals("Yes")){
+                            if(response.body().getResponse().getGeneral().getIRAttached().equalsIgnoreCase("Yes")){
                                 IrType = new ArrayList<String>();
                                 IrType.add("Yes");
                                 IrType.add("Select IR Type");
                                 IrType.add("No");
                                 ArrayAdapter<String> adaptertype = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, IrType);
-                                adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                adaptertype.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                 binding.layoutGeneralDetails.spIrAttached.setAdapter(adaptertype);
-                            }else  if(response.body().getResponse().getGeneral().getIRAttached().equals("No")){
+                            }else  if(response.body().getResponse().getGeneral().getIRAttached().equalsIgnoreCase("No")){
                                 IrType = new ArrayList<String>();
                                 IrType.add("No");
                                 IrType.add("Yes");
@@ -839,7 +842,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             QualityParamSpeed = new ArrayList<String>();
                             QualityParamSpeed.add("Yes");
                             QualityParamSpeed.add("No");
-                            QualityParamSpeed.add("Please Select Speed test results shown to coustomer");
+                            QualityParamSpeed.add("Please Select Speed test results shown to customer");
                             ArrayAdapter<String> adapter11 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, QualityParamSpeed);
                             adapter11.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             binding.layoutInstallationparam.spSpeedTest.setAdapter(adapter11);

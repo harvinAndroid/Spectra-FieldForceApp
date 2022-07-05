@@ -25,6 +25,7 @@ import com.spectra.fieldforce.salesapp.activity.ContactTabActivity
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
+import com.spectra.fieldforce.utils.SalesConstant
 import kotlinx.android.synthetic.main.contact_general_info.view.*
 import kotlinx.android.synthetic.main.contact_remarks_row.view.*
 import kotlinx.android.synthetic.main.flr_fragment.*
@@ -100,23 +101,6 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
     var strCity = ""
     var strArea =""
 
-    var list_of_channel = arrayOf("Select Channel","Call/SMS-Inbound","Caretel","CM Outbound","Email/Email Campaigns","Inside Sales","Inside Sales-QC","Kaizala","NetOps Channel","Online CAF","Outbound Call",
-    "Paid Campaign/Activity","Promotion/BTL/ATL/Events/Sponsorship/Visibility Activity","Self Care Portal","Self Lead","Unify Churned","Web Campaign")
-    var list_of_state = arrayOf("Select State", "Andhra Pradesh","Bihar","Delhi"
-    ,"Gujarat","Haryana","Jammu and Kashmir","Karnataka"
-    ,"Kerala", "Madhya Pradesh","Maharashtra","Odisha", "Other*",
-    "Punjab","Rajasthan","Tamil Nadu", "Telangana","Uttar Pradesh","Uttarakhand","West Bengal")
-
-    var list_state_code = arrayOf("","100009","100021","100004", "100015","100008",
-    "100011","100007", "100012","100014","100002","100026", "100017","100025", "100010", "100003",
-        "100023","100006", "100016","100013")
-
-      companion object {
-       /* fun newInstance(): CreateLeadFragment {
-            return CreateLeadFragment()
-        }*/
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -132,8 +116,8 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
         searchToolbarContact.flr.visibility=View.GONE
 
         val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
-        userName = sp1?.getString("UserName", null)
-        password = sp1?.getString("Password", null)
+        userName = sp1?.getString(AppConstants.USERNAME, null)
+        password = sp1?.getString(AppConstants.PASSWORD, null)
         listener()
         itemListener()
         setAdpter()
@@ -156,7 +140,6 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
                     }
                 } }
             datePickerDialog?.show()
-
         }
 
     }
@@ -229,8 +212,6 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
         binding.contactLayout.spCtChannel.onItemSelectedListener = this
         contactLayout.et_ctCompetitorName.setOnClickListener {   contactLayout.sp_ctCompetitorName.performClick() }
         contactLayout.sp_ctCompetitorName.onItemSelectedListener = this
-
-
         contactLayout.et_ctSource.setOnClickListener { contactLayout.sp_ctSource.performClick() }
         contactLayout.sp_ctSource.onItemSelectedListener = this
         contactLayout.et_ctStatusReason.setOnClickListener { contactLayout.sp_ctStatusReason.performClick() }
@@ -249,8 +230,6 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
         layout_ContactAddress.sp_ContactArea.onItemSelectedListener = this
         layout_ContactAddress.et_Contactbuilding.setOnClickListener { layout_ContactAddress.sp_Contactbuilding_nm.performClick() }
         layout_ContactAddress.sp_Contactbuilding_nm.onItemSelectedListener = this
-
-
         contactLayout.et_ctEmailId.setOnFocusChangeListener { v, hasFocus ->
             if(!hasFocus) {
                 val email =  contactLayout.et_ctEmailId.text.toString()
@@ -263,11 +242,11 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
     }
 
     fun setAdpter(){
-        val channel = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_channel) }
+        val channel = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, SalesConstant.list_of_channel) }
         channel?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         binding.contactLayout.spCtChannel.adapter = channel
 
-        val state = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_state) }
+        val state = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, SalesConstant.list_of_state) }
         state?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_ContactAddress.sp_ContactState?.adapter = state
 
@@ -392,9 +371,10 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
         specificBuilding: String,
         compaignName: String
     ) {
-
-            inProgress()
-
+        inProgress()
+       if(strCompetitorName=="Select Option"){
+           strCompetitorName=""
+       }
         val createContactRequest = CreateContactRequest(Constants.CREATECONTACT,Constants.AUTH_KEY,
             str_add_area_code,strInstallBuildCode,call,
             strContactChnl,str_city_code,strCompetitorName,strDisposition,email,firstName,date,
@@ -439,7 +419,7 @@ private fun outProgress(){
 
 }
 
-    fun getCompetitor() {
+    private fun getCompetitor() {
         val getLeadSourceRequest =
                 GetLeadSourceRequest(Constants.GET_COMPETITOR,Constants.AUTH_KEY,
                     "",userName,password)
@@ -472,7 +452,7 @@ private fun outProgress(){
         })
     }
 
-    fun getPlanCategory() {
+    private fun getPlanCategory() {
         val getCategoryRequest =
             PlanCategoryRequest(Constants.GETPLAN_CATEGORY,Constants.AUTH_KEY,
                     "Business",password,userName)
@@ -514,7 +494,6 @@ private fun outProgress(){
             override fun onResponse(call: Call<GetLeadBuildingResponse?>, response: Response<GetLeadBuildingResponse?>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
-                        //  val msg = response.body()!!.Response.Message
                         buildingList= response.body()?.Response?.Data
                         building = ArrayList<String>()
                         buildingCode = ArrayList<String>()
@@ -626,8 +605,8 @@ private fun outProgress(){
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if(parent?.id == R.id.sp_ctChannel){
-            binding.contactLayout.etCtChannel.setText(list_of_channel[position])
-            strContactChnl = list_of_channel[position]
+            binding.contactLayout.etCtChannel.setText(SalesConstant.list_of_channel[position])
+            strContactChnl = SalesConstant.list_of_channel[position]
             getSource(strContactChnl)
         }else if(parent?.id ==R.id.sp_ctSource){
             contactLayout.et_ctSource.setText(source?.get(position))
@@ -648,9 +627,9 @@ private fun outProgress(){
             str_city_code = InstallcityCode?.get(position )
             getArea(str_city, str_city_code.toString())
         }else if(parent?.id == R.id.sp_ContactState){
-            layout_ContactAddress.et_ContactState.setText(list_of_state[position])
-            str_state = list_of_state[position]
-            str_inst_state = list_state_code[position]
+            layout_ContactAddress.et_ContactState.setText(SalesConstant.list_of_state[position])
+            str_state = SalesConstant.list_of_state[position]
+            str_inst_state = SalesConstant.list_state_code[position]
             getCity(str_inst_state)
         }else if(parent?.id == R.id.sp_Contactbuilding_nm){
             layout_ContactAddress.et_Contactbuilding.setText(building?.get(position))
@@ -683,8 +662,6 @@ private fun outProgress(){
             contactLayout.et_contactDNC.setText(resources.getStringArray(R.array.listDNC).get(position))
             strDNC = resources.getStringArray(R.array.list_of_gstval).get(position).toString()
         }
-
-
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

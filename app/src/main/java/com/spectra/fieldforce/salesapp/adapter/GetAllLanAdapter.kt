@@ -18,7 +18,8 @@ import kotlinx.coroutines.launch
 
 class GetAllLanAdapter(
     private val items: List<LanData>,
-    private val context: Context?
+    private val context: Context?,
+    private val screenStatus: String?
 ) : RecyclerView.Adapter<GetAllLanAdapter.ViewHolder>() {
 
     lateinit var binding: GetFeasibiltyadapterBinding
@@ -51,6 +52,7 @@ class GetAllLanAdapter(
                     b.putString("SiteID", item.SiteId)
                     b.putString("Status", "2")
                     b.putString("LanNum",item.LanNo)
+                    b.putString("ScreenStatus",screenStatus)
                     val activity =context as AppCompatActivity
                     val lanFrag = LanFrag()
                     lanFrag.arguments=b

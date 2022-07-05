@@ -27,8 +27,7 @@ import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest
 import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
-import kotlinx.android.synthetic.main.lead_contact_info.view.*
-import kotlinx.android.synthetic.main.lead_demo_fragment.*
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,8 +44,8 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
     private var allLead: ArrayList<AllLeadData>? = null
     private var inAnimation: AlphaAnimation? = null
     private var outAnimation: AlphaAnimation? = null
-    var userName: String? = null
-    var password : String? = null
+   private  var userName: String? = null
+    private var password : String? = null
     val search :String?=null
 
     companion object {
@@ -72,15 +71,6 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         password = sp1?.getString("Password", null)
         excuteTask()
         excuteSearch()
-       /* searchtoolbarlead_list.rl_back.setOnClickListener(this)
-        searchtoolbarlead_list.tv_lang.text= AppConstants.ALL_LEADS
-
-     */
-       //
-
-       // init()
-
-
 
         fab_create_lead.setOnClickListener {
             try {
@@ -92,12 +82,9 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
 
             }
         }
-       // val search = tv_search.text.toString()
+     }
 
-
-
-    }
-    fun excuteTask(){
+    private fun excuteTask(){
             CoroutineScope(Dispatchers.IO).launch {
                 getAllLeadList("")
 
@@ -109,7 +96,7 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
             }
         }
     }
-   fun excuteSearch(){
+   private fun excuteSearch(){
         CoroutineScope(Dispatchers.IO).launch {
             tv_search.addTextChangedListener(object : TextWatcher {
 
@@ -151,7 +138,7 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
                 "All",
                 password,
                 userName,
-                srch
+                srch,"",""
             )
 
             val apiService = ApiClient.getClient().create(ApiInterface::class.java)

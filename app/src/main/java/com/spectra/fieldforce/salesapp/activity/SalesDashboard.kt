@@ -12,6 +12,8 @@ import com.spectra.fieldforce.utils.AppConstants
 import kotlinx.android.synthetic.main.toolbar.view.*
 import androidx.appcompat.app.AlertDialog
 import com.spectra.fieldforce.activity.MainActivity
+import com.spectra.fieldforce.salesapp.adapter.DashBoardTabAdapter
+import com.spectra.fieldforce.salesapp.fragment.LeadCountChartFragment
 
 
 class SalesDashboard:AppCompatActivity(),View.OnClickListener{
@@ -22,7 +24,7 @@ class SalesDashboard:AppCompatActivity(),View.OnClickListener{
         binding = DataBindingUtil.setContentView(this, R.layout.sales_dashboard_activity)
         init()
         searchtoolbar.rl_back.setOnClickListener(this)
-        searchtoolbar.tv_lang.text= AppConstants.DASHBOARD
+        searchtoolbar.tv_lang.text= AppConstants.MENU
     }
 
     fun init(){
@@ -56,6 +58,16 @@ class SalesDashboard:AppCompatActivity(),View.OnClickListener{
                 startActivity(it)
                 finish()
             }
+        }
+        leadCardView.setOnClickListener {
+            Intent(this, DashboardActivity::class.java).also {
+                startActivity(it)
+                finish()
+            }
+               /* val leadCurrentMonthFrag = LeadCountChartFragment()
+                this.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_main, leadCurrentMonthFrag).addToBackStack(null).commit()
+*/
         }
     }
 

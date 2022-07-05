@@ -20,5 +20,7 @@ data class CreateSiteReq(
     val solutionDeploymentMode: String?,
     val state: String?,
     val userName: String?,
-    val siteID:String?
+    val siteID:String?,
+    val siteType:String?,
+    val totalAmount:String?
 )

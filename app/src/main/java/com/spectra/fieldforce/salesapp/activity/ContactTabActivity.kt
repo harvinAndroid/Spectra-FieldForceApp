@@ -24,9 +24,9 @@ class ContactTabActivity : AppCompatActivity(), View.OnClickListener {
         searchtoolbar.rl_back.setOnClickListener(this)
         searchtoolbar.tv_lang.text= AppConstants.ALL_CONTACT
         try{
-        tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("All Contact")) }
-        tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("Open Contact")) }
-        tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("Closed Contact")) }
+        tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("All")) }
+        tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("Open")) }
+        tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("Closed")) }
 
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
@@ -82,8 +82,7 @@ class ContactTabActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun next(){
-        val intent = Intent(this, SalesDashboard::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, SalesDashboard::class.java))
         finish()
     }
 }

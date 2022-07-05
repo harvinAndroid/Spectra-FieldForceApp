@@ -151,13 +151,6 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                                 MainActivity.prefConfig.LoginStatus(true);
                                 SharedPreferences sp = getSharedPreferences(PREF , 0);
                                 SharedPreferences.Editor myEdit = sp.edit();
-                              /*myEdit.putString("InstallationAuth", response.body().getResponse().getInstallAuth());
-                                myEdit.putString("FFA", response.body().getResponse().getFfaAuth());
-                                myEdit.putString("VenderCode", response.body().getResponse().getVendorCode());
-                                myEdit.putString("EnggId", response.body().getResponse().getUserID());
-                                myEdit.putString("EnggName",response.body().getResponse().getUsername());
-                                myEdit.putString("EmailId",response.body().getResponse().getName());
-                                myEdit.putString("EnggName",response.body().getResponse().getUsername());*/
                                 myEdit.putString("EmailId",response.body().getResponse().getName());
                                 myEdit.putString("UserName",strUserName);
                                 myEdit.putString("Password",strPassword);

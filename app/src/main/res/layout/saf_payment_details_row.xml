@@ -447,6 +447,7 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="PAN No."
                                 android:textAllCaps="true"
+
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorPrimaryDark"

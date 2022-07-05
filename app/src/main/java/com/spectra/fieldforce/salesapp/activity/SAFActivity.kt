@@ -40,9 +40,11 @@ import com.spectra.fieldforce.databinding.SafActivityBinding
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
+import kotlinx.android.synthetic.main.lead_demo_fragment.*
 import kotlinx.android.synthetic.main.opp_add_doa.*
 import kotlinx.android.synthetic.main.opp_sales_task.view.*
 import kotlinx.android.synthetic.main.saf_activity.*
+import kotlinx.android.synthetic.main.saf_activity.checkbx
 import kotlinx.android.synthetic.main.saf_authorised_details.view.*
 import kotlinx.android.synthetic.main.saf_company_details_row.view.*
 import kotlinx.android.synthetic.main.saf_contact_info.view.*
@@ -86,6 +88,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     var strBankName: String? = null
     var strCompanyName:String? = null
     var str_grp :String ? = null
+    var strBillSameAdd:String ? = null
     var str_rltn:String ? = null
     var str_cmp :String? = null
     private var allPreSales: ArrayList<PreSaleData>? = null
@@ -116,7 +119,6 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     var str_atcity_code:String? = null
     var str_bladd_area:String? = null
     var str_blinst_building_nm:String? = null
-    var str_inst_statusid:String? = null
     var str_sub_bus:String? = null
     var str_bankid:String? = null
     var frwamc:String? = null
@@ -126,6 +128,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     var userName:String? = null
     var password:String?=null
     var amount:String? = null
+
     private var buildingList : ArrayList<BuildData>? = null
     private var building : ArrayList<String>? = null
     private var buildingCode : ArrayList<String>? = null
@@ -164,8 +167,8 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         }
 
         val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
-        userName = sp1.getString("UserName", null)
-        password = sp1.getString("Password", null)
+        userName = sp1.getString(AppConstants.USERNAME, null)
+        password = sp1.getString(AppConstants.PASSWORD, null)
         listener()
         CoroutineScope(Dispatchers.IO).launch {
             getSaf()
@@ -189,6 +192,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             requestPermission()
         }
         binding.safSale.addPreTask.visibility=View.GONE
+        init()
 
     }
 
@@ -530,11 +534,11 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val brnch = layoutPayment.et_brnch.text?.toString()
         val checkdd = layoutPayment.et_chkdate.text?.toString()
         val checknum = layoutPayment.et_chknum.text?.toString()
-        val carddgts = layoutPayment.et_cardfrdgt.text?.toString()
+        val debitCard4 = layoutPayment.et_cardfrdgt.text?.toString()
         val paymntdt = layoutPayment.et_paymntdt.text?.toString()
         val txtty = layoutPayment.et_txtid.text?.toString()
         val srcdepst = layoutPayment.et_scdeposit.text?.toString()
-        val creditcrd = layoutPayment.et_creditfrdgt.text?.toString()
+        val creditCard4 = layoutPayment.et_creditfrdgt.text?.toString()
         val pan = layoutPayment.et_pannum.text?.toString()
         val tan = layoutPayment.et_tannum.text?.toString()
         val gstnum = layoutPayment.et_gstt.text?.toString()
@@ -582,11 +586,9 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             Toast.makeText(this, "Please enter City", Toast.LENGTH_SHORT).show()
         }else if(str_bladd_area?.isBlank()==true||str_bladd_area==""||(str_bladd_area=="null")){
             Toast.makeText(this, "Please enter Area", Toast.LENGTH_SHORT).show()
-        }else if(str_blinst_building_nm?.isBlank()==true||str_blinst_building_nm==""||(str_blinst_building_nm=="null")){
-            Toast.makeText(this, "Please enter Building", Toast.LENGTH_SHORT).show()
-        }else if(buildingnumber?.isBlank() == true ||(buildingnumber=="null")){
+        }/*else if(buildingnumber?.isBlank() == true ||(buildingnumber=="null")){
             Toast.makeText(this, "Please enter Building Number", Toast.LENGTH_SHORT).show()
-        }else if(floor?.isBlank()== true){
+        }*/else if(floor?.isBlank()== true){
             Toast.makeText(this, "Please enter Floor", Toast.LENGTH_SHORT).show()
         }else if(pincode?.isBlank()== true|| pincode?.length!=6){
             Toast.makeText(this, "Please enter PinCode", Toast.LENGTH_SHORT).show()
@@ -628,19 +630,19 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 Toast.makeText(this, "Please Select Payment Date", Toast.LENGTH_SHORT).show()
             }else if((str_payslip=="7")&&approvalcode?.isBlank()== true){
                 Toast.makeText(this, "Please enter Approval Code", Toast.LENGTH_SHORT).show()
-            }else if((str_payslip=="7")&&creditcrd?.isBlank()== true){
+            }else if((str_payslip=="7")&&creditCard4?.isBlank()== true){
                 Toast.makeText(this, "Please enter CreditCard Number", Toast.LENGTH_SHORT).show()
             }else if(paymntdt?.isBlank()== true&&(str_payslip=="4")){
                 Toast.makeText(this, "Please Select Payment Date", Toast.LENGTH_SHORT).show()
             }else if(approvalcode?.isBlank()== true&&(str_payslip=="4")){
                 Toast.makeText(this, "Please enter Approval Code", Toast.LENGTH_SHORT).show()
-            }else if(creditcrd?.isBlank()== true&&(str_payslip=="4")){
+            }else if(creditCard4?.isBlank()== true&&(str_payslip=="4")){
                 Toast.makeText(this, "Please enter CreditCard Number", Toast.LENGTH_SHORT).show()
         }else if(paymntdt?.isBlank()== true&&(str_payslip=="8")){
                 Toast.makeText(this, "Please Select Payment Date", Toast.LENGTH_SHORT).show()
             }else if(approvalcode?.isBlank()== true&&(str_payslip=="8")){
                 Toast.makeText(this, "Please enter Approval Code", Toast.LENGTH_SHORT).show()
-            }else if(carddgts?.isBlank()== true&&(str_payslip=="8")){
+            }else if(debitCard4?.isBlank()== true&&(str_payslip=="8")){
                 Toast.makeText(this, "Please enter Debit Card Number", Toast.LENGTH_SHORT).show()
         }else if((str_gstval?.isEmpty()==true)||str_gstval=="0"||(str_gstval=="null")){
                Toast.makeText(this, "Please Select GST", Toast.LENGTH_SHORT).show()
@@ -653,8 +655,8 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                 authmobile.toString(),authname?.toString(),"",authpincode.toString(),buildingnumber,
                 customername,email,floor,phonenumber,
                 pincode,instemail?.toString(),instmobile?.toString(),instpin.toString(),approvalcode?.toString(),
-                brnch,checkdd,checknum,carddgts,
-                paymntdt,txtty,srcdepst,creditcrd,pan,tan,gstnum,
+                brnch,checkdd,checknum,debitCard4,
+                paymntdt,txtty,srcdepst,creditCard4,pan,tan,gstnum,
                 companyName?.toString()
             )
         }
@@ -748,11 +750,11 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         brnch: String?,
         checkdd: String?,
         checknum: String?,
-        carddgts: String?,
+        debitCard4: String?,
         paymntdt: String?,
         txtty: String?,
         srcdepst: String?,
-        creditcrd: String?,
+        creditCard4: String?,
         pan: String?,
         tan: String?,
         gstnum: String?,
@@ -770,14 +772,14 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val billingName = saf_contact_person_row.et_caf_cntname.text.toString()
         val safBillingAddress = SAFBillingAddress(str_bladd_area,str_blinst_building_nm,str_blcity_code,
             billingName , "10001",billingemail,
-            billingfloor,billingphn,billingpincode,"",
+            billingfloor,billingphn,billingpincode,strBillSameAdd,
         "","",str_blinststateId)
 
         val safInstallationAddress = SAFInstallationAddresses(str_add_area,str_billtype,str_inst_building_nm,
-        "0",str_city_code,"10001",instemail,"0","0",
+        "0",str_city_code,AppConstants.COUNTRY_CODE,instemail,"0","0",
         "0","0",instmobile,instpin,"",
         "",str_inststateId)
-        val safPayments = SAFPayments(approvalcode,str_bankid,brnch,checkdate,checknum,carddgts,carddgts,
+        val safPayments = SAFPayments(approvalcode,str_bankid,brnch,checkdate,checknum,creditCard4,debitCard4,
         "",cafpaydate,str_payslip,"",srcdepst,str_sctype,amount,txtty,strPaymentId)
         val safCompanyReq = SAFCompanyDetails(strCompanyName,str_firmtype,"")
 
@@ -788,8 +790,8 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val createSafReq = CreateSafReq(createcaf, Constants.AUTH_KEY, safAuthSigDetails,
             safBillingAddress, safCompanyReq,safInstallationAddress,safPayments,
             strbusinessSegment,str_cmp,
-            strCompanyName,customername,str_wrkngdays,str_grp,gstnum,
-            str_gstval,strOppId,strOppId,pan,
+            strCompanyName,customername,str_wrkngdays,str_grp,
+            str_gstval,gstnum,strOppId,strOppId,pan,
             password,"",strServiceId,subbssegment,tan,userName,strVertical,strSafId)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -818,6 +820,37 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             }
         })
 }
+    fun init() {
+        strBillSameAdd="0"
+        checkbx.setOnCheckedChangeListener { _, _ ->
+            strBillSameAdd="1"
+            checkbx.isChecked=true
+            val instemail = layoutSafInstallAddress.etSafEmail.text
+            val instmobile = layoutSafInstallAddress.et_cafmbnum.text
+            val instpin = layoutSafInstallAddress.et_cafpin.text
+            str_blinststateId = str_inststateId
+            str_blcity_code = str_city_code
+            str_bladd_area = str_add_area
+            str_blinst_building_nm = str_inst_building_nm
+            val bulCode = layoutSafInstallAddress.et_cafblcode_red.text
+            var blstatePosition = 0
+            resources.getStringArray(R.array.list_state_code).forEachIndexed { index, s ->
+                if (s == str_inststateId) blstatePosition = index
+                return@forEachIndexed
+            }
+            val blstateAdapter = ArrayAdapter(this@SAFActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.list_of_state))
+            blstateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+            saf_contact_person_row.sp_cfblstate.adapter = blstateAdapter
+            saf_contact_person_row.sp_cfblstate.setSelection(blstatePosition)
+            blstateAdapter.notifyDataSetChanged()
+            saf_contact_person_row.et_safBillingEmailId.text = instemail
+            saf_contact_person_row.etSafPhoneNum.text = instmobile
+            saf_contact_person_row.et_cfblpin_code.text = instpin
+            saf_contact_person_row.et_cfblbuildng_num.text = bulCode
+            getBillingCity(str_blinststateId)
+
+        }
+    }
 
     private fun  getWorkOrder () {
         //inProgress()
@@ -920,12 +953,18 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                                 tv_submit.visibility=View.GONE
                                 binding.searchToolbarSaf.downloadpdf.visibility = View.GONE
                                 binding.searchToolbarSaf.share.visibility = View.GONE
+                                linearLan.visibility=View.GONE
+                                linearDoc.visibility=View.GONE
                             }else{
                                 tvCreateSaf.visibility=View.GONE
                                 tv_update.visibility=View.VISIBLE
                                 tv_submit.visibility=View.VISIBLE
+                                linearLan.visibility=View.VISIBLE
+                                linearDoc.visibility=View.VISIBLE
                                 binding.searchToolbarSaf.downloadpdf.visibility = View.VISIBLE
                                 binding.searchToolbarSaf.share.visibility = View.GONE
+                                layoutSafCompany_details.et_caffirm_type.isEnabled=false
+                                layoutSafCompany_details.et_compnyname.isEnabled=false
                             }
                             //strOppId =  response.body()?.Response?.Data?.get(0)?.OpportunityId
                             strServiceId  =  response.body()?.Response?.Data?.get(0)?.ServiceId
@@ -939,6 +978,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             strBankName = response.body()?.Response?.Data?.get(0)?.paymentsSAF?.BankName
                             val productSeg =  response.body()?.Response?.Data?.get(0)?.ProductSegment
                             getBankList()
+
                             strPaymentStatus =response.body()?.Response?.Data?.get(0)?.paymentsSAF?.PaymentStatus
                             strVertical =response.body()?.Response?.Data?.get(0)?.Vertical
                             strProductId= response.body()?.Response?.Data?.get(0)?.ProductSegment
@@ -964,6 +1004,15 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             str_indusid = response.body()?.Response?.Data?.get(0)?.companyDetailSAF?.IndustryType
                             str_wrkngdays= response.body()?.Response?.Data?.get(0)?.CustomerWorkingHours
                             getCompany(strCompany)
+                            binding.layoutPayment.etGstt.setText(response.body()?.Response?.Data?.get(0)?.GstNumberDetial)
+                            strBillSameAdd = response.body()?.Response?.Data?.get(0)?.billingAddressSAF?.Bill_Sameaddress
+                            if(strBillSameAdd=="1") {
+                                checkbx.isChecked=true
+                            }
+                            val tan =  response.body()?.Response?.Data?.get(0)?.TanNo
+                            val pan =  response.body()?.Response?.Data?.get(0)?.PanNo
+                            layoutPayment.et_pannum.setText(tan)
+                            layoutPayment.et_tannum.setText(pan)
 
                             var cntstatePosition = 0
                             resources.getStringArray(R.array.list_state_code).forEachIndexed { index, s ->
@@ -1350,7 +1399,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                         bankname = ArrayList<String>()
                         bankid = ArrayList<String>()
                         bankname.add("Select Bank Name")
-                        bankid.add("0")
+                        bankid.add("")
                         for (item in bankList!!){
                             item.Bankname?.let { bankname.add(it) }
                             item.BankId?.let { bankid.add(it) }

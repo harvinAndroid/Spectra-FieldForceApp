@@ -1,66 +1,38 @@
 package com.spectra.fieldforce.adapter;
 
-
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.BucketTabActivity;
-import com.spectra.fieldforce.activity.DashBoardActivity;
-import com.spectra.fieldforce.activity.MainActivity;
 import com.spectra.fieldforce.activity.ProvisioningMainActivity;
-import com.spectra.fieldforce.activity.ProvisioningTabActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
-import com.spectra.fieldforce.databinding.AdpterAllBucketListBinding;
 import com.spectra.fieldforce.databinding.AdpterMyBucketListBinding;
-import com.spectra.fieldforce.fragment.MyBucketList;
-import com.spectra.fieldforce.fragment.ProvisioningFragment;
-import com.spectra.fieldforce.fragment.ProvisioningTabFragment;
-import com.spectra.fieldforce.fragment.WcrEditItemConsumption;
-import com.spectra.fieldforce.fragment.WcrFragment;
-import com.spectra.fieldforce.model.CommonResponse;
-import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
 import com.spectra.fieldforce.model.gpon.request.ReleaseMyBucket;
 import com.spectra.fieldforce.model.gpon.request.UpdateAppointmentRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
-import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
 import com.spectra.fieldforce.model.gpon.response.GetMyBucketList;
 import com.spectra.fieldforce.utils.Constants;
-
 import org.jetbrains.annotations.NotNull;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,13 +42,11 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
     private List<GetMyBucketList.Response> getBucketList;
     AdpterMyBucketListBinding binding;
     private AlphaAnimation inAnimation,outAnimation;
-    String appointdate;
     private String fromDateString = "";
     String dateTime;
     Calendar calendar;
     SimpleDateFormat simpleDateFormat;
     private Calendar mCalendar;
-
 
     public MyBucketListAdapter(FragmentActivity activity,  List<GetMyBucketList.Response> getBucketList) {
         this.context = activity;
@@ -85,8 +55,7 @@ public class MyBucketListAdapter extends RecyclerView.Adapter<MyBucketListAdapte
 
     @NotNull
     @Override
-    public MyBucketListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                               int viewType) {
+    public MyBucketListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
          binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),

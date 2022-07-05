@@ -40,6 +40,8 @@ import com.spectra.fieldforce.databinding.CafDemoFragmentBinding
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
+import com.spectra.fieldforce.utils.SalesAppConstants
+import com.spectra.fieldforce.utils.SalesConstant
 import kotlinx.android.synthetic.main.caf_add_rfs.*
 import kotlinx.android.synthetic.main.caf_authorised_details.view.*
 import kotlinx.android.synthetic.main.caf_company_details_row.view.*
@@ -80,7 +82,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     private val PERMISSION_REQUEST_CODE = 200
     var strCity: String? = null
     var strProductId: String? = null
-
 
     var strPaymentStatus:String?=null
     var strBankName: String? = null
@@ -181,8 +182,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         // init();
         // validateUser();
         val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
-        userName = sp1.getString("UserName", null)
-        password = sp1.getString("Password", null)
+        userName = sp1.getString(AppConstants.USERNAME, null)
+        password = sp1.getString(AppConstants.PASSWORD, null)
         listener()
         itemListener()
         getCaf()
@@ -506,6 +507,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             Toast.makeText(this, "Please enter Installation Email", Toast.LENGTH_SHORT).show()
         }else if(instmobile.isBlank()){
             Toast.makeText(this, "Please enter Installation Phone Number", Toast.LENGTH_SHORT).show()
+        }else if(str_billtype?.isBlank()==true||str_billtype=="Select Option"){
+            Toast.makeText(this, "Please Select  Bill Type", Toast.LENGTH_SHORT).show()
         }else if(instpin.isBlank()|| instpin.length!=6){
             Toast.makeText(this, "Please enter Installation PinCode", Toast.LENGTH_SHORT).show()
         } else if(str_customercategory?.isBlank()==true||str_customercategory=="0"||(str_customercategory=="null")){
@@ -727,17 +730,17 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             phonenumber, caflock, cafnext,str_PrfCom, subbssegment, tan,str_voip)
         val authSigDetails = AuthorSigDetails(email,father,"0",
             mobile,  name, address,str_atcity_code,
-            "10001",pincode ,str_atinststateId)
+            AppConstants.COUNTRY_CODE,pincode ,str_atinststateId)
 
         val cafBillingAddress = CafBillingAddress(billingplot,"",
             billingname,billingemail,billingfloor,
             "0","0","0",
-            str_bladd_area,str_blinst_building_nm,str_blcity_code,"10001", billingphn,
+            str_bladd_area,str_blinst_building_nm,str_blcity_code,AppConstants.COUNTRY_CODE, billingphn,
             billingpincode,str_blinststateId)
 
         val cafInstallationAddress = CafInstallationAddress(str_billtype,"0","0",
             "", instemail,"0","0","0",
-            instmobile, "0", str_add_area,str_inst_building_nm,str_city_code,"10001", instpin,
+            instmobile, "0", str_add_area,str_inst_building_nm,str_city_code,AppConstants.COUNTRY_CODE, instpin,
             str_inststateId, strProductId)
         if(amount=="0"){
             amount="0.000"
@@ -877,9 +880,9 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             getBankList()
                             strPaymentStatus =response.body()?.Response?.Data?.payments?.PaymentStatus
                             if(network=="111260000"){
-                                caf_contactinfo_layout.et_netwrktech.setText("GPON")
+                                caf_contactinfo_layout.et_netwrktech.setText(SalesConstant.GPON)
                             }else if(network=="111260001"){
-                                caf_contactinfo_layout.et_netwrktech.setText("NON-GPON")
+                                caf_contactinfo_layout.et_netwrktech.setText(SalesConstant.NON_GPON)
                             }
                             /*  layout_payment.et_pannum.setText(response.body()?.Response?.Data?.PanNo)
                               layout_payment.et_tannum.setText(response.body()?.Response?.Data?.TanNo)

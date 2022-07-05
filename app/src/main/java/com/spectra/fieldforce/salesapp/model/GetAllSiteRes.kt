@@ -38,5 +38,6 @@ data class SiteData(
     val State: String,
     val SubBusinessSegment: String,
     val TotalAmount: String,
-    val TypeOFOrder: String
+    val TypeOFOrder: String,
+    val OppStatus: String
 )

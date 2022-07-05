@@ -24,7 +24,7 @@ class SafTabActivity : AppCompatActivity(), View.OnClickListener {
         searchtoolbar.rl_back.setOnClickListener(this)
         searchtoolbar.tv_lang.text= AppConstants.ALL_SAF
 try {
-    tabLayout?.newTab()?.setText("All SAF")?.let { tabLayout.addTab(it) }
+    tabLayout?.newTab()?.setText("All")?.let { tabLayout.addTab(it) }
     tabLayout?.newTab()?.let { tabLayout.addTab(it.setText("Installation Completed")) }
     tabLayout?.newTab()?.setText("Installation pending")?.let { tabLayout.addTab(it) }
     tabLayout.tabGravity = TabLayout.GRAVITY_FILL

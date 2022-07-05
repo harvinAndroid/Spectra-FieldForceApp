@@ -32,6 +32,7 @@ import kotlin.collections.ArrayList
 import android.content.Intent
 import android.text.format.DateFormat
 import android.widget.*
+import com.spectra.fieldforce.utils.SalesConstant
 import kotlinx.android.synthetic.main.contact_remarks_row.view.*
 import kotlinx.android.synthetic.main.update_lead_demo_fragment.*
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.*
@@ -100,72 +101,6 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
     var myMinute: Int?=null
     var Building: String? = null
 
-
-    var list_of_channel = arrayOf(
-        "Select Channel",
-        "Call/SMS-Inbound",
-        "Caretel",
-        "CM Outbound",
-        "Email/Email Campaigns",
-        "Inside Sales",
-        "Inside Sales-QC",
-        "Kaizala",
-        "NetOps Channel",
-        "Online CAF",
-        "Outbound Call",
-        "Paid Campaign/Activity",
-        "Promotion/BTL/ATL/Events/Sponsorship/Visibility Activity",
-        "Self Care Portal",
-        "Self Lead",
-        "Unify Churned",
-        "Web Campaign"
-    )
-    var list_of_state = arrayOf(
-        "Select State",
-        "Andhra Pradesh",
-        "Bihar",
-        "Delhi",
-        "Gujarat",
-        "Haryana",
-        "Jammu and Kashmir",
-        "Karnataka",
-        "Kerala",
-        "Madhya Pradesh",
-        "Maharashtra",
-        "Odisha",
-        "Other*",
-        "Punjab",
-        "Rajasthan",
-        "Tamil Nadu",
-        "Telangana",
-        "Uttar Pradesh",
-        "Uttarakhand",
-        "West Bengal"
-    )
-
-    var list_state_code = arrayOf(
-        "",
-        "100009",
-        "100021",
-        "100004",
-        "100015",
-        "100008",
-        "100011",
-        "100007",
-        "100012",
-        "100014",
-        "100002",
-        "100026",
-        "100017",
-        "100025",
-        "100010",
-        "100003",
-        "100023",
-        "100006",
-        "100016",
-        "100013"
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.salescontact_fragment)
@@ -173,8 +108,8 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
         searchToolbarContact.tv_lang.text=AppConstants.UPDATE_CONTACT
         searchToolbarContact.flr.visibility=View.GONE
         val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
-        userName = sp1.getString("UserName", null)
-        password = sp1.getString("Password", null)
+        userName = sp1.getString(AppConstants.USERNAME, null)
+        password = sp1.getString(AppConstants.PASSWORD, null)
         val extras = intent.extras
         if (extras != null) {
             strContactId = extras.getString("ContactID")
@@ -213,8 +148,9 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
         val intent = Intent(this, UpdateLeadActivity::class.java)
         val bundle = Bundle()
         bundle.putString("ContactID",strContactId )
+        bundle.putString("Status","1")
         intent.putExtras(bundle)
-       startActivity(intent)
+        startActivity(intent)
     }
 
     private fun validEmail(email: String): Boolean {
@@ -327,7 +263,7 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
     }
 
     fun setAdpter() {
-        val channel = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, list_of_channel)
+        val channel = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, SalesConstant.list_of_channel)
         channel.setDropDownViewResource(android.R.layout.simple_spinner_item)
         binding.contactLayout.spCtChannel.adapter = channel
     }
@@ -440,10 +376,10 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
 
                             val strContactstate = response.body()?.Response?.Data?.get(0)?.State
                             var cntstatePosition = 0
-                            list_of_state.forEachIndexed { index, s ->
+                            SalesConstant.list_of_state.forEachIndexed { index, s ->
                                 if (s == strContactstate) cntstatePosition = index
                             }
-                            val cntstateAdapter = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, list_of_state)
+                            val cntstateAdapter = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, SalesConstant.list_of_state)
                             cntstateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             layout_ContactAddress.sp_ContactState.adapter = cntstateAdapter
                             layout_ContactAddress.sp_ContactState.setSelection(cntstatePosition)
@@ -451,10 +387,10 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
 
                             val strchannel = response.body()?.Response?.Data?.get(0)?.Channel
                             var channePosition = 0
-                            list_of_channel.forEachIndexed { index, s ->
+                            SalesConstant.list_of_channel.forEachIndexed { index, s ->
                                 if (s == strchannel) channePosition = index
                             }
-                            val adapterchannel = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, list_of_channel)
+                            val adapterchannel = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, SalesConstant.list_of_channel)
                             adapterchannel.setDropDownViewResource(android.R.layout.simple_spinner_item)
                             contactLayout.sp_ctChannel?.adapter = adapterchannel
                             contactLayout.sp_ctChannel.setSelection(channePosition)
@@ -929,8 +865,8 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (parent?.id == R.id.sp_ctChannel) {
-            binding.contactLayout.etCtChannel.setText(list_of_channel[position])
-            strContactChnl = list_of_channel[position]
+            binding.contactLayout.etCtChannel.setText(SalesConstant.list_of_channel[position])
+            strContactChnl = SalesConstant.list_of_channel[position]
             getSource(strContactChnl)
         } else if (parent?.id == R.id.sp_ctSource) {
             contactLayout.et_ctSource.setText(source?.get(position))
@@ -951,9 +887,9 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
             str_city_code = InstallcityCode?.get(position)
             getArea(str_city, str_city_code.toString())
         } else if (parent?.id == R.id.sp_ContactState) {
-            layout_ContactAddress.et_ContactState.setText(list_of_state[position])
-            str_state = list_of_state[position]
-            str_inst_state = list_state_code[position]
+            layout_ContactAddress.et_ContactState.setText(SalesConstant.list_of_state[position])
+            str_state = SalesConstant.list_of_state[position]
+            str_inst_state = SalesConstant.list_state_code[position]
             getCity(str_inst_state)
         } else if (parent?.id == R.id.sp_Contactbuilding_nm) {
             layout_ContactAddress.et_Contactbuilding.setText(building?.get(position))
