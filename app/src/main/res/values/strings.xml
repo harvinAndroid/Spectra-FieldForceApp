@@ -197,7 +197,7 @@
     <string name="wcr">WCR</string>
     <string name="create">Create</string>
     <string name="pod">POD :</string>
-    <string name="education_customer_regarding_selfcare_portal">Education customer Regarding Selfcare Portal</string>
+    <string name="education_customer_regarding_selfcare_portal">Education customer Regarding SelfCare Portal</string>
     <string name="update">UPDATE</string>
     <string name="add_equipment">Add Equipment</string>
     <string name="business">Business</string>
@@ -218,7 +218,7 @@
     <string name="approval_to_nav">Approval to NAV</string>
     <string name="click_the_image">Click the Image</string>
     <string name="complete_wcr">Complete WCR</string>
-    <string name="submit_for_appoval">Submit for Appoval</string>
+    <string name="submit_for_appoval">Submit for Approval</string>
     <string name="ins">INAS Power</string>
     <string name="get_ins_info">Get INAS Info</string>
     <string name="can_id_ont_serial_no">CAN ID/ONT Serial No.</string>
@@ -237,7 +237,7 @@
     <string name="service_consumption">Service Consumption</string>
     <string name="misc_work_cost">Misc Work Cost</string>
     <string name="assigned">Assigned</string>
-    <string name="sales_app">Sales (Business)</string>
+    <string name="sales_app">Sales</string>
     <string name="contact_information">Contact Information</string>
     <string name="lead_channel_source"><![CDATA[Lead Channel & Source]]></string>
     <string name="installation_address">Installation Address</string>
@@ -329,7 +329,7 @@
     <string name="building_address">Building Address</string>
     <string name="building_code">Building Code*</string>
     <string name="last_mile_type">Last mile type</string>
-    <string name="oppurtunity_requirment">Opportunity Requirment</string>
+    <string name="oppurtunity_requirment">Opportunity Requirement</string>
     <string name="existing_service_provider">Existing Service Provider*</string>
     <string name="uptime_sla_committed">Uptime SLA Committed (%)*</string>
     <string name="company_self_po_erp">Company Self PO (ERP)*</string>
@@ -425,8 +425,6 @@
     <string name="tin_no_hardware_sale_required">TIN no. (Hardware sale)*</string>
     <string name="contact">Contact Management</string>
     <string name="lead">Lead</string>
-
-    <string name="area">Area*</string>
     <string name="block">Block*</string>
     <string name="full_name">Full Name</string>
     <string name="first_name">First Name*</string>
@@ -444,16 +442,16 @@
     <string name="purchase_order_p_o">Purchase Order (P.O.)*</string>
     <string name="photo_id_proof_of_authorized_signatory">Photo ID proof of Authorized Signatory*</string>
     <string name="apnic_public_ip_declaration_form">APNIC (Public IP declaration form)*</string>
-    <string name="non_osp_declaratrion_osp_registration_certificate">Non-OSP Declaratrion/OSP Registration Certificate*</string>
+    <string name="non_osp_declaratrion_osp_registration_certificate">Non-OSP Declaration/OSP Registration Certificate*</string>
     <string name="network_diagram">Network Diagram*</string>
     <string name="address_proof_of_company_firm">Address proof of Company/Firm*</string>
     <string name="company_s_pan_card_copy">Company\'s PAN Card copy*</string>
     <string name="partnership_deed">Partnership Deed*</string>
     <string name="follow_up_date_time">Follow Up Date/Time</string>
-    <string name="re_open_oppurtunity">Re-Open Oppurtunity</string>
+    <string name="re_open_oppurtunity">Re-Open Opportunity</string>
     <string name="no_of_beds">No. of Beds</string>
     <string name="no_of_users">No. of Users</string>
-    <string name="questionnaries_for_sdwan">Questionnaries For SDWAN</string>
+    <string name="questionnaries_for_sdwan">Questionnaires For SDWAN</string>
     <string name="no_of_location">No. of location *</string>
     <string name="is_customer_using_ill_services">Is customer using ILL services*</string>
     <string name="is_customer_using_broadband_services">Is Customer using Broadband services</string>
@@ -539,6 +537,7 @@
     <string name="amount">Amount</string>
     <string name="lead_count_in_current_month">Lead Count in Current Month</string>
     <string name="sales_dashboard">My Dashboard</string>
+    <string name="area">Area*</string>
 
     <!-- Array list for sales App-->
     <string-array name="list_of_boolean">
@@ -614,7 +613,7 @@
     </string-array>
 
     <string-array name="list_of_subBusSegment">
-        <item>Select SubBussiness Segment</item>
+        <item>Select SubBusiness Segment</item>
         <item>Connectivity Solution</item>
         <item>Data Centre Products</item>
         <item>Internet Service</item>
@@ -905,7 +904,7 @@
         <item>No Voice</item>
         <item>Not Interested</item>
         <item>Not Looking For Services</item>
-        <item>Not Reacheable</item>
+        <item>Not Reachable</item>
         <item>Nurture</item>
         <item>Online Payment Done</item>
         <item>Plan Expensive</item>
@@ -1080,7 +1079,5 @@
         <item>3</item>
         <item>4</item>
     </string-array>
-
-
 
 </resources>

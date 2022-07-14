@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +26,9 @@ import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest
 import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse
 import com.spectra.fieldforce.utils.Constants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -60,15 +65,14 @@ class GetQualifiedLeadFrag() : Fragment(),View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       linearrrrr.visibility=View.GONE
         fab_create_lead.visibility=View.GONE
         val bundle = arguments
         str_Search = bundle?.getString("STATUS")
         val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
         userName = sp1?.getString("UserName", null)
         password = sp1?.getString("Password", null)
-         getAllLeadList()
-
+        excuteTask()
+        excuteSearch()
         fab_create_lead.setOnClickListener {
             try {
                 val fragmentB = CreateLeadFragment()
@@ -79,17 +83,59 @@ class GetQualifiedLeadFrag() : Fragment(),View.OnClickListener {
 
             }
         }
+
+
+    }
+    private fun excuteTask(){
+        CoroutineScope(Dispatchers.IO).launch {
+            getAllLeadList("")
+
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            tv_count.setOnClickListener {
+                val search = tv_search.text.toString()
+                getAllLeadList(search)
+            }
+        }
+    }
+
+    private fun excuteSearch(){
+        CoroutineScope(Dispatchers.IO).launch {
+            tv_search.addTextChangedListener(object : TextWatcher {
+
+                override fun afterTextChanged(s: Editable) {
+                    val search = tv_search.text.toString()
+                    if (search.isBlank()) {
+                        tv_msg.visibility = View.GONE
+                        getAllLeadList("")
+                    }
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int,
+                    count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence, start: Int,
+                    before: Int, count: Int
+                ) {
+
+                }
+            })
+        }
     }
 
 
 
-    fun getAllLeadList() {
+    private fun getAllLeadList(srch: String) {
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
         val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,str_Search,password,userName,
-        "","","")
+        srch,"","")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllLead(getAllLeadRequest)

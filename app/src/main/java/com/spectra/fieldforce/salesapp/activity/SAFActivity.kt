@@ -548,7 +548,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val buildingnumber = saf_contact_person_row.et_cfblbuildng_num.text?.toString()
         val floor = saf_contact_person_row.et_cfblfloor.text?.toString()
         val pincode = saf_contact_person_row.et_cfblpin_code.text?.toString()
-
+        val name = saf_contact_person_row.et_caf_cntname.text.toString()
 
        /* if(str_wrknghrs?.isBlank()==true||str_wrknghrs=="0"||str_wrknghrs=="null"){
             Toast.makeText(this, "Please Select Working Hours", Toast.LENGTH_SHORT).show()
@@ -570,7 +570,9 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             Toast.makeText(this, "Please enter Installation Email", Toast.LENGTH_SHORT).show()
         }else if(instmobile?.isBlank() == true){
             Toast.makeText(this, "Please enter Installation Phone Number", Toast.LENGTH_SHORT).show()
-        }else if(instpin?.isBlank() == true || instpin?.length!=6){
+        }else if(str_billtype?.isBlank()==true||str_billtype=="0"){
+            Toast.makeText(this, "Please Enter Installation BillType", Toast.LENGTH_SHORT).show()
+        } else if(instpin?.isBlank() == true || instpin?.length!=6){
             Toast.makeText(this, "Please enter Installation PinCode", Toast.LENGTH_SHORT).show()
         } else if(str_customercategory?.isBlank()==true||str_customercategory=="0"||(str_customercategory=="null")){
             Toast.makeText(this, "Please Select Category Of Customer", Toast.LENGTH_SHORT).show()
@@ -588,7 +590,11 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             Toast.makeText(this, "Please enter Area", Toast.LENGTH_SHORT).show()
         }/*else if(buildingnumber?.isBlank() == true ||(buildingnumber=="null")){
             Toast.makeText(this, "Please enter Building Number", Toast.LENGTH_SHORT).show()
-        }*/else if(floor?.isBlank()== true){
+        }*/
+        else if(name.isBlank()){
+            Toast.makeText(this, "Please enter Billing Address Contact Name", Toast.LENGTH_SHORT).show()
+        }
+        else if(floor?.isBlank()== true){
             Toast.makeText(this, "Please enter Floor", Toast.LENGTH_SHORT).show()
         }else if(pincode?.isBlank()== true|| pincode?.length!=6){
             Toast.makeText(this, "Please enter PinCode", Toast.LENGTH_SHORT).show()

@@ -3,11 +3,11 @@ package com.spectra.fieldforce.utils;
 public class Constants {
 
    /* PRODUCATION URL*/
-   /* public static final String BASE_URL="https://ffamwapi.spectra.co";
-    public static final String BASE_URL1="https://custappmw.spectra.co";*/
+    public static final String BASE_URL="https://ffamwapi.spectra.co";
+    public static final String BASE_URL1="https://custappmw.spectra.co";
   /*  Local URL */
-    public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
-    public static final String BASE_URL1="https://custappmwuat.spectra.co/";
+   /* public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
+    public static final String BASE_URL1="https://custappmwuat.spectra.co/";*/
     public static final String AUTH_KEY ="ac7b51de9d888e1458dd53d8aJAN3ba6f";
     public static final String GET_ACTION_CODEMST  ="getActioncodeMst";
     public static final String GETASR_BY_SRNUMBER= "getASRBySrNumber";
@@ -106,18 +106,7 @@ public class Constants {
     public static final String GET_PRICELIST = "getPricelist";
     public static final String GET_SOURCE = "getSource";
     public static final String Get_AREA = "getArea";
-    public static final String GET_SUB_BUSINESS_SEG= "getSubBusinessSegment";
-    public static final String FIRM_TYPE_LIST = "firmTypeList";
-    public static final String EXSER_PROLIST_ONE = "exSerProvListOne";
-    public static final String SER_PROV_LISTONE = "serProvListOne" ;
-    public static final String EX_SERVPROV_LISTTWO = "exSerProvListTwo";
-    public static final String SER_PROLISTTWO= "serProvListTwo";
-    public static final String CUST_FIREWALL_LIST= "custFireWallList";
-    public static final String CUST_WIFI_LIST = "custWifiList";
-    public static final String CUST_VPN_LIST = "custVPNList";
-    public static final String GET_STATE = "getState" ;
-    public static final String GET_CITY = "getCity";
-    public static final String SALUTATION_LIST = "salutationList";
+     public static final String GET_CITY = "getCity";
     public static final String GET_LEADS = "getLeads";
     public static final String UPDATE_LEAD = "updateLead";
     public static final String UPDATE_FLR = "updateFLR";
@@ -130,7 +119,6 @@ public class Constants {
     public static final String GET_RELATIONSHIP = "getRelationship";
     public static final String GET_OPPURTUNITY = "getopportunity";
     public static final String GetOpp_ProductList = "getProductlist";
-    public static final String GET_GROUP = "getGroups";
     public static final String LOST_OPPURTUNITY ="lostOpportunity";
     public static final String GET_INDUSTRYTYPE= "getindustrytype";
     public static final String GET_OPPPRODUCT= "getOppProduct";

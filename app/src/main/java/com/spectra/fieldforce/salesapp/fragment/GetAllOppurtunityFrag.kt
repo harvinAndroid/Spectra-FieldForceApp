@@ -69,13 +69,10 @@ class GetAllOppurtunityFrag : Fragment(),View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         val bundle = arguments
         str_Search = bundle?.getString("STATUS")
-        strtag = bundle?.getString("TAG")
         val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
         userName = sp1?.getString("UserName", null)
         password = sp1?.getString("Password", null)
-        if(strtag=="1"){
-            linearrrrr.visibility=View.GONE
-        }
+
        excuteSearch()
         excuteTask()
 

@@ -37,5 +37,7 @@ data class CntactData(
     val SpecifyArea: String,
     val Specifybuilding: String,
     val State: String,
-    val StatusReason: String
+    val StatusReason: String,
+    val AreaId:String,
+    val BuildingId:String
 )

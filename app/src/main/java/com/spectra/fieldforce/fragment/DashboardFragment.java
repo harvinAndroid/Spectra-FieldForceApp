@@ -24,8 +24,6 @@ import com.spectra.fieldforce.salesapp.model.ValidateUserRequest;
 import com.spectra.fieldforce.utils.Constants;
 import com.spectra.fieldforce.utils.PrefConfig;
 
-import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

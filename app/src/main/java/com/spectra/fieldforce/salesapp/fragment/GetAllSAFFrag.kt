@@ -61,13 +61,10 @@ class GetAllSAFFrag : Fragment(),View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         val bundle = arguments
         strSearch = bundle?.getString("STATUS")
-        strTag = bundle?.getString("TAG")
         val sp1: SharedPreferences? = context?.getSharedPreferences("Login", 0)
         userName = sp1?.getString("UserName", null)
         password = sp1?.getString("Password", null)
-        if(strTag=="1"){
-            linearrrrr.visibility=View.GONE
-        }
+
         executeSearch()
         executeTask()
         fab_create_lead.visibility =View.GONE

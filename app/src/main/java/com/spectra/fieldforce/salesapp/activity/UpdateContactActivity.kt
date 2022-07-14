@@ -3,41 +3,42 @@ package com.spectra.fieldforce.salesapp.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.animation.AlphaAnimation
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
 import com.spectra.fieldforce.databinding.SalescontactFragmentBinding
-import androidx.appcompat.app.AlertDialog
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
-import kotlinx.android.synthetic.main.contact_general_info.view.*
-import kotlinx.android.synthetic.main.sales_contact_address_row.view.*
-import kotlinx.android.synthetic.main.salescontact_fragment.*
-import java.util.regex.Pattern
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Exception
-import java.util.*
-import kotlin.collections.ArrayList
-import android.content.Intent
-import android.text.format.DateFormat
-import android.widget.*
 import com.spectra.fieldforce.utils.SalesConstant
+import kotlinx.android.synthetic.main.contact_general_info.view.*
 import kotlinx.android.synthetic.main.contact_remarks_row.view.*
+import kotlinx.android.synthetic.main.lead_demo_fragment.*
+import kotlinx.android.synthetic.main.lead_installation_address_row.view.*
+import kotlinx.android.synthetic.main.sales_contact_address_row.view.*
+import kotlinx.android.synthetic.main.sales_contact_address_row.view.et_spec_area
+import kotlinx.android.synthetic.main.salescontact_fragment.*
 import kotlinx.android.synthetic.main.update_lead_demo_fragment.*
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.*
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.*
 import kotlinx.android.synthetic.main.update_leadtoolbar.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
+import java.util.regex.Pattern
 
 class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , AdapterView.OnItemSelectedListener,
     TimePickerDialog.OnTimeSetListener,DatePickerDialog.OnDateSetListener{
@@ -246,10 +247,10 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
         layout_ContactAddress.sp_ContactState.onItemSelectedListener = this
         layout_ContactAddress.et_ContactCity.setOnClickListener { layout_ContactAddress.sp_ContactCity.performClick() }
         layout_ContactAddress.sp_ContactCity.onItemSelectedListener = this
-        layout_ContactAddress.et_ContactArea.setOnClickListener { layout_ContactAddress.sp_ContactArea.performClick() }
+       /* layout_ContactAddress.et_ContactArea.setOnClickListener { layout_ContactAddress.sp_ContactArea.performClick() }
         layout_ContactAddress.sp_ContactArea.onItemSelectedListener = this
         layout_ContactAddress.et_Contactbuilding.setOnClickListener { layout_ContactAddress.sp_Contactbuilding_nm.performClick() }
-        layout_ContactAddress.sp_Contactbuilding_nm.onItemSelectedListener = this
+        layout_ContactAddress.sp_Contactbuilding_nm.onItemSelectedListener = this*/
 
         contactLayout.et_ctEmailId.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
@@ -288,13 +289,13 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                         val img = response.body()?.Response?.Message
                         img?.let { Log.e("image", it) }
                         sourceList = response.body()?.Response?.Data
-                        source = java.util.ArrayList<String>()
+                        source = ArrayList<String>()
                         //source!!.add("Select ")
                         for (item in sourceList!!)
                             source?.add(item.SourceName)
 
                         var sourcePosition=0
-                        source!!.forEachIndexed { index, s ->
+                        source?.forEachIndexed { index, s ->
                             if(s==strSource)sourcePosition=index
                         }
                         val adapter12 = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item,
@@ -373,7 +374,10 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                             strCompetitor = response.body()?.Response?.Data?.get(0)?.CompetitorName
                             strplan = response.body()?.Response?.Data?.get(0)?.PlanCategory
                             layout_ContactRemarks.et_contactRemark.setText(response.body()?.Response?.Data?.get(0)?.Remark)
-
+                            str_add_area_code = response.body()?.Response?.Data?.get(0)?.AreaId
+                            strInstallBuildCode = response.body()?.Response?.Data?.get(0)?.BuildingId
+                            layout_ContactAddress.et_ContactArea.setText("$strArea($str_add_area_code)")
+                            layout_ContactAddress.et_Contactbuilding.setText("$Building($strInstallBuildCode)")
                             val strContactstate = response.body()?.Response?.Data?.get(0)?.State
                             var cntstatePosition = 0
                             SalesConstant.list_of_state.forEachIndexed { index, s ->
@@ -396,11 +400,10 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                             contactLayout.sp_ctChannel.setSelection(channePosition)
                             adapterchannel.notifyDataSetChanged()
 
-
                             val reason = response.body()?.Response?.Data?.get(0)?.StatusReason
                             if(reason=="Lead Created/Closed"){
                                 searchToolbarContact.flr.visibility=View.VISIBLE
-                                Locked()
+                                locked()
                             }
                             var reasonPosition = 0
                             resources.getStringArray(R.array.list_of_conReason).forEachIndexed { index, s ->
@@ -446,19 +449,6 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                                     date=("$year-$month-$dat")
                                 }
                             }
-
-
-                          /*  if (strStatus == "1") {
-                                locked()
-                                oppurtunity.visibility= View.VISIBLE
-                            } else if(strStatus == "2"){
-                                locked()
-                                oppurtunity.visibility= View.GONE
-                            } else {
-                                oppurtunity.visibility= View.GONE
-                                Calender()
-                            }
-*/
                         }
 
                     } catch (e: Exception) {
@@ -474,7 +464,7 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
         })
     }
 
-    private fun Locked(){
+    private fun locked(){
         contactLayout.et_ctFullName.isEnabled=false
         contactLayout.et_ctFirstName.isFocusable=(false)
         contactLayout.et_ctMobileNum2.isFocusable=(false)
@@ -735,22 +725,44 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                         buildingList = response.body()?.Response?.Data
                         building = ArrayList<String>()
                         buildingCode = ArrayList<String>()
-                        building?.add("Select Building")
-                        buildingCode?.add("")
+                       /* building?.add("Select Building")
+                        buildingCode?.add("")*/
                         for (item in buildingList!!) {
-                            item.BuildingName?.let { building?.add(it) }
-                            item.BuildingCode?.let { buildingCode?.add(it) }
+                            building?.add(item.BuildingName+"("+item.BuildingCode)
+                          /*  item.BuildingName?.let { building?.add(it) }
+                            item.BuildingCode?.let { buildingCode?.add(it) }*/
                         }
 
-                        var buildingPosition=0
-                        building!!.forEachIndexed { index, s ->
-                            if(s==Building)buildingPosition=index
-                        }
                         val adapter12 = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, building!!)
+                        layout_ContactAddress.et_Contactbuilding.threshold=0
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        layout_ContactAddress.sp_Contactbuilding_nm.adapter = adapter12
-                        layout_ContactAddress.sp_Contactbuilding_nm.setSelection(buildingPosition)
-                        adapter12.notifyDataSetChanged()
+                        layout_ContactAddress.et_Contactbuilding.setAdapter(adapter12)
+
+                        layout_ContactAddress.et_Contactbuilding.setOnFocusChangeListener { _, b ->
+                            if (b) layout_ContactAddress.et_Contactbuilding.showDropDown()
+                        }
+                        layout_ContactAddress.et_Contactbuilding.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            strInstallBuild = adapter12.getItem(position)
+                          //  strArea = adapter12.getItem(position)
+                            val split = strInstallBuild?.split("(")
+                            val buildingId = split?.get(1)
+                            val buildingName = split?.get(0)
+                            var buildingPosition=0
+                            building?.forEachIndexed { index, s ->
+                                if(s==strInstallBuild)buildingPosition=index
+                                strInstallBuild.let { it?.let { it1 -> Log.e("idddddddddd", it1) } }
+                                return@forEachIndexed
+                            }
+                            val areaId = buildingId?.split(")")
+                            strInstallBuildCode = areaId?.get(0)
+                             /* strInstallBuildCode = buildingCode?.get(position)*/
+                            if(buildingName=="Other"){
+                                layout_ContactAddress.et_Contactspecific_building.visibility=View.VISIBLE
+                            }else{
+                                layout_ContactAddress.et_Contactspecific_building.visibility=View.GONE
+                            }
+                        }
+
 
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -788,20 +800,56 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                         Installarea = ArrayList<String>()
                         InstallareaCode = ArrayList<String>()
                         Installarea?.add("Select Area")
-                        InstallareaCode?.add("")
+                      /*
+                        InstallareaCode?.add("")*/
                         for (item in areaList!!) {
-                            item.AreaName?.let { Installarea?.add(it) }
-                            item.AreaCode?.let { InstallareaCode?.add(it) }
+                            Installarea?.add(item.AreaName +" ("+item.AreaCode+")")
+                           /* item.AreaName?.let { Installarea?.add(it) }
+                            item.AreaCode?.let { InstallareaCode?.add(it) }*/
                         }
-                        var areaPosition=0
-                        Installarea!!.forEachIndexed { index, s ->
-                            if(s==strArea)areaPosition=index
-                        }
+
                         val adapter12 = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, Installarea!!)
+                        layout_ContactAddress.et_ContactArea.threshold=0
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        layout_ContactAddress.sp_ContactArea.adapter = adapter12
-                        layout_ContactAddress.sp_ContactArea.setSelection(areaPosition)
-                        adapter12.notifyDataSetChanged()
+                        layout_ContactAddress.et_ContactArea.setAdapter(adapter12)
+
+                        layout_ContactAddress.et_ContactArea.setOnFocusChangeListener { _, b ->
+                            if (b) layout_ContactAddress.et_ContactArea.showDropDown()
+                        }
+
+                        layout_ContactAddress.et_ContactArea.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            strArea = adapter12.getItem(position)
+                            val split = strArea?.split("(")
+                            val Area = split?.get(0)
+                            val Areaid = split?.get(1)
+                            var areaPosition=0
+                            Installarea?.forEachIndexed { index, s ->
+                                if(s==strArea)areaPosition=index
+                                strArea.let { it?.let { it1 -> Log.e("idddddddddd", it1) } }
+                                return@forEachIndexed
+                            }
+                            val areaId = Areaid?.split(")")
+                            str_add_area_code = areaId?.get(0)
+                            str_add_area_code?.let { Log.e("compid", it) }
+                            if (Area == "Other") {
+                                layout_ContactAddress.et_spec_area.visibility = View.VISIBLE
+                            } else {
+                                layout_ContactAddress.et_spec_area.visibility = View.GONE
+                            }
+                            getBuilding(str_area,str_add_area_code)
+                          /* str_add_area_code = InstallareaCode?.get(position)
+
+
+                            val str: String = layout_ContactAddress.et_ContactArea.text.toString()
+                            val index: Int? = str_area?.indexOf(str)
+                            str_add_area_code = index?.let { InstallareaCode?.get(it) }
+                            if (str_area == "Other") {
+                                layout_ContactAddress.et_spec_area.visibility = View.VISIBLE
+                            } else {
+                                layout_ContactAddress.et_spec_area.visibility = View.GONE
+                            }
+                            getBuilding(str_area,str_add_area_code)*/
+                        }
 
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -871,7 +919,7 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
         } else if (parent?.id == R.id.sp_ctSource) {
             contactLayout.et_ctSource.setText(source?.get(position))
             str_lead_src = source?.get(position)
-        } else if (parent?.id == R.id.sp_ContactArea) {
+        } /*else if (parent?.id == R.id.sp_ContactArea) {
             layout_ContactAddress.et_ContactArea.setText(Installarea?.get(position))
             str_area = Installarea?.get(position).toString()
             str_add_area_code = InstallareaCode?.get(position)
@@ -881,7 +929,7 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
             } else {
                 layout_ContactAddress.et_spec_area.visibility = View.GONE
             }
-        } else if (parent?.id == R.id.sp_ContactCity) {
+        } */else if (parent?.id == R.id.sp_ContactCity) {
             layout_ContactAddress.et_ContactCity.setText(Installcity?.get(position))
             str_city = Installcity?.get(position).toString()
             str_city_code = InstallcityCode?.get(position)
@@ -891,7 +939,7 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
             str_state = SalesConstant.list_of_state[position]
             str_inst_state = SalesConstant.list_state_code[position]
             getCity(str_inst_state)
-        } else if (parent?.id == R.id.sp_Contactbuilding_nm) {
+        } /*else if (parent?.id == R.id.sp_Contactbuilding_nm) {
             layout_ContactAddress.et_Contactbuilding.setText(building?.get(position))
             strInstallBuild = building?.get(position)
             strInstallBuildCode = buildingCode?.get(position)
@@ -900,7 +948,7 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
             } else {
                 layout_ContactAddress.et_specific_build.visibility = View.GONE
             }
-        } else if (parent?.id == R.id.sp_ctStatusReason) {
+        }*/ else if (parent?.id == R.id.sp_ctStatusReason) {
             contactLayout.et_ctStatusReason.setText(
                 resources.getStringArray(R.array.list_of_conReason)[position]
             )

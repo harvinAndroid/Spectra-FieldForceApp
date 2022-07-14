@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.crashlytics'
+
+androidExtensions{
+    experimental=true
+}
 android {
     compileSdkVersion 32
     buildToolsVersion "30.0.2"
@@ -86,6 +90,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.3.1')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
- /*   implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'*/
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }

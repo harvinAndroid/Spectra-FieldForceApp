@@ -36,13 +36,13 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_height="wrap_content">
 
-                            <androidx.appcompat.widget.AppCompatSpinner
+                         <!--   <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/sp_cntry"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@null"
                                 android:visibility="invisible" />
-
+-->
                             <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -139,35 +139,61 @@
                             android:orientation="vertical"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_height="wrap_content">
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_cnarea"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:visibility="invisible" />
 
+                        <!--           <androidx.appcompat.widget.AppCompatSpinner
+                                    android:id="@+id/sp_cnarea"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:visibility="invisible" />
+    -->
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/colorPrimary"
                             app:hintTextAppearance="@style/AppearanceText">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                                 android:id="@+id/et_installarea"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
-                                android:hint="Area*"
+                                android:hint="@string/area"
+                                android:drawableEnd="@drawable/search"
                                 android:imeOptions="actionNext"
-                                android:focusableInTouchMode="false"
-                                android:focusable="false"
-                                android:drawableEnd="@drawable/ic_expand_down"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
                         </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/colorPrimary"
+                                app:hintTextAppearance="@style/AppearanceText">
+
+                                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                                    android:id="@+id/et_building"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/building_name"
+                                    android:imeOptions="actionNext"
+                                    android:drawableEnd="@drawable/search"
+                                    android:textColorHint="@color/colorPrimary"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textColorHighlight="@color/colorPrimary"
+                                    android:textSize="@dimen/_12sdp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -183,7 +209,6 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/specific_area_name"
-
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -191,39 +216,7 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                     <!--   <FrameLayout
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_height="wrap_content">
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/sp_building_nm"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:visibility="invisible" />
 
-                      -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/colorPrimary"
-                            app:hintTextAppearance="@style/AppearanceText">
-
-                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                                android:id="@+id/et_building"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/building_name"
-                                android:imeOptions="actionNext"
-                                android:textColorHint="@color/colorPrimary"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textColorHighlight="@color/colorPrimary"
-                                android:textSize="@dimen/_12sdp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <!--       </FrameLayout>-->
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

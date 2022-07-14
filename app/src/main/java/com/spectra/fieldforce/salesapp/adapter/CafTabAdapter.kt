@@ -20,7 +20,6 @@ internal class CafTabAdapter(
                 val getAllCAFFrag = GetAllCAFFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "All")
-                bundle.putString("TAG", "0")
                 getAllCAFFrag.arguments = bundle
                 return getAllCAFFrag
             }
@@ -28,7 +27,6 @@ internal class CafTabAdapter(
                 val getAllCAFFrag = GetAllCAFFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "not equals Installation Completed")
-                bundle.putString("TAG", "1")
                 getAllCAFFrag.arguments = bundle
                 return getAllCAFFrag
             }
@@ -36,7 +34,6 @@ internal class CafTabAdapter(
                 val getAllCAFFrag = GetAllCAFFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "Installation Completed")
-                bundle.putString("TAG", "1")
                 getAllCAFFrag.arguments = bundle
                 return getAllCAFFrag
             }

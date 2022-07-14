@@ -74,7 +74,6 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         userName = sp1?.getString("UserName", null)
         password = sp1?.getString("Password", null)
         if(strtag=="1"){
-            linearrrrr.visibility=View.GONE
             fab_create_lead.visibility=View.GONE
         }
         excuteSearch()
@@ -92,7 +91,7 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
             }
         }
         }
-    fun excuteSearch(){
+    private fun excuteSearch(){
         CoroutineScope(Dispatchers.IO).launch {
             getAllLeadList("")
 

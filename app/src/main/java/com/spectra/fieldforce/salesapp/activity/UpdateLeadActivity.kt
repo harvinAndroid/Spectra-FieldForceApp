@@ -24,9 +24,11 @@ import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
 import com.spectra.fieldforce.utils.SalesConstant
+import kotlinx.android.synthetic.main.lead__contact_person_row.view.*
 import kotlinx.android.synthetic.main.lead_company_details_row.view.*
 import kotlinx.android.synthetic.main.lead_contact_info.view.*
 import kotlinx.android.synthetic.main.lead_demo_fragment.*
+import kotlinx.android.synthetic.main.lead_installation_address_row.view.*
 import kotlinx.android.synthetic.main.toolbar.view.*
 import kotlinx.android.synthetic.main.update_lead_channel_source_row.*
 import kotlinx.android.synthetic.main.update_lead_channel_source_row.view.*
@@ -63,7 +65,6 @@ import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.et_pin_code
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.et_state
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.sp_city
-import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.sp_cnarea
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.sp_cntry
 import kotlinx.android.synthetic.main.update_lead_installation_address_row.view.sp_state
 import kotlinx.android.synthetic.main.update_lead_other_details_row.*
@@ -95,6 +96,14 @@ import kotlinx.android.synthetic.main.update_leadtoolbar.*
 import kotlinx.android.synthetic.main.update_leadtoolbar.flr
 import kotlinx.android.synthetic.main.updatelead__contact_person_row.*
 import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.*
+import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.et_cnt_building
+import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.et_cnt_buildng_num
+import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.et_cnt_city
+import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.et_cnt_floor
+import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.et_cnt_pin_code
+import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.et_cnt_state
+import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.sp_cnt_city
+import kotlinx.android.synthetic.main.updatelead__contact_person_row.view.sp_cnt_state
 import kotlinx.android.synthetic.main.updatelead_contact_personadd_row.*
 import kotlinx.android.synthetic.main.updatelead_contact_personadd_row.view.*
 import kotlinx.android.synthetic.main.updatelead_contact_personadd_row.view.et_business_seg
@@ -209,7 +218,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     private var industryList : ArrayList<IndustryResponse>? = null
     private var instryname = ArrayList<String>()
     private var industryid = ArrayList<String>()
-    private var companyId : ArrayList<String>? = null
+
     private var company: ArrayList<String>? = null
     private var group : ArrayList<String>? = null
     private var groupId : ArrayList<String>? = null
@@ -724,9 +733,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         updatelayout_lead_installation_address.sp_state.onItemSelectedListener = this
         updatelayout_lead_installation_address.et_add_city.setOnClickListener { updatelayout_lead_installation_address.sp_city.performClick() }
         updatelayout_lead_installation_address.sp_city.onItemSelectedListener = this
-        updatelayout_lead_installation_address.et_cntarea.setOnClickListener { updatelayout_lead_installation_address.sp_cnarea.performClick() }
+       /* updatelayout_lead_installation_address.et_cntarea.setOnClickListener { updatelayout_lead_installation_address.sp_cnarea.performClick() }
         updatelayout_lead_installation_address.sp_cnarea.onItemSelectedListener = this
-
+*/
         update_lead_contact_address.et_cnt_state.setOnClickListener{
             update_lead_contact_address.sp_cnt_state.performClick()
         }
@@ -736,12 +745,12 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             update_lead_contact_address.sp_cnt_city.performClick()
         }
         update_lead_contact_address.sp_cnt_city.onItemSelectedListener = this
-        binding.updateLeadContactAddress.etContacttarea.setOnClickListener{
+    /*    binding.updateLeadContactAddress.etContacttarea.setOnClickListener{
             binding.updateLeadContactAddress.spCntCnarea.performClick()
         }
         binding.updateLeadContactAddress.spCntCnarea.onItemSelectedListener = this
 
-        updatelayout_lead_other_details.et_ext_srv.setOnClickListener { updatelayout_lead_other_details.sp_ex_serv.performClick() }
+     */   updatelayout_lead_other_details.et_ext_srv.setOnClickListener { updatelayout_lead_other_details.sp_ex_serv.performClick() }
         updatelayout_lead_other_details.sp_ex_serv.onItemSelectedListener = this
         updatelayout_lead_other_details.et_ext_srv_two.setOnClickListener { updatelayout_lead_other_details.sp_ext_serv_two.performClick() }
         updatelayout_lead_other_details.sp_ext_serv_two.onItemSelectedListener = this
@@ -1204,23 +1213,29 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             str_inst_build_num = response.body()?.Response?.get(0)?.installationAddress?.InstallBuilding.toString()
                             str_inst_building_nm = response.body()?.Response?.get(0)?.contactAddress?.ContactBuilding.toString()
                             str_cntct_building_nm= response.body()?.Response?.get(0)?.contactAddress?.ContactBuildingName.toString()
-                            updatelayout_lead_installation_address.et_building.setText(strBuilding.toString())
+                            updatelayout_lead_installation_address.et_building.setText("$strBuilding($str_inst_build_num)")
 
+                            str_inst_areaname = response.body()?.Response?.get(0)?.installationAddress?.InstallAreaName.toString()
+                            str_inst_area = response.body()?.Response?.get(0)?.installationAddress?.InstallArea.toString()
+                            updatelayout_lead_installation_address.et_cntarea.setText("$strArea($str_inst_area)")
                             getCompany()
 
                             getOtherCity(str_othercity)
                             strCompanyName  =  response.body()?.Response?.get(0)?.CompanyNameCompany
                             str_cmp =  response.body()?.Response?.get(0)?.CompanyId
-                            str_inst_build_num =  response.body()?.Response?.get(0)?.installationAddress?.InstallBuilding.toString()
                             getRelation(str_cmp)
                             str_city_code = response.body()?.Response?.get(0)?.installationAddress?.InstallCity.toString()
-                            str_inst_area = response.body()?.Response?.get(0)?.installationAddress?.InstallArea.toString()
-
                             str_lead_src = response.body()?.Response?.get(0)?.LeadSource
                             str_ContactcityCode = response.body()?.Response?.get(0)?.contactAddress?.ContactCity
                             strcontact_stateCode =response.body()?.Response?.get(0)?.contactAddress?.ContactState
                             str_add_area  =response.body()?.Response?.get(0)?.contactAddress?.ContactArea
-
+                            cntareaname =response.body()?.Response?.get(0)?.contactAddress?.ContactAreaName
+                            if(cntareaname?.isNotEmpty()==true) {
+                                update_lead_contact_address.et_contacttarea.setText("$cntareaname($str_add_area)")
+                            }
+                            if(str_cntct_building_nm?.isNotEmpty()==true) {
+                                update_lead_contact_address.et_cnt_building.setText("$str_cntct_building_nm($strContactBuilding)")
+                            }
                             val strContactstate = response.body()?.Response?.get(0)?.contactAddress?.ContactStateName
                             var cntstatePosition = 0
                             SalesConstant.list_of_state.forEachIndexed { index, s ->
@@ -1443,7 +1458,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             var salutationPosition = 0
                             try {
                                 if (sal != null || sal != "") {
-                                    SalesConstant.list_of_salutation_id.forEachIndexed { index, s ->
+                                    SalesConstant.list_of_salutation_id.forEachIndexed { index, _ ->
                                         if (index == sal?.toInt()) {
                                             salutationPosition = index
                                             return@forEachIndexed
@@ -1723,8 +1738,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         buildingCode = ArrayList<String>()
                         if (buildingList != null) {
                             for (item in buildingList) {
-                                item.BuildingName?.let { building?.add(it) }
-                                item.BuildingCode?.let { buildingCode?.add(it) }
+                                building?.add(item.BuildingName+"("+item.BuildingCode+")")
+                              /*  item.BuildingName?.let { building?.add(it) }
+                                item.BuildingCode?.let { buildingCode?.add(it) }*/
                             }
                         }
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, building!!)
@@ -1738,13 +1754,33 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         }
                         updatelayout_lead_installation_address.et_building.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
                             str_inst_build_name = adapter12.getItem(position)
-                            if (position != 0) str_inst_build_num =
+                            val buildingName =  updatelayout_lead_installation_address.et_building.text.toString()
+                            /* str_inst_build_num = buildingCode?.get(position)*/
+                            val split = buildingName.split("(")
+                            val buildingId = split.get(1)
+                            val buildingNamee = split.get(1)
+                            var buildingPosition=0
+                            building?.forEachIndexed { index, s ->
+                                if(s==str_inst_build_name)buildingPosition=index
+                                str_inst_build_name.let { it?.let { it1 -> Log.e("idddddddddd", it1) } }
+                                return@forEachIndexed
+                            }
+                            val areaId = buildingId.split(")")
+                            str_inst_build_num = areaId[0]
+                            /* strInstallBuildCode = buildingCode?.get(position)*/
+
+                            if(buildingNamee=="Other"){
+                                updatelayout_lead_installation_address.et_upspecfcbuilding_num.visibility=View.VISIBLE
+                            }else{
+                                updatelayout_lead_installation_address.et_upspecfcbuilding_num.visibility=View.GONE
+                            }
+                           /* if (position != 0) str_inst_build_num =
                                 buildingCode?.get(position)
                             if(str_inst_build_name=="Other"){
                                 updatelayout_lead_installation_address.et_upspecfcbuilding_num.visibility=View.VISIBLE
                             }else{
                                 updatelayout_lead_installation_address.et_upspecfcbuilding_num.visibility=View.GONE
-                            }
+                            }*/
                         }
 
 
@@ -1773,12 +1809,14 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         val  buildingArray= response.body()?.Response?.Data
                         cntbuilding = ArrayList<String>()
                         cntbuildingCode = ArrayList<String>()
-                        cntbuilding?.add("Select Building")
-                        cntbuildingCode?.add("")
+                   /*     cntbuilding?.add("Select Building")
+                        cntbuildingCode?.add("")*/
                         if (buildingArray != null) {
                             for (item in buildingArray){
-                                item.BuildingName?.let { cntbuilding?.add(it) }
-                                item.BuildingCode?.let { cntbuildingCode?.add(it) }
+                                cntbuilding?.add(item.BuildingName+"("+item.BuildingCode+")")
+
+                                /*  item.BuildingName?.let { cntbuilding?.add(it) }
+                                  item.BuildingCode?.let { cntbuildingCode?.add(it) }*/
                             }
                         }
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, cntbuilding!!)
@@ -1790,15 +1828,33 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             if (b)   update_lead_contact_address.et_cnt_building.showDropDown()
                         }
                         update_lead_contact_address.et_cnt_building.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
-                            val name = adapter12.getItem(position)
-                            str_cntct_building_nm=name
+                            str_cntct_building_nm = adapter12.getItem(position)
+                            val build =   update_lead_contact_address.et_cnt_building.text.toString()
+                            val split = build.split("(")
+                            val buildingId = split[1]
+                            val buildingName = split[0]
+                            var buildingPosition=0
+                            building?.forEachIndexed { index, s ->
+                                if(s==str_cntct_building_nm)buildingPosition=index
+                                str_cntct_building_nm.let { it?.let { it1 -> Log.e("idddddddddd", it1) } }
+                                return@forEachIndexed
+                            }
+                            val areaId = buildingId.split(")")
+                            str_inst_building_nm = areaId[0]
+                            /* strInstallBuildCode = buildingCode?.get(position)*/
+                            if(buildingName=="Other"){
+                                update_lead_contact_address.et_cntspbuilding_name.visibility=View.VISIBLE
+                            }else{
+                                update_lead_contact_address.et_cntspbuilding_name.visibility=View.GONE
+                            }
+                           /* str_cntct_building_nm=name
                              str_inst_building_nm =
                                 cntbuildingCode?.get(position)
                              if(str_cntct_building_nm=="Other"){
                                 update_lead_contact_address.et_cntspbuilding_name.visibility=View.VISIBLE
                             }else{
                                 update_lead_contact_address.et_cntspbuilding_name.visibility=View.GONE
-                            }
+                            }*/
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -1826,37 +1882,16 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         img?.let { Log.e("image", it) }
                         companyList = response.body()?.Response?.Data
                         company = ArrayList<String>()
-                        companyId = ArrayList<String>()
                         company?.add("Select Company")
-                        companyId?.add("0")
                         group = ArrayList<String>()
                         groupId = ArrayList<String>()
                         group?.add("Select Group")
                         groupId?.add("0")
                         for (item in companyList!!) {
                             company?.add(item.Company_Name + " (" + item.Company_ID + ")")
-                            companyId?.add(item.Company_ID)
                             group?.add(item.Group_Name + " (" + item.Group_ID + ")")
                             groupId?.add(item.Group_ID)
                         }
-
-                      /*  var groupPosition=0
-                        group?.forEachIndexed { index, s ->
-                            if(s==strGroup)
-                                groupPosition=index
-                            return@forEachIndexed
-                        }*/
-
-                       /* val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, company!!)
-                        adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        updatelayout_contactinfo_layout.sp_cmpny.adapter = adapter12
-                        updatelayout_contactinfo_layout.sp_cmpny.setSelection(comPosition)
-                        adapter12.notifyDataSetChanged()
-                        val adapter11 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, group!!)
-                        adapter11.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        updatelayout_contactinfo_layout.sp_upgroup.adapter = adapter11
-                        updatelayout_contactinfo_layout.sp_upgroup.setSelection(groupPosition)
-                        adapter11.notifyDataSetChanged()*/
 
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, company!!)
                         updatelayout_contactinfo_layout.et_updtcompany.threshold=0
@@ -2010,19 +2045,51 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         area?.add("Select Area")
                         areaCode?.add("")
                         for (item in areaList!!){
-                            item.AreaName?.let { area?.add(it) }
-                            item.AreaCode?.let { areaCode?.add(it) }
-                        }
-                        var areaPosition=0
-                        area?.forEachIndexed { index, s ->
-                            if(s==strArea)areaPosition=index
+                            area?.add(item.AreaName+"("+item.AreaCode+")")
+                            /*  item.AreaName?.let { area?.add(it) }
+                              item.AreaCode?.let { areaCode?.add(it) }*/
                         }
 
+
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, area!!)
+                        updatelayout_lead_installation_address.et_cntarea.threshold=0
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        updatelayout_lead_installation_address.sp_cnarea.adapter = adapter12
-                        updatelayout_lead_installation_address.sp_cnarea.setSelection(areaPosition)
-                        adapter12.notifyDataSetChanged()
+                        updatelayout_lead_installation_address.et_cntarea.setAdapter(adapter12)
+
+                        updatelayout_lead_installation_address.et_cntarea.setOnFocusChangeListener { _, b ->
+                            if (b) updatelayout_lead_installation_address.et_cntarea.showDropDown()
+                        }
+
+                        updatelayout_lead_installation_address.et_cntarea.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            str_inst_areaname = adapter12.getItem(position)
+                            val areaaa = updatelayout_lead_installation_address.et_cntarea.text.toString()
+                            val split = areaaa.split("(")
+                            val Area =  split[0]
+                            val Areaid = split[1]
+                            var areaPosition=0
+                            area?.forEachIndexed { index, s ->
+                                if(s==str_inst_areaname)areaPosition=index
+                                return@forEachIndexed
+                            }
+                            val areaId = Areaid.split(")")
+                            str_inst_area = areaId[0]
+                            if(Area=="Other"){
+                                updatelayout_lead_installation_address.et_upspefc_area.visibility=View.VISIBLE
+                            }else{
+                                updatelayout_lead_installation_address.et_upspefc_area.visibility=View.GONE
+                            }
+                            getBuilding(str_inst_areaname,str_inst_area)
+
+                       /*     if (position != 0) str_inst_area = areaCode?.get(position)
+*/
+                           /* if(str_inst_areaname=="Other"){
+                                updatelayout_lead_installation_address.et_upspefc_area.visibility=View.VISIBLE
+                            }else{
+                                updatelayout_lead_installation_address.et_upspefc_area.visibility=View.GONE
+                            }
+                         */
+
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -2038,7 +2105,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
 
     private fun getCntArea(str_city: String?, str_city_code: String) {
         val getLeadAreaRequest =   GetLeadAreaRequest(Constants.Get_AREA,Constants.AUTH_KEY,
-                str_city_code, str_city.toString() ,"",userName,password,false)
+                str_city_code, str_city.toString() ,"",userName,password,true)
 
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -2052,22 +2119,52 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         areaList= response.body()?.Response?.Data
                         cntarea = ArrayList<String>()
                         cntareaCode = ArrayList<String>()
-                        cntarea?.add("")
-                        cntareaCode?.add("")
+                     /*   cntarea?.add("")
+                        cntareaCode?.add("")*/
                         for (item in areaList!!){
-                            item.AreaName?.let { cntarea?.add(it) }
-                            item.AreaCode?.let { cntareaCode?.add(it) }
+                            cntarea?.add(item.AreaName+"("+item.AreaCode+")")
+                            /*  item.AreaName?.let { cntarea?.add(it) }
+                              item.AreaCode?.let { cntareaCode?.add(it) }*/
                         }
-                        var areaPosition=0
-                        cntarea?.forEachIndexed { index, s ->
-                            if(s==strContactArea)areaPosition=index
-                            println("Area code ${strContactArea}")
-                        }
+
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, cntarea!!)
+                        update_lead_contact_address.et_contacttarea.threshold=0
                         adapter12.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        binding.updateLeadContactAddress.spCntCnarea.adapter= adapter12
-                        binding.updateLeadContactAddress.spCntCnarea.setSelection(areaPosition)
-                        adapter12.notifyDataSetChanged()
+                        update_lead_contact_address.et_contacttarea.setAdapter(adapter12)
+
+                        update_lead_contact_address.et_contacttarea.setOnFocusChangeListener { _, b ->
+                            if (b)  update_lead_contact_address.et_contacttarea.showDropDown()
+                        }
+
+                        update_lead_contact_address.et_contacttarea.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            cntareaname = adapter12.getItem(position)
+                            val area =  update_lead_contact_address.et_contacttarea.text.toString()
+                            val split = area.split("(")
+                            val Area =  split[0]
+                            val Areaid = split[1]
+                            var areaPosition=0
+                            cntarea?.forEachIndexed { index, s ->
+                                if(s==cntareaname)areaPosition=index
+                                area.let { Log.e("idddddddddd", it) }
+                                return@forEachIndexed
+                            }
+                            val areaId = Areaid.split(")")
+                            str_add_area = areaId[0]
+                            if(Area=="Other"){
+                                update_lead_contact_address.et_cntspbuilding_num.visibility=View.VISIBLE
+                            }else{
+                                update_lead_contact_address.et_cntspbuilding_num.visibility=View.GONE
+                            }
+                            getContactBuilding(Area,str_add_area)
+                           /* if (position != 0) str_add_area = areaCode?.get(position)
+                            if(cntareaname=="Other"){
+                                update_lead_contact_address.et_cntspbuilding_num.visibility=View.VISIBLE
+                            }else{
+                                update_lead_contact_address.et_cntspbuilding_num.visibility=View.GONE
+                            }
+                          */
+
+                        }
 
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -2240,7 +2337,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         }else if(parent?.id ==R.id.sp_lead_src){
             updatelayout_channel_source.et_lead_source.setText(source?.get(position))
             str_lead_src = source?.get(position)
-        }else if(parent?.id == R.id.sp_cnarea){
+        }/*else if(parent?.id == R.id.sp_cnarea){
             updatelayout_lead_installation_address.et_cntarea.setText(area?.get(position))
             str_inst_area = areaCode?.get(position )
             str_inst_areaname= area?.get(position).toString()
@@ -2252,7 +2349,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             if(str_inst_area!=null || str_inst_areaname!=null) {
                 getBuilding(str_inst_areaname, str_inst_area)
             }
-        }else if(parent?.id == R.id.sp_cnt_cnarea){
+        }*//*else if(parent?.id == R.id.sp_cnt_cnarea){
             update_lead_contact_address.et_contacttarea.setText(cntarea?.get(position))
             str_add_area = cntareaCode?.get(position )
             cntareaname= cntarea?.get(position).toString()
@@ -2264,7 +2361,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             if(str_add_area!=null || cntareaname!=null) {
                 getContactBuilding(cntareaname, str_add_area)
             }
-        }
+        }*/
         else if(parent?.id == R.id.sp_city){
             updatelayout_lead_installation_address.et_add_city.setText(city?.get(position))
             str_city = city?.get(position).toString()

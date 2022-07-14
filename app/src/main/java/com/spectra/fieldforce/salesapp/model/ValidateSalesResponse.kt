@@ -1,5 +1,6 @@
 package com.spectra.fieldforce.salesapp.model
 
+
 data class ValidateSalesResponse(
     val Response: SalesResponse,
     val Status: String,

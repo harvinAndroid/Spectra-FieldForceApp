@@ -25,17 +25,18 @@ import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
 import com.spectra.fieldforce.utils.SalesAppConstants
-
-import kotlinx.android.synthetic.main.fragment_s_r_detail.*
 import kotlinx.android.synthetic.main.lead__contact_person_row.view.*
 import kotlinx.android.synthetic.main.lead_channel_source_row.view.*
 import kotlinx.android.synthetic.main.lead_company_details_row.view.*
 import kotlinx.android.synthetic.main.lead_contact_info.view.*
 import kotlinx.android.synthetic.main.lead_demo_fragment.*
 import kotlinx.android.synthetic.main.lead_installation_address_row.view.*
+import kotlinx.android.synthetic.main.lead_installation_address_row.view.et_specific_build
 import kotlinx.android.synthetic.main.lead_other_details_row.view.*
 import kotlinx.android.synthetic.main.lead_remarks_row.view.*
 import kotlinx.android.synthetic.main.lead_sdquestionare_details_row.view.*
+import kotlinx.android.synthetic.main.sales_contact_address_row.view.*
+import kotlinx.android.synthetic.main.salescontact_fragment.*
 import kotlinx.android.synthetic.main.toolbar.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +57,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
     private var areaList : ArrayList<AreaData>? = null
     private var area : ArrayList<String>? = null
     private var areaCode : ArrayList<String>? = null
-    private var Installarea : ArrayList<String>? = null
+    private var installArea : ArrayList<String>? = null
     private var InstallareaCode : ArrayList<String>? = null
     private var cityList : ArrayList<CityData>? = null
     private var city : ArrayList<String>? = null
@@ -72,7 +73,6 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
     private var building : ArrayList<String>? = null
     private var buildingCode : ArrayList<String>? = null
     private var company : ArrayList<String>? = null
-    private var companyId : ArrayList<String>? = null
     private var companyList: ArrayList<ComapnyData>? = null
     private var group : ArrayList<String>? = null
     private var groupId : ArrayList<String>? = null
@@ -92,62 +92,59 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
     private var str_area: String? = null
     private var str_city: String? = null
     private var str_city_code : String? = null
-    private var strCityCode : String? = null
     private var strCompanyName : String? = null
-    var str_customer_segmentid :String? = null
-    var str_lead_chnl : String? = null
-    var str_installbuild : String? = null
-    var str_lead_src : String? = null
-    var date :String ?=null
-    var mpls :String ?=null
-    var firesSet :String ?=null
-    var str_sub_bus : String? = null
-    var strVertical:String ? = null
-    var strIllServices :String? = null
-    var strCityReqd :String? = null
-    var strNetworkSecurity :String? = null
-    var strHosted :String? = null
-    var strBackBone:String ? = null
-    var strCustomer:String? = null
-    var strContract :String? = null
-    var strRoutingServices :String? = null
-    var strBroadServices :String? = null
-    var strLinksManaged :String? = null
-    var str_firm_type :String? = null
-    var str_industry_type :String? = null
-    var str_salutation :String? = null
-    var str_state : String? = null
-    var str_ext_serv_pro_one : String? = null
-    var str_serv_pro_two : String? = null
-    var str_media : String? = null
-    var str_data : String? = null
-    var str_cust_frwl : String? = null
-    var str_cust_vpn : String? = null
-    var str_cust_serv_one : String? = null
-    var str_cust_serv_two : String? = null
-    var str_voip : String? = null
-    var str_wifi : String? = null
-    var str_company :String ? = null
-    var str_grp :String ? = null
-    var str_rltn:String ? = null
-    var str_rltnname:String ? = null
-    var str_cmp :String? = null
-    var str_inst_country: String? = null
-    var str_inst_state: String? = null
-    var str_inst_area : String? = null
-    var str_inst_building_name : String? = null
-    var str_inst_build_num : String? = null
-    var str_add_state: String? = null
-    var str_add_state_code : String? = null
-    var str_add_city: String? = null
-    var str_add_area_code: String? = null
-    var str_add_building : String? = null
-    var str_chkbox : String? = null
-    var userName: String? = null
-    var password : String? = null
-    var str_specificbuild : String? = null
-    var strCity = ""
-    var strArea =""
+    private var str_customer_segmentid :String? = null
+    private var str_lead_chnl : String? = null
+    private var str_installbuild : String? = null
+    private var str_lead_src : String? = null
+    private var date :String ?=null
+    private var mpls :String ?=null
+    private var firesSet :String ?=null
+    private var str_sub_bus : String? = null
+    private var strVertical:String ? = null
+    private var strIllServices :String? = null
+    private var strCityReqd :String? = null
+    private var strNetworkSecurity :String? = null
+    private var strHosted :String? = null
+    private var strBackBone:String ? = null
+    private var strCustomer:String? = null
+    private var strContract :String? = null
+    private var strRoutingServices :String? = null
+    private var strBroadServices :String? = null
+    private var strLinksManaged :String? = null
+    private var str_firm_type :String? = null
+    private var str_industry_type :String? = null
+    private var str_salutation :String? = null
+    private var str_state : String? = null
+    private var str_ext_serv_pro_one : String? = null
+    private var str_serv_pro_two : String? = null
+    private var str_media : String? = null
+    private var str_data : String? = null
+    private var str_cust_frwl : String? = null
+    private var str_cust_vpn : String? = null
+    private var str_cust_serv_one : String? = null
+    private var str_cust_serv_two : String? = null
+    private var str_voip : String? = null
+    private var str_wifi : String? = null
+    private var str_grp :String ? = null
+    private var str_rltn:String ? = null
+    private var str_rltnname:String ? = null
+    private var str_cmp :String? = null
+    private var str_inst_state: String? = null
+    private var str_inst_area : String? = null
+    private var str_inst_building_name : String? = null
+    private var str_inst_build_num : String? = null
+    private var str_add_state: String? = null
+    private var str_add_state_code : String? = null
+    private var str_add_city: String? = null
+    private var str_add_area_code: String? = null
+    private var str_add_building : String? = null
+    private var str_chkbox : String? = null
+    private var userName: String? = null
+    private var password : String? = null
+    private var str_specificbuild : String? = null
+    private var strCity = ""
+    private var strArea =""
 
 
     override fun onCreateView(
@@ -197,10 +194,15 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             layout_lead_contact_address.sp_cnt_state.setSelection(cntstatePosition)
             cntstateAdapter?.notifyDataSetChanged()
           /* val buildingname =  layout_lead_installation_address.et_building.text*/
-            layout_lead_contact_address.et_cnt_building.setText(str_inst_building_name)
+          //  layout_lead_contact_address.et_cnt_building.setText(str_inst_building_name)
             getAddCity(str_inst_state)
             strCity = str_city_code.toString()
-            strArea = str_inst_area.toString()
+            str_add_area_code = str_inst_area.toString()
+
+            val areaName =  layout_lead_installation_address.et_installarea.text.toString()
+            layout_lead_contact_address.et_cntarea.setText(areaName)
+            val buildingName =  layout_lead_installation_address.et_building.text.toString()
+            layout_lead_contact_address.et_cnt_building.setText(buildingName)
             str_inst_building_name = str_inst_build_num.toString()
             val inst_floor = layout_lead_installation_address.et_add_floor.text.toString()
             val inst_pincode = layout_lead_installation_address.et_pin_code.text.toString()
@@ -224,7 +226,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             val jbtitle:String = layout_lead_company_details.et_job_title.text.toString()
             val area = str_add_area_code.toString()
             val addres_build =str_add_building.toString()
-            val city =str_add_city.toString()
+            val city = str_add_city.toString()
             val floor = layout_lead_contact_address.et_cnt_floor.text.toString()
             val pincode =  layout_lead_contact_address.et_cnt_pin_code.text.toString()
             val building =  layout_lead_contact_address.et_cnt_buildng_num.text.toString()
@@ -458,26 +460,26 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         layout_lead_company_details.sp_industype.onItemSelectedListener = this
         layout_lead_other_details.et_cust_void.setOnClickListener { layout_lead_other_details.sp_cst_voip.performClick() }
         layout_lead_other_details.sp_cst_voip.onItemSelectedListener = this
-        layout_lead_installation_address.et_country.setOnClickListener { layout_lead_installation_address.sp_cntry.performClick() }
-        layout_lead_installation_address.sp_cntry.onItemSelectedListener = this
+       /* layout_lead_installation_address.et_country.setOnClickListener { layout_lead_installation_address.sp_cntry.performClick() }
+        layout_lead_installation_address.sp_cntry.onItemSelectedListener = this*/
         layout_lead_installation_address.et_state.setOnClickListener { layout_lead_installation_address.sp_state.performClick() }
         layout_lead_installation_address.sp_state.onItemSelectedListener = this
         layout_lead_installation_address.et_add_city.setOnClickListener { layout_lead_installation_address.sp_city.performClick() }
         layout_lead_installation_address.sp_city.onItemSelectedListener = this
-        layout_lead_installation_address.et_installarea.setOnClickListener { layout_lead_installation_address.sp_cnarea.performClick() }
-        layout_lead_installation_address.sp_cnarea.onItemSelectedListener = this
+     /*   layout_lead_installation_address.et_installarea.setOnClickListener { layout_lead_installation_address.sp_cnarea.performClick() }
+        layout_lead_installation_address.sp_cnarea.onItemSelectedListener = this*/
        /* layout_lead_installation_address.et_building.setOnClickListener { layout_lead_installation_address.sp_building_nm.performClick() }
         layout_lead_installation_address.sp_building_nm.onItemSelectedListener = this
 */
         layout_lead_contact_address.et_cnt_city.setOnClickListener { layout_lead_contact_address.sp_cnt_city.performClick() }
         layout_lead_contact_address.sp_cnt_city.onItemSelectedListener = this
-        layout_lead_contact_address.et_cntarea.setOnClickListener { layout_lead_contact_address.sp_cnt_cnarea.performClick() }
-        layout_lead_contact_address.sp_cnt_cnarea.onItemSelectedListener = this
+     /*   layout_lead_contact_address.et_cntarea.setOnClickListener { layout_lead_contact_address.sp_cnt_cnarea.performClick() }
+        layout_lead_contact_address.sp_cnt_cnarea.onItemSelectedListener = this*/
       /*  layout_lead_contact_address.et_cnt_building.setOnClickListener { layout_lead_contact_address.sp_cnt_building_nm.performClick() }
         layout_lead_contact_address.sp_cnt_building_nm.onItemSelectedListener = this*/
 
-        layout_lead_contact_address.et_cnt_country.setOnClickListener { layout_lead_contact_address.sp_cnt_cntry.performClick() }
-        layout_lead_contact_address.sp_cnt_cntry.onItemSelectedListener = this
+     /*   layout_lead_contact_address.et_cnt_country.setOnClickListener { layout_lead_contact_address.sp_cnt_cntry.performClick() }
+        layout_lead_contact_address.sp_cnt_cntry.onItemSelectedListener = this*/
         layout_lead_contact_address.et_cnt_state.setOnClickListener { layout_lead_contact_address.sp_cnt_state.performClick() }
         layout_lead_contact_address.sp_cnt_state.onItemSelectedListener = this
 
@@ -548,7 +550,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             if(!hasFocus)
             {
                 val email = lead_contactinfo_layout.et_upemailid.text.toString()
-                val isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+                val isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 if (!isValid) {
                     Toast.makeText(context, "Invalid Email", Toast.LENGTH_LONG).show()
                 }
@@ -559,7 +561,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
             if(!hasFocus)
             {
                 val mobile = lead_contactinfo_layout.et_mobile_num.text.toString()
-                val isValid = Patterns.PHONE.matcher(mobile).matches();
+                val isValid = Patterns.PHONE.matcher(mobile).matches()
                 if (!isValid) {
                     Toast.makeText(context, "Invalid Mobile Number", Toast.LENGTH_LONG).show()
                 }
@@ -596,9 +598,6 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         val option = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, SalesAppConstants.list_of_option) }
         option?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_other_details.sp_cst_voip?.adapter = option
-        val cntry = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, SalesAppConstants.country_name) }
-        cntry?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        layout_lead_installation_address.sp_cntry?.adapter = cntry
         val state = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, SalesAppConstants.list_of_state) }
         state?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_installation_address.sp_state?.adapter = state
@@ -611,9 +610,7 @@ class CreateLeadFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSele
         firewal?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_other_details.sp_intrs_frwal?.adapter = firewal
 
-        val ccntry = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, SalesAppConstants.country_name) }
-        ccntry?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        layout_lead_contact_address.sp_cnt_cntry?.adapter = ccntry
+
         val sstate = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, SalesAppConstants.list_of_state) }
         sstate?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         layout_lead_contact_address.sp_cnt_state?.adapter = sstate
@@ -934,13 +931,14 @@ private fun outProgress(){
                         buildingList= response.body()?.Response?.Data
                         building = ArrayList<String>()
                         buildingCode = ArrayList<String>()
-                        building?.add("Select Building")
-                        buildingCode?.add("")
+                      /*  building?.add("Select Building")
+                        buildingCode?.add("")*/
                         for (item in buildingList!!){
-                            item.BuildingName?.let { building?.add(it) }
-                            item.BuildingCode?.let { buildingCode?.add(it) }
-                        }
+                            building?.add(item.BuildingName+"("+item.BuildingCode+")")
 
+                            /*   item.BuildingName?.let { building?.add(it) }
+                               item.BuildingCode?.let { buildingCode?.add(it) }*/
+                        }
                         val adapter12 = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, building!!) }
                         layout_lead_installation_address.et_building.threshold=0
                         adapter12?.setDropDownViewResource(android.R.layout.simple_spinner_item)
@@ -951,9 +949,20 @@ private fun outProgress(){
                         }
                         layout_lead_installation_address.et_building.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
                             str_inst_building_name = adapter12?.getItem(position)
+                            val buildingName = layout_lead_installation_address.et_building.text.toString()
+                           /* str_inst_build_num = buildingCode?.get(position)*/
+                            val split = buildingName.split("(")
+                            val buildingId = split.get(1)
+                            var buildingPosition=0
+                            building?.forEachIndexed { index, s ->
+                                if(s==str_inst_building_name)buildingPosition=index
+                                str_inst_building_name.let { it?.let { it1 -> Log.e("idddddddddd", it1) } }
+                                return@forEachIndexed
+                            }
+                            val areaId = buildingId.split(")")
+                            str_inst_build_num = areaId[0]
+                            /* strInstallBuildCode = buildingCode?.get(position)*/
 
-                            if (position != 0) str_inst_build_num =
-                                 buildingCode?.get(position)
                             if(str_inst_building_name=="Other"){
                                 layout_lead_installation_address.et_specific_build.visibility=View.VISIBLE
                             }else{
@@ -1019,11 +1028,12 @@ private fun outProgress(){
                         buildingList= response.body()?.Response?.Data
                         building = ArrayList<String>()
                         buildingCode = ArrayList<String>()
-                        building?.add("Select Building")
-                        buildingCode?.add("")
+                       /* building?.add("Select Building")
+                        buildingCode?.add("")*/
                         for (item in buildingList!!) {
-                            item.BuildingName?.let { building?.add(it) }
-                            item.BuildingCode?.let { buildingCode?.add(it) }
+                            building?.add(item.BuildingName+"("+item.BuildingCode+")")
+                          /*  item.BuildingName?.let { building?.add(it) }
+                            item.BuildingCode?.let { buildingCode?.add(it) }*/
                         }
 
                         val adapter12 = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, building!!) }
@@ -1036,16 +1046,30 @@ private fun outProgress(){
                         }
                         layout_lead_contact_address.et_cnt_building.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
                             str_inst_building_name = adapter12?.getItem(position)
-
-                            if (position != 0) str_add_building =
-                                buildingCode?.get(position)
-                            Toast.makeText(context,str_add_building,Toast.LENGTH_LONG).show()
-
-                            if(str_inst_building_name=="Other"){
+                            val build = layout_lead_contact_address.et_cnt_building.text.toString()
+                            val split = build.split("(")
+                            val buildingId = split[1]
+                            val buildingName = split[0]
+                            var buildingPosition=0
+                            building?.forEachIndexed { index, s ->
+                                if(s==str_inst_building_name)buildingPosition=index
+                                str_inst_building_name.let { it?.let { it1 -> Log.e("idddddddddd", it1) } }
+                                return@forEachIndexed
+                            }
+                            val areaId = buildingId.split(")")
+                            str_add_building = areaId[0]
+                            /* strInstallBuildCode = buildingCode?.get(position)*/
+                            if(buildingName=="Other"){
                                 layout_lead_contact_address.et_cntbuilding.visibility=View.VISIBLE
                             }else{
                                 layout_lead_contact_address.et_cntbuilding.visibility=View.GONE
                             }
+                          /* str_add_building = buildingCode?.get(position)*/
+                           /* if(str_inst_building_name=="Other"){
+                                layout_lead_contact_address.et_cntbuilding.visibility=View.VISIBLE
+                            }else{
+                                layout_lead_contact_address.et_cntbuilding.visibility=View.GONE
+                            }*/
                         }
 
                     } catch (e: Exception) {
@@ -1106,19 +1130,50 @@ private fun outProgress(){
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val img = response.body()?.Response?.Message
-                        img?.let { Log.e("image", it) }
                         areaList= response.body()?.Response?.Data
-                        Installarea = ArrayList<String>()
+                        installArea = ArrayList<String>()
                         InstallareaCode = ArrayList<String>()
-                        Installarea?.add("Select Area")
-                        InstallareaCode?.add("")
+                      /*  installArea?.add("Select Area")
+                        InstallareaCode?.add("")*/
                         for (item in areaList!!) {
-                            item.AreaName?.let { Installarea?.add(it) }
-                            item.AreaCode?.let { InstallareaCode?.add(it) }
+                            installArea?.add(item.AreaName+"("+item.AreaCode+")")
+                           /* item.AreaName?.let { installArea?.add(it) }*/
+                         /*   item.AreaCode?.let { InstallareaCode?.add(it) }*/
                         }
-                        val adapter12 = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, Installarea!!) }
+
+
+                        val adapter12 = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, installArea!!) }
+                        layout_lead_installation_address.et_installarea.threshold=0
                         adapter12?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        layout_lead_installation_address.sp_cnarea.adapter = adapter12
+                        layout_lead_installation_address.et_installarea.setAdapter(adapter12)
+
+                        layout_lead_installation_address.et_installarea.setOnFocusChangeListener { _, b ->
+                            if (b) layout_lead_installation_address.et_installarea.showDropDown()
+                        }
+
+                        layout_lead_installation_address.et_installarea.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            str_inst_area = adapter12?.getItem(position)
+                             /*str_inst_area = areaCode?.get(position)*/
+                            val area = layout_lead_installation_address.et_installarea.text.toString()
+                            val split = area.split("(")
+                            val Area =  split[0]
+                            val Areaid = split[1]
+                            var areaPosition=0
+                            installArea?.forEachIndexed { index, s ->
+                                if(s==area)areaPosition=index
+                                area.let { Log.e("idddddddddd", it) }
+                                return@forEachIndexed
+                            }
+                            val areaId = Areaid.split(")")
+                            str_installbuild = areaId[0]
+                            if(str_installbuild=="Other"){
+                                layout_lead_installation_address.et_specific_area.visibility=View.VISIBLE
+                            }else{
+                                layout_lead_installation_address.et_specific_area.visibility=View.GONE
+                            }
+                            getBuilding( str_installbuild,Area)
+
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -1149,27 +1204,48 @@ private fun outProgress(){
                         areaList= response.body()?.Response?.Data
                         area = ArrayList<String>()
                         areaCode = ArrayList<String>()
-                        area?.add("Select Area")
-                        areaCode?.add("")
+                       /* area?.add("Select Area")
+                        areaCode?.add("")*/
                         for (item in areaList!!) {
-                            item.AreaName?.let { area?.add(it) }
-                            item.AreaCode?.let { areaCode?.add(it) }
+                            area?.add(item.AreaName+"("+item.AreaCode+")")
+                          /*  item.AreaName?.let { area?.add(it) }
+                            item.AreaCode?.let { areaCode?.add(it) }*/
                         }
 
-                        var areaPosition=0
-                        areaCode?.forEachIndexed { index, s ->
-                            if(s==strArea)areaPosition=index
-                            println("Area code ${strArea}")
-                        }
-                        val adapter12 = context?.let {
-                            ArrayAdapter(
-                                it, android.R.layout.simple_spinner_item, area!!
-                            )
-                        }
+                        val adapter12 = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, area!!) }
+                        layout_lead_contact_address.et_cntarea.threshold=0
                         adapter12?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        layout_lead_contact_address.sp_cnt_cnarea.adapter = adapter12
-                        layout_lead_contact_address.sp_cnt_cnarea.setSelection(areaPosition)
-                        adapter12?.notifyDataSetChanged()
+                        layout_lead_contact_address.et_cntarea.setAdapter(adapter12)
+
+                        layout_lead_contact_address.et_cntarea.setOnFocusChangeListener { _, b ->
+                            if (b) layout_lead_contact_address.et_cntarea.showDropDown()
+                        }
+
+                        layout_lead_contact_address.et_cntarea.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            str_area = adapter12?.getItem(position)
+                            val area = layout_lead_contact_address.et_cntarea.text.toString()
+                            val split = area.split("(")
+                            val Area =  split[0]
+                            val Areaid = split[1]
+                            var areaPosition=0
+                            installArea?.forEachIndexed { index, s ->
+                                if(s==str_area)areaPosition=index
+                                return@forEachIndexed
+                            }
+                            val areaId = Areaid.split(")")
+                            str_add_area_code = areaId[0]
+                            if(Area=="Other"){
+                                layout_lead_contact_address.et_cntspecific_area.visibility=View.VISIBLE
+                            }else{
+                                layout_lead_contact_address.et_cntspecific_area.visibility=View.GONE
+                            }
+                            getAddBuilding(str_add_area_code,Area)
+                          /* str_add_area_code = areaCode?.get(position)
+                          */
+                        }
+
+
+
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -1274,7 +1350,6 @@ private fun outProgress(){
                         img?.let { Log.e("image", it) }
                         companyList= response.body()?.Response?.Data
                         company = ArrayList<String>()
-                        companyId = ArrayList<String>()
                         company?.add("Select Company")
                         group = ArrayList<String>()
                         groupId = ArrayList<String>()
@@ -1282,7 +1357,6 @@ private fun outProgress(){
                         for (item in companyList!!){
                            // company?.add(item.Company_Name)
                             company?.add(item.Company_Name +" ("+item.Company_ID+")")
-                            companyId?.add(item.Company_ID)
                             group?.add(item.Group_Name +" ("+item.Group_ID+")")
                             groupId?.add(item.Group_ID)
                         }
@@ -1649,7 +1723,7 @@ private fun outProgress(){
         }else if(parent?.id ==R.id.sp_lead_src){
             layout_channel_source.et_lead_source.setText(source?.get(position))
             str_lead_src = source?.get(position)
-        }else if(parent?.id == R.id.sp_cnt_cnarea){
+        }/*else if(parent?.id == R.id.sp_cnt_cnarea){
             layout_lead_contact_address.et_cntarea.setText(area?.get(position))
             str_area = area?.get(position).toString()
             str_add_area_code =  areaCode?.get(position )
@@ -1659,9 +1733,9 @@ private fun outProgress(){
             }else{
                 layout_lead_contact_address.et_cntsecifc_area.visibility=View.GONE
             }
-        }else if(parent?.id == R.id.sp_cnarea){
-            layout_lead_installation_address.et_installarea.setText(Installarea?.get(position))
-            str_installbuild = Installarea?.get(position).toString()
+        }*//*else if(parent?.id == R.id.sp_cnarea){
+            layout_lead_installation_address.et_installarea.setText(installArea?.get(position))
+            str_installbuild = installArea?.get(position).toString()
             str_inst_area = InstallareaCode?.get(position )
             str_inst_area?.let { getBuilding(it, str_installbuild) }
             if(str_installbuild=="Other"){
@@ -1669,7 +1743,7 @@ private fun outProgress(){
             }else{
                 layout_lead_installation_address.et_spec_area.visibility=View.GONE
             }
-        }
+        }*/
        /* else if(parent?.id == R.id.sp_building_nm) {
             layout_lead_installation_address.et_building.setText(building?.get(position))
             str_inst_building_name = building?.get(position).toString()

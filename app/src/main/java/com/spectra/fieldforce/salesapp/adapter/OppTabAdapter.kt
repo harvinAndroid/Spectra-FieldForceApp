@@ -19,7 +19,6 @@ internal class OppTabAdapter(
                 val getAllOpportunityFrag = GetAllOppurtunityFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "All")
-                bundle.putString("TAG", "0")
                 getAllOpportunityFrag.arguments = bundle
                 return getAllOpportunityFrag
             }
@@ -27,7 +26,6 @@ internal class OppTabAdapter(
                 val getAllOpportunityFrag = GetAllOppurtunityFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "Open")
-                bundle.putString("TAG", "1")
                 getAllOpportunityFrag.arguments = bundle
                 return getAllOpportunityFrag
             }
@@ -35,7 +33,6 @@ internal class OppTabAdapter(
                 val getAllOpportunityFrag = GetAllOppurtunityFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "Won")
-                bundle.putString("TAG", "1")
                 getAllOpportunityFrag.arguments = bundle
                 return getAllOpportunityFrag
             }
@@ -43,7 +40,6 @@ internal class OppTabAdapter(
                 val getAllOpportunityFrag = GetAllOppurtunityFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "Lost")
-                bundle.putString("TAG", "1")
                 getAllOpportunityFrag.arguments = bundle
                 return getAllOpportunityFrag
             }

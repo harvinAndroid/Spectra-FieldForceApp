@@ -117,7 +117,7 @@ class BarChartSrCountFrag : Fragment(), View.OnClickListener {
 
             val ffasrBarChartReq= FFASRBarChartReq(
                 Constants.GET_DASHBOARDCASES,
-                Constants.AUTH_KEY,result,/*password*/"Crdm@311#",currentDate,"crm.deploy"/*userName*/)
+                Constants.AUTH_KEY,result,password,currentDate,userName)
 
             val apiService = ApiClient.getClient().create(ApiInterface::class.java)
             val call = apiService.getSrCount(ffasrBarChartReq)

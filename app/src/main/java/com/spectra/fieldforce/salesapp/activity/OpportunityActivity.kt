@@ -515,7 +515,7 @@ class OpportunityActivity:AppCompatActivity(), View.OnClickListener,AdapterView.
             Toast.makeText(this@OpportunityActivity, "Please enter Reason ", Toast.LENGTH_SHORT).show()
         }else if(strApprovalStatus=="Yes"&& reason.isBlank()&&strStatus=="In Progress"){
             Toast.makeText(this@OpportunityActivity, "Please enter Reason ", Toast.LENGTH_SHORT).show()
-        }else if(subBusSegment=="SDWAN" && strType?.isBlank()==true){
+        }else if(subBusSegment=="SDWAN" && strType?.isBlank()==true||strType=="0"){
             Toast.makeText(this, "Please Enter the Type Of Order",Toast.LENGTH_SHORT).show()
         }else if(subBusSegment==AppConstants.SDWAN && strType== "122050000"&&POCC.isBlank()) {
             Toast.makeText(this, "Please Select the POC", Toast.LENGTH_SHORT).show()

@@ -2,7 +2,7 @@ package com.spectra.fieldforce.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LoginResponse {
+public class LoginResponse  {
     @SerializedName("Status")
     private String status;
     @SerializedName("ErrorCode")

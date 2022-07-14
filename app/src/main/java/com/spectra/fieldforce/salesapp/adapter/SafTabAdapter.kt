@@ -21,7 +21,6 @@ internal class SafTabAdapter(
                 val getAllSAFFrag = GetAllSAFFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "ALL")
-                bundle.putString("TAG", "0")
                 getAllSAFFrag.arguments = bundle
                 return getAllSAFFrag
             }
@@ -29,7 +28,6 @@ internal class SafTabAdapter(
                 val getAllSAFFrag = GetAllSAFFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "Completed")
-                bundle.putString("TAG", "1")
                 getAllSAFFrag.arguments = bundle
                 return getAllSAFFrag
             }
@@ -37,7 +35,6 @@ internal class SafTabAdapter(
                 val getAllSAFFrag = GetAllSAFFrag()
                 val bundle = Bundle()
                 bundle.putString("STATUS", "!= Completed")
-                bundle.putString("TAG", "1")
                 getAllSAFFrag.arguments = bundle
                 return getAllSAFFrag
             }

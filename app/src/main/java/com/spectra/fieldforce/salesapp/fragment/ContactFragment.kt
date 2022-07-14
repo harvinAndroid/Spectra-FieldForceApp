@@ -1,6 +1,6 @@
 package com.spectra.fieldforce.salesapp.fragment
 
-import android.annotation.SuppressLint
+
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.*
-
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.spectra.fieldforce.R
@@ -29,17 +28,18 @@ import com.spectra.fieldforce.utils.SalesConstant
 import kotlinx.android.synthetic.main.contact_general_info.view.*
 import kotlinx.android.synthetic.main.contact_remarks_row.view.*
 import kotlinx.android.synthetic.main.flr_fragment.*
+import kotlinx.android.synthetic.main.lead_demo_fragment.*
+import kotlinx.android.synthetic.main.lead_installation_address_row.view.*
 import kotlinx.android.synthetic.main.sales_contact_address_row.view.*
+import kotlinx.android.synthetic.main.sales_contact_address_row.view.et_spec_area
+import kotlinx.android.synthetic.main.sales_contact_address_row.view.et_specific_build
 import kotlinx.android.synthetic.main.salescontact_fragment.*
-
-
 import kotlinx.android.synthetic.main.update_leadtoolbar.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 
 class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelectedListener,
@@ -226,10 +226,10 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
         layout_ContactAddress.sp_ContactState.onItemSelectedListener = this
         layout_ContactAddress.et_ContactCity.setOnClickListener { layout_ContactAddress.sp_ContactCity.performClick() }
         layout_ContactAddress.sp_ContactCity.onItemSelectedListener = this
-        layout_ContactAddress.et_ContactArea.setOnClickListener { layout_ContactAddress.sp_ContactArea.performClick() }
+    /*    layout_ContactAddress.et_ContactArea.setOnClickListener { layout_ContactAddress.sp_ContactArea.performClick() }
         layout_ContactAddress.sp_ContactArea.onItemSelectedListener = this
         layout_ContactAddress.et_Contactbuilding.setOnClickListener { layout_ContactAddress.sp_Contactbuilding_nm.performClick() }
-        layout_ContactAddress.sp_Contactbuilding_nm.onItemSelectedListener = this
+        layout_ContactAddress.sp_Contactbuilding_nm.onItemSelectedListener = this*/
         contactLayout.et_ctEmailId.setOnFocusChangeListener { v, hasFocus ->
             if(!hasFocus) {
                 val email =  contactLayout.et_ctEmailId.text.toString()
@@ -269,9 +269,7 @@ class ContactFragment:Fragment(), View.OnClickListener,AdapterView.OnItemSelecte
     fun getSource(str_lead_chnl: String?) {
         val getLeadSourceRequest =
             str_lead_chnl?.let {
-                GetLeadSourceRequest(Constants.GET_SOURCE,Constants.AUTH_KEY,
-                    it,userName,password)
-            }
+                GetLeadSourceRequest(Constants.GET_SOURCE,Constants.AUTH_KEY, it,userName,password) }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getLeadSource(getLeadSourceRequest)
         call.enqueue(object : Callback<GetLeadSourceResp?> {
@@ -497,15 +495,42 @@ private fun outProgress(){
                         buildingList= response.body()?.Response?.Data
                         building = ArrayList<String>()
                         buildingCode = ArrayList<String>()
-                        building?.add("Select Building")
-                        buildingCode?.add("")
+                       // building?.add("Select Building")
+                      //  buildingCode?.add("")
                         for (item in buildingList!!){
-                            item.BuildingName?.let { building?.add(it) }
-                            item.BuildingCode?.let { buildingCode?.add(it) }
+                          /*  item.BuildingName?.let { building?.add(it) }
+                            item.BuildingCode?.let { buildingCode?.add(it) }*/
+                            building?.add(item.BuildingName+"("+item.BuildingCode+")")
                         }
+
                         val adapter12 = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, building!!) }
+                        layout_ContactAddress.et_Contactbuilding.threshold=0
                         adapter12?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        layout_ContactAddress.sp_Contactbuilding_nm.adapter = adapter12
+                        layout_ContactAddress.et_Contactbuilding.setAdapter(adapter12)
+
+                        layout_ContactAddress.et_Contactbuilding.setOnFocusChangeListener { _, b ->
+                            if (b) layout_ContactAddress.et_Contactbuilding.showDropDown()
+                        }
+                        layout_ContactAddress.et_Contactbuilding.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            strInstallBuild = adapter12?.getItem(position)
+                            val split = strInstallBuild?.split("(")
+                            val buildingId = split?.get(1)
+                            val buildingName = split?.get(0)
+                            var buildingPosition=0
+                            building?.forEachIndexed { index, s ->
+                                if(s==strInstallBuild)buildingPosition=index
+                                strInstallBuild.let { it?.let { it1 -> Log.e("idddddddddd", it1) } }
+                                return@forEachIndexed
+                            }
+                            val areaId = buildingId?.split(")")
+                            strInstallBuildCode = areaId?.get(0)
+                            /* strInstallBuildCode = buildingCode?.get(position)*/
+                            if(buildingName=="Other"){
+                                layout_ContactAddress.et_Contactspecific_building.visibility=View.VISIBLE
+                            }else{
+                                layout_ContactAddress.et_Contactspecific_building.visibility=View.GONE
+                            }
+                        }
 
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -537,15 +562,46 @@ private fun outProgress(){
                         areaList= response.body()?.Response?.Data
                         Installarea = ArrayList<String>()
                         InstallareaCode = ArrayList<String>()
-                        Installarea?.add("Select Area")
-                        InstallareaCode?.add("")
+                       /* Installarea?.add("Select Area")
+                        InstallareaCode?.add("")*/
                         for (item in areaList!!) {
-                            item.AreaName?.let { Installarea?.add(it) }
-                            item.AreaCode?.let { InstallareaCode?.add(it) }
+                          //  item.AreaName?.let { Installarea?.add(it) }
+                            Installarea?.add(item.AreaName +" ("+item.AreaCode+")")
+                          //  item.AreaCode?.let { InstallareaCode?.add(it) }
                         }
-                        val adapter12 = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, Installarea!!) }
+
+
+                            val adapter12 = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, Installarea!!) }
+                        layout_ContactAddress.et_ContactArea.threshold=0
                         adapter12?.setDropDownViewResource(android.R.layout.simple_spinner_item)
-                        layout_ContactAddress.sp_ContactArea.adapter = adapter12
+                        layout_ContactAddress.et_ContactArea.setAdapter(adapter12)
+                        layout_ContactAddress.et_ContactArea.setOnFocusChangeListener { _, b ->
+                            if (b) layout_ContactAddress.et_ContactArea.showDropDown()
+                        }
+
+                        layout_ContactAddress.et_ContactArea.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                            str_area = adapter12?.getItem(position)
+                            val area = layout_ContactAddress.et_ContactArea.text.toString()
+
+                            val split = area.split("(")
+                            val Areaid = split[1]
+                            val AreaName = split[0]
+                            var areaPosition=0
+                            Installarea?.forEachIndexed { index, s ->
+                                if(s==area)areaPosition=index
+                                area.let { Log.e("idddddddddd", it) }
+                                return@forEachIndexed
+                            }
+                            val areaId = Areaid.split(")")
+                            str_add_area_code = areaId[0]
+                            str_add_area_code?.let { Log.e("compid", it) }
+                            if(AreaName=="Other"){
+                                layout_ContactAddress.et_spec_area.visibility=View.VISIBLE
+                            }else{
+                                layout_ContactAddress.et_spec_area.visibility=View.GONE
+                            }
+                            getBuilding(str_area,str_add_area_code)
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -611,7 +667,7 @@ private fun outProgress(){
         }else if(parent?.id ==R.id.sp_ctSource){
             contactLayout.et_ctSource.setText(source?.get(position))
             str_lead_src = source?.get(position)
-        }else if(parent?.id == R.id.sp_ContactArea){
+        }/*else if(parent?.id == R.id.sp_ContactArea){
             layout_ContactAddress.et_ContactArea.setText(Installarea?.get(position))
             str_area = Installarea?.get(position).toString()
             str_add_area_code =  InstallareaCode?.get(position)
@@ -621,7 +677,7 @@ private fun outProgress(){
             }else{
                 layout_ContactAddress.et_spec_area.visibility=View.GONE
             }
-        }else if(parent?.id == R.id.sp_ContactCity){
+        }*/else if(parent?.id == R.id.sp_ContactCity){
             layout_ContactAddress.et_ContactCity.setText(Installcity?.get(position))
             str_city = Installcity?.get(position).toString()
             str_city_code = InstallcityCode?.get(position )
@@ -631,7 +687,7 @@ private fun outProgress(){
             str_state = SalesConstant.list_of_state[position]
             str_inst_state = SalesConstant.list_state_code[position]
             getCity(str_inst_state)
-        }else if(parent?.id == R.id.sp_Contactbuilding_nm){
+        }/*else if(parent?.id == R.id.sp_Contactbuilding_nm){
             layout_ContactAddress.et_Contactbuilding.setText(building?.get(position))
             strInstallBuild = building?.get(position)
             strInstallBuildCode = buildingCode?.get(position)
@@ -640,9 +696,9 @@ private fun outProgress(){
             }else{
                 layout_ContactAddress.et_specific_build.visibility=View.GONE
             }
-        }else if(parent?.id == R.id.sp_ctStatusReason){
-            contactLayout.et_ctStatusReason.setText(resources.getStringArray(R.array.list_of_conReason).get(position))
-            strStatusReason = resources.getStringArray(R.array.list_of_conReasonValue).get(position).toString()
+        }*/else if(parent?.id == R.id.sp_ctStatusReason){
+            contactLayout.et_ctStatusReason.setText(resources.getStringArray(R.array.list_of_conReason)[position])
+            strStatusReason = resources.getStringArray(R.array.list_of_conReasonValue)[position].toString()
             if(strStatusReason=="111260000"){
                 contactLayout.follow.visibility=View.VISIBLE
             }else{
@@ -656,11 +712,11 @@ private fun outProgress(){
             contactLayout.et_ctPlanCategory.setText((CategoryName?.get(position)))
             strCategoryName = (CategoryName?.get(position))
         }else if(parent?.id == R.id.sp_ctDisposition){
-            contactLayout.et_ctDisposition.setText(resources.getStringArray(R.array.listDisposition).get(position))
-            strDisposition = resources.getStringArray(R.array.listDispositionValue).get(position).toString()
+            contactLayout.et_ctDisposition.setText(resources.getStringArray(R.array.listDisposition)[position])
+            strDisposition = resources.getStringArray(R.array.listDispositionValue)[position].toString()
         }else if(parent?.id == R.id.sp_ctDNCNum){
-            contactLayout.et_contactDNC.setText(resources.getStringArray(R.array.listDNC).get(position))
-            strDNC = resources.getStringArray(R.array.list_of_gstval).get(position).toString()
+            contactLayout.et_contactDNC.setText(resources.getStringArray(R.array.listDNC)[position])
+            strDNC = resources.getStringArray(R.array.list_of_gstval)[position].toString()
         }
     }
 
