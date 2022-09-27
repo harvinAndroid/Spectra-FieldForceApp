@@ -43,6 +43,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.spectra.fieldforce.application.App;
 import com.spectra.fieldforce.model.CanIdRequest;
 import com.spectra.fieldforce.model.ChangeBinRequest;
 import com.spectra.fieldforce.model.ChangeBinResponse;
@@ -58,6 +59,7 @@ import com.spectra.fieldforce.activity.Activity_Resolve;
 import com.spectra.fieldforce.activity.MainActivity;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
+import com.spectra.fieldforce.utils.AppConstants;
 import com.spectra.fieldforce.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -99,9 +101,9 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
             btnSubmitChnageBin,btnUnhold,btnitemConsumption;
     private EditText DateEdit, rfo,change_bin_note;
     private FloatingActionButton fab_item_consumption;
-    private Spinner resolveContacted, changeStatus, rc1, holdReason, contacted,sp_change_bin,spntemConsumption;
+    private Spinner resolveContacted, changeStatus, rc1, holdReason, holdReasontwo,contacted,sp_change_bin,spntemConsumption;
     private String status,action_code,str_segment,bin_name,str_CanId,strAssignmentStatus;
-    private String engId,str_etr,str_contact_name,str_contact_num;
+    private String engId,str_etr,str_contact_name,str_contact_num,str_holdReason;
     private FrameLayout progressOverlay;
     private boolean startFlag, endFlag;
     private RelativeLayout startLayout, endLayout, resolveLayout, holdLayout,unholdlayout,additemLayout;
@@ -193,6 +195,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         btnResolveSubmit = (Button) view.findViewById(R.id.btnResolveSubmit);
         changeStatus = (Spinner) view.findViewById(R.id.changeStatus);
         holdReason = (Spinner) view.findViewById(R.id.holdReason);
+        holdReasontwo = (Spinner) view.findViewById(R.id.holdReasontwo);
         rc1 = (Spinner) view.findViewById(R.id.rc1);
         DateEdit = (EditText) view.findViewById(R.id.dateTimeText);
         rfo = (EditText) view.findViewById(R.id.rfo);
@@ -212,7 +215,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         change_bin_note = view.findViewById(R.id.change_bin_note);
         BottomNavigationView bottom_navigation = view.findViewById(R.id.bottom_navigation);
         bottom_navigation.setOnNavigationItemSelectedListener(this);
-       /* bindChangeStatus(0);*/
         GetChangeBin();
         changeStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -221,8 +223,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                 switch (status) {
                     case RESOLVE:
                         checkStatus();
-                       // addMaterial();
-                       /* resolveLayout.setVisibility(View.VISIBLE);*/
                         holdLayout.setVisibility(View.GONE);
                         unholdlayout.setVisibility(View.GONE);
                         break;
@@ -232,6 +232,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                         holdLayout.setVisibility(View.VISIBLE);
                         getActionCode();
                         bindContacted();
+                        bindHoldReasonm();
                         break;
                     case UNHOLD:
                         unholdlayout.setVisibility(View.VISIBLE);
@@ -245,6 +246,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                         bindContacted();
                         break;
                 }
+
             }
 
             @Override
@@ -255,7 +257,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
 
         btnStartTime.setOnClickListener(v -> {
             boolean isLoc = getLatLong(startLocation);
-            if (isLoc == true) {
+            if (isLoc) {
                 Calendar c = Calendar.getInstance();
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String formattedDate = df.format(c.getTime());
@@ -267,7 +269,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         });
         btnEndTime.setOnClickListener(v -> {
             boolean isLoc = getLatLong(endLocation);
-            if (isLoc == true) {
+            if (isLoc) {
                 Calendar c = Calendar.getInstance();
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String formattedDate = df.format(c.getTime());
@@ -297,9 +299,12 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
             } else if (contacted.getSelectedItem().toString().equals("Select Status")) {
                 isValid = false;
                 Toast.makeText(activity, "Please select customer is contacted or not", Toast.LENGTH_LONG).show();
+            }else if(holdReasontwo.getSelectedItem().toString().equals("Hold Reason")||holdReasontwo.getSelectedItem().toString().equals("0")) {
+                isValid = false;
+                Toast.makeText(activity, "Please select Hold Reason", Toast.LENGTH_LONG).show();
             }
 
-            if (isValid == true) {
+            if (isValid) {
                 submitOnHold();
             }
         });
@@ -348,7 +353,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                     e.printStackTrace();
                 }
             }
-            if (isValid == true) {
+            if (isValid) {
                 updateETR();
             }
         });
@@ -398,39 +403,74 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, caseStatus);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         changeStatus.setAdapter(adapter);
     }
 
-
-    private void addMaterial(){
-        addMater = new ArrayList<String>();
-        addMater.add("Select Option");
-        addMater.add("Yes");
-        addMater.add("No");
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,addMater);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spntemConsumption.setAdapter(adapter1);
-    }
 
     private void bindContacted() {
         ArrayList<String> contact = new ArrayList<String>();
         contact.add(SELECT_STATUS);
         contact.add(YES);
         contact.add(NO);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, contact);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item,contact);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         contacted.setAdapter(adapter);
         resolveContacted.setAdapter(adapter);
     }
 
+    private void bindHoldReasonm() {
+        ArrayList<String> holdReason = new ArrayList<String>();
+        holdReason.add("Hold Reason");
+        holdReason.add("Customer Appointment not received");
+        holdReason.add("Under observation by Customer");
+        holdReason.add("Massoutage");
+        holdReason.add("Customer not Contactable");
+        holdReason.add("Customer Response Awaited");
+        holdReason.add("Under observation by Spectra");
+        holdReason.add("Permission Issue");
+        holdReason.add("Force majeure - COVID");
+        holdReason.add("Customer House Locked");
+        holdReason.add("Force majeure - Flood");
+        holdReason.add("Notice Period Extended on Customer Request");
+
+        ArrayList<String> holdReasonValue = new ArrayList<String>();
+        holdReasonValue.add("0");
+        holdReasonValue.add("111260000");
+        holdReasonValue.add("111260001");
+        holdReasonValue.add("111260002");
+        holdReasonValue.add("111260003");
+        holdReasonValue.add("111260004");
+        holdReasonValue.add("111260005");
+        holdReasonValue.add("111260006");
+        holdReasonValue.add("111260007");
+        holdReasonValue.add("111260008");
+        holdReasonValue.add("111260009");
+        holdReasonValue.add("111260010");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, holdReason);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        holdReasontwo.setAdapter(adapter);
+
+        holdReasontwo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int itemPosition = adapterView.getSelectedItemPosition();
+                str_holdReason = holdReasonValue.get(itemPosition);
+                Log.e("code", str_holdReason);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
 
     private void GetChangeBin() {
-      //  String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getBinmovementSR";
         ChangeBinRequest changeBinRequest = new ChangeBinRequest();
         changeBinRequest.setAuthkey(Constants.AUTH_KEY);
-        changeBinRequest.setAction(action);
+        changeBinRequest.setAction(Constants.GETBIN_MOVEMENTSR);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.getChnageBinDetails(changeBinRequest);
@@ -457,7 +497,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                         rc1Name.add(name);
                                     }
                                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, rc1Name);
-                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     sp_change_bin.setAdapter(adapter);
                                 }
 
@@ -493,10 +533,9 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
 
 
     private void SendBinDetails() {
-        String action = "saveBinmovementSR";
         SendChangeBinRequest sendChangeBinRequest = new SendChangeBinRequest();
         sendChangeBinRequest.setAuthkey(Constants.AUTH_KEY);
-        sendChangeBinRequest.setAction(action);
+        sendChangeBinRequest.setAction(Constants.SAVEBIN_MOVEMENTSR);
         sendChangeBinRequest.setSrNumber(SrNum);
         sendChangeBinRequest.setBinId(str_bbinId);
 
@@ -509,7 +548,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                     if (response.isSuccessful()) {
                     String status= String.valueOf(Objects.requireNonNull(response.body()).getStatus());
                     if(status.equals("1")){
-                        Toast.makeText(getActivity(),"Change Bin Submitted Sucessfully",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),"Change Bin Submitted Successfully",Toast.LENGTH_LONG).show();
                         Intent i = new Intent(getActivity(),MainActivity.class);
                         startActivity(i);
                         requireActivity().finish();
@@ -532,13 +571,12 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
 
 
     private void SaveBinNote(String note) {
-        String action = "createSRNotes";
         SendChangeBinRequest sendChangeBinRequest = new SendChangeBinRequest();
         sendChangeBinRequest.setAuthkey(Constants.AUTH_KEY);
-        sendChangeBinRequest.setAction(action);
+        sendChangeBinRequest.setAction(Constants.CREATE_SRNOTES);
         sendChangeBinRequest.setSrNumber(SrNum);
         sendChangeBinRequest.setNoteDes(note);
-        sendChangeBinRequest.setNoteTitle("Bin Movement");
+        sendChangeBinRequest.setNoteTitle(AppConstants.BIN_MOVEMENT);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ChangeBinResponse> call = apiService.sendBinDetails(sendChangeBinRequest);
@@ -601,7 +639,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                             action.add(code);
                                         }
                                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, action);
-                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                         holdReason.setAdapter(adapter);
 
                                 }
@@ -646,7 +684,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
                         status = jsonObject.getString("Status");
                         if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
+                           Toast.makeText(getContext(),"No Data Found",Toast.LENGTH_LONG).show();
                         } else if (status.equals("Success")) {
                             try {
                                 result = jsonObject.getJSONArray("response");
@@ -698,21 +736,22 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                     }
 
                                     slaStatus.setText(order.getSlaStatus());
-                                    if (order.getSlaStatus().equals("In Progress") || order.getSlaStatus().equals("Succeeded")) {
-                                        slaStatus.setTextColor(Color.parseColor("#008000"));
-                                    } else if (order.getSlaStatus().equals("Paused")) {
-                                        slaStatus.setTextColor(Color.parseColor("#8B0000"));
-                                    } else if (order.getSlaStatus().equals("Noncompliant")) {
-                                        slaStatus.setTextColor(Color.parseColor("#8B0000"));
-                                    } else if (order.getSlaStatus().equals("Nearing Noncompliance")) {
-                                        slaStatus.setTextColor(Color.parseColor("#FFA500"));
+                                    switch (order.getSlaStatus()) {
+                                        case "In Progress":
+                                        case "Succeeded":
+                                            slaStatus.setTextColor(Color.parseColor("#008000"));
+                                            break;
+                                        case "Paused":
+                                        case "Noncompliant":
+                                            slaStatus.setTextColor(Color.parseColor("#8B0000"));
+                                            break;
+                                        case "Nearing Noncompliance":
+                                            slaStatus.setTextColor(Color.parseColor("#FFA500"));
+                                            break;
                                     }
                                     if (!order.getSegment().equals("Home")) {
                                         customerIP.setText(order.getCustomerIP());
                                     }
-                                   /* if(!order.getSegment().equals("Business")){
-                                        btnNoc.setVisibility(View.GONE);
-                                    }*/
                                     segment.setText(order.getSegment());
                                     podName.setText(order.getPodName());
                                     devicePort.setText(order.getDeviceName() + " : " + order.getPortId());
@@ -732,21 +771,15 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                                         massoutage.setBackgroundColor(Color.parseColor("#8B0000"));
                                     }
                                     engId = order.getEngId();
-                                    if(!startFlag){
+                                    if(!startFlag) {
                                         startFlag = order.getStartLatitude().equals("");
-                                    }
-                                    if(! endFlag){
-                                        endFlag = order.getEndLatitude().equals("");
-                                    }
-
-
-                                    if (!startFlag) {
                                         startLayout.setVisibility(View.GONE);
                                     }
-                                    if (!endFlag) {
+                                    if(!endFlag) {
+                                        endFlag = order.getEndLatitude().equals("");
                                         bindChangeStatus(1);
                                         endLayout.setVisibility(View.GONE);
-                                    } else {
+                                    }else {
                                         endLayout.setVisibility(View.VISIBLE);
                                     }
                                 }
@@ -788,12 +821,12 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         srRequest.setEmpId(engId);
         srRequest.setContactName(contactName.getText().toString());
         srRequest.setContactNumber(contactNumber.getText().toString());
+        srRequest.setHoldReason(str_holdReason);
         if(isContacted.equals(YES)){
             srRequest.setContacted(TRUE);
         }else if(isContacted.equals(NO)){
             srRequest.setContacted(FALSE);
         }
-
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
@@ -847,7 +880,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         changeunholdStatus.setAuthkey(Constants.AUTH_KEY);
         changeunholdStatus.setAction(Constants.GET_SR_INPROGESS);
         changeunholdStatus.setSrNumber(SrNum);
-
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonResponse> call = apiService.setUnholdStatus(changeunholdStatus);
         call.enqueue(new Callback<CommonResponse>() {
@@ -870,15 +902,13 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
 
 
     private void updateETR() {
-        //String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "saveEtrDetail";
         String sr = srNumber.getText().toString();
         String dateTimeText = etr.getText().toString();
         dateTimeText = dateTimeText.contains("AM") ? dateTimeText.replace("AM", "").trim() : dateTimeText.replace("PM", "").trim();
 
         SRRequest srRequest = new SRRequest();
         srRequest.setAuthkey(Constants.AUTH_KEY);
-        srRequest.setAction(action);
+        srRequest.setAction(Constants.SAVEETR_DETAIL);
         srRequest.setSrNumber(sr);
         srRequest.setEngId(engId);
         srRequest.setETR(dateTimeText);
@@ -1025,7 +1055,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                         , 10);
             }
         }
-        if (isLoc == true) {
+        if (isLoc) {
             try {
                 location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location == null) {
@@ -1141,6 +1171,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
         t11.replace(R.id.fregment_container, itemConsumptionFragment1);
         t11.commit();
     }
+
     private void checkStatus() {
         ChangeBinRequest checkStatus = new ChangeBinRequest();
         checkStatus.setAction(Constants.GET_MATERIAL_CONSUMPTION_FLAG);
@@ -1163,33 +1194,8 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                             addMater.add("Select Option");
                             addMater.add("Yes");
                             ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, addMater);
-                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             spntemConsumption.setAdapter(adapter1);
-                            spntemConsumption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    str_material = parent.getItemAtPosition(position).toString();
-                                    if (str_material.equals("Select Option")) {
-                                        fab_item_consumption.setVisibility(View.GONE);
-                                        resolveLayout.setVisibility(View.GONE);
-                                        Toast.makeText(activity, "Please Choose the option", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        saveStatus(str_material);
-                                    }
-                                }
-
-                                public void onNothingSelected(AdapterView<?> parent) {
-
-                                }
-                            });
-                        } else if (response.body().getResponse().equals("1")) {
-                            addMater = new ArrayList<String>();
-                            addMater.add("Yes");
-                            addMater.add("No");
-                            addMater.add("Select Option");
-                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, addMater);
-                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spntemConsumption.setAdapter(adapter1);
-                            fab_item_consumption.setVisibility(View.VISIBLE);
                             spntemConsumption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     str_material = parent.getItemAtPosition(position).toString();
@@ -1212,7 +1218,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                             addMater.add("No");
                             addMater.add("Select Option");
                             ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, addMater);
-                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                             spntemConsumption.setAdapter(adapter1);
                             spntemConsumption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -1239,7 +1245,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
                         addMater.add("Yes");
                         addMater.add("No");
                         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, addMater);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                         spntemConsumption.setAdapter(adapter1);
                         spntemConsumption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -1265,7 +1271,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
 
             @Override
             public void onFailure(@NonNull Call<CommonResponse> call, @NonNull Throwable t) {
-                //  handleVisOfNetworkAndProgress(View.GONE, View.GONE);
             }
         });
     }
@@ -1294,10 +1299,7 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
             @Override
             public void onResponse(@NonNull Call<CommonResponse> call, @NonNull Response<CommonResponse> response) {
                 String status = Objects.requireNonNull(response.body()).getStatus();
-                if (status.equals("1")&& status_local.equals("22")) {
-
-                  // AddMaterial();
-                }else{
+                if (!status.equals("1")&& !status_local.equals("22")) {
                     fab_item_consumption.setVisibility(View.GONE);
                     resolveLayout.setVisibility(View.VISIBLE);
                 }
@@ -1305,7 +1307,6 @@ public class SRDetailFragment extends Fragment implements BottomNavigationView.O
 
             @Override
             public void onFailure(@NonNull Call<CommonResponse> call, @NonNull Throwable t) {
-                //  handleVisOfNetworkAndProgress(View.GONE, View.GONE);
             }
         });
 

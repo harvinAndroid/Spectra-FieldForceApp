@@ -39,6 +39,7 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.fragment.DashFragment;
 import com.spectra.fieldforce.fragment.DashboardFragment;
 import com.spectra.fieldforce.fragment.WelcomeFragment;
 import com.spectra.fieldforce.utils.AppConstants;
@@ -242,7 +243,7 @@ public class SpectraFfaActivity extends BaseActivity implements NavigationView.O
             btnHome.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
                 SpectraFfaActivity.prefConfig.writeName(SpectraFfaActivity.prefConfig.readName());
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashFragment(), DashFragment.class.getSimpleName()).addToBackStack(null).commit();
                 //  activity.getSupportFragmentManager().beginTransaction().replace(R.id.fregment_container, new WelcomeFragment()).commit();
             });
             TextView ins = dView.findViewById(R.id.nav_gpon_inas);

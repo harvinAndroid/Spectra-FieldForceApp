@@ -87,31 +87,17 @@ public class DocAdapter extends RecyclerView.Adapter<DocAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.binding.etIte1.setText(attachDocs.get(position).getFilename());
-     //   holder.binding.etIte1.setOnClickListener(view -> storetoPdfandOpen(attachDocs.get(position).getAttachment(),context));
-     //   Bitmap bit = (attachDocs.get(position).getAttachment());
-
-        holder.binding.etIte1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.binding.etIte1.setText(attachDocs.get(position).getFilename());
-                gallery =holder.binding.etIte1.getText().toString();
-                if(gallery.contains("jpg")||gallery.contains("jpeg")||gallery.contains("png")){
-                    saveToGallery(attachDocs.get(position).getAttachment());
-                } else {
-                    storetoPdfandOpen(attachDocs.get(position).getAttachment(),context);
-                }
+        holder.binding.etIte1.setOnClickListener(view -> {
+            holder.binding.etIte1.setText(attachDocs.get(position).getFilename());
+            gallery =holder.binding.etIte1.getText().toString();
+            if(gallery.contains("jpg")||gallery.contains("jpeg")||gallery.contains("png")){
+                saveToGallery(attachDocs.get(position).getAttachment());
+            } else {
+                storetoPdfandOpen(attachDocs.get(position).getAttachment(),context);
             }
         });
 
-
-
-
-
     }
-
-
-
-
 
     @Override
     public int getItemCount() {
@@ -129,8 +115,6 @@ public class DocAdapter extends RecyclerView.Adapter<DocAdapter.MyViewHolder> {
     }
 
     private void saveToGallery(String attachment){
-      /*  BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
-        Bitmap bitmap = bitmapDrawable.getBitmap();*/
         byte [] encodeByte = Base64.decode(attachment,Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 
@@ -191,8 +175,6 @@ public class DocAdapter extends RecyclerView.Adapter<DocAdapter.MyViewHolder> {
 
     public static void storetoPdfandOpen( String base,Context context) {
         String root = Environment.getExternalStorageDirectory().toString();
-
-        Log.d("ResponseEnv",root);
 
         File myDir = new File(root + "/WorkBox");
         if (!myDir.exists()) {

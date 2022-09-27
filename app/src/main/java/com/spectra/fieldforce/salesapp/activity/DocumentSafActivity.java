@@ -78,7 +78,6 @@ public class DocumentSafActivity extends BaseActivity {
     private  DocumentData data_image;
     private AlphaAnimation inAnimation;
     private AlphaAnimation outAnimation;
-   /* private  ViewDocumentAdapter myBucketListAdapter;*/
     private String userName,password;
     Bitmap bitmap1;
     ArrayList<DocumentData> name;
@@ -94,7 +93,6 @@ public class DocumentSafActivity extends BaseActivity {
         baseActivity = ((BaseActivity) this);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-           // strOppId = extras.getString("OppId");
             status= extras.getString("Status");
             strSafId= extras.getString("SafId");
         }
@@ -155,11 +153,7 @@ public class DocumentSafActivity extends BaseActivity {
                 encodedImage = Base64.encodeToString(pdfInBytes, Base64.NO_WRAP);
                 Calendar c = Calendar.getInstance();
                 int seconds = c.get(Calendar.SECOND);
-               // String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
-              //  currentImagePath =(seconds)+"/"+ "file";
                 currentImagePath = "file"+"doc("+(seconds)+"/)";
-
-                // str_ext1=".pdf";
             } else if (str_ext1 != null && bitmap1 != null) {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap1.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
@@ -168,16 +162,9 @@ public class DocumentSafActivity extends BaseActivity {
                 str_ext1=".jpg";
                 Calendar c = Calendar.getInstance();
                 int seconds = c.get(Calendar.SECOND);
-             //   String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
                 currentImagePath =  "file"+"img("+(seconds)+"/)";
             }
-         /*   String str = binding.etAttachfile.getText().toString();
-            String currentString = str;
-            String[] separated = currentString.split("/file");
-            currentImagePath = separated[1];*/
             data_image = new DocumentData(encodedImage, currentImagePath+str_ext1);
-
-        //    data_image = new DocumentData(currentImagePath, encodedImage+str_ext1);
             Log.e("encoded",encodedImage);
             Log.e("str_ext1",str_ext1);
 
@@ -214,8 +201,6 @@ public class DocumentSafActivity extends BaseActivity {
                         if (response.body().getStatus().equals("Success")) {
                             binding.setCafdoc(response.body().getResponse().getData());
                             binding.etSafnum.setText(strSafId);
-
-                          //  strSafId =  response.body().getResponse().getData().getSafNo();
                             if(response.body().getResponse().getData().getAccordingtoFirmType().getTanNo().equals("1")){
                                 binding.ckTan.setChecked(true);
                             }
@@ -406,7 +391,6 @@ public class DocumentSafActivity extends BaseActivity {
         Intent intent = new Intent(DocumentSafActivity.this, SAFActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("SafId",strSafId );
-       // bundle.putString("OppId", strOppId);
         bundle.putString("Status", status);
         intent.putExtras(bundle);
         startActivity(intent);

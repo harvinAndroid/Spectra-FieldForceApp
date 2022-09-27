@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.salesapp.fragment
 
 import GetAllLeadAdapter
+import KaiGetAllLeadAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -25,6 +26,7 @@ import com.spectra.fieldforce.salesapp.model.AllLeadData
 import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest
 import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse
 import com.spectra.fieldforce.utils.Constants
+import com.spectra.fieldforce.utils.SalesAppConstants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -135,7 +137,8 @@ class GetQualifiedLeadFrag() : Fragment(),View.OnClickListener {
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
         val getAllLeadRequest = GetAllLeadRequest(Constants.GET_AllLEADS, Constants.AUTH_KEY,str_Search,password,userName,
-        srch,"","")
+        srch,"","",
+            SalesAppConstants.BUSINESS)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllLead(getAllLeadRequest)

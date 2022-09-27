@@ -59,7 +59,10 @@
         <item name="colorPrimaryDark">@color/colorButton</item>
         <item name="colorAccent">@color/colorButton</item>
     </style>
-
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
     <style name="SelectMediaDialogTheme">
         <item name="android:windowEnterAnimation">@anim/shift_up</item>
         <item name="android:windowExitAnimation">@anim/shift_right</item>

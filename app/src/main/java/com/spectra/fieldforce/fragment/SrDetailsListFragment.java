@@ -19,6 +19,7 @@ import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.adapter.SrDetailsListAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
+import com.spectra.fieldforce.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,8 +54,8 @@ public class SrDetailsListFragment extends Fragment {
     }
 
     public void getSrDetailsList() {
-        String authKey = "ac7b51de9d888e1458dd53d8aJAN3ba6f";
-        String action = "getNotesBySrNumber";
+        String authKey = Constants.AUTH_KEY;
+        String action = Constants.GETNOTES_BYSRNUMBER;
 
         ChangeBinRequest changeBinRequest = new ChangeBinRequest();
         changeBinRequest.setAuthkey(authKey);

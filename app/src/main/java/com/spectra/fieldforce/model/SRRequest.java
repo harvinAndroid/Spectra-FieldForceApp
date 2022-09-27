@@ -22,6 +22,12 @@ public class SRRequest {
     private String ResolveContacted = "";
     private String Source = "";
 
+    public void setHoldReason(String holdReason) {
+        HoldReason = holdReason;
+    }
+
+    private String HoldReason="";
+
     public String getCustomerID() {
         return CustomerID;
     }

@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
+import com.spectra.fieldforce.application.App
 import com.spectra.fieldforce.databinding.SalescontactFragmentBinding
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
@@ -48,7 +49,6 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
     private var sourceList: MutableList<SrcData>? = null
     private var areaList: ArrayList<AreaData>? = null
     private var Installarea: ArrayList<String>? = null
-    private var InstallareaCode: ArrayList<String>? = null
     private var cityList: ArrayList<CityData>? = null
     private var Installcity: ArrayList<String>? = null
     private var InstallcityCode: ArrayList<String>? = null
@@ -247,10 +247,6 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
         layout_ContactAddress.sp_ContactState.onItemSelectedListener = this
         layout_ContactAddress.et_ContactCity.setOnClickListener { layout_ContactAddress.sp_ContactCity.performClick() }
         layout_ContactAddress.sp_ContactCity.onItemSelectedListener = this
-       /* layout_ContactAddress.et_ContactArea.setOnClickListener { layout_ContactAddress.sp_ContactArea.performClick() }
-        layout_ContactAddress.sp_ContactArea.onItemSelectedListener = this
-        layout_ContactAddress.et_Contactbuilding.setOnClickListener { layout_ContactAddress.sp_Contactbuilding_nm.performClick() }
-        layout_ContactAddress.sp_Contactbuilding_nm.onItemSelectedListener = this*/
 
         contactLayout.et_ctEmailId.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
@@ -357,15 +353,8 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                     try {
                         outProgress()
                         if(response.body()?.StatusCode==200) {
-                            contactLayout.et_ctFullName.setText(response.body()?.Response?.Data?.get(0)?.FullName)
-                            contactLayout.et_ctFirstName.setText(response.body()?.Response?.Data?.get(0)?.FirstName)
-                            contactLayout.et_ctLastName.setText(response.body()?.Response?.Data?.get(0)?.LastName)
-                            contactLayout.et_ctMobileNumber.setText(response.body()?.Response?.Data?.get(0)?.MobileNumber)
-                            contactLayout.et_ctMobileNum2.setText(response.body()?.Response?.Data?.get(0)?.MobileNumber2)
-                            contactLayout.et_ctEmailId.setText(response.body()?.Response?.Data?.get(0)?.EmailAddress)
-                            contactLayout.et_ctCallAttempt.setText(response.body()?.Response?.Data?.get(0)?.CallAttempted)
-                            contactLayout.et_ctCompaignName.setText(response.body()?.Response?.Data?.get(0)?.CampaignName)
-                            layout_ContactAddress.et_ContactSpecificArea.setText(response.body()?.Response?.Data?.get(0)?.SpecifyArea)
+                            binding.contactLayout.updateContact = response.body()?.Response?.Data?.get(0)
+                           layout_ContactAddress.et_ContactSpecificArea.setText(response.body()?.Response?.Data?.get(0)?.SpecifyArea)
                             layout_ContactAddress.et_Contactspecific_building.setText(response.body()?.Response?.Data?.get(0)?.Specifybuilding)
                             strArea = response.body()?.Response?.Data?.get(0)?.Area
                             strCity = response.body()?.Response?.Data?.get(0)?.City
@@ -376,8 +365,13 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                             layout_ContactRemarks.et_contactRemark.setText(response.body()?.Response?.Data?.get(0)?.Remark)
                             str_add_area_code = response.body()?.Response?.Data?.get(0)?.AreaId
                             strInstallBuildCode = response.body()?.Response?.Data?.get(0)?.BuildingId
-                            layout_ContactAddress.et_ContactArea.setText("$strArea($str_add_area_code)")
-                            layout_ContactAddress.et_Contactbuilding.setText("$Building($strInstallBuildCode)")
+                            if(str_add_area_code!=null||str_add_area_code?.isNotBlank()==true){
+                                layout_ContactAddress.et_ContactArea.setText("$strArea($str_add_area_code)")
+                            }
+                            if(strInstallBuildCode!=null||strInstallBuildCode?.isNotBlank()==true){
+                                layout_ContactAddress.et_Contactbuilding.setText("$Building($strInstallBuildCode)")
+                            }
+
                             val strContactstate = response.body()?.Response?.Data?.get(0)?.State
                             var cntstatePosition = 0
                             SalesConstant.list_of_state.forEachIndexed { index, s ->
@@ -498,14 +492,14 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
     fun back() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
-        builder.setMessage("Do you want to go back to the previous screen?")
+        builder.setMessage(AppConstants.PREVIOUS_SCREEN)
         builder.setPositiveButton(
-            "Yes"
+            AppConstants.YES
         ) { _, _ ->
             next()
         }
         builder.setNegativeButton(
-            "No"
+            AppConstants.NO
         ) { dialog, _ ->
             dialog.cancel()
         }
@@ -724,13 +718,8 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                         //  val msg = response.body()!!.Response.Message
                         buildingList = response.body()?.Response?.Data
                         building = ArrayList<String>()
-                        buildingCode = ArrayList<String>()
-                       /* building?.add("Select Building")
-                        buildingCode?.add("")*/
-                        for (item in buildingList!!) {
+                     for (item in buildingList!!) {
                             building?.add(item.BuildingName+"("+item.BuildingCode)
-                          /*  item.BuildingName?.let { building?.add(it) }
-                            item.BuildingCode?.let { buildingCode?.add(it) }*/
                         }
 
                         val adapter12 = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, building!!)
@@ -755,11 +744,11 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                             }
                             val areaId = buildingId?.split(")")
                             strInstallBuildCode = areaId?.get(0)
-                             /* strInstallBuildCode = buildingCode?.get(position)*/
-                            if(buildingName=="Other"){
-                                layout_ContactAddress.et_Contactspecific_building.visibility=View.VISIBLE
+
+                            if(buildingName?.equals("Other") == true){
+                                binding.layoutContactAddress.etSpecificBuild.visibility=View.VISIBLE
                             }else{
-                                layout_ContactAddress.et_Contactspecific_building.visibility=View.GONE
+                                binding.layoutContactAddress.etSpecificBuild.visibility=View.GONE
                             }
                         }
 
@@ -798,14 +787,9 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                         img?.let { Log.e("image", it) }
                         areaList = response.body()?.Response?.Data
                         Installarea = ArrayList<String>()
-                        InstallareaCode = ArrayList<String>()
                         Installarea?.add("Select Area")
-                      /*
-                        InstallareaCode?.add("")*/
                         for (item in areaList!!) {
                             Installarea?.add(item.AreaName +" ("+item.AreaCode+")")
-                           /* item.AreaName?.let { Installarea?.add(it) }
-                            item.AreaCode?.let { InstallareaCode?.add(it) }*/
                         }
 
                         val adapter12 = ArrayAdapter(this@UpdateContactActivity, android.R.layout.simple_spinner_item, Installarea!!)
@@ -831,24 +815,12 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                             val areaId = Areaid?.split(")")
                             str_add_area_code = areaId?.get(0)
                             str_add_area_code?.let { Log.e("compid", it) }
-                            if (Area == "Other") {
-                                layout_ContactAddress.et_spec_area.visibility = View.VISIBLE
+                            if (Area?.startsWith("Other") == true) {
+                                binding.layoutContactAddress.etSpecArea.visibility=View.VISIBLE
                             } else {
-                                layout_ContactAddress.et_spec_area.visibility = View.GONE
+                                binding.layoutContactAddress.etSpecArea.visibility=View.GONE
                             }
                             getBuilding(str_area,str_add_area_code)
-                          /* str_add_area_code = InstallareaCode?.get(position)
-
-
-                            val str: String = layout_ContactAddress.et_ContactArea.text.toString()
-                            val index: Int? = str_area?.indexOf(str)
-                            str_add_area_code = index?.let { InstallareaCode?.get(it) }
-                            if (str_area == "Other") {
-                                layout_ContactAddress.et_spec_area.visibility = View.VISIBLE
-                            } else {
-                                layout_ContactAddress.et_spec_area.visibility = View.GONE
-                            }
-                            getBuilding(str_area,str_add_area_code)*/
                         }
 
                     } catch (e: Exception) {
@@ -916,39 +888,24 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
             binding.contactLayout.etCtChannel.setText(SalesConstant.list_of_channel[position])
             strContactChnl = SalesConstant.list_of_channel[position]
             getSource(strContactChnl)
-        } else if (parent?.id == R.id.sp_ctSource) {
+        }
+        else if (parent?.id == R.id.sp_ctSource) {
             contactLayout.et_ctSource.setText(source?.get(position))
             str_lead_src = source?.get(position)
-        } /*else if (parent?.id == R.id.sp_ContactArea) {
-            layout_ContactAddress.et_ContactArea.setText(Installarea?.get(position))
-            str_area = Installarea?.get(position).toString()
-            str_add_area_code = InstallareaCode?.get(position)
-            getBuilding(str_area, str_add_area_code)
-            if (str_area == "Other") {
-                layout_ContactAddress.et_spec_area.visibility = View.VISIBLE
-            } else {
-                layout_ContactAddress.et_spec_area.visibility = View.GONE
-            }
-        } */else if (parent?.id == R.id.sp_ContactCity) {
+        }
+        else if (parent?.id == R.id.sp_ContactCity) {
             layout_ContactAddress.et_ContactCity.setText(Installcity?.get(position))
             str_city = Installcity?.get(position).toString()
             str_city_code = InstallcityCode?.get(position)
             getArea(str_city, str_city_code.toString())
-        } else if (parent?.id == R.id.sp_ContactState) {
+        }
+        else if (parent?.id == R.id.sp_ContactState) {
             layout_ContactAddress.et_ContactState.setText(SalesConstant.list_of_state[position])
             str_state = SalesConstant.list_of_state[position]
             str_inst_state = SalesConstant.list_state_code[position]
             getCity(str_inst_state)
-        } /*else if (parent?.id == R.id.sp_Contactbuilding_nm) {
-            layout_ContactAddress.et_Contactbuilding.setText(building?.get(position))
-            strInstallBuild = building?.get(position)
-            strInstallBuildCode = buildingCode?.get(position)
-            if (strInstallBuild == "Other") {
-                layout_ContactAddress.et_specific_build.visibility = View.VISIBLE
-            } else {
-                layout_ContactAddress.et_specific_build.visibility = View.GONE
-            }
-        }*/ else if (parent?.id == R.id.sp_ctStatusReason) {
+        }
+        else if (parent?.id == R.id.sp_ctStatusReason) {
             contactLayout.et_ctStatusReason.setText(
                 resources.getStringArray(R.array.list_of_conReason)[position]
             )
@@ -960,19 +917,23 @@ class UpdateContactActivity: AppCompatActivity() , View.OnClickListener , Adapte
                 contactLayout.follow.visibility = View.GONE
                 date=""
             }
-        } else if (parent?.id == R.id.sp_ctCompetitorName) {
+        }
+        else if (parent?.id == R.id.sp_ctCompetitorName) {
             contactLayout.et_ctCompetitorName.setText((CompetitorName?.get(position)))
             strCompetitorName = (CompetitorName?.get(position))
-        } else if (parent?.id == R.id.sp_ctPlanCategory) {
+        }
+        else if (parent?.id == R.id.sp_ctPlanCategory) {
             contactLayout.et_ctPlanCategory.setText((CategoryName?.get(position)))
             strCategoryName = (CategoryName?.get(position))
-        } else if (parent?.id == R.id.sp_ctDisposition) {
+        }
+        else if (parent?.id == R.id.sp_ctDisposition) {
             contactLayout.et_ctDisposition.setText(
                 resources.getStringArray(R.array.listDisposition)[position]
             )
             strDisposition =
                 resources.getStringArray(R.array.listDispositionValue)[position].toString()
-        } else if (parent?.id == R.id.sp_ctDNCNum) {
+        }
+        else if (parent?.id == R.id.sp_ctDNCNum) {
             contactLayout.et_contactDNC.setText(
                 resources.getStringArray(R.array.listDNC)[position]
             )

@@ -245,6 +245,8 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:id="@+id/spBuilding"
                             android:textColorHint="@color/colorPrimary"
                             app:hintTextAppearance="@style/AppearanceText">
 
@@ -255,7 +257,6 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/specific_building_no"
                                 android:text="@{updateContactAdd.contactSpecifyBuilding}"
-                                android:visibility="gone"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textColorHighlight="@color/colorPrimary"
@@ -299,7 +300,6 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/floor"
                                 android:text="@{updateContactAdd.contactFloor}"
-
                                 android:inputType="text"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"

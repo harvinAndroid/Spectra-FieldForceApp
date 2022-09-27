@@ -157,11 +157,7 @@ public class DocumentCafAct extends BaseActivity {
                 encodedImage = Base64.encodeToString(pdfInBytes, Base64.NO_WRAP);
                 Calendar c = Calendar.getInstance();
                 int seconds = c.get(Calendar.SECOND);
-               // String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
-              //  currentImagePath =(seconds)+"/"+ "file";
                 currentImagePath = "file"+"doc("+(seconds)+"/)";
-
-                // str_ext1=".pdf";
             } else if (str_ext1 != null && bitmap1 != null) {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap1.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
@@ -170,16 +166,9 @@ public class DocumentCafAct extends BaseActivity {
                 str_ext1=".jpg";
                 Calendar c = Calendar.getInstance();
                 int seconds = c.get(Calendar.SECOND);
-             //   String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
                 currentImagePath =  "file"+"img("+(seconds)+"/)";
             }
-         /*   String str = binding.etAttachfile.getText().toString();
-            String currentString = str;
-            String[] separated = currentString.split("/file");
-            currentImagePath = separated[1];*/
             data_image = new DocumentData(encodedImage, currentImagePath+str_ext1);
-
-        //    data_image = new DocumentData(currentImagePath, encodedImage+str_ext1);
             Log.e("encoded",encodedImage);
             Log.e("str_ext1",str_ext1);
 
@@ -215,7 +204,6 @@ public class DocumentCafAct extends BaseActivity {
                         outProgress();
                         if (response.body().getStatus().equals("Success")) {
                             binding.setCafdoc(response.body().getResponse().getData());
-                           // strCafId = response.body().getResponse().getData().getCafId();
                             binding.etCafnum.setText(strCafId);
                             if(response.body().getResponse().getData().getAccordingtoFirmType().getTanNo().equals("1")){
                                 binding.ckTan.setChecked(true);
@@ -356,7 +344,6 @@ public class DocumentCafAct extends BaseActivity {
         }else{
             chk_pan=false;
         }
-       // Log.e("name",name.toString());
 
         DocumentRequired doc = new DocumentRequired(chk_adproof,chk_apnic,chk_caf,true,chk_pan,
                 name,"","", chk_netwrk,chk_osp, chk_po,
@@ -503,10 +490,6 @@ public class DocumentCafAct extends BaseActivity {
                             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                             bitmap1 = BitmapFactory.decodeFile(filepath, options);
                             binding.etAttachfile.setText(filepath);
-
-                           // str_ext1=".jpg";
-                            // Do something with the bitmap
-                            // At the end remember to close the cursor or you will end with the RuntimeException!
                             cursor.close();
                         } else {
                             displayToast(R.string.valid_formats);
@@ -520,10 +503,8 @@ public class DocumentCafAct extends BaseActivity {
             }else  if ( requestCode == REQUEST_CAMERA_PERMISSION_ONE) {
                 try {
                     bitmap1 = BitmapFactory.decodeFile(currentImagePath);
-                    //   Toast.makeText(this,  currentImagePath.toString(), Toast.LENGTH_SHORT).show();
                     binding.etAttachfile.setText(currentImagePath);
                     str_ext1 = "jpg";
-                    //  image.setImageBitmap(bitmap5);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

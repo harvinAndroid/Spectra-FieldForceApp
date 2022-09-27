@@ -15,6 +15,22 @@ public class AddBucketListRequest {
     }
 
     private String ActivationOTP;
+    private String AccountTurnOver;
+    private String CustomerCategory;
+
+    public void setAccountTurnOver(String accountTurnOver) {
+        AccountTurnOver = accountTurnOver;
+    }
+
+    public void setCustomerCategory(String customerCategory) {
+        CustomerCategory = customerCategory;
+    }
+
+    public void setExternalCustomerSegment(String externalCustomerSegment) {
+        ExternalCustomerSegment = externalCustomerSegment;
+    }
+
+    private String ExternalCustomerSegment;
 
     public void setSegment(String segment) {
         Segment = segment;

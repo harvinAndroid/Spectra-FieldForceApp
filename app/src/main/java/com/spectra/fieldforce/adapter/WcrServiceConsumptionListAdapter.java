@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -30,6 +31,7 @@ import com.spectra.fieldforce.fragment.WcrEditItemConsumption;
 import com.spectra.fieldforce.fragment.WcrFragment;
 import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
+import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
 import com.spectra.fieldforce.utils.Constants;
 
@@ -77,6 +79,16 @@ public class WcrServiceConsumptionListAdapter extends RecyclerView.Adapter<WcrSe
             holder.binding.delete.setVisibility(View.VISIBLE);
             holder.binding.edit.setVisibility(View.VISIBLE);
         }
+
+        if(serviceConsumtions.get(position).getQuantity().equals("0")){
+            holder.binding.edit.setVisibility(View.VISIBLE);
+            holder.binding.delete.setVisibility(View.VISIBLE);
+        }else{
+            holder.binding.edit.setVisibility(View.GONE);
+            holder.binding.delete.setVisibility(View.GONE);
+        }
+
+
         holder.binding.delete.setOnClickListener(v -> {
             deleteItem(item.getItemID(),item.getCanid());
         });

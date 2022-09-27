@@ -283,9 +283,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/specific_area_name"
-
                         android:text="@{contact.data.get(0).specificArea}"
-
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"

@@ -1,5 +1,9 @@
 package com.spectra.fieldforce.fragment;
 
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_FOUR;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_ONE;
+import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_TWO;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -8,11 +12,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +36,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,10 +46,12 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.activity.BucketTabActivity;
 import com.spectra.fieldforce.activity.ProvisioningMainActivity;
 import com.spectra.fieldforce.adapter.IRItemConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.IRServiceConsumptionListAdapter;
+import com.spectra.fieldforce.adapter.InstallDocAdapter;
 import com.spectra.fieldforce.adapter.IrEquipmentConsumpAdapter;
 import com.spectra.fieldforce.adapter.IrServiceListAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
@@ -45,6 +59,8 @@ import com.spectra.fieldforce.databinding.IrFragmentBinding;
 import com.spectra.fieldforce.databinding.WcrFragmentBinding;
 import com.spectra.fieldforce.model.CommonMessageResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
+import com.spectra.fieldforce.model.gpon.request.CreateWcrIrDocReq;
+import com.spectra.fieldforce.model.gpon.request.GetDocDetailsReq;
 import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
 import com.spectra.fieldforce.model.gpon.request.IRCompleteRequest;
@@ -60,17 +76,23 @@ import com.spectra.fieldforce.model.gpon.request.UpdateQualityParamRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
+import com.spectra.fieldforce.model.gpon.response.GetWcrDocResponse;
 import com.spectra.fieldforce.model.gpon.response.HoldReasonResponse;
 import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
+import com.spectra.fieldforce.salesapp.model.DeleteProductResponse;
 import com.spectra.fieldforce.utils.Constants;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import retrofit2.Call;
@@ -79,7 +101,7 @@ import retrofit2.Response;
 
 
 public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
-    IrFragmentBinding binding;
+    private IrFragmentBinding binding;
     private ArrayList<IrInfoResponse.ItemConsumtion> itemConsumtions;
      ArrayList<IrInfoResponse.InstallationItemList> installationItemLists;
     ArrayList<IrInfoResponse.ServiceConsumtionList> serviceConsumtionLists;
@@ -113,7 +135,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
     private String fromDateString = "";
     String type="",strProdSeg;
     private String  strCpeMac,strdns,strvirus,strip,strmrtg,strspeed,strselfcare;
-
+    private  ArrayList<GetWcrDocResponse.Datum> docResponses;
     public IRFragment() {
 
     }
@@ -189,6 +211,13 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.layoutInstallationparam.etSelfcare.setOnClickListener(v-> binding.layoutInstallationparam.spSelfcare.performClick());
         binding.layoutInstallationparam.spSelfcare.setOnItemSelectedListener(this);
 
+        binding.linearDoc.setOnClickListener(view -> {
+            Bundle bundle1=new Bundle();
+            bundle1.putString("strGuuId",strGuiID);
+            AttachmentIrFrag attachmentIrFrag = new AttachmentIrFrag();
+            attachmentIrFrag.setArguments(bundle1);
+            attachmentIrFrag.show(requireActivity().getSupportFragmentManager(), attachmentIrFrag.getTag());
+        });
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sendDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
         @SuppressLint("SetTextI18n")
@@ -230,6 +259,9 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         binding.progressLayout.progressOverlay.setAnimation(outAnimation);
         binding.progressLayout.progressOverlay.setVisibility(View.GONE);
     }
+
+
+
 
     private void SubmitApproval(){
         inProgress();
@@ -472,11 +504,8 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
         });
     }
 
-
-
-
     private void updateHoldCategoryStatus(){
-       inProgress();
+        inProgress();
         HoldWcrRequest holdWcrRequest = new HoldWcrRequest();
         holdWcrRequest.setAuthkey(Constants.AUTH_KEY);
         holdWcrRequest.setAction(Constants.HOLD_ORDER_INSTALLATION);
@@ -695,6 +724,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                         }
                         add="0";
                         strGuiID = response.body().getResponse().getIr().getIrguid();
+
                         strSegment = response.body().getResponse().getIr().getBusinessSegment();
                         str_provisionId = response.body().getResponse().getGeneral().getProvisionId();
                         strProdSeg = response.body().getResponse().getIr().getProductSegment();
@@ -995,6 +1025,7 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutInstallationparam.spSelfcare.setAdapter(adapter);
                         }
                         getHoldReason();
+
                       //  getItemStatus();
 
                     } catch (Exception e) {
@@ -1412,6 +1443,14 @@ public class IRFragment  extends Fragment implements AdapterView.OnItemSelectedL
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation();
             }
+        }else if (requestCode == REQUEST_CAMERA_PERMISSION_FOUR) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
+            }
+            else {
+                Toast.makeText(getActivity(), "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
+            }
+
         }
     }
 

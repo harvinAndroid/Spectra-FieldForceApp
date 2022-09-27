@@ -169,6 +169,65 @@
             android:layout_marginTop="10dp"
             android:textIsSelectable="true" />
 
+        <TextView
+            android:id="@+id/tv_turnover"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerAddress"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/account_turnover"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/turnOver"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customerAddress"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="10dp"
+            android:textIsSelectable="true"/>
+
+        <TextView
+            android:id="@+id/tv_cat"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/turnOver"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:text="Internal Customer Category"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/turnOver"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="10dp"
+            android:textIsSelectable="true" />
+
+        <TextView
+            android:id="@+id/cust_cat"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/category"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:text="@string/customer_category"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/excategory"
+            android:layout_width="200dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/category"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="10dp"
+            android:textIsSelectable="true" />
+
         <Button
             android:id="@+id/btnView"
             android:layout_width="match_parent"
@@ -177,7 +236,7 @@
             android:layout_marginRight="@dimen/_50sdp"
             android:layout_marginLeft="@dimen/_50sdp"
             android:layout_marginEnd="@dimen/_50sdp"
-            android:layout_below="@id/customerAddress"
+            android:layout_below="@id/excategory"
             android:layout_marginTop="20dp"
             android:background="@drawable/button_black"
             android:text="@string/acknowledge"

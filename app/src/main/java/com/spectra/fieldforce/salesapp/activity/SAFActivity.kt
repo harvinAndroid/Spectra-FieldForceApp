@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
+import com.spectra.fieldforce.application.App
 import com.spectra.fieldforce.databinding.SafActivityBinding
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
@@ -1944,7 +1945,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
            layoutPayment.et_payslip.setText(resources.getStringArray(R.array.list_of_payslip)[position])
             str_payslip = resources.getStringArray(R.array.list_of_payslipval)[position]
             when (resources.getStringArray(R.array.list_of_payslip)[position]) {
-              "Select Option" ->{
+             AppConstants.SELECT_OPTION ->{
                   layoutPayment.frbnk.visibility=View.GONE
                   layoutPayment.et_brnchname.visibility=View.GONE
                   layoutPayment.et_checkkdate.visibility=View.GONE
@@ -1955,7 +1956,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                   layoutPayment.et_paymentdate.visibility=View.GONE
                   layoutPayment.et_debit4dgt.visibility=View.GONE
               }
-              "RTGS" -> {
+                AppConstants.RTGS-> {
                   layoutPayment.et_transactionid.visibility=View.VISIBLE
                   layoutPayment.et_approvalcode.visibility=View.GONE
                   layoutPayment.et_paymentdate.visibility=View.VISIBLE
@@ -1966,7 +1967,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                   layoutPayment.et_card4dgt.visibility=View.GONE
                   layoutPayment.et_debit4dgt.visibility=View.GONE
               }
-              "Cheque" -> {
+                AppConstants.CHEQUE -> {
 
                   layoutPayment.et_transactionid.visibility=View.GONE
                   layoutPayment.et_card4dgt.visibility=View.GONE
@@ -1978,7 +1979,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                   layoutPayment.et_paymentdate.visibility=View.GONE
                   layoutPayment.et_debit4dgt.visibility=View.GONE
               }
-              "Demand draft" -> {
+                AppConstants.DEMAND_DRAFT -> {
                   layoutPayment.et_transactionid.visibility=View.GONE
                   layoutPayment.frbnk.visibility=View.VISIBLE
                   layoutPayment.et_brnchname.visibility=View.VISIBLE
@@ -1989,7 +1990,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                   layoutPayment.et_paymentdate.visibility=View.GONE
                   layoutPayment.et_debit4dgt.visibility=View.GONE
               }
-              "Credit Card" -> {
+                AppConstants.CREDIT_CARD -> {
                   layoutPayment.et_approvalcode.visibility=View.VISIBLE
                   layoutPayment.et_debit4dgt.visibility=View.VISIBLE
                   layoutPayment.et_paymentdate.visibility=View.VISIBLE
@@ -2000,7 +2001,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                   layoutPayment.et_chknumber.visibility=View.GONE
                   layoutPayment.et_transactionid.visibility=View.GONE
               }
-              "NEFT" -> {
+                AppConstants.NEFT -> {
                   layoutPayment.et_transactionid.visibility=View.VISIBLE
                   layoutPayment.et_approvalcode.visibility=View.GONE
                   layoutPayment.et_paymentdate.visibility=View.VISIBLE
@@ -2011,7 +2012,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                   layoutPayment.et_debit4dgt.visibility=View.GONE
                   layoutPayment.frbnk.visibility=View.GONE
               }
-              "Debit Card" -> {
+                AppConstants.DEBIT_CARD -> {
                   layoutPayment.frbnk.visibility=View.GONE
                   layoutPayment.et_brnchname.visibility=View.GONE
                   layoutPayment.et_checkkdate.visibility=View.GONE
@@ -2022,7 +2023,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                   layoutPayment.et_transactionid.visibility=View.GONE
                   layoutPayment.et_debit4dgt.visibility=View.GONE
               }
-              "Ezetap" -> {
+                AppConstants.EZETAP -> {
                   layoutPayment.frbnk.visibility=View.GONE
                   layoutPayment.et_brnchname.visibility=View.GONE
                   layoutPayment.et_checkkdate.visibility=View.GONE
@@ -2033,7 +2034,7 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                   layoutPayment.et_debit4dgt.visibility=View.GONE
                   layoutPayment.et_paymentdate.visibility=View.VISIBLE
               }
-              "Ezetap-Cheque" -> {
+                AppConstants.EZETAP_CHEQUE -> {
                   layoutPayment.frbnk.visibility=View.VISIBLE
                   layoutPayment.et_brnchname.visibility=View.VISIBLE
                   layoutPayment.et_checkkdate.visibility=View.VISIBLE
@@ -2059,14 +2060,14 @@ class SAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     private fun next(){
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
-        builder.setMessage("Do you want to go back to the previous screen?")
-        builder.setPositiveButton("Yes") { _, _ ->
+        builder.setMessage(AppConstants.PREVIOUS_SCREEN)
+        builder.setPositiveButton(AppConstants.YES) { _, _ ->
             Intent(this, SafTabActivity::class.java).also {
                 startActivity(it)
                 finish()
             }
         }
-        builder.setNegativeButton("No") { dialog, _ ->
+        builder.setNegativeButton(AppConstants.NO) { dialog, _ ->
             dialog.cancel()
         }
         val alert: AlertDialog = builder.create()

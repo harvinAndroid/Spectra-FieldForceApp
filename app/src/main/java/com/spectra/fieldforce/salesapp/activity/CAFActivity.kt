@@ -36,6 +36,7 @@ import com.spectra.fieldforce.BuildConfig
 import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
+import com.spectra.fieldforce.application.App
 import com.spectra.fieldforce.databinding.CafDemoFragmentBinding
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
@@ -76,7 +77,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     private var city : ArrayList<String>? = null
     private var cityCode : ArrayList<String>? = null
     private var billingcity : ArrayList<String>? = null
-    private var billingcityCode : ArrayList<String>? = null
+    private var billingCityCode : ArrayList<String>? = null
     private var authocity : ArrayList<String>? = null
     private var authocityCode : ArrayList<String>? = null
     private val PERMISSION_REQUEST_CODE = 200
@@ -257,7 +258,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val cafPdfRequest = CafPdfRequest(
             Constants.DOWNLOADREPORTS, Constants.AUTH_KEY,
             strCafId,
-            password, "CAF", userName
+            password, AppConstants.CAF, userName
         )
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getPdf(cafPdfRequest)
@@ -288,7 +289,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val cafPdfRequest = CafPdfRequest(
             Constants.REPORTSEMAIL_SEND, Constants.AUTH_KEY,
             strCafId,
-            password, "CAF", userName
+            password, AppConstants.CAF, userName
         )
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.shareEmail(cafPdfRequest)
@@ -444,19 +445,12 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         val subbssegment = str_sub_bus.toString()
         val polock = layout_otherinfo.et_caflock.text.toString()
         val ponext = layout_otherinfo.et_cafnxt.text.toString()
-        //  val contactname = layout_cafothr_details.et_cafname.text.toString()
         val authemail = layout_cafothr_details.et_cafemailid.text.toString()
         val authfather = layout_cafothr_details.et_fthr_hsb.text.toString()
         val authmobile = layout_cafothr_details.et_authomob.text.toString()
         val authname = layout_cafothr_details.et_cafname.text.toString()
         val authaddress = layout_cafothr_details.et_address.text.toString()
         val authpincode = layout_cafothr_details.et_cafauthpincode.text.toString()
-        /*  val billingplot = caf_contact_person_row.et_cfblbuildng_num.text.toString()
-          val billingname = caf_contact_person_row.et_caf_cntname.text.toString()
-          val billingemail = caf_contact_person_row.et_caf_bilngemailid.text.toString()
-          val billingfloor = caf_contact_person_row.et_cfblfloor.text.toString()
-          val billingphn =   caf_contact_person_row.et_cafphn_num.text.toString()
-          val billingpincode = caf_contact_person_row.et_cfblpin_code.text.toString()*/
         val instemail = layout_cafinstal_address.et_cafemail.text.toString()
         val instmobile = layout_cafinstal_address.et_cafmbnum.text.toString()
         val instpin = layout_cafinstal_address.et_cafpin.text.toString()
@@ -507,7 +501,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             Toast.makeText(this, "Please enter Installation Email", Toast.LENGTH_SHORT).show()
         }else if(instmobile.isBlank()){
             Toast.makeText(this, "Please enter Installation Phone Number", Toast.LENGTH_SHORT).show()
-        }else if(str_billtype?.isBlank()==true||str_billtype=="Select Option"){
+        }else if(str_billtype?.isBlank()==true||(str_billtype=="Select Option")||(str_billtype=="0")){
             Toast.makeText(this, "Please Select  Bill Type", Toast.LENGTH_SHORT).show()
         }else if(instpin.isBlank()|| instpin.length!=6){
             Toast.makeText(this, "Please enter Installation PinCode", Toast.LENGTH_SHORT).show()
@@ -577,11 +571,11 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             Toast.makeText(this, "Please enter CreditCard Number", Toast.LENGTH_SHORT).show()
         }else if(paymntdt.isBlank()&&(str_payslip=="4")){
             Toast.makeText(this, "Please Select Payment Date", Toast.LENGTH_SHORT).show()
-        }else if(approvalcode.isBlank()&&(str_payslip=="4")){
+        }/*else if(approvalcode.isBlank()&&(str_payslip=="4")){
             Toast.makeText(this, "Please enter Approval Code", Toast.LENGTH_SHORT).show()
-        }else if(creditcrd.isBlank()&&(str_payslip=="4")){
+        }*//*else if(creditcrd.isBlank()&&(str_payslip=="4")){
             Toast.makeText(this, "Please enter CreditCard Number", Toast.LENGTH_SHORT).show()
-        }else if(paymntdt.isBlank()&&(str_payslip=="8")){
+        }*/else if(paymntdt.isBlank()&&(str_payslip=="8")){
             Toast.makeText(this, "Please Select Payment Date", Toast.LENGTH_SHORT).show()
         }else if(approvalcode.isBlank()&&(str_payslip=="8")){
             Toast.makeText(this, "Please enter Approval Code", Toast.LENGTH_SHORT).show()
@@ -878,16 +872,13 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                                 getRfs()
                             }
                             getBankList()
+
                             strPaymentStatus =response.body()?.Response?.Data?.payments?.PaymentStatus
                             if(network=="111260000"){
                                 caf_contactinfo_layout.et_netwrktech.setText(SalesConstant.GPON)
                             }else if(network=="111260001"){
                                 caf_contactinfo_layout.et_netwrktech.setText(SalesConstant.NON_GPON)
                             }
-                            /*  layout_payment.et_pannum.setText(response.body()?.Response?.Data?.PanNo)
-                              layout_payment.et_tannum.setText(response.body()?.Response?.Data?.TanNo)
-                              layout_payment.et_gstnum.setText(response.body()?.Response?.Data?.GstNumberDetial)
-                            */
                             strProductId= response.body()?.Response?.Data?.ProductId
                             str_inststateId= response.body()?.Response?.Data?.installationAddresses?.Inst_State
                             str_blinststateId = response.body()?.Response?.Data?.billingAddress?.Bill_State
@@ -918,12 +909,19 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                             strRelation = response.body()?.Response?.Data?.Relationship.toString()
                             strGroup = response.body()?.Response?.Data?.Group.toString()
                             str_indusid = response.body()?.Response?.Data?.companyDetail?.IndustryType
-
+                            val gst = response.body()?.Response?.Data?.GstNumberDetial.toString()
+                            layout_payment.et_gstt.setText(gst)
                             getCompany(strCompany)
                             getRelation(strRelation)
+                            val strPan = response.body()?.Response?.Data?.PanNo.toString()
+                            val strTan = response.body()?.Response?.Data?.TanNo.toString()
+                            if(!strPan.startsWith("null")){
+                                binding.layoutPayment.etPannum.setText(strPan)
+                            }
+                            if(!strTan.startsWith("null")){
+                                binding.layoutPayment.etTannum.setText(strTan)
+                            }
                             getIndustryTpe()
-
-
                             var cntstatePosition = 0
                             resources.getStringArray(R.array.list_state_code).forEachIndexed { index, s ->
                                 if (s == str_inststateId) cntstatePosition = index
@@ -1315,17 +1313,16 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                                 if(irList?.isNotEmpty()==true) {
                                     setIrAdapter(irList!!, this@CAFActivity)
                                 }
-                            } catch (e: java.lang.Exception) {
+                            } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         }
-                    } catch (e: java.lang.Exception) {
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
-            override fun onFailure(call: Call<GetCafIRResponse?>, t: Throwable) {
-                //  binding.opprogressLayout.progressOverlay.visibility=View.GONE
+            override fun onFailure(call: Call<GetCafIRResponse?>, t: Throwable){
                 Log.e("RetroError", t.toString())
             }
         })
@@ -1999,15 +1996,15 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
                         img?.let { Log.e("image", it) }
                         cityList = response.body()?.Response?.Data
                         billingcity = ArrayList<String>()
-                        billingcityCode = ArrayList<String>()
+                        billingCityCode = ArrayList<String>()
                         billingcity?.add("Select City")
-                        billingcityCode?.add("")
+                        billingCityCode?.add("")
                         for (item in cityList!!) {
                             billingcity?.add(item.CityName)
-                            billingcityCode?.add(item.CityCode)
+                            billingCityCode?.add(item.CityCode)
                         }
                         var cityPosition=0
-                        billingcityCode?.forEachIndexed { index, s ->
+                        billingCityCode?.forEachIndexed { index, s ->
                             if(s==str_blcity_code)
                                 cityPosition=index
                             return@forEachIndexed
@@ -2253,83 +2250,98 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         if (parent?.id == R.id.sp_preffered_cmmnctn) {
             caf_contactinfo_layout.et_prfcom.setText(resources.getStringArray(R.array.list_of_preffered).get(position))
             str_PrfCom = resources.getStringArray(R.array.list_of_prefferedvalue)[position]
-        }else if(parent?.id == R.id.sp_cafcompany){
+        }
+        else if (parent?.id == R.id.sp_cafcompany) {
             caf_contactinfo_layout.et_cafcmpny.setText(company?.get(position))
             str_cmp =  companyId?.get(position )
             caf_contactinfo_layout.et_cafgrp.setText(group?.get(position))
             str_grp = groupId?.get(position )
             getRelation(str_cmp)
-        }else if(parent?.id == R.id.sp_cafgroup){
+        }
+        else if (parent?.id == R.id.sp_cafgroup) {
             caf_contactinfo_layout.et_cafgrp.setText(group?.get(position))
             str_grp = groupId?.get(position )
-        }else if(parent?.id == R.id.sp_cafrelation){
+        }
+        else if (parent?.id == R.id.sp_cafrelation) {
             caf_contactinfo_layout.et_cafrelation.setText(relation?.get(position))
             str_rltn =  relationId?.get(position )
-        }else if(parent?.id == R.id.sp_cafcmpny_self){
+        }
+        else if (parent?.id == R.id.sp_cafcmpny_self) {
             layout_otherinfo.et_cafcmpny_self.setText(resources.getStringArray(R.array.list_of_boolean)[position])
             str_cmpnyself =  resources.getStringArray(R.array.list_of_boolean_values).get(position )
-        } else if(parent?.id == R.id.sp_caffirm_type){
+        }
+        else if (parent?.id == R.id.sp_caffirm_type) {
             layout_cafcompany_details.et_caffirm_type.setText(resources.getStringArray(R.array.list_firm_type)[position])
             str_firmtype = resources.getStringArray(R.array.list_firm_type_value)[position]
-        }else if(parent?.id == R.id.sp_cafindustype){
+        }
+        else if (parent?.id == R.id.sp_cafindustype) {
             layout_cafcompany_details.et_cafindus_type.setText(instryname[position])
             str_indusid = industryid[position]
-        }else if(parent?.id == R.id.sp_cafstate){
+        }
+        else if (parent?.id == R.id.sp_cafstate) {
             layout_cafinstal_address.et_cafstate.setText(resources.getStringArray(R.array.list_of_state)[position])
             str_statename = resources.getStringArray(R.array.list_of_state)[position]
             str_inststateId= resources.getStringArray(R.array.list_state_code)[position]
             getInstallCity(str_inststateId.toString())
-        }else if(parent?.id == R.id.sp_cafcity){
+        }
+        else if (parent?.id == R.id.sp_cafcity) {
             layout_cafinstal_address.et_add_cafcity.setText(city?.get(position))
             str_city = city?.get(position).toString()
             str_city_code =  cityCode?.get(position )
             getInstallArea(str_city, str_city_code)
-        } else if(parent?.id == R.id.sp_cafcnarea){
+        }
+        else if (parent?.id == R.id.sp_cafcnarea) {
             layout_cafinstal_address.et_cafinstallarea.setText(area?.get(position))
             str_add_area = areaCode?.get(position )
             val cntareaname = area?.get(position).toString()
             getInstallBuilding(cntareaname,str_add_area)
-        } else if(parent?.id == R.id. sp_cafbuilding_nm){
+        }
+        else if (parent?.id == R.id. sp_cafbuilding_nm) {
             layout_cafinstal_address.et_cafbuildingname.setText(building?.get(position))
             str_inst_building_nm =  buildingCode?.get(position )
             //  val buildingname = building?.get(position)
-        }else if(parent?.id == R.id. sp_cafstatus){
+        }
+        else if (parent?.id == R.id. sp_cafstatus) {
             layout_cafinstal_address.et_cafbuilding_status.setText(resources.getStringArray(R.array.list_Of_Status)[position])
             str_inst_statusid = resources.getStringArray(R.array.list_Of_StatusId)[position]
             //   val installstatus = resources.getStringArray(R.array.list_Of_Status).get(position)
-        }else if (parent?.id == R.id.sp_cafsbbus) {
+        }
+        else if (parent?.id == R.id.sp_cafsbbus) {
             caf_contactinfo_layout.et_sb_bs_sgmnt.setText(resources.getStringArray(R.array.list_of_subBusSegment)[position])
             str_sub_bus = resources.getStringArray(R.array.list_of_subBusSegment)[position]
-        }else if (parent?.id == R.id.sp_bnknam) {
+        }
+        else if (parent?.id == R.id.sp_bnknam) {
             layout_payment.et_bnknm.setText(bankname[position])
             str_bankid = bankid[position]
         }
-        else if(parent?.id == R.id.sp_cfblstate){
+        else if (parent?.id == R.id.sp_cfblstate) {
             caf_contact_person_row.et_cfblstate.setText(resources.getStringArray(R.array.list_of_state)[position])
             str_blstatename = resources.getStringArray(R.array.list_of_state)[position]
             str_blinststateId= resources.getStringArray(R.array.list_state_code)[position]
             getBillingCity(str_blinststateId)
-            /* if(str_blstatename!="Select State"|| caf_contact_person_row.et_cfblstate.text?.isNotEmpty() == true) {
-                 getBillingCity(str_blinststateId)
-             }*/
-        }else if(parent?.id == R.id.sp_cfblcity){
+
+        }
+        else if (parent?.id == R.id.sp_cfblcity) {
             caf_contact_person_row.et_cfblcity.setText(billingcity?.get(position))
             str_blcity = billingcity?.get(position).toString()
-            str_blcity_code =  billingcityCode?.get(position)
+            str_blcity_code =  billingCityCode?.get(position)
             getBillingArea(str_blcity, str_blcity_code)
-        } else if(parent?.id == R.id.sp_cfblcnarea){
+        }
+        else if (parent?.id == R.id.sp_cfblcnarea) {
             caf_contact_person_row.et_cfblarea.setText(billingarea?.get(position))
             str_bladd_area = billingareaCode?.get(position)
             val cntareaname = billingarea?.get(position).toString()
             getBillingBuilding(cntareaname,str_bladd_area)
-        } else if(parent?.id == R.id. sp_cfblbuilding_nm){
+        }
+        else if (parent?.id == R.id. sp_cfblbuilding_nm) {
             caf_contact_person_row.et_cfblbuilding.setText(billingbuilding?.get(position))
             str_blinst_building_nm =  billingbuildingCode?.get(position)
-            // val buildingname = billingbuilding?.get(position)
-        }else if(parent?.id == R.id.sp_caf_pro){
+        }
+        else if (parent?.id == R.id.sp_caf_pro) {
             layout_otherinfo.et_provider.setText(resources.getStringArray(R.array.ext_serv_one)[position])
             str_provider = resources.getStringArray(R.array.ext_serv_one_values)[position]
-        }else if(parent?.id == R.id.sp_caffrwal){
+        }
+        else if (parent?.id == R.id.sp_caffrwal) {
             layout_otherinfo.et_caffrwl.setText(resources.getStringArray(R.array.list_of_boolean)[position])
             str_frwall = resources.getStringArray(R.array.list_of_boolean_values)[position]
             if(resources.getStringArray(R.array.list_of_boolean)[position] =="Yes"){
@@ -2337,39 +2349,49 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             }else{
                 layout_otherinfo.tv_frws.visibility= View.GONE
             }
-        }else if(parent?.id == R.id.sp_cafauthostate){
+        }
+        else if (parent?.id == R.id.sp_cafauthostate) {
             layout_cafothr_details.et_cafauthstate.setText(resources.getStringArray(R.array.list_of_state)[position])
             str_atstatename = resources.getStringArray(R.array.list_of_state)[position]
             str_atinststateId= resources.getStringArray(R.array.list_state_code)[position]
             if(str_blstatename!="Select State"|| layout_cafothr_details.et_cafauthstate.text?.isNotEmpty() == true) {
                 getAuthorizedCity(str_atinststateId.toString())
             }
-        }else if(parent?.id == R.id.sp_cafauthcity){
+        }
+        else if (parent?.id == R.id.sp_cafauthcity) {
             layout_cafothr_details.et_add_cafauthcity.setText(authocity?.get(position))
             str_atcity = authocity?.get(position).toString()
             str_atcity_code =  authocityCode?.get(position )
-        }else if(parent?.id == R.id.sp_wrkng_days){
+        }
+        else if (parent?.id == R.id.sp_wrkng_days) {
             caf_contactinfo_layout.et_wrkngdys.setText(resources.getStringArray(R.array.list_of_wrkngdays)[position])
             str_wrkngdays = resources.getStringArray(R.array.list_of_wrkngdaysvalues)[position].toString()
-        }else if(parent?.id == R.id.sp_ntwrkmtr){
+        }
+        else if (parent?.id == R.id.sp_ntwrkmtr) {
             caf_contactinfo_layout.et_ntwrkmtr.setText(resources.getStringArray(R.array.list_of_monitoring)[position])
             str_ntwrk = resources.getStringArray(R.array.list_of_monitoringvalues)[position].toString()
-        }else if(parent?.id == R.id.sp_custctgry){
+        }
+        else if (parent?.id == R.id.sp_custctgry) {
             layout_cafinstal_address.et_custctgry.setText(resources.getStringArray(R.array.list_of_cstmrcategory)[position])
             str_customercategory = resources.getStringArray(R.array.list_of_cstctgryvalues)[position].toString()
-        }else if (parent?.id == R.id.sp_cstmrwrknghrs) {
+        }
+        else if (parent?.id == R.id.sp_cstmrwrknghrs) {
             caf_contactinfo_layout.et_cstmrwrknghrs.setText(resources.getStringArray(R.array.list_of_wrknghours)[position])
             str_wrknghrs = resources.getStringArray(R.array.list_of_wrknghoursval)[position]
-        }else if (parent?.id == R.id.sp_voip) {
+        }
+        else if (parent?.id == R.id.sp_voip) {
             layout_cafinstal_address.et_cafvoip.setText(resources.getStringArray(R.array.list_of_monitoring)[position])
             str_voip = resources.getStringArray(R.array.list_of_cstctgryvalues)[position]
-        }else if (parent?.id == R.id.sp_cafbilltype) {
+        }
+        else if (parent?.id == R.id.sp_cafbilltype) {
             layout_cafinstal_address.et_cafbiltype.setText(resources.getStringArray(R.array.list_of_billtype)[position])
             str_billtype = resources.getStringArray(R.array.list_of_boolean_values)[position]
-        }else if (parent?.id == R.id.sp_securitytype) {
+        }
+        else if (parent?.id == R.id.sp_securitytype) {
             layout_payment.et_sctype.setText(resources.getStringArray(R.array.list_of_Deposit)[position])
             str_sctype = resources.getStringArray(R.array.list_of_boolean_values)[position]
-        }else if (parent?.id == R.id.sp_gst) {
+        }
+        else if (parent?.id == R.id.sp_gst) {
             binding.layoutPayment.etGst.setText(resources.getStringArray(R.array.list_of_gst)[position])
             str_gstval = resources.getStringArray(R.array.listDNCVal)[position]
             if(str_gstval=="569480000"){
@@ -2381,102 +2403,106 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
         else if (parent?.id == R.id.sp_payslip) {
             layout_payment.et_payslip.setText(resources.getStringArray(R.array.list_of_payslip)[position])
             str_payslip = resources.getStringArray(R.array.list_of_payslipval)[position]
-            val pay = resources.getStringArray(R.array.list_of_payslip)[position]
-            if(pay=="Select Option"){
-                layout_payment.frbnk.visibility=View.GONE
-                layout_payment.et_brnchname.visibility=View.GONE
-                layout_payment.et_checkkdate.visibility=View.GONE
-                layout_payment.et_chknumber.visibility=View.GONE
-                layout_payment.et_card4dgt.visibility=View.GONE
-                layout_payment.et_transactionid.visibility=View.GONE
-                layout_payment.et_approvalcode.visibility=View.GONE
-                layout_payment.et_paymentdate.visibility=View.GONE
-                layout_payment.et_debit4dgt.visibility=View.GONE
-            }else if(pay=="RTGS"){
-                layout_payment.et_transactionid.visibility=View.VISIBLE
-                layout_payment.et_approvalcode.visibility=View.GONE
-                layout_payment.et_paymentdate.visibility=View.VISIBLE
-                layout_payment.frbnk.visibility=View.GONE
-                layout_payment.et_brnchname.visibility=View.GONE
-                layout_payment.et_checkkdate.visibility=View.GONE
-                layout_payment.et_chknumber.visibility=View.GONE
-                layout_payment.et_card4dgt.visibility=View.GONE
-                layout_payment.et_debit4dgt.visibility=View.GONE
-            }else if(pay=="Cheque"){
-
-                layout_payment.et_transactionid.visibility=View.GONE
-
-                //////////////////////////////////////////
-                layout_payment.et_card4dgt.visibility=View.GONE
-                layout_payment.frbnk.visibility=View.VISIBLE
-                layout_payment.et_brnchname.visibility=View.VISIBLE
-                layout_payment.et_checkkdate.visibility=View.VISIBLE
-                layout_payment.et_chknumber.visibility=View.VISIBLE
-                layout_payment.et_approvalcode.visibility=View.GONE
-                layout_payment.et_paymentdate.visibility=View.GONE
-                layout_payment.et_debit4dgt.visibility=View.GONE
-            }else if(pay=="Demand draft"){
-                layout_payment.et_transactionid.visibility=View.GONE
-
-                //////////////////////////////////
-                layout_payment.frbnk.visibility=View.VISIBLE
-                layout_payment.et_brnchname.visibility=View.VISIBLE
-                layout_payment.et_checkkdate.visibility=View.VISIBLE
-                layout_payment.et_chknumber.visibility=View.VISIBLE
-                layout_payment.et_card4dgt.visibility=View.GONE
-                layout_payment.et_approvalcode.visibility=View.GONE
-                layout_payment.et_paymentdate.visibility=View.GONE
-                layout_payment.et_debit4dgt.visibility=View.GONE
-            }else if(pay=="Credit Card"){
-                layout_payment.et_approvalcode.visibility=View.VISIBLE
-                layout_payment.et_debit4dgt.visibility=View.VISIBLE
-                layout_payment.et_paymentdate.visibility=View.VISIBLE
-                layout_payment.frbnk.visibility=View.GONE
-                layout_payment.et_brnchname.visibility=View.GONE
-                layout_payment.et_checkkdate.visibility=View.GONE
-                layout_payment.et_card4dgt.visibility=View.GONE
-                layout_payment.et_chknumber.visibility=View.GONE
-                layout_payment.et_transactionid.visibility=View.GONE
-            }else if(pay=="NEFT"){
-                layout_payment.et_transactionid.visibility=View.VISIBLE
-                layout_payment.et_approvalcode.visibility=View.GONE
-                layout_payment.et_paymentdate.visibility=View.VISIBLE
-                layout_payment.et_brnchname.visibility=View.GONE
-                layout_payment.et_checkkdate.visibility=View.GONE
-                layout_payment.et_chknumber.visibility=View.GONE
-                layout_payment.et_card4dgt.visibility=View.GONE
-                layout_payment.et_debit4dgt.visibility=View.GONE
-                layout_payment.frbnk.visibility=View.GONE
-            }else if(pay=="Debit Card"){
-                layout_payment.frbnk.visibility=View.GONE
-                layout_payment.et_brnchname.visibility=View.GONE
-                layout_payment.et_checkkdate.visibility=View.GONE
-                layout_payment.et_chknumber.visibility=View.GONE
-                layout_payment.et_approvalcode.visibility=View.VISIBLE
-                layout_payment.et_card4dgt.visibility=View.VISIBLE
-                layout_payment.et_paymentdate.visibility=View.VISIBLE
-                layout_payment.et_transactionid.visibility=View.GONE
-                layout_payment.et_debit4dgt.visibility=View.GONE
-            }else if(pay=="Ezetap"){
-                layout_payment.frbnk.visibility=View.GONE
-                layout_payment.et_brnchname.visibility=View.GONE
-                layout_payment.et_checkkdate.visibility=View.GONE
-                layout_payment.et_chknumber.visibility=View.GONE
-                layout_payment.et_card4dgt.visibility=View.GONE
-                layout_payment.et_transactionid.visibility=View.VISIBLE
-                layout_payment.et_approvalcode.visibility=View.GONE
-                layout_payment.et_debit4dgt.visibility=View.GONE
-                layout_payment.et_paymentdate.visibility=View.VISIBLE
-            }else if(pay=="Ezetap-Cheque"){
-                layout_payment.frbnk.visibility=View.VISIBLE
-                layout_payment.et_brnchname.visibility=View.VISIBLE
-                layout_payment.et_checkkdate.visibility=View.VISIBLE
-                layout_payment.et_chknumber.visibility=View.VISIBLE
-                layout_payment.et_card4dgt.visibility=View.GONE
-                layout_payment.et_transactionid.visibility=View.GONE
-                layout_payment.et_approvalcode.visibility=View.GONE
-                layout_payment.et_debit4dgt.visibility=View.GONE
-                layout_payment.et_paymentdate.visibility=View.GONE
+            when (resources.getStringArray(R.array.list_of_payslip)[position]) {
+                AppConstants.SELECT_OPTION -> {
+                    layout_payment.frbnk.visibility=View.GONE
+                    layout_payment.et_brnchname.visibility=View.GONE
+                    layout_payment.et_checkkdate.visibility=View.GONE
+                    layout_payment.et_chknumber.visibility=View.GONE
+                    layout_payment.et_card4dgt.visibility=View.GONE
+                    layout_payment.et_transactionid.visibility=View.GONE
+                    layout_payment.et_approvalcode.visibility=View.GONE
+                    layout_payment.et_paymentdate.visibility=View.GONE
+                    layout_payment.et_debit4dgt.visibility=View.GONE
+                }
+                AppConstants.RTGS -> {
+                    layout_payment.et_transactionid.visibility=View.VISIBLE
+                    layout_payment.et_approvalcode.visibility=View.GONE
+                    layout_payment.et_paymentdate.visibility=View.VISIBLE
+                    layout_payment.frbnk.visibility=View.GONE
+                    layout_payment.et_brnchname.visibility=View.GONE
+                    layout_payment.et_checkkdate.visibility=View.GONE
+                    layout_payment.et_chknumber.visibility=View.GONE
+                    layout_payment.et_card4dgt.visibility=View.GONE
+                    layout_payment.et_debit4dgt.visibility=View.GONE
+                }
+                AppConstants.CHEQUE -> {
+                    layout_payment.et_transactionid.visibility=View.GONE
+                    layout_payment.et_card4dgt.visibility=View.GONE
+                    layout_payment.frbnk.visibility=View.VISIBLE
+                    layout_payment.et_brnchname.visibility=View.VISIBLE
+                    layout_payment.et_checkkdate.visibility=View.VISIBLE
+                    layout_payment.et_chknumber.visibility=View.VISIBLE
+                    layout_payment.et_approvalcode.visibility=View.GONE
+                    layout_payment.et_paymentdate.visibility=View.GONE
+                    layout_payment.et_debit4dgt.visibility=View.GONE
+                }
+                AppConstants.DEMAND_DRAFT-> {
+                    layout_payment.et_transactionid.visibility=View.GONE
+                    layout_payment.frbnk.visibility=View.VISIBLE
+                    layout_payment.et_brnchname.visibility=View.VISIBLE
+                    layout_payment.et_checkkdate.visibility=View.VISIBLE
+                    layout_payment.et_chknumber.visibility=View.VISIBLE
+                    layout_payment.et_card4dgt.visibility=View.GONE
+                    layout_payment.et_approvalcode.visibility=View.GONE
+                    layout_payment.et_paymentdate.visibility=View.GONE
+                    layout_payment.et_debit4dgt.visibility=View.GONE
+                }
+                AppConstants.CREDIT_CARD -> {
+                    layout_payment.et_approvalcode.visibility=View.VISIBLE
+                    layout_payment.et_debit4dgt.visibility=View.VISIBLE
+                    layout_payment.et_paymentdate.visibility=View.VISIBLE
+                    layout_payment.frbnk.visibility=View.GONE
+                    layout_payment.et_brnchname.visibility=View.GONE
+                    layout_payment.et_checkkdate.visibility=View.GONE
+                    layout_payment.et_card4dgt.visibility=View.GONE
+                    layout_payment.et_chknumber.visibility=View.GONE
+                    layout_payment.et_transactionid.visibility=View.GONE
+                }
+                AppConstants.NEFT-> {
+                    layout_payment.et_transactionid.visibility=View.VISIBLE
+                    layout_payment.et_approvalcode.visibility=View.GONE
+                    layout_payment.et_paymentdate.visibility=View.VISIBLE
+                    layout_payment.et_brnchname.visibility=View.GONE
+                    layout_payment.et_checkkdate.visibility=View.GONE
+                    layout_payment.et_chknumber.visibility=View.GONE
+                    layout_payment.et_card4dgt.visibility=View.GONE
+                    layout_payment.et_debit4dgt.visibility=View.GONE
+                    layout_payment.frbnk.visibility=View.GONE
+                }
+                AppConstants.DEBIT_CARD -> {
+                    layout_payment.frbnk.visibility=View.GONE
+                    layout_payment.et_brnchname.visibility=View.GONE
+                    layout_payment.et_checkkdate.visibility=View.GONE
+                    layout_payment.et_chknumber.visibility=View.GONE
+                    layout_payment.et_approvalcode.visibility=View.VISIBLE
+                    layout_payment.et_card4dgt.visibility=View.VISIBLE
+                    layout_payment.et_paymentdate.visibility=View.VISIBLE
+                    layout_payment.et_transactionid.visibility=View.GONE
+                    layout_payment.et_debit4dgt.visibility=View.GONE
+                }
+                AppConstants.EZETAP -> {
+                    layout_payment.frbnk.visibility=View.GONE
+                    layout_payment.et_brnchname.visibility=View.GONE
+                    layout_payment.et_checkkdate.visibility=View.GONE
+                    layout_payment.et_chknumber.visibility=View.GONE
+                    layout_payment.et_card4dgt.visibility=View.GONE
+                    layout_payment.et_transactionid.visibility=View.VISIBLE
+                    layout_payment.et_approvalcode.visibility=View.GONE
+                    layout_payment.et_debit4dgt.visibility=View.GONE
+                    layout_payment.et_paymentdate.visibility=View.VISIBLE
+                }
+                AppConstants.EZETAP_CHEQUE -> {
+                    layout_payment.frbnk.visibility=View.VISIBLE
+                    layout_payment.et_brnchname.visibility=View.VISIBLE
+                    layout_payment.et_checkkdate.visibility=View.VISIBLE
+                    layout_payment.et_chknumber.visibility=View.VISIBLE
+                    layout_payment.et_card4dgt.visibility=View.GONE
+                    layout_payment.et_transactionid.visibility=View.GONE
+                    layout_payment.et_approvalcode.visibility=View.GONE
+                    layout_payment.et_debit4dgt.visibility=View.GONE
+                    layout_payment.et_paymentdate.visibility=View.GONE
+                }
             }
         }
 
@@ -2492,14 +2518,14 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     private fun next(){
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
-        builder.setMessage("Do you want to go back to the previous screen?")
-        builder.setPositiveButton("Yes") { _, _ ->
+        builder.setMessage(AppConstants.PREVIOUS_SCREEN)
+        builder.setPositiveButton(AppConstants.YES) { _, _ ->
             Intent(this, CafTabActivity::class.java).also {
                 startActivity(it)
                 finish()
             }
         }
-        builder.setNegativeButton("No") { dialog, _ ->
+        builder.setNegativeButton(AppConstants.NO) { dialog, _ ->
             dialog.cancel()
         }
         val alert: AlertDialog = builder.create()

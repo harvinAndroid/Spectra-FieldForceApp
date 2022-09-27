@@ -32,18 +32,15 @@ import android.content.SharedPreferences
 import android.text.format.DateFormat
 
 import android.widget.DatePicker
+import com.spectra.fieldforce.utils.SalesAppConstants
 
 
 class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener,DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
-   lateinit var flrFragmentBinding: FlrFragmentBinding
+    private lateinit var flrFragmentBinding: FlrFragmentBinding
     var str_LeadId : String?=null
     var  strMobile :String?=null
     var esdtDate :String ? = null
     var prfDate :String ? = null
-    var list_of_status = arrayOf("Select Option","Positive","Negative","Scheduled Appointment")
-    var list_of_status_values = arrayOf("Select Option","1","2","3")
-    var list_of_appointment = arrayOf("Select Option","Meeting","Phone Call")
-    var list_of_appointment_value = arrayOf("0","1","2")
     var day: Int?=null
     var month: Int?=null
     var year: Int?=null
@@ -190,12 +187,12 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-        val flrStatus = context?.let { ArrayAdapter(it, R.layout.simple_spinner_item, list_of_status) }
+        val flrStatus = context?.let { ArrayAdapter(it, R.layout.simple_spinner_item, SalesAppConstants.list_of_status) }
         flrStatus?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         sp_flrstatus!!.adapter = flrStatus
 
 
-        val appointmentAdapter = context?.let { ArrayAdapter(it, R.layout.simple_spinner_item, list_of_appointment) }
+        val appointmentAdapter = context?.let { ArrayAdapter(it, R.layout.simple_spinner_item, SalesAppConstants.list_of_appointment) }
         appointmentAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_item)
         sp_appointment!!.adapter = appointmentAdapter
 
@@ -287,40 +284,32 @@ class FlrFrag:Fragment(),View.OnClickListener,AdapterView.OnItemSelectedListener
         })
     }
 
-    fun showFragmentflr(fragment: FlrFrag){
-        val fram = parentFragmentManager.beginTransaction()
-        fram.replace(com.spectra.fieldforce.R.id.fragment_lead,fragment)
-        fram.commit()
-    }
-
 
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
           if (parent?.id == com.spectra.fieldforce.R.id.sp_flrstatus) {
-              et_Status.setText(list_of_status.get(position))
-              str_status = list_of_status_values.get(position)
-             when (et_Status.text.toString()) {
-                  ("Negative") -> {
-                      remark.visibility = View.VISIBLE
-                      est_dt.visibility = View.GONE
-                      appoint.visibility = View.GONE
-                      date.visibility = View.GONE
-                  }
-                  ("Positive") -> {
-                      remark.visibility = View.GONE
-                      est_dt.visibility = View.VISIBLE
-                      appoint.visibility = View.GONE
-                      date.visibility = View.GONE
-                  }
-                  "Scheduled Appointment" -> {
-                      remark.visibility = View.GONE
-                      est_dt.visibility = View.GONE
-                      date.visibility = View.VISIBLE
-                      appoint.visibility = View.VISIBLE
-                  }
+              et_Status.setText(SalesAppConstants.list_of_status[position])
+              str_status = SalesAppConstants.list_of_status_values[position]
+              if (et_Status.text.toString() == ("Negative")) {
+                  remark.visibility = View.VISIBLE
+                  est_dt.visibility = View.GONE
+                  appoint.visibility = View.GONE
+                  date.visibility = View.GONE
+              }
+              else if (et_Status.text.toString() == ("Positive")) {
+                  remark.visibility = View.GONE
+                  est_dt.visibility = View.VISIBLE
+                  appoint.visibility = View.GONE
+                  date.visibility = View.GONE
+              }
+              else if (et_Status.text.toString() == "Scheduled Appointment") {
+                  remark.visibility = View.GONE
+                  est_dt.visibility = View.GONE
+                  date.visibility = View.VISIBLE
+                  appoint.visibility = View.VISIBLE
               }
           }else if(parent?.id == com.spectra.fieldforce.R.id.sp_appointment){
-              et_appointment.setText(list_of_appointment.get(position))
-               str_appointment = list_of_appointment.get(position)
+              et_appointment.setText(SalesAppConstants.list_of_appointment[position])
+               str_appointment = SalesAppConstants.list_of_appointment[position]
           }
       }
 

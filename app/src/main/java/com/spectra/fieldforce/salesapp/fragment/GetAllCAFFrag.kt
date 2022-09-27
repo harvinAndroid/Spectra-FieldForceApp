@@ -22,6 +22,7 @@ import com.spectra.fieldforce.databinding.*
 import com.spectra.fieldforce.salesapp.activity.SalesDashboard
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.Constants
+import com.spectra.fieldforce.utils.SalesAppConstants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -118,7 +119,8 @@ class GetAllCAFFrag : Fragment(),View.OnClickListener {
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCAF, Constants.AUTH_KEY,strSearch,password,userName,search,"","")
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCAF, Constants.AUTH_KEY,strSearch,password,userName,search,"","",
+            SalesAppConstants.BUSINESS)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllCAF(getAllLeadRequest)

@@ -37,7 +37,8 @@ data class LeadData(
         val installationAddress: Installation_Address,
         val otherDetail: Other_Detail,
         val VerticalID:String,
-        val sdwan:SDWANRes
+        val sdwan:SDWANRes,
+        val IsSameAddress:String?
 
 
 )

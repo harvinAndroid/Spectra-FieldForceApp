@@ -70,7 +70,31 @@ interface AppConstants {
         const val SDWAN ="SDWAN"
         const val USERNAME="UserName"
         const val PASSWORD="Password"
+        const val UName="UName"
         const val MENU ="Menu"
+        const val BIN_MOVEMENT="Bin Movement"
+        const val SELECT_OPTION="Select Option"
+        const val RTGS="RTGS"
+        const val CHEQUE="Cheque"
+        const val DEMAND_DRAFT="Demand draft"
+        const val CREDIT_CARD="Credit Card"
+        const val NEFT="NEFT"
+        const val DEBIT_CARD="Debit Card"
+        const val EZETAP="Ezetap"
+        const val EZETAP_CHEQUE="Ezetap-Cheque"
+        const val PREVIOUS_SCREEN="Do you want to go back to the previous screen?"
+
+        val holdReason = arrayOf("Hold Reason","Customer Appointment not received","Under observation by Customer",
+                "Massoutage","Customer not Contactable","Customer Response Awaited","Under observation by Spectra",
+                "Permission Issue","Force majeure - COVID","Customer House Locked","Force majeure - Flood",
+                "Notice Period Extended on Customer Request")
+
+        val holdReasonValue = arrayOf("0","111260000","111260001","111260002","111260003","111260004",
+            "111260005","111260006","111260007","111260008","111260009","111260010")
+
+        val contact = arrayOf("SELECT_STATUS","YES","NO")
+
+
 
 
     }

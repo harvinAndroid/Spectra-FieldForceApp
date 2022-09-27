@@ -34,6 +34,19 @@ public class Order {
     private String customer_contacted;
     private String etr;
     private String srSubSubType;
+    private String accountTurnOver,customerCategory,externalCustomerSegment;
+
+    public String getAccountTurnOver() {
+        return accountTurnOver;
+    }
+
+    public String getCustomerCategory() {
+        return customerCategory;
+    }
+
+    public String getExternalCustomerSegment() {
+        return externalCustomerSegment;
+    }
 
     private String contactedName,contactedNumber;
 

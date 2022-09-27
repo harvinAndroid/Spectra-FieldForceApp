@@ -116,7 +116,7 @@ public class ProvisioningScreenFragment extends Fragment implements AdapterView.
                                 for (AccountDetailsResponse.OnuProfile id : onuProfile)
                                     modelId.add(id.getProfileName());
                                 ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, modelName);
-                                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                 binding.spModel.setAdapter(adapter1);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -155,7 +155,6 @@ public class ProvisioningScreenFragment extends Fragment implements AdapterView.
     }
 
     private void updateProvisioning(){
-
         AddProvisioningRequest addProvisioningRequest = new AddProvisioningRequest();
         addProvisioningRequest.setAuthkey(Constants.AUTH_KEY);
         addProvisioningRequest.setAction(Constants.PROVISIONING);

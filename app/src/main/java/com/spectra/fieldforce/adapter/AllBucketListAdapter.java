@@ -30,8 +30,8 @@ import com.spectra.fieldforce.databinding.AdpterAllBucketListBinding;
 import com.spectra.fieldforce.fragment.MyBucketList;
 import com.spectra.fieldforce.fragment.SRDetailFragment;
 import com.spectra.fieldforce.fragment.WcrFragment;
+import com.spectra.fieldforce.model.AddBucketListRequest;
 import com.spectra.fieldforce.model.CommonResponse;
-import com.spectra.fieldforce.model.gpon.request.AddBucketListRequest;
 import com.spectra.fieldforce.model.gpon.request.UpdateWcrEnggRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetAllBucketList;
@@ -115,7 +115,9 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
             AllBucketListAdapter.this.addItemToBucket(itemList.getID(),itemList.getOrderType(),itemList.getWcrId(),itemList.getIrId(), itemList.getOrderType(), itemList.getCanId(), itemList.getCustomerName(), "",
                     itemList.getStatus(), itemList.getHoldCategory(),"",  "",
                     itemList.getAreaName(),itemList.getSlaStatus(),itemList.getVendorName(),itemList.getCreatedOn(),
-                    itemList.getProduct(),itemList.getContactPerson(),itemList.getContactNo(),itemList.getWcrslaclock(),itemList.getIrslaclock(),itemList.getBusinessSegment(),itemList.getCityId(),itemList.getAddress(),itemList.getActivationOTP());
+                    itemList.getProduct(),itemList.getContactPerson(),itemList.getContactNo(),itemList.getWcrslaclock(),itemList.getIrslaclock(),
+                    itemList.getBusinessSegment(),itemList.getCityId(),itemList.getAddress(),itemList.getActivationOTP(),
+                    itemList.getAccountTurnOver(),itemList.getCustomerCategory(),itemList.getExternalCustomerSegment());
 
             if(itemList.getOrderType().equals("WCR")){
                 updateEnginer(Constants.UPDATE_WCR_ENGINEER,  itemList.getWcrId());
@@ -165,8 +167,12 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
     }
 
 
-    private void addItemToBucket(String id, String OrderType, String wcrId, String irId, String orderType, String canId, String customerName, String podName, String status, String holdCategory, String holdReason, String networkTechnology, String AreaName
-            , String Sla, String vendorName, String createOn, String Product, String cperson, String Num, String Wcrslaclock, String Irslaclock, String businessSegment, String cityId, String address, String activationOTP){
+    private void addItemToBucket(String id, String OrderType, String wcrId, String irId, String orderType,
+             String canId, String customerName, String podName, String status, String holdCategory,
+             String holdReason, String networkTechnology, String AreaName,String Sla, String vendorName,
+              String createOn, String Product, String cperson, String Num, String Wcrslaclock,
+              String Irslaclock, String businessSegment, String cityId, String address, String activationOTP,
+             String AccountTurnOver,String CustomerCategory,String ExternalCustomerSegment){
         inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setDuration(200);
         binding.progressbar.progressOverlay.setAnimation(inAnimation);
@@ -175,8 +181,12 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         String vendor =sp1.getString("VenderCode", null);
         String enggId = sp1.getString("EnggId", null);
         String enggName =sp1.getString("EnggName", null);
-
-        AddBucketListRequest addBucketListRequest = new AddBucketListRequest();
+        AddBucketListRequest addBucketListRequest = new AddBucketListRequest(AccountTurnOver,Constants.ADD_ORDER_TOBUCKET,
+                "", AreaName,Constants.AUTH_KEY,status,Num,cperson,address, CustomerCategory,cityId,
+                canId,customerName,enggId,enggName,ExternalCustomerSegment,holdCategory,holdReason,Irslaclock,
+                "","", createOn, id,OrderType,Product,businessSegment,Sla,vendorName,
+                vendorName, wcrId,Wcrslaclock,"",activationOTP);
+      /*  AddBucketListRequest addBucketListRequest = new AddBucketListRequest();
         addBucketListRequest.setAuthkey(Constants.AUTH_KEY);
         addBucketListRequest.setAction(Constants.ADD_ORDER_TOBUCKET);
         addBucketListRequest.setOrder_id(id);
@@ -205,7 +215,7 @@ public class AllBucketListAdapter extends RecyclerView.Adapter<AllBucketListAdap
         addBucketListRequest.setSegment(businessSegment);
         addBucketListRequest.setCustomerAddress(address);
         addBucketListRequest.setCustomerCityId(cityId);
-        addBucketListRequest.setActivationOTP(activationOTP);
+        addBucketListRequest.setActivationOTP(activationOTP);*/
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<CommonClassResponse> call = apiService.addItemToBucket(addBucketListRequest);
         call.enqueue(new Callback<CommonClassResponse>() {

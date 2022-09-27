@@ -255,7 +255,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
     private fun addProduct() {
         //inProgress()
         val addProductRequest = strProduct?.let {
-            strOppId?.let { it1 -> AddProductRequest(Constants.CREATE_OPPPRODUCT,Constants.AUTH_KEY, "",password,it,userName,strSiteId) } }
+             AddProductRequest(Constants.CREATE_OPPPRODUCT,Constants.AUTH_KEY, "",password,it,userName,strSiteId) }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.addProduct(addProductRequest)
@@ -264,7 +264,6 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                 //OutProgress()
                 if (response.body()?.Response?.StatusCode==200) {
                     try {
-                        //  Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                         val intent = Intent(this@SiteOpportunityAct, SiteOpportunityAct::class.java)
                         val bundle = Bundle()
                         bundle.putString("OppId",strOppId )
@@ -289,16 +288,14 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
 
 
     private fun  getLanList () {
-        //inProgress()
         val getAllLan = strSiteId?.let {
-            GetAllLanReq(Constants.GET_ALLLAN, Constants.AUTH_KEY,"" /*it*/,password,
+            GetAllLanReq(Constants.GET_ALLLAN, Constants.AUTH_KEY,"" ,password,
                 it,userName)
         }
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllLan(getAllLan)
         call.enqueue(object : Callback<GetLanRes?> {
             override fun onResponse(call: Call<GetLanRes?>, response: Response<GetLanRes?>) {
-                // OutProgress()
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         if(response.body()?.Response?.StatusCode==200) {
@@ -330,7 +327,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
 
     fun getProductAddedList() {
         //  inProgress()
-        val getProductListRequest = GetProductListRequest(Constants.GET_OPPPRODUCT,Constants.AUTH_KEY,""/*strOppId*/,password,userName,strSiteId)
+        val getProductListRequest = GetProductListRequest(Constants.GET_OPPPRODUCT,Constants.AUTH_KEY,""/*strOppId*/,password,userName,strSiteId,"")
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.addProductItem(getProductListRequest)
@@ -339,11 +336,9 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                 //   OutProgress()
                 if (response.isSuccessful && response.body() != null) {
                     try {
-                        //  val msg = response.body()?.Response?.Message
                         if (response.body()?.Response?.StatusCode==200) {
                             try {
-                                // Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
-                                allProductItem = response.body()?.Response?.Data
+                               allProductItem = response.body()?.Response?.Data
                                 if(allProductItem?.isNotEmpty()==true) {
                                     allProductItem?.forEachIndexed { _, itemData ->
                                         if(!itemData.Discount?.startsWith("0.0")!!) {
@@ -360,10 +355,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
-                        }else{
-                            //  Toast.makeText(this@OpportunityActivity, msg, Toast.LENGTH_LONG).show()
                         }
-
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -386,7 +378,7 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
     }
     fun getProductList() {
 
-        val getProductListRequest = strOppId?.let { GetProductListRequest(Constants.GET_PRODUCTLIST,Constants.AUTH_KEY, ""/*it*/,password,userName,strSiteId) }
+        val getProductListRequest = strOppId?.let { GetProductListRequest(Constants.GET_PRODUCTLIST,Constants.AUTH_KEY, "",password,userName,strSiteId,"") }
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getProductList(getProductListRequest)
@@ -467,10 +459,13 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
     ) {
         val siteType = siteDetails.et_siteType.text.toString()
         var site:String?=null
-        if(siteType=="Hub"){
-            site="122050000"
-        }else if(siteType=="Branch"){
-            site ="122050001"
+        when (siteType) {
+            "Hub" -> {
+                site="122050000"
+            }
+            "Branch" -> {
+                site ="122050001"
+            }
         }
         val createSiteReq = CreateSiteReq(strAction,Constants.AUTH_KEY,address,strCityCode,
             name,number,email,emergencyNum,
@@ -573,7 +568,6 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
                         strCategory= response.body()?.Response?.Data?.get(0)?.SiteCategory
 
                         getCompany(strCompany)
-                       // getRelation(strCompany)
                         var sbBusPosition = 0
                         resources.getStringArray(R.array.list_of_subBusSegment).forEachIndexed { index, s ->
                             if (s == strSubBus) sbBusPosition = index
@@ -717,16 +711,16 @@ class SiteOpportunityAct: AppCompatActivity(), View.OnClickListener, AdapterView
     private fun next(){
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
-        builder.setMessage("Do you want to go back to the previous screen?")
+        builder.setMessage(AppConstants.PREVIOUS_SCREEN)
         builder.setPositiveButton(
-            "Yes"
+            AppConstants.YES
         ) { _, _ ->
             val intent = Intent(this, OpportunityActivity::class.java)
             intent.putExtra("OppId",strOppId)
             startActivity(intent)
             finish()
         }
-        builder.setNegativeButton("No") { dialog, _ ->
+        builder.setNegativeButton(AppConstants.NO) { dialog, _ ->
             dialog.cancel()
         }
         val alert: AlertDialog = builder.create()

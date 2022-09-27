@@ -50,7 +50,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
     String s="";
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView srNumber, customerId, customerName, customerMobile, slotTime, slaClock, srStatus, customerAddress;
+        public TextView srNumber, customerId, customerName, customerMobile, slotTime, slaClock, srStatus,
+                customerAddress,turnOver,category,excategory,tv_turnover,tv_cat,cust_cat;
         public Button btnView;
 
         public MyViewHolder(View view) {
@@ -63,6 +64,9 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
             slotTime = (TextView) view.findViewById(R.id.slotTime);
             srStatus = (TextView) view.findViewById(R.id.srStatus);
             slaClock = (TextView) view.findViewById(R.id.slaClock);
+            turnOver = (TextView) view.findViewById(R.id.turnOver);
+            category = (TextView) view.findViewById(R.id.category);
+            excategory = (TextView) view.findViewById(R.id.excategory);
             btnView = (Button) view.findViewById(R.id.btnView);
 
         }
@@ -92,6 +96,9 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.My
         holder.srNumber.setText(order.getSrNumber());
         holder.slotTime.setText(order.getRoasterDate() + " " + order.getFromtime() + " - " + order.getTotime());
         holder.srStatus.setText(order.getSrStatus());
+        holder.turnOver.setText(order.getAccountTurnOver());
+        holder.category.setText(order.getCustomerCategory());
+        holder.excategory.setText(order.getExternalCustomerSegment());
         try{
              s = order.getSlaClock();
         }catch (Exception ex){

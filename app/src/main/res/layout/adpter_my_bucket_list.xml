@@ -148,7 +148,33 @@
             android:text="@{`Activation OTP : ` + allBucketList.activationOTP}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
+        <TextView
+            android:id="@+id/tv_turnover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`Account Turnover : ` + allBucketList.accountTurnOver}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
 
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@{`Internal Customer Category : ` + allBucketList.customerCategory}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
+            android:id="@+id/tv_segment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:visibility="gone"
+            android:text="@{`External Customer Segment : ` + allBucketList.externalCustomerSegment}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
         <TextView
             android:id="@+id/apdate"
             android:layout_width="match_parent"

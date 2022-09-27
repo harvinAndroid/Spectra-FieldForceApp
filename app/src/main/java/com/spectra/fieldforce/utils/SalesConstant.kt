@@ -74,5 +74,8 @@ interface SalesConstant {
 
         var GPON="GPON"
         var NON_GPON="NON-GPON"
+        var turnOver = arrayOf("Select Option","Diamond (>250Cr)","Emerald (100Cr-250Cr)","Ruby (10Cr-100Cr)","Bronze (1Cr-10Cr)")
+        var turnOverVal = arrayOf("0","111260000","111260001","111260002","111260003")
+
     }
 }

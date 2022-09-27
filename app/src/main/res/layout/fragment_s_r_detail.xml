@@ -394,17 +394,15 @@
 
             <Button
                 android:id="@+id/btnETRSubmit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_below="@id/dateTimeText"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_black"
                 android:text="@string/update_etr"
+                android:layout_marginStart="@dimen/_70sdp"
+                android:layout_marginEnd="@dimen/_70sdp"
                 android:textAllCaps="false"
-                android:paddingStart="@dimen/_15sdp"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingEnd="@dimen/_15sdp"
-                android:paddingRight="@dimen/_15sdp"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"/>
 
@@ -566,17 +564,14 @@
 
             <Button
                 android:id="@+id/btnSubmitChnageBin"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
+                android:layout_below="@id/change_bin_note"
+                android:layout_marginStart="@dimen/_70sdp"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="150dp"
+                android:layout_marginEnd="@dimen/_70sdp"
                 android:background="@drawable/button_purple"
                 android:text="@string/change_Bin"
-                android:paddingStart="@dimen/_20sdp"
-                android:paddingLeft="@dimen/_20sdp"
-                android:paddingEnd="@dimen/_20sdp"
-                android:paddingRight="@dimen/_20sdp"
-                android:layout_below="@id/change_bin_note"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 
@@ -645,7 +640,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Do you want to Add Material Consumption.?"
+                    android:text="@string/do_you_want_to_add_material_consumption"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -655,19 +650,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp" />
 
-
-               <!-- <Button
-                    android:id="@+id/btnitemConsumption"
-                    android:layout_width="120dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="@dimen/_100sdp"
-                    android:layout_below="@+id/spntemConsumption"
-                    android:background="@drawable/button_black"
-                    android:text="@string/item_consumption"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textStyle="bold"/>-->
 
             </RelativeLayout>
 
@@ -850,7 +832,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/hold_reason"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -860,21 +841,37 @@
                     android:layout_marginStart="140dp"
                     android:layout_marginTop="10dp" />
 
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/action_code"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/holdReasontwo"
+                    android:layout_width="180dp"
+                    android:layout_below="@id/holdReason"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="140dp"
+                    android:layout_marginTop="15dp" />
+
 
                 <TextView
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/holdReason"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/contact_name"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/hold_reason"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/contactName"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/holdReason"
+                    android:layout_below="@id/holdReasontwo"
                     android:layout_marginStart="140dp"
                     android:layout_marginTop="5dp"
                     android:inputType="text"
@@ -884,9 +881,18 @@
                 <TextView
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/holdReasontwo"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/contact_name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/contactName"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/contact_number"
                     android:textStyle="bold" />
 
@@ -907,7 +913,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/contactNumber"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/customer_contacted"
                     android:textStyle="bold" />
 
@@ -923,10 +929,13 @@
 
                 <Button
                     android:id="@+id/btnHoldSubmit"
-                    android:layout_width="120dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_below="@id/contacted"
                     android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_marginStart="@dimen/_70sdp"
+                    android:layout_marginEnd="@dimen/_70sdp"
                     android:background="@color/colorBlack"
                     android:text="@string/submit_on_hold"
                     android:textAllCaps="false"

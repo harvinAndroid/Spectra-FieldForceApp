@@ -44,6 +44,7 @@ import com.google.android.gms.location.LocationServices;
 import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
 import com.spectra.fieldforce.activity.ProvisioningMainActivity;
+import com.spectra.fieldforce.adapter.InstallDocAdapter;
 import com.spectra.fieldforce.adapter.WcrAddManholeAdapter;
 import com.spectra.fieldforce.adapter.WcrCompletteItemConsumptionListAdapter;
 import com.spectra.fieldforce.adapter.WcrEquipmentConsumpAdapter;
@@ -54,6 +55,8 @@ import com.spectra.fieldforce.databinding.WcrFragmentBinding;
 import com.spectra.fieldforce.model.CommonMessageResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
+import com.spectra.fieldforce.model.gpon.request.CreateWcrIrDocReq;
+import com.spectra.fieldforce.model.gpon.request.GetDocDetailsReq;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendActivationCodeRequest;
 import com.spectra.fieldforce.model.gpon.request.ResendNavRequest;
@@ -66,8 +69,10 @@ import com.spectra.fieldforce.model.gpon.request.UploadWcrImgRequest;
 import com.spectra.fieldforce.model.gpon.request.WcrCompleteRequest;
 import com.spectra.fieldforce.model.gpon.response.CommonClassResponse;
 import com.spectra.fieldforce.model.gpon.response.GetFmsListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetWcrDocResponse;
 import com.spectra.fieldforce.model.gpon.response.HoldReasonResponse;
 import com.spectra.fieldforce.model.gpon.response.WcrResponse;
+import com.spectra.fieldforce.salesapp.model.DeleteProductResponse;
 import com.spectra.fieldforce.utils.Constants;
 
 import java.io.ByteArrayOutputStream;
@@ -83,7 +88,6 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_ONE;
 import static com.spectra.fieldforce.utils.AppConstants.REQUEST_CAMERA_PERMISSION_TWO;
 
@@ -105,7 +109,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private ArrayList<String> QualityParamFace;
     private ArrayList<String> holdCategory;
     private ArrayList<String> holdCategoryId;
-    private String strGuuId,strSegment,doa,strInsta,strfmsId,strSecFmsId,strCanId ,strholdId="",strProductSegment,straddition,OrderId,StatusOfReport;
+    private String strGuuId,strSegment,strInstaCode,doa,strInsta,strfmsId,strSecFmsId,strCanId ,strholdId="",strProductSegment,straddition,OrderId,StatusOfReport;
     private ArrayList<String> itemType;
     private Boolean strHold;
     private ArrayList<WcrResponse.ManHoleDetails> manHoleDetails;
@@ -118,6 +122,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     private String str_ext1="",str_ext2="",str_ext3="",str_ext4="",strSlotType,currentImagePath,currentImagePath1;
     private Uri uri,uri1,uri2,uri3;
     private Uri cameraFileUri;
+    private  InstallDocAdapter docAdapter;
     private Bitmap bitmap1,bitmap2,bitmap3,bitmap4,bitmap5,bitmap6,bitmap7,bitmap8;
     LocationManager locationManager;
     String latitude, longitude,add,fromDateString = "",straddservice="";
@@ -130,6 +135,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     ArrayAdapter<String> adapterParamEducation;
     ArrayAdapter<String> adapterParamWifi;
     ArrayAdapter<String> adapterParamFace;
+    private  ArrayList<GetWcrDocResponse.Datum> docResponses;
     FusedLocationProviderClient mFusedLocationClient;
     int PERMISSION_ID = 44;
     private Calendar mCalendar;
@@ -170,6 +176,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
         Type();
         getWcrInfo();
         getFmsList();
+
 
     }
 
@@ -297,7 +304,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
 
 
         binding.tvWcrSave.setOnClickListener(v -> {
-                    strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
+                  //  strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
                     String idb = Objects.requireNonNull(binding.layoutAssociatedDetails.etIdbLength.getText()).toString();
                     String link = Objects.requireNonNull(binding.layoutAssociatedDetails.etLinkBudget.getText()).toString();
                     String remark = Objects.requireNonNull(binding.etRemarksText.getText()).toString();
@@ -306,7 +313,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                     String custEndFms = Objects.requireNonNull(binding.layoutWcrFms.etPodEnd.getText()).toString();
                     String PortNumCx = Objects.requireNonNull(binding.layoutWcrFms.etPortNumCx.getText()).toString();
                     String PortnumEnd = Objects.requireNonNull(binding.layoutWcrFms.etPortnumEnd.getText()).toString();
-                    strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
                     if (strSegment.equals("Business")) {
                         if (idb.isEmpty()) {
                             Toast.makeText(getContext(), "Please Enter IDB Length", Toast.LENGTH_LONG).show();
@@ -352,7 +358,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             }
                         }
                     } else if (strSegment.equals("Home")) {
-                        if (strInsta.isEmpty() || strInsta.equals("Installation Code")) {
+                        if (strInstaCode.isEmpty() || strInstaCode.equals("Installation Code")) {
                             Toast.makeText(getContext(), "Please Enter Installation Code", Toast.LENGTH_LONG).show();
                         } else if (remark.isEmpty()) {
                             Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
@@ -383,43 +389,21 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                 e.printStackTrace();
                             }
                         }
-                    }/*else if (remark.isEmpty()) {
-                        Toast.makeText(getContext(), "Please Enter The Remark", Toast.LENGTH_LONG).show();
-                    }else if (misc.isEmpty()) {
-                        Toast.makeText(getContext(), "Please Enter The Misc Work Cost", Toast.LENGTH_LONG).show();
-            } else {
-                        try {
-                                getLastLocation();
-                                if (strSegment.equals("Business")) {
-                                    if (manHoleDetails.size() == 0 || manHoleDetails == null) {
-                                        Toast.makeText(getContext(), "Please Add Manhole", Toast.LENGTH_LONG).show();
-                                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
-                                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        updateWcrComplete(remark,latitude,longitude, misc);
-                                    }
-                                } else if (strSegment.equals("Home")) {
-                                    if (equipmentDetailsLists.size() == 0 || equipmentDetailsLists == null) {
-                                        Toast.makeText(getContext(), "Please Add Equipment", Toast.LENGTH_LONG).show();
-                                    } else if (itemConsumtions.size() == 0 || itemConsumtions == null) {
-                                        Toast.makeText(getContext(), "Please Add ItemConsumption", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        updateWcrComplete(remark,latitude,longitude,misc);
-                                    }
-                                }
-                           // }
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
                     }
-                }*/
                 });
         binding.layoutCustomerNetwork.etSpeedWifi.setOnClickListener(view -> {
             checkPermission(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_ONE);
         });
+
+        binding.linearDoc.setOnClickListener(view -> {
+            Bundle bundle1=new Bundle();
+            bundle1.putString("strGuuId",strGuuId);
+            AttachmentWcrFrag attachmentWcrFrag = new AttachmentWcrFrag();
+            attachmentWcrFrag.setArguments(bundle1);
+            attachmentWcrFrag.show(requireActivity().getSupportFragmentManager(), attachmentWcrFrag.getTag());
+        });
         binding.layoutCustomerNetwork.etSpeedLan.setOnClickListener(view -> {
             checkPermission1(Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_TWO);
-
         });
         binding.layoutWcrEngrDetails.saveEnggDetails.setOnClickListener((View v) -> {
             strInsta = Objects.requireNonNull(binding.layoutWcrEngrDetails.etInstallationCode.getText()).toString();
@@ -427,22 +411,9 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             if (strProductSegment.equals("Managed Wi-Fi Business")||strProductSegment.equals("Managed Office Solution")||
                     strProductSegment.equals("Secured Managed Internet")) {
                 updateWcrEnginer(strInsta);
-            }/*else if(strInsta.isEmpty()|| strInsta.equals("Installation Code")){
-                Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
-            }*/else{
+            }else{
                 updateWcrEnginer(strInsta);
             }
-           /* if (strSegment.equals("Business")) {
-                updateWcrEnginer(strInsta);
-            } else if (strSegment.equals("Home")&& strProductSegment.equals("Managed Wi-Fi Business")) {
-                    updateWcrEnginer(strInsta);
-            } else if (strSegment.equals("Home")) {
-                if(strInsta.isEmpty()|| strInsta.equals("Installation Code")){
-                    Toast.makeText(getContext(),"Please Enter Installation Code",Toast.LENGTH_LONG).show();
-                }else{
-                    updateWcrEnginer(strInsta);
-                }
-            }*/
         });
 
         binding.tvWcrApproval.setOnClickListener(view -> SubmitApproval());
@@ -481,8 +452,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
     public void checkPermission(String permission, int requestCode)
     {
         if (ContextCompat.checkSelfPermission(getActivity(), permission) == PackageManager.PERMISSION_DENIED) {
-
-            // Requesting the permission
             ActivityCompat.requestPermissions(getActivity(), new String[] { permission }, requestCode);
         }
         else {
@@ -500,6 +469,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             Toast.makeText(getActivity(), "Permission already granted", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void OpenCamera(int requestCameraPermissionOne){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -603,7 +573,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             else {
                 Toast.makeText(getActivity(), "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
             }
-
         }else  if (requestCode == REQUEST_CAMERA_PERMISSION_TWO) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getActivity(), "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
@@ -611,9 +580,7 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             else {
                 Toast.makeText(getActivity(), "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
             }
-
         }
-
     }
 
     @Override
@@ -932,38 +899,29 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
             binding.linearservicedeatils.setVisibility(View.GONE);
             binding.linearmisc.setVisibility(View.VISIBLE);
             binding.linearInstallationParamDetails.setVisibility(View.GONE);
+
         });
     }
 
     private void listener(){
         if(strSegment.equals("Business")){
-            binding.linearFour.setVisibility(View.VISIBLE);
             binding.linearNine.setVisibility(View.VISIBLE);
             binding.linearSix.setVisibility(View.VISIBLE);
-            binding.linea11.setVisibility(View.VISIBLE);
             binding.linea13.setVisibility(View.VISIBLE);
-            binding.linea15.setVisibility(View.VISIBLE);
-            binding.linearService.setVisibility(View.VISIBLE);
           //  binding.linea18.setVisibility(View.VISIBLE);
             binding.tvWcrApproval.setVisibility(View.GONE);
             binding.linearEquipment.setVisibility(View.GONE);
             binding.linearCustomerNetwork.setVisibility(View.GONE);
             binding.linearInstallationParam.setVisibility(View.GONE);
-            binding.linea20.setVisibility(View.VISIBLE);
             binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.GONE);
         }else if(strSegment.equals("Home")){
-            binding.linearFour.setVisibility(View.VISIBLE);
-            binding.linea11.setVisibility(View.VISIBLE);
             binding.linearEquipment.setVisibility(View.VISIBLE);
             binding.linearCustomerNetwork.setVisibility(View.VISIBLE);
             binding.linearInstallationParam.setVisibility(View.VISIBLE);
             binding.linearNine.setVisibility(View.GONE);
             binding.linearSix.setVisibility(View.GONE);
             binding.linea13.setVisibility(View.GONE);
-            binding.linea15.setVisibility(View.VISIBLE);
           //  binding.linea18.setVisibility(View.VISIBLE);
-            binding.linea20.setVisibility(View.VISIBLE);
-            binding.linearService.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1038,7 +996,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                         e.printStackTrace();
                     }
                 }
-
             }
 
             @Override
@@ -1180,12 +1137,14 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                             binding.layoutWcrFragmentCustomerDetails.setCustomer(response.body().getResponse().getWcr());
                             strGuuId = response.body().getResponse().getWcr().getWcrguidid();
                             strHold = response.body().getResponse().getWcr().getShowHold();
-                            if (strHold==true) {
+                            if (strHold) {
                                 binding.linea18.setVisibility(View.VISIBLE);
-                            }else if(strHold==false){
+                            }else{
                                 binding.linea18.setVisibility(View.GONE);
                             }
                             add = "0";
+                            strInstaCode = response.body().getResponse().getEngineerDetails().getInstCode();
+
                             strProductSegment = response.body().getResponse().getWcr().getProductSegment();
                             strSegment = response.body().getResponse().getWcr().getBusinessSegment();
                             if (strProductSegment.equals("Managed Wi-Fi Business")||strProductSegment.equals("Managed Office Solution")||
@@ -1195,13 +1154,13 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                 binding.layoutWcrEngrDetails.etInstallationCode.setVisibility(View.VISIBLE);
                             }
                             listener();
+                           // getDocumentDetails();
                             String strstatus = String.valueOf(strWcrStatus);
                             if ((strstatus.equals("true") && strSegment.equals("Business") || (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available")))){
                                 binding.layoutItemConsumption.btnItemConsumption1.setVisibility(View.VISIBLE);
                                 binding.layoutAddEquipment.btnItemEqipment.setVisibility(View.VISIBLE);
                                 binding.layoutServiceDetails.btnAddService.setVisibility(View.VISIBLE);
                                 binding.tvWcrApproval.setVisibility(View.GONE);
-
                                 add="1";
                             }
                             if ((strSegment.equals("Home")) && (consumptionStatus.equals("Pending")) || (consumptionStatus.equals("Rejected")) || (consumptionStatus.equals("Material not Available"))){
@@ -1233,7 +1192,6 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     adapterfms.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutWcrFms.spCustomerEndFms.setAdapter(adapterfms);
                                 }
-
                             }
                             String strfmssec = response.body().getResponse().getFMSDetails().getFmssecond();
                             if (strfmssec != null && !strfmssec.equals("0")) {
@@ -1499,11 +1457,13 @@ public class WcrFragment extends Fragment implements AdapterView.OnItemSelectedL
                                     adapterParamWifi.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     binding.layoutInstallationparam.spWifiSsid.setAdapter(adapterParamWifi);
                                 }
+                              //  getDocumentDetails();
                             }catch (Exception ex){
                                 ex.getMessage();
                             }
 
                             getHoldReason();
+
                          //  getItemStatus();
 
                         } catch (NumberFormatException e) {

@@ -52,7 +52,6 @@ public class QuestionAnswerAdapter extends RecyclerView.Adapter<QuestionAnswerAd
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tv_question.setText((questionList.get(position).getQuesId())+"."+" "+ questionList.get(position).getQuestion());
-        //myClickListener.myOnClick(position,new Answer(questionList.get(position).getQuesId(),"0"));
         if(questionList.get(position).getAns()!=null){
             String ans="";
             switch (questionList.get(position).getAns()) {

@@ -41,6 +41,7 @@ data class UpdateOppurtunity(
     val noOfBeds:String,
     val typeOfOrder:String?,
     val pocClosureDate:String?,
+    val turnOver:String?,
     val SDWANOpp:SDWANOpp?
 )
 

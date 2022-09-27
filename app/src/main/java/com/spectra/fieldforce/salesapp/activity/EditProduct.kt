@@ -124,7 +124,7 @@ class EditProduct : AppCompatActivity(), View.OnClickListener , AdapterView.OnIt
         if (parent?.id == R.id.sp_pricing) {
             et_pricing.setText(list_of_pricing[position])
             str_pricing = list_of_pricing[position]
-             val price = list_of_pricing[position]
+            val price = list_of_pricing[position]
             if(price=="Use Default"){
                 et_price.isFocusable=false
                 et_price.isFocusableInTouchMode=false

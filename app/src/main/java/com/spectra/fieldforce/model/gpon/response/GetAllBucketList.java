@@ -121,6 +121,22 @@ public class Response {
     private String appointmentDate;
     private String cityId;
     private String address;
+    private String accountTurnOver;
+
+    public String getAccountTurnOver() {
+        return accountTurnOver;
+    }
+
+    public String getCustomerCategory() {
+        return customerCategory;
+    }
+
+    public String getExternalCustomerSegment() {
+        return externalCustomerSegment;
+    }
+
+    private String customerCategory;
+    private String externalCustomerSegment;
 
     public String getAddAssign() {
         return addAssign;

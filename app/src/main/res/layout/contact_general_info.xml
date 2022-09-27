@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="updateContact"
+            type="com.spectra.fieldforce.salesapp.model.CntactData" />
+    </data>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -70,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/color_light_blue"
                     android:hint="@string/first_name"
+                    android:text="@{updateContact.firstName}"
                     android:imeOptions="actionNext"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
@@ -93,6 +99,7 @@
                     android:hint="@string/last_name"
                     android:imeOptions="actionNext"
                      app:hintEnabled="true"
+                    android:text="@{updateContact.lastName}"
                       android:textColor="@color/colorPrimaryDark"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
@@ -115,6 +122,7 @@
                         android:imeOptions="actionNext"
                         app:hintEnabled="true"
                         android:maxLength="10"
+                        android:text="@{updateContact.mobileNumber}"
                         android:inputType="number"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
@@ -137,6 +145,7 @@
                         android:inputType="number"
                         android:imeOptions="actionNext"
                         app:hintEnabled="true"
+                        android:text="@{updateContact.mobileNumber2}"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
@@ -156,6 +165,7 @@
                             android:backgroundTint="@color/color_light_blue"
                             android:hint="@string/email_id"
                             app:hintEnabled="true"
+                            android:text="@{updateContact.emailAddress}"
                             android:imeOptions="actionNext"
                             android:textColor="@color/colorPrimaryDark"
                             android:textColorHighlight="@color/colorPrimary"
@@ -212,6 +222,7 @@
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/call_attempted"
                         app:hintEnabled="true"
+                        android:text="@{updateContact.callAttempted}"
                         android:inputType="number"
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"
@@ -245,7 +256,6 @@
                             android:backgroundTint="@color/color_light_blue"
                             android:hint="@string/lead_channel"
                             android:imeOptions="actionNext"
-                            android:focusableInTouchMode="false"
                             android:focusable="false"
                             android:drawableEnd="@drawable/ic_expand_down"
                             android:textColor="@color/colorPrimaryDark"
@@ -306,6 +316,7 @@
                         android:backgroundTint="@color/color_light_blue"
                         android:hint="@string/campaign_name"
                         app:hintEnabled="true"
+                        android:text="@{updateContact.campaignName}"
                         android:imeOptions="actionNext"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHighlight="@color/colorPrimary"

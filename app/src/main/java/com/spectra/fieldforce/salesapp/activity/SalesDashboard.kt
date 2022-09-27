@@ -84,9 +84,9 @@ class SalesDashboard:AppCompatActivity(),View.OnClickListener{
     override fun onBackPressed() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
-        builder.setMessage("Do you want to Back?")
+        builder.setMessage(AppConstants.PREVIOUS_SCREEN)
         builder.setPositiveButton(
-            "Yes"
+            AppConstants.YES
         ) { _, _ ->
             Intent(this, MainActivity::class.java).also {
                 startActivity(it)
@@ -94,7 +94,7 @@ class SalesDashboard:AppCompatActivity(),View.OnClickListener{
             }
         }
         builder.setNegativeButton(
-            "No"
+            AppConstants.NO
         ) { dialog, _ ->
             dialog.cancel()
         }

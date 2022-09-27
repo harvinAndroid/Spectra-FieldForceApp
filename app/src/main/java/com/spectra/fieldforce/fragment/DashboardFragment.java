@@ -2,6 +2,7 @@ package com.spectra.fieldforce.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,16 @@ public class DashboardFragment extends Fragment {
         binding.linearGpon.setOnClickListener(view12 ->
                 validateGpon("I"));
 
+        binding.linearDepro.setOnClickListener(view12 ->
+                next()
+
+        );
+
+    }
+    private void next(){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.GPON)));
+       /* Intent send = new Intent(getActivity(), DeProvisionIng.class);
+        startActivity(send);*/
     }
 
     private void validateffa(String f) {

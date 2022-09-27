@@ -132,7 +132,6 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         baseActivity = ((BaseActivity) this);
         init();
         getRC1();
-        getRC2(RCOnee);
         getQuestionList();
         resolveButton();
         listener();
@@ -408,9 +407,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                 try {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
-                            if (response.body().getStatus()==0) {
-                                Log.d("Failure", "error");
-                            } else if (response.body().getStatus()==1) {
+                           if (response.body().getStatus()==1) {
                                 try {
                                     if (response.body() != null) {
                                         binding.questionRecylerView.setVisibility(View.VISIBLE);
@@ -457,9 +454,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
                         status = jsonObject.getString("status");
                         String bytesin = "";
-                        if (status.equals("Failure")) {
-                            bytesin = "Failure in getting Status";
-                        } else if (status.equals("success")) {
+                        if (status.equals("success")) {
                             try {
                                 JSONObject response1 = jsonObject.getJSONObject("response");
                                 int byteIn = 0;
@@ -509,9 +504,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         rc3Name = new ArrayList<String>();
                         rc3Code.add("0");
                         rc3Name.add("Select Resolution Code 3");
-                        if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
-                        } else if (status.equals("Success")) {
+                        if (status.equals("Success")) {
                             try {
                                 result = jsonObject.getJSONArray("data");
                                 if (result != null) {
@@ -560,9 +553,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                     if (response.isSuccessful()) {
                         JSONObject jsonObject = new JSONObject(String.valueOf(response.body()));
                         status = jsonObject.getString("Status");
-                        if (status.equals("Failure")) {
-                            Log.d("Failure", "error");
-                        } else if (status.equals("Success")) {
+                       if (status.equals("Success")) {
                             try {
                                 result = jsonObject.getJSONArray("data");
                                 if (result != null) {
@@ -944,7 +935,7 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
                         status = jsonObject.getString("Status");
                         if (status.equals("Failure")) {
                             Log.d("Failure", "error");
-                        } else if (status.equals("1")) {
+                        }else if (status.equals("1")) {
                             binding.btnUploadArtifacts.setEnabled(false);
                             binding.btnUploadArtifacts.setBackgroundDrawable(Activity_Resolve.this.getResources().getDrawable(R.drawable.gray_background));
                            Toast.makeText(Activity_Resolve.this,"Artifacts Submitted Successfully",Toast.LENGTH_LONG).show();
@@ -966,10 +957,10 @@ public class Activity_Resolve extends BaseActivity implements View.OnClickListen
         }
     }
 
-
     @Override
     public void test(int pos, Answer answer) {
             questionmap.put(pos, answer);
     }
+
 }
 //1012

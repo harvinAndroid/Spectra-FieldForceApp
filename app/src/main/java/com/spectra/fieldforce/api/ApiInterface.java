@@ -2,6 +2,35 @@ package com.spectra.fieldforce.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.spectra.fieldforce.kaizalaapp.model.KCafCreatedRespo;
+import com.spectra.fieldforce.kaizalaapp.model.KCafUpdateRes;
+import com.spectra.fieldforce.kaizalaapp.model.KCompResponse;
+import com.spectra.fieldforce.kaizalaapp.model.KContResponse;
+import com.spectra.fieldforce.kaizalaapp.model.KContactRespo;
+import com.spectra.fieldforce.kaizalaapp.model.KCreateCafReq;
+import com.spectra.fieldforce.kaizalaapp.model.KCreateConatactReq;
+import com.spectra.fieldforce.kaizalaapp.model.KCreateLeadReq;
+import com.spectra.fieldforce.kaizalaapp.model.KGetAllContact;
+import com.spectra.fieldforce.kaizalaapp.model.KGetAllLeadRequest;
+import com.spectra.fieldforce.kaizalaapp.model.KGetAreaRes;
+import com.spectra.fieldforce.kaizalaapp.model.KGetBuildingReq;
+import com.spectra.fieldforce.kaizalaapp.model.KGetBuildingRes;
+import com.spectra.fieldforce.kaizalaapp.model.KGetCafReq;
+import com.spectra.fieldforce.kaizalaapp.model.KGetCafResp;
+import com.spectra.fieldforce.kaizalaapp.model.KGetCityRes;
+import com.spectra.fieldforce.kaizalaapp.model.KGetCompanyResponse;
+import com.spectra.fieldforce.kaizalaapp.model.KGetContactReq;
+import com.spectra.fieldforce.kaizalaapp.model.KGetLeadReq;
+import com.spectra.fieldforce.kaizalaapp.model.KGetLeadRes;
+import com.spectra.fieldforce.kaizalaapp.model.KGetPlanCatRes;
+import com.spectra.fieldforce.kaizalaapp.model.KGetProductReq;
+import com.spectra.fieldforce.kaizalaapp.model.KGetProductRespo;
+import com.spectra.fieldforce.kaizalaapp.model.KGetRelationReq;
+import com.spectra.fieldforce.kaizalaapp.model.KGetRelationRes;
+import com.spectra.fieldforce.kaizalaapp.model.KGetSocietyReq;
+import com.spectra.fieldforce.kaizalaapp.model.KGetSocietyRes;
+import com.spectra.fieldforce.kaizalaapp.model.KUpdateContactRes;
+import com.spectra.fieldforce.model.AddBucketListRequest;
 import com.spectra.fieldforce.model.ArtifactRequest;
 import com.spectra.fieldforce.model.AssignmentRequest;
 import com.spectra.fieldforce.model.CanIdRequest;
@@ -12,13 +41,16 @@ import com.spectra.fieldforce.model.CommonMessageResponse;
 import com.spectra.fieldforce.model.CommonResponse;
 import com.spectra.fieldforce.model.EndtimeRequest;
 import com.spectra.fieldforce.model.LoginResponse;
+import com.spectra.fieldforce.model.ValidateUserReq;
+import com.spectra.fieldforce.model.ValidateUserResponse;
 import com.spectra.fieldforce.model.gpon.request.AccountInfoRequest;
-import com.spectra.fieldforce.model.gpon.request.AddBucketListRequest;
 import com.spectra.fieldforce.model.gpon.request.AddItemConsumption;
 import com.spectra.fieldforce.model.gpon.request.AddProvisioningRequest;
 import com.spectra.fieldforce.model.gpon.request.AssociatedResquest;
 import com.spectra.fieldforce.model.gpon.request.BucketListRequest;
+import com.spectra.fieldforce.model.gpon.request.CreateWcrIrDocReq;
 import com.spectra.fieldforce.model.gpon.request.DeleteItemRequest;
+import com.spectra.fieldforce.model.gpon.request.GetDocDetailsReq;
 import com.spectra.fieldforce.model.gpon.request.GetINSRequest;
 import com.spectra.fieldforce.model.gpon.request.GetMaxCap;
 import com.spectra.fieldforce.model.gpon.request.HoldWcrRequest;
@@ -55,6 +87,7 @@ import com.spectra.fieldforce.model.gpon.response.GetMaxCapResponse;
 import com.spectra.fieldforce.model.gpon.response.GetMyBucketList;
 import com.spectra.fieldforce.model.gpon.response.GetServiceResponse;
 import com.spectra.fieldforce.model.gpon.response.GetSubItemListResponse;
+import com.spectra.fieldforce.model.gpon.response.GetWcrDocResponse;
 import com.spectra.fieldforce.model.gpon.response.HoldReasonResponse;
 import com.spectra.fieldforce.model.gpon.response.IrInfoResponse;
 import com.spectra.fieldforce.model.gpon.response.WCRHoldCategoryResponse;
@@ -89,17 +122,19 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<LoginResponse> performUserLogin(@Body LoginRequest loginRequest);
-   // Call<User> performRegistration(@Query("name") String Name, @Query("user_name") String UserName, @Query("user_password") String UserPass);
 
 
     @POST ("index.php")
     Call<QuestionAnswerList> getQuestionList(@Body QuestionListRequest questionListRequest);
 
     @POST ("index.php")
-    Call<ValidateResponse> validateUserReq(@Body ValidateUserRequest questionListRequest);
+    Call<ValidateResponse> validateUserReq(@Body ValidateUserRequest validateUserRequest);
 
     @POST ("index.php")
-    Call<ValidateSalesResponse> validateSalesUserReq(@Body ValidateUserRequest questionListRequest);
+    Call<ValidateUserResponse> validateReq(@Body ValidateUserReq validateUserReq);
+
+    @POST ("index.php")
+    Call<ValidateSalesResponse> validateSalesUserReq(@Body ValidateUserRequest validateUserRequest);
 
 
     @POST ("index.php")
@@ -360,6 +395,17 @@ public interface ApiInterface {
     Call<GetContactResponse> getContact(@Body GetContactRequest getContactRequest);
 
     @POST ("index.php")
+    Call<KContResponse> getKContact(@Body KGetContactReq kGetContactReq);
+
+    @POST ("index.php")
+    Call<KGetLeadRes> getKLead(@Body KGetLeadReq kGetLeadReq);
+
+    @POST ("index.php")
+    Call<KGetCafResp> getKCaf(@Body KGetCafReq kGetCafReq);
+
+
+
+    @POST ("index.php")
     Call<GetOppurtunityProductResponse> getOppurtunityProduct(@Body GetOppurtunityProductRequest getOppurtunityProductRequest);
 
     @POST ("index.php")
@@ -425,6 +471,9 @@ public interface ApiInterface {
     Call<GetDocCafResponse> getDoc(@Body CafRequest cafRequest);
 
     @POST ("index.php")
+    Call<GetWcrDocResponse> getInstallationDoc(@Body GetDocDetailsReq getDocDetailsReq );
+
+    @POST ("index.php")
     Call<GetPdfResponse> getPdf(@Body CafPdfRequest cafPdfRequest);
 
     @POST ("index.php")
@@ -432,6 +481,10 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<DeleteProductResponse> uploadDoc(@Body UploadDocRequest uploadDocRequest);
+
+    @POST ("index.php")
+    Call<DeleteProductResponse> uploadWcrDoc(@Body CreateWcrIrDocReq createWcrIrDocReq);
+
 
     @POST ("index.php")
     Call<CafDetailResponse> createCaf(@Body CreateCafReqest createCafReqest);
@@ -449,6 +502,9 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<GetAllContactResponse> getAllContact(@Body GetAllLeadRequest getAllLeadRequest);
+
+    @POST ("index.php")
+    Call<GetAllContactResponse> getKAllContact(@Body KGetAllLeadRequest kGetAllLeadRequest);
 
     @POST ("index.php")
     Call<GetAllCafListResponse> getAllCAF(@Body GetAllLeadRequest getAllLeadRequest);
@@ -494,9 +550,15 @@ public interface ApiInterface {
     @POST ("index.php")
     Call<GetCompanyResponse> getComapnyList(@Body GetCompanyRequest getCompanyRequest);
 
+    @POST ("index.php")
+    Call<KGetCompanyResponse> getKComapnyList(@Body GetCompanyRequest getCompanyRequest);
+
 
     @POST ("index.php")
     Call<GetRelationShipResponse> getRelationList(@Body GetCompanyRequest getCompanyRequest);
+
+    @POST ("index.php")
+    Call<KGetRelationRes> getKRelationList(@Body KGetRelationReq kGetRelationReq);
 
     @POST ("index.php")
     Call<GetGroupResponse> getGroup(@Body GetCompanyRequest getCompanyRequest);
@@ -511,13 +573,51 @@ public interface ApiInterface {
     Call<GetLeadSourceResp> getLeadSource(@Body GetLeadSourceRequest getLeadSourceRequest);
 
     @POST ("index.php")
+    Call<GetLeadSourceResp> createKaiContact(@Body KCreateLeadReq kCreateLeadReq);
+
+    @POST ("index.php")
+    Call<KCafCreatedRespo> createKaiCaf(@Body KCreateCafReq kCreateCafReq);
+
+    @POST ("index.php")
+    Call<KCafUpdateRes> updateKaiCaf(@Body KCreateCafReq kCreateCafReq);
+
+    @POST ("index.php")
+    Call<KContactRespo> creaKaiContact(@Body KCreateConatactReq kCreateLeadReq);
+
+    @POST ("index.php")
+    Call<GetLeadSourceResp> createKaiLead(@Body KCreateConatactReq kCreateConatactReq);
+
+
+    @POST ("index.php")
+    Call<KUpdateContactRes> updateKaiContact(@Body KCreateConatactReq kCreateConatactReq);
+
+    @POST ("index.php")
     Call<GetCompetitorResponse> getCompetitorList(@Body GetLeadSourceRequest getLeadSourceRequest);
+
+    @POST ("index.php")
+    Call<KCompResponse> getCompList(@Body GetLeadSourceRequest getLeadSourceRequest);
 
     @POST ("index.php")
     Call<GetPlanCategoryRes> getPlanCategory(@Body PlanCategoryRequest planCategoryRequest);
 
     @POST ("index.php")
+    Call<KGetPlanCatRes> kgetPlanCat(@Body PlanCategoryRequest planCategoryRequest);
+
+    @POST ("index.php")
     Call<GetLeadAreaRes> getLeadArea(@Body GetLeadAreaRequest getLeadAreaRequest);
+
+    @POST ("index.php")
+    Call<KGetAreaRes> getKArea(@Body GetLeadAreaRequest getLeadAreaRequest);
+
+    @POST ("index.php")
+    Call<KGetBuildingRes> getKBuilding(@Body KGetBuildingReq kGetBuildingReq);
+
+    @POST ("index.php")
+    Call<KGetProductRespo> getKProduct(@Body KGetProductReq kGetProductReq);
+
+
+    @POST ("index.php")
+    Call<KGetSocietyRes> getKSociety(@Body KGetSocietyReq kGetSocietyReq);
 
     @POST ("index.php")
     Call<GetSubBusinessResponse> getSubBusSeg(@Body GetBusinessSubSegRequest getBusinessSubSegRequest);
@@ -533,6 +633,9 @@ public interface ApiInterface {
 
     @POST ("index.php")
     Call<GetCityResponse> getCityList(@Body GetCityRequest getCityRequest);
+
+    @POST ("index.php")
+    Call<KGetCityRes> getKCityList(@Body GetCityRequest getCityRequest);
 
     @POST ("index.php")
     Call<GetVerticalData> getVertical(@Body GetCityRequest getCityRequest);

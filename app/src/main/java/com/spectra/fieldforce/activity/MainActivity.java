@@ -39,6 +39,7 @@ import com.google.android.play.core.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.spectra.fieldforce.BuildConfig;
 import com.spectra.fieldforce.R;
+import com.spectra.fieldforce.fragment.DashFragment;
 import com.spectra.fieldforce.fragment.DashboardFragment;
 import com.spectra.fieldforce.fragment.WelcomeFragment;
 import com.spectra.fieldforce.utils.AppConstants;
@@ -83,7 +84,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (findViewById(R.id.fregment_container) != null) {
         if (prefConfig.LoginStatus()){
                 navigationDrawerSetup();
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashFragment(), DashFragment.class.getSimpleName()).addToBackStack(null).commit();
             }
             else {
                 finish();
@@ -218,7 +219,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             btnHome.setOnClickListener(v -> {
                 drawerLayout.closeDrawers();
                 MainActivity.prefConfig.writeName(MainActivity.prefConfig.readName());
-                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashboardFragment(), DashboardFragment.class.getSimpleName()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fregment_container, new DashFragment(), DashFragment.class.getSimpleName()).addToBackStack(null).commit();
             });
 
             TextView btnWiFi = dView.findViewById(R.id.nav_Wifi);

@@ -525,7 +525,6 @@
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="GST Number*"
                                 android:textAllCaps="true"
-                                android:text="@{cafPaymentInfo.totalAmount}"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapCharacters"
                                 android:textColor="@color/colorPrimaryDark"

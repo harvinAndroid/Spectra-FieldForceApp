@@ -216,6 +216,8 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:id="@+id/specfcbuilding_num"
                             android:textColorHint="@color/colorPrimary"
                             app:hintTextAppearance="@style/AppearanceText">
 
@@ -225,7 +227,7 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/color_light_blue"
                                 android:hint="@string/specific_building_no"
-                               android:visibility="gone"
+
                                 android:text="@{updateAdress.installSpecifyBuilding}"
                                 android:imeOptions="actionNext"
                                 android:textColor="@color/colorPrimaryDark"

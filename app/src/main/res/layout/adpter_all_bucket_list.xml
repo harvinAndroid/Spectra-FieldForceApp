@@ -162,7 +162,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp"
-            android:visibility="gone"
             android:text="@{`Activation OTP :  ` + allBucketList.activationOTP}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
@@ -176,21 +175,51 @@
             android:text="@{`Appointment Date : ` + allBucketList.appointmentDate}"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"  />
+  <TextView
+            android:id="@+id/tv_turnover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`Account Turnover : ` + allBucketList.accountTurnOver}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="@{`Internal Customer Category : ` + allBucketList.customerCategory}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
+
+        <TextView
+            android:id="@+id/tv_segment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:visibility="gone"
+            android:text="@{`External Customer Segment : ` + allBucketList.externalCustomerSegment}"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12sdp"  />
 
 
-            <TextView
-                android:id="@+id/tv_add"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
-                android:background="@drawable/button_black"
-                android:layout_marginStart="@dimen/_70sdp"
-                android:layout_marginEnd="@dimen/_70sdp"
-                android:gravity="center"
-                android:text="@{ allBucketList.addAssign}"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:textColor="@android:color/white"
-                 />
+        <TextView
+            android:id="@+id/tv_add"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/button_black"
+            android:layout_marginStart="@dimen/_70sdp"
+            android:layout_marginEnd="@dimen/_70sdp"
+            android:gravity="center"
+            android:text="@{ allBucketList.addAssign}"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:textColor="@android:color/white"
+            />
 
         <View
             android:id="@+id/view2"

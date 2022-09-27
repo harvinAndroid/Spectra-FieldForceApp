@@ -3,17 +3,28 @@ package com.spectra.fieldforce.utils;
 public class Constants {
 
    /* PRODUCATION URL*/
-    public static final String BASE_URL="https://ffamwapi.spectra.co";
-    public static final String BASE_URL1="https://custappmw.spectra.co";
+     public static final String BASE_URL="https://ffamwapi.spectra.co";
+     public static final String BASE_URL1="https://custappmw.spectra.co";
+     public static final String GPON = "https://gponapp.spectra.co:9075";
+     public static final String KAIZALA = "https://ffamwapiuat.spectra.co/index_kaizala.php";
+
   /*  Local URL */
-   /* public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
-    public static final String BASE_URL1="https://custappmwuat.spectra.co/";*/
+  /*  public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
+    public static final String BASE_URL1="https://custappmwuat.spectra.co/";
+    public static final String GPON = "https://gponuat.spectra.co:9075";
+    public static final String KAIZALA = "https://ffamwapiuat.spectra.co/home_segment.php/";*/
+
     public static final String AUTH_KEY ="ac7b51de9d888e1458dd53d8aJAN3ba6f";
     public static final String GET_ACTION_CODEMST  ="getActioncodeMst";
+    public static final String GETBIN_MOVEMENTSR="getBinmovementSR";
+    public static final String CREATE_SRNOTES="createSRNotes";
+    public static final String SAVEETR_DETAIL="saveEtrDetail";
+    public static final String SAVEBIN_MOVEMENTSR="saveBinmovementSR";
     public static final String GETASR_BY_SRNUMBER= "getASRBySrNumber";
     public static final String AUTH = "AdgT68HnjkehEqlkd4";
+    public static final String KAIZALA_AUTH = "AdgT6SnjAkeLqlkE4";
     public static final String GET_ACCOUNT_DATA = "getAccountData";
-    public static final String GET_MRTG= "getMRTGbycanid";
+    public static final String GET_MRTG = "getMRTGbycanid";
     public static final String VALIDATE_USER = "validateUser";
     public static final String ASSIGNED = "Assigned";
     public static final String ASSIGNMENT = "assignment";
@@ -39,6 +50,7 @@ public class Constants {
     public static final String GET_SR_INPROGESS = "getSRinProgress";
     public static final String CREATE_ITEM_EQUIPMENT = "createItemEquipment";
     public static final String GETALL_ITEM_MASTER = "getAllItemMasterFromCRM";
+    public static final String GETNOTES_BYSRNUMBER ="getNotesBySrNumber";
     public static final String DELETE_ITEM_CONSUMPTION = "deleteMaterialConsumptionCRM";
     public static final String EDIT_ITEM_CONSUMPTION = "EditMaterialConsumptionCRM";
     public static final String GET_MATERIAL_CONSUMPTION_FLAG = "getMaterialConsumptionFlag";
@@ -48,6 +60,7 @@ public class Constants {
     public static final String GET_ACCOUNT_INFO="getAccountInfo";
     public static final String GET_WCR_INFO = "ffaGetWCRInfo";
     public static final String GET_IR_INFO = "ffaGetIRInfo";
+    public static final String CREATE_WCRIR_DOCUMENT="createWRCIRDocument";
     public static final String GET_HOLD_CATEGORY = "WCRholdCategories";
     public static final String GET_IRHOLD_CATEGORY = "IRHoldCategories";
     public static final String GET_ITEM_LIST = "getItemList";
@@ -93,6 +106,7 @@ public class Constants {
     public static final String HOLD_ORDER_INSTALLATION = "holdOrderInstallation";
     public static final String UPDATE_APPOINTMENT = "updateAppointment";
     public static final String GET_POWER_BYONT = "getPowerByONT";
+    public static final String GETWCRIR_DOCUMENT="getWCRIRDocument";
     public static final String UPLOAD_WCRDOC = "uploadWCRDoc";
     public static final String WCR_HOLD_CATEGORY= "WCRholdCategories";
     public static final String RESEND_NAVWCR= "resendNavWCR";
@@ -106,7 +120,7 @@ public class Constants {
     public static final String GET_PRICELIST = "getPricelist";
     public static final String GET_SOURCE = "getSource";
     public static final String Get_AREA = "getArea";
-     public static final String GET_CITY = "getCity";
+    public static final String GET_CITY = "getCity";
     public static final String GET_LEADS = "getLeads";
     public static final String UPDATE_LEAD = "updateLead";
     public static final String UPDATE_FLR = "updateFLR";
@@ -157,11 +171,11 @@ public class Constants {
     public static final String GETCONTACT = "getContact";
     public static final String GETVERTICAL = "getVertical";
     public static final String GETALL_SITE_DETAILS = "getAllSiteDetails";
-    public static final  String GET_SITE="getSite";
+    public static final String GET_SITE="getSite";
     public static final String CREATE_SITE ="createSite";
     public static final String UPDATE_SITE ="updateSite";
     public static final String CREATE_LAN ="createLan";
-    public static final String  UPDATE_LAN="updateLan";
+    public static final String UPDATE_LAN="updateLan";
     public static final String GET_LAN ="getLan";
     public static final String GET_ALLLAN ="getAllLan";
     public static final String CREATE_WAN ="createWan";
@@ -172,13 +186,34 @@ public class Constants {
     public static final String GET_PRETASK="getPreTask";
     public static final String GET_ALLSAF ="getAllSaf";
     public static final String CREATE_SAF ="createSaf";
-    public static final String UPDATE_SAF ="updateSaf";
-    public static final String GET_SAF ="getSaf";
-    public static final String SUBMIT_SAF ="submitSaf";
-    public static final String GETALL_WORKORDER="getAllWorkOrder";
-    public static final String GET_SAFPRETASK="getSAFPretask";
+    public static final String UPDATE_SAF = "updateSaf";
+    public static final String GET_SAF = "getSaf";
+    public static final String SUBMIT_SAF = "submitSaf";
+    public static final String GETALL_WORKORDER = "getAllWorkOrder";
+    public static final String GET_SAFPRETASK= "getSAFPretask";
     public static final String GET_DASHBOARDCASES ="getDashboardCases";
 
+   /* KAIZALA APP*/
+    public static final String USER="IN\\";
+    public static final String GET_VALIDATE="getvalidate";
+    public static final String KAUTH ="AdgT6SnjAkeLqlkE4";
+    public static final String GETALL_CONTACT = "getallcontact";
+    public static final String GETCOMP="getcompetitor";
+    public static final String KSOURCE = "getsource";
+    public static final String KGETPLANcATEGORGY="getplancategory";
+    public static final String KGetAREA = "getarea";
+    public static final String KGetCity = "getcity";
+    public static final String KCREATECONTACT = "createcontact";
+    public static final String KUPDATECONTACT = "updatecontact";
+    public static final String KGETSOCIETY ="getsociety";
+    public static final String KGETALLLEADS="getallleads";
+    public static final String KGETCONTACT="getcontact";
+    public static final String KCREATELEAD="createLead";
+    public static final String KREADPRODUCT ="readproduct";
+    public static final String kGETBUILDING ="getbuilding";
+    public static final String KCREATECAF = "createcaf";
+    public static final String KGETCAF ="getCaf";
+    public static final String KUPDATECAF="updatecaf";
 
- /*cvCalendar.maxDate = System.currentTimeMillis()*/
+
 }

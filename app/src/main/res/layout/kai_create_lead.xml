@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="info"
+            type="com.spectra.fieldforce.salesapp.model.LeadData" />
+    </data>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        >
+        <include
+            android:id="@+id/btn_createNewLead"
+            layout="@layout/update_leadtoolbar"
+            android:layout_width="match_parent"
+            android:background="@color/colorButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="?attr/actionBarSize" />
+
+
+        <TextView
+            android:id="@+id/textView_Segment"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_createNewLead" />
+
+        <Button
+            android:id="@+id/btn_Segment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#F2F2F2"
+            android:text="Segment"
+            android:textColor="#f46f6a"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_createNewLead" />
+
+        <TextView
+            android:id="@+id/TextView_BusinessSeg"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/business_segment"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/spinner_businessSeg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_Segment" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/spinner_businessSeg"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="Home"
+            android:paddingTop="5dp"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TextView_BusinessSeg"
+            app:layout_constraintTop_toBottomOf="@id/btn_Segment"
+            />
+
+        <TextView
+            android:id="@+id/TextView_SubBusinessSeg"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/sub_business_segment"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/spinner_SubBusinessSeg"
+            app:layout_constraintTop_toBottomOf="@id/TextView_BusinessSeg" />
+
+
+        <Spinner
+            android:id="@+id/spinner_SubBusinessSeg"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:background="@drawable/spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TextView_SubBusinessSeg"
+            app:layout_constraintTop_toBottomOf="@id/spinner_businessSeg"
+            />
+
+
+        <TextView
+            android:id="@+id/TextView_PersonalDetail"
+            android:layout_width="0dp"
+            android:layout_height="1090dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/txt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Segment"
+            />
+        <Button
+            android:id="@+id/Btn_PersonalDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#F2F2F2"
+            android:text="Personal Details"
+            android:textColor="#f46f6a"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView_Segment"
+            />
+
+        <TextView
+            android:id="@+id/TestView_PDCompany"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/company"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/Search_PDCompany"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Btn_PersonalDetails" />
+
+        <AutoCompleteTextView
+            android:id="@+id/Search_PDCompany"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginTop="8dp"
+            android:hint="Search Company"
+            android:drawableEnd="@drawable/ic_expand_down"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TestView_PDCompany"
+            app:layout_constraintTop_toBottomOf="@+id/Btn_PersonalDetails" />
+
+        <TextView
+            android:id="@+id/TestView_PDGroup"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/group"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/Search_PDGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Search_PDCompany" />
+
+        <AutoCompleteTextView
+            android:id="@+id/Search_PDGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:hint="Search Group"
+            android:drawableEnd="@drawable/ic_expand_down"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TestView_PDGroup"
+            app:layout_constraintTop_toBottomOf="@+id/Search_PDCompany"
+            />
+
+        <TextView
+            android:id="@+id/TestView_PDRelationShip"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Relationship*"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/Spinner_PDRelationShip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Search_PDGroup" />
+
+        <Spinner
+            android:id="@+id/Spinner_PDRelationShip"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:background="@drawable/spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TestView_PDRelationShip"
+            app:layout_constraintTop_toBottomOf="@+id/Search_PDGroup"
+            />
+
+        <TextView
+            android:id="@+id/TestView_PDSalutation"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/salutation"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/Spinner_PDSalutation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Spinner_PDRelationShip" />
+
+        <Spinner
+            android:id="@+id/Spinner_PDSalutation"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:background="@drawable/spinner"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TestView_PDSalutation"
+            app:layout_constraintTop_toBottomOf="@+id/Spinner_PDRelationShip"
+            />
+
+        <TextView
+            android:id="@+id/TestView_PDFirstName"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/first_name"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/EditText_PDFirstName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/TestView_PDSalutation" />
+
+        <EditText
+            android:id="@+id/EditText_PDFirstName"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="@{info.firstName}"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TestView_PDFirstName"
+            app:layout_constraintTop_toBottomOf="@+id/Spinner_PDSalutation"
+            />
+
+        <TextView
+            android:id="@+id/TestView_PDLastName"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/last_name_PD"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/EditText_PDLastName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDFirstName" />
+
+        <EditText
+            android:id="@+id/EditText_PDLastName"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="@{info.lastName}"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TestView_PDLastName"
+            app:layout_constraintTop_toBottomOf="@+id/EditText_PDFirstName"
+            />
+
+        <TextView
+            android:id="@+id/TestView_PDMobileNumber"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/mobile_number"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/EditText_PDMobileNumber"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDLastName" />
+
+        <EditText
+            android:id="@+id/EditText_PDMobileNumber"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:text="@{info.mobileNo}"
+            android:inputType="number"
+            android:maxLength="10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TestView_PDMobileNumber"
+            app:layout_constraintTop_toBottomOf="@+id/EditText_PDLastName"
+            />
+
+        <TextView
+            android:id="@+id/TestView_PDEmail"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/email_id"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/EditText_PDEmail"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDMobileNumber" />
+
+        <EditText
+            android:id="@+id/EditText_PDEmail"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:text="@{info.emailId}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/TestView_PDEmail"
+            app:layout_constraintTop_toBottomOf="@+id/EditText_PDMobileNumber"
+            />
+
+
+        <TextView
+            android:id="@+id/TextView_PDInstallation"
+            android:layout_width="0dp"
+            android:layout_height="440dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/txt"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDEmail" />
+
+        <Button
+            android:id="@+id/Btn_PDInstallation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#F2F2F2"
+            android:text="@string/installation_address"
+            android:textColor="#f46f6a"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/TestView_PDEmail"
+            />
+
+        <TextView
+            android:id="@+id/TextView_PDState"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/state"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/SpPDCity"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/Btn_PDInstallation" />
+
+
+        <TextView
+            android:id="@+id/TextView_PDCity"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="City*"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/SpPDCity"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/TextView_PDState" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/SpPDState"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/spinner"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDState"
+            app:layout_constraintTop_toBottomOf="@id/Btn_PDInstallation"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/SpPDCity"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:background="@drawable/spinner"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDCity"
+            app:layout_constraintTop_toBottomOf="@id/SpPDState"
+
+            />
+
+        <TextView
+            android:id="@+id/TextView_PDArea"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/area"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/Search_PDArea"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/TextView_PDCity" />
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/Search_PDArea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:hint="Search Area"
+            android:drawableEnd="@drawable/ic_expand_down"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDArea"
+            app:layout_constraintTop_toBottomOf="@id/SpPDCity"
+
+            />
+
+        <TextView
+            android:id="@+id/TextView_PDBlock"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Block/Tower*"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/EditText_PDBlock"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/Search_PDArea" />
+
+        <EditText
+            android:id="@+id/EditText_PDBlock"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="@{info.installationAddress.installFloor}"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDBlock"
+            app:layout_constraintTop_toBottomOf="@id/Search_PDArea"
+            />
+
+        <TextView
+            android:id="@+id/TextView_PDHouse"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/house_plot_flat_no"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/EditText_PDHouse"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDBlock" />
+
+        <EditText
+            android:id="@+id/EditText_PDHouse"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="@{info.installationAddress.installPlotNo}"
+
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDHouse"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDBlock"
+
+            />
+
+        <TextView
+            android:id="@+id/TextView_PDFloor"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/floor"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/EditText_PDFloor"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDHouse" />
+
+        <EditText
+            android:id="@+id/EditText_PDFloor"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:text="@{info.installationAddress.installFloor}"
+
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDFloor"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDHouse"
+
+            />
+
+        <TextView
+            android:id="@+id/TextView_PDSociety"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Society*"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/SpPDSociety"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDFloor" />
+
+        <Spinner
+            android:id="@+id/SpPDSociety"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:background="@drawable/spinner"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDSociety"
+            app:layout_constraintTop_toBottomOf="@id/EditText_PDFloor"
+
+            />
+
+        <TextView
+            android:id="@+id/TextView_PDPostal"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Postal Code*"
+            android:textSize="@dimen/_12sdp"
+
+            app:layout_constraintEnd_toStartOf="@id/editText_PDPostal"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/SpPDSociety" />
+
+        <EditText
+            android:id="@+id/editText_PDPostal"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:text="@{info.installationAddress.installPincode}"
+            android:inputType="number"
+            android:maxLength="6"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDPostal"
+            app:layout_constraintTop_toBottomOf="@id/SpPDSociety"
+
+            />
+        <TextView
+            android:id="@+id/TextView_ShapeSource"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/txt"
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/TextView_PDInstallation"
+            />
+
+        <TextView
+            android:id="@+id/TextView_PDSource"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Source*"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/SpPDSource"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toTopOf="@id/TextView_ShapeSource" />
+
+        <Spinner
+            android:id="@+id/SpPDSource"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:background="@drawable/spinner"
+
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDSource"
+            app:layout_constraintTop_toTopOf="@id/TextView_ShapeSource" />
+
+        <TextView
+            android:id="@+id/TextView_PDRemarks"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Remarks*"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toStartOf="@id/EditText_PDRemarks"
+            app:layout_constraintStart_toStartOf="@id/TextView_PersonalDetail"
+            app:layout_constraintTop_toBottomOf="@id/TextView_PDSource" />
+
+        <EditText
+            android:id="@+id/EditText_PDRemarks"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="@dimen/_12sdp"
+            android:text="@{info.remark}"
+
+            app:layout_constraintEnd_toEndOf="@id/TextView_PersonalDetail"
+            app:layout_constraintStart_toEndOf="@id/TextView_PDRemarks"
+            app:layout_constraintTop_toBottomOf="@id/SpPDSource" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLeadSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_35sdp"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:text="Submit"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/TextView_PDRemarks"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TextView_ShapeSource" />
+
+        <include layout="@layout/progress"
+            android:id="@+id/updatelead_progressLayout"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>
+</layout>

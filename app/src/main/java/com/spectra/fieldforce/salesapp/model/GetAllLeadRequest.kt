@@ -8,5 +8,6 @@ data class GetAllLeadRequest(
     val userName: String?,
     val searchBoxValue:String?,
     val fromDate:String?,
-    val toDate:String?
+    val toDate:String?,
+    val businessSegment:String
 )

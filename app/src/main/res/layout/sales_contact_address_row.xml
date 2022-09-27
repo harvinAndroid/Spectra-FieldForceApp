@@ -137,6 +137,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/et_spec_area"
                             android:visibility="gone"
+
                             android:textColorHint="@color/colorPrimary"
                             app:hintTextAppearance="@style/AppearanceText">
 

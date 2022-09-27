@@ -6,6 +6,7 @@ interface SalesAppConstants {
         const val PERMISSION_REQUEST_CODE_CALL_PHONE = 1001
         var list_of_salutation = arrayOf("Select Salutation","Mr.", "Mrs.", "Miss")
         var list_of_salutation_id = arrayOf("1","2","3")
+        var list_of_salutationId = arrayOf("0","1","2","3")
         var list_of_option = arrayOf("Select Options","Yes","No")
         var list_of_channel = arrayOf("Select Channel","Call/SMS-Inbound","Caretel","CM Outbound","Email/Email Campaigns","Inside Sales","Inside Sales-QC","Kaizala","NetOps Channel","Online CAF","Outbound Call",
             "Paid Campaign/Activity","Promotion/BTL/ATL/Events/Sponsorship/Visibility Activity","Self Care Portal","Self Lead","Unify Churned","Web Campaign")
@@ -46,6 +47,15 @@ interface SalesAppConstants {
 
         var ext_serv_val = arrayOf("569480000","569480001","569480002","569480003")
 
+        var list_of_status = arrayOf("Select Option","Positive","Negative","Scheduled Appointment")
+        var list_of_status_values = arrayOf("Select Option","1","2","3")
+        var list_of_appointment = arrayOf("Select Option","Meeting","Phone Call")
+
+        var FLR_LEAD="FLR for Lead"
+        val NEGATIVE ="Negative"
+
+        var subBus = arrayOf("FTTH","LCO")
+        var BUSINESS ="Business"
 
         //////////////////////////////////////////////////////////////////////////
 

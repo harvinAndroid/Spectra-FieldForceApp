@@ -5,10 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content">
-   <!-- <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -34,7 +31,7 @@
         android:id="@+id/tv_count"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:layout_margin="@dimen/_8sdp"
+        android:layout_margin="@dimen/_5sdp"
         android:textStyle="bold"
         android:background="@color/colorWhite"
         android:textColor="@color/colorPrimary"

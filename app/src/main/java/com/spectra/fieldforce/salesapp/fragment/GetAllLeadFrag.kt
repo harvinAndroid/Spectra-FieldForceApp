@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.salesapp.fragment
 
 import GetAllLeadAdapter
+import KaiGetAllLeadAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,7 +9,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +26,7 @@ import com.spectra.fieldforce.salesapp.model.AllLeadData
 import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest
 import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse
 import com.spectra.fieldforce.utils.Constants
+import com.spectra.fieldforce.utils.SalesAppConstants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
 
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +37,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 class GetAllLeadFrag : Fragment(),View.OnClickListener {
 lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
@@ -60,7 +60,6 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         savedInstanceState: Bundle?
     ):  View {
         leadContactInfoBinding = FragmentAllLeadListBinding.inflate(inflater, container, false)
-        val activity = activity as Context
         return leadContactInfoBinding.root
     }
 
@@ -133,13 +132,8 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
             leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
             leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
             val getAllLeadRequest = GetAllLeadRequest(
-                Constants.GET_AllLEADS,
-                Constants.AUTH_KEY,
-                "All",
-                password,
-                userName,
-                srch,"",""
-            )
+                Constants.GET_AllLEADS, Constants.AUTH_KEY, "All", password, userName,
+                srch,"","", SalesAppConstants.BUSINESS)
 
             val apiService = ApiClient.getClient().create(ApiInterface::class.java)
             val call = apiService.getAllLead(getAllLeadRequest)
@@ -162,7 +156,6 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
                             } else {
                                 Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                                 tv_msg.visibility = View.GONE
-                                tv_msg.text = (msg)
                                 allLead?.clear()
                             }
                         } catch (e: Exception) {

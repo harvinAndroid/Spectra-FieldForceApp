@@ -60,6 +60,8 @@ public class GetMyBucketList {
         private String contactNo;
 
 
+
+
         public String getItemConsumption() {
             return itemConsumption;
         }
@@ -145,6 +147,23 @@ public class GetMyBucketList {
         private String orderCreatedOn;
         private String longitude;
         private String latitude;
+
+        private String accountTurnOver;
+
+        public String getAccountTurnOver() {
+            return accountTurnOver;
+        }
+
+        public String getCustomerCategory() {
+            return customerCategory;
+        }
+
+        public String getExternalCustomerSegment() {
+            return externalCustomerSegment;
+        }
+
+        private String customerCategory;
+        private String externalCustomerSegment;
 
         public String getWcrSlaClock() {
             return wcrSlaClock;

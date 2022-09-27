@@ -54,7 +54,7 @@
     <string name="sub_type">Sub Type:</string>
     <string name="pod_name">POD Name:</string>
     <string name="device_port">Device/Port:</string>
-    <string name="current_status">Current Status</string>
+    <string name="current_status">Current Status:</string>
     <string name="case_remarks">Case Remarks:</string>
     <string name="sla_time">SLA Time:</string>
     <string name="sla_status">SLA Status:</string>
@@ -363,8 +363,7 @@
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="specific_area_name">Specific Area Name</string>
     <string name="specific_building_no">Specific Building Name</string>
@@ -405,7 +404,7 @@
     <string name="building_status">Building Status*</string>
     <string name="building_coderequired">Building Code*</string>
     <string name="billing_email_id">Billing Email ID*</string>
-    <string name="phone_no">Phone No. *</string>
+    <string name="phone_no">Phone No.*</string>
     <string name="father_s_husband_s_namerequired">Father\'s/Husband\'s Name*</string>
     <string name="residential_address_required">Residential Address*</string>
     <string name="pincode">Pincode*</string>
@@ -483,7 +482,7 @@
     <string name="no_of_user_details">No. of User Details</string>
     <string name="solution_type">Solution Type</string>
     <string name="hardware_details">Hardware Details</string>
-     <string name="service_id">Service ID</string>
+    <string name="service_id">Service ID</string>
     <string name="site_id">Site ID</string>
     <string name="vertical">Vertical*</string>
     <string name="please_mention_no_of_links">Please Mention No. of Links*</string>
@@ -515,7 +514,7 @@
     <string name="lan_ip_allocation_to_users">LAN IP Allocation to Users</string>
     <string name="customer_existing_lan_ip_pool">Customer Existing LAN IP Pool*</string>
     <string name="customer_existing_ip_pool">Customer Existing LAN IP Pool</string>
-    <string name="create_pre_task">Create Pre-Task</string>
+    <string name="create_pre_task">Create Presales-Task</string>
     <string name="wan_ip_allocation_type">WAN IP Allocation Type*</string>
     <string name="wan_type">WAN Type</string>
     <string name="wan_bandwidth_mbps">WAN Bandwidth (Mbps)</string>
@@ -538,6 +537,62 @@
     <string name="lead_count_in_current_month">Lead Count in Current Month</string>
     <string name="sales_dashboard">My Dashboard</string>
     <string name="area">Area*</string>
+    <string name="do_you_want_to_add_material_consumption">Do you want to Add Material Consumption.?</string>
+    <string name="account_turnover">Account Turnover:</string>
+    <string name="customer_category">Customer Category:</string>
+    <string name="capture_image_attach_from_galley">Capture Image</string>
+    <string name="accnt_turnover">Account TurnOver</string>
+    <string name="action_code">Action Code:</string>
+    <string name="attachments">Attachments</string>
+
+    <string name="house_plot_flat_no">House/Plot/Flat No.*</string>
+
+    <string name="society">Society</string>
+
+    <string name="postal_code">Postal Code</string>
+
+    <string name="source">Source</string>
+
+    <string name="last_name_PD">Last Name</string>
+
+
+
+    <string name="building">Building</string>
+
+    <string name="product_type">Product Type*</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="Company">Company*</string>
+
+    <string name="block_tower_no">Block/Tower No.*</string>
+
+
+
+    <string name="bank">Bank*</string>
+    <string name="branch_name">Branch Name*</string>
+    <string name="cheque_dd_no">Cheque/DD No.*</string>
+    <string name="cheque_dd_date">Cheque/DD Date*</string>
+
+    <string name="pay_in_slip">Pay in slip</string>
+
+
+
+    <string name="AreaRequestal_code">Area Request Code</string>
+
+    <string name="attach_photo">Attach Photo</string>
+    <string name="voice">Voice</string>
+
+    <string name="payment_date">Payment Date</string>
+    <string name="transaction_ref_id">Transaction Ref. ID</string>
+    <string name="security_deposit">Security Deposit</string>
+    <string name="security_deposit_type">Security Deposit Type</string>
+    <string name="payment_status">Payment Status</string>
+    <string name="gst">GST</string>
+    <string name="gst_no">GST No</string>
+    <string name="otc">OTC</string>
+
+    <string name="pan_no">PAN No.</string>
+    <string-array name="Bsns_Sgment">
+    </string-array>
 
     <!-- Array list for sales App-->
     <string-array name="list_of_boolean">
@@ -592,6 +647,8 @@
         <item>Tikona Infinet</item>
         <item>Vodafone</item>
     </string-array>
+
+
     <string-array name="ext_serv_one_values">
         <item>0</item>
         <item>111260000</item>
@@ -632,6 +689,7 @@
         <item>Trust</item>
         <item>Individual</item>
     </string-array>
+
     <string-array name="list_firm_type_value">
         <item>0</item>
         <item>1</item>

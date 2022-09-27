@@ -18,11 +18,13 @@ import androidx.databinding.DataBindingUtil
 import com.spectra.fieldforce.R
 import com.spectra.fieldforce.api.ApiClient
 import com.spectra.fieldforce.api.ApiInterface
+import com.spectra.fieldforce.application.App
 import com.spectra.fieldforce.databinding.UpdateLeadDemoFragmentBinding
 import com.spectra.fieldforce.salesapp.fragment.FlrFrag
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
+import com.spectra.fieldforce.utils.SalesAppConstants
 import com.spectra.fieldforce.utils.SalesConstant
 import kotlinx.android.synthetic.main.lead__contact_person_row.view.*
 import kotlinx.android.synthetic.main.lead_company_details_row.view.*
@@ -136,18 +138,14 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     private var sourceList: MutableList<SrcData>? = null
     private var areaList : ArrayList<AreaData>? = null
     private var area : ArrayList<String>? = null
-    private var areaCode : ArrayList<String>? = null
     private var cntarea : ArrayList<String>? = null
-    private var cntareaCode : ArrayList<String>? = null
     private var cityList : ArrayList<CityData>? = null
     private var city : ArrayList<String>? = null
     private var cityCode : ArrayList<String>? = null
     private var contactCity : ArrayList<String>? = null
     private var contactCityCode : ArrayList<String>? = null
     private var building : ArrayList<String>? = null
-    private var buildingCode : ArrayList<String>? = null
     private var cntbuilding : ArrayList<String>? = null
-    private var cntbuildingCode : ArrayList<String>? = null
     private var RequiredCity : ArrayList<String>? = null
     private var RequiredCityCode : ArrayList<String>? = null
     private var verticalList : ArrayList<VerticalData>? = null
@@ -218,7 +216,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     private var industryList : ArrayList<IndustryResponse>? = null
     private var instryname = ArrayList<String>()
     private var industryid = ArrayList<String>()
-
+    private var str_chkbox : String? = null
     private var company: ArrayList<String>? = null
     private var group : ArrayList<String>? = null
     private var groupId : ArrayList<String>? = null
@@ -232,8 +230,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     var str_rltn:String ? = null
     var str_cmp :String? = null
     var str_lead_Id : String? = null
-    var userName :String? = null
-    var password : String? = null
+    private var userName :String? = null
+    private var password : String? = null
     var strContactId : String? = null
     var str_lead_status : String? = null
 
@@ -297,6 +295,47 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             startActivity(intent)
             finish()
         }
+
+        binding.checkbx.setOnCheckedChangeListener { _, _ ->
+            str_chkbox="1"
+            var cntstatePosition = 0
+            SalesAppConstants.list_state_code.forEachIndexed { index, s ->
+                if (s == str_inst_state) cntstatePosition = index
+            }
+            val cntstateAdapter =  ArrayAdapter(this, android.R.layout.simple_spinner_item, SalesAppConstants.list_of_state)
+            cntstateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+            binding.updateLeadContactAddress.spCntState.adapter = cntstateAdapter
+            binding.updateLeadContactAddress.spCntState.setSelection(cntstatePosition)
+            cntstateAdapter.notifyDataSetChanged()
+             getContactCity(str_inst_state)
+            strContactCity = strCity.toString()
+            str_city_code?.let { getCntArea("", it) }
+            val area =  binding.updatelayoutLeadInstallationAddress.etCntarea.text.toString()
+            val build =  binding.updatelayoutLeadInstallationAddress.etBuilding.text.toString()
+            binding.updateLeadContactAddress.etContacttarea.setText(area)
+            binding.updateLeadContactAddress.etCntBuilding.setText(build)
+            str_add_area =str_inst_area.toString()
+            str_inst_building_nm=   str_inst_build_num.toString()
+            if(build.startsWith("Other")){
+                update_lead_contact_address.spBuilding.visibility=View.VISIBLE
+            }
+            if(area.startsWith("Other")){
+                update_lead_contact_address.et_cntspbuilding.visibility=View.VISIBLE
+            }
+            val inst_floor = binding.updatelayoutLeadInstallationAddress.etAddFloor.text.toString()
+            val inst_pincode =  binding.updatelayoutLeadInstallationAddress.etPinCode.text.toString()
+            val inst_buil =  binding.updatelayoutLeadInstallationAddress.etAddBuildNum.text.toString()
+            val inst_block =  binding.updatelayoutLeadInstallationAddress.etUpadBlock.text.toString()
+            binding.updateLeadContactAddress.etCntFloor.setText(inst_floor)
+            binding.updateLeadContactAddress.etCntPinCode.setText(inst_pincode)
+            binding.updateLeadContactAddress.etCntBuildngNum.setText(inst_buil)
+            binding.updateLeadContactAddress.etUpcntBlock.setText(inst_block)
+            val inst_sp_area = binding.updatelayoutLeadInstallationAddress.etUpspefcArea.text.toString()
+            val inst_sp_building = binding.updatelayoutLeadInstallationAddress.etUpspecfcbuildingNum.text.toString()
+            binding.updateLeadContactAddress.etCntspbuildingNum.setText(inst_sp_area)
+            binding.updateLeadContactAddress.etCntspbuildingName.setText(inst_sp_building)
+        }
+
     }
 
 
@@ -311,7 +350,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         fram.commit()
     }
     fun locked(){
-       // if(str_lead_status.equals("Qualified") || str_lead_status.equals("DisQualified")){
             updatelayout_contactinfo_layout.et_uptopic.isFocusableInTouchMode= false
             updatelayout_contactinfo_layout.et_uptopic.isEnabled= false
 
@@ -466,7 +504,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             val links = binding.layoutLeadSdQuestionare.etLinks.text.toString()
             val itSpent = binding.layoutLeadSdQuestionare.etItSpent.text.toString()
             val questionareRemark = binding.layoutLeadSdQuestionare.etRemarkk.text.toString()
-
+            val sub = str_sub_bus.toString()
             if(topic.isBlank()){
                 Toast.makeText(this, "Please Enter Topic", Toast.LENGTH_SHORT).show()
             }else if(gnl_sub.isBlank()||gnl_sub=="Select Sub Business Segment"||(gnl_sub=="null")){
@@ -540,8 +578,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please Select Firm Type ", Toast.LENGTH_SHORT).show()
             }else if(industrytype.isBlank()||industrytype=="Select Industry"||(industrytype=="null")){
                 Toast.makeText(this, "Please Select Industry Type", Toast.LENGTH_SHORT).show()
-            }else if(jbtitle.isBlank()||(jbtitle=="null")){
-                Toast.makeText(this, "Please enter Job Title", Toast.LENGTH_SHORT).show()
             }else if(other_media.isBlank()||other_media=="Select Media"){
                 Toast.makeText(this, "Please Select Media ", Toast.LENGTH_SHORT).show()
             }else if(other_pro_one.isBlank()||other_pro_one=="0"||(other_pro_one=="null")){
@@ -566,37 +602,37 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 Toast.makeText(this, "Please Select Manage Wifi", Toast.LENGTH_SHORT).show()
             }else if(other_target.isBlank()||(other_target=="null")){
                 Toast.makeText(this, "Please Select Target Installation Period", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN &&location.isBlank()||location=="null"){
+            }else if(sub==AppConstants.SDWAN &&location.isBlank()||location=="null"){
                 Toast.makeText(this, "Please Enter the Location", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN && strIllServices?.isBlank() == true ||strIllServices=="null"||strIllServices=="0"){
+            }else if(sub==AppConstants.SDWAN && strIllServices?.isBlank() == true ||strIllServices=="null"||strIllServices=="0"){
             Toast.makeText(this, "Please Select Customer Using ILL Services", Toast.LENGTH_SHORT).show()
             }else if((strIllServices=="122050000") && mentionNum.isBlank()){
                 Toast.makeText(this, "Please Enter Mention Number of Links", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN && (strBroadServices?.isBlank() == true) ||strBroadServices=="null"||strBroadServices=="0"){
+            }else if(sub==AppConstants.SDWAN && (strBroadServices?.isBlank() == true) ||strBroadServices=="null"||strBroadServices=="0"){
                 Toast.makeText(this, "Please Enter the BroadBand Services", Toast.LENGTH_SHORT).show()
             }else if(links.isBlank()&&(strBroadServices=="122050000")){
                 Toast.makeText(this, "Please Enter the NO. of Links", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN &&(strLinksManaged?.isBlank()== true)||strLinksManaged=="null"||strLinksManaged=="0"){
+            }else if(sub==AppConstants.SDWAN &&(strLinksManaged?.isBlank()== true)||strLinksManaged=="null"||strLinksManaged=="0"){
                 Toast.makeText(this, "Please Enter the Managed Links ", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN &&(strRoutingServices?.isBlank()== true)||strRoutingServices=="null"||strRoutingServices=="0"){
+            }else if(sub==AppConstants.SDWAN &&(strRoutingServices?.isBlank()== true)||strRoutingServices=="null"||strRoutingServices=="0"){
                 Toast.makeText(this, "Please Enter the Routing Services", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN &&(firesSet?.isBlank()== true)||firesSet=="null"){
+            }else if(sub==AppConstants.SDWAN &&(firesSet?.isBlank()== true)||firesSet=="null"){
             Toast.makeText(this, "Please Select Firewall set tpo expire", Toast.LENGTH_SHORT).show()
            }
-           else if(str_sub_bus==AppConstants.SDWAN &&(strCityReqd?.isBlank()== true)||strCityReqd=="null"||strCityReqd=="Select Option"){
+           else if(sub==AppConstants.SDWAN &&(strCityReqd?.isBlank()== true)||strCityReqd=="null"||strCityReqd=="Select Option"){
                 Toast.makeText(this, "Please Enter the City Required", Toast.LENGTH_SHORT).show()
-            } else if(str_sub_bus==AppConstants.SDWAN &&(strNetworkSecurity?.isBlank()== true)||strNetworkSecurity=="null"||strNetworkSecurity=="0"){
+            } else if(sub==AppConstants.SDWAN &&(strNetworkSecurity?.isBlank()== true)||strNetworkSecurity=="null"||strNetworkSecurity=="0"){
                 Toast.makeText(this, "Please Enter the Network Security", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN &&(strHosted?.isBlank()== true)||strHosted=="null"||strHosted=="0"){
+            }else if(sub==AppConstants.SDWAN &&(strHosted?.isBlank()== true)||strHosted=="null"||strHosted=="0"){
                 Toast.makeText(this, "Please Enter the Hosted", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN &&(strCustomer?.isBlank()== true)||strCustomer=="null"||strCustomer=="0"){
+            }else if(sub==AppConstants.SDWAN &&(strCustomer?.isBlank()== true)||strCustomer=="null"||strCustomer=="0"){
                 Toast.makeText(this, "Please Enter the Customer", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN &&(strContract?.isBlank()== true)||strContract=="null"||strContract=="0"){
+            }else if(sub==AppConstants.SDWAN &&(strContract?.isBlank()== true)||strContract=="null"||strContract=="0"){
                 Toast.makeText(this, "Please Enter the Contract", Toast.LENGTH_SHORT).show()
             }
-            else if(str_sub_bus==AppConstants.SDWAN &&(strBackBone?.isBlank()== true)||strBackBone=="null"||strBackBone=="0"){
+            else if(sub==AppConstants.SDWAN &&(strBackBone?.isBlank()== true)||strBackBone=="null"||strBackBone=="0"){
                 Toast.makeText(this, "Please Enter the Back Bone", Toast.LENGTH_SHORT).show()
-            }else if(str_sub_bus==AppConstants.SDWAN &&(mpls?.isBlank()== true)||mpls=="null"){
+            }else if(sub==AppConstants.SDWAN &&(mpls?.isBlank()== true)||mpls=="null"){
                 Toast.makeText(this, "Please Enter the Mpls", Toast.LENGTH_SHORT).show()
             }
             else {
@@ -733,9 +769,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         updatelayout_lead_installation_address.sp_state.onItemSelectedListener = this
         updatelayout_lead_installation_address.et_add_city.setOnClickListener { updatelayout_lead_installation_address.sp_city.performClick() }
         updatelayout_lead_installation_address.sp_city.onItemSelectedListener = this
-       /* updatelayout_lead_installation_address.et_cntarea.setOnClickListener { updatelayout_lead_installation_address.sp_cnarea.performClick() }
-        updatelayout_lead_installation_address.sp_cnarea.onItemSelectedListener = this
-*/
         update_lead_contact_address.et_cnt_state.setOnClickListener{
             update_lead_contact_address.sp_cnt_state.performClick()
         }
@@ -745,12 +778,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             update_lead_contact_address.sp_cnt_city.performClick()
         }
         update_lead_contact_address.sp_cnt_city.onItemSelectedListener = this
-    /*    binding.updateLeadContactAddress.etContacttarea.setOnClickListener{
-            binding.updateLeadContactAddress.spCntCnarea.performClick()
-        }
-        binding.updateLeadContactAddress.spCntCnarea.onItemSelectedListener = this
-
-     */   updatelayout_lead_other_details.et_ext_srv.setOnClickListener { updatelayout_lead_other_details.sp_ex_serv.performClick() }
+        updatelayout_lead_other_details.et_ext_srv.setOnClickListener { updatelayout_lead_other_details.sp_ex_serv.performClick() }
         updatelayout_lead_other_details.sp_ex_serv.onItemSelectedListener = this
         updatelayout_lead_other_details.et_ext_srv_two.setOnClickListener { updatelayout_lead_other_details.sp_ext_serv_two.performClick() }
         updatelayout_lead_other_details.sp_ext_serv_two.onItemSelectedListener = this
@@ -776,9 +804,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         updatelayout_lead_other_details.sp_intrsteddata_center.onItemSelectedListener = this
         updatelayout_lead_other_details.et_crt_wrk.setOnClickListener { updatelayout_lead_other_details.sp_work_location.performClick() }
         updatelayout_lead_other_details.sp_work_location.onItemSelectedListener = this
-      /*  updatelayout_contactinfo_layout.et_updtcompany.setOnClickListener { updatelayout_contactinfo_layout.sp_cmpny.performClick() }
-        updatelayout_contactinfo_layout.sp_cmpny.onItemSelectedListener = this*/
-        updatelayout_contactinfo_layout.et_upgroup.setOnClickListener { updatelayout_contactinfo_layout.sp_upgroup.performClick() }
+         updatelayout_contactinfo_layout.et_upgroup.setOnClickListener { updatelayout_contactinfo_layout.sp_upgroup.performClick() }
         updatelayout_contactinfo_layout.sp_upgroup.onItemSelectedListener = this
         updatelayout_contactinfo_layout.et_uprelation.setOnClickListener { updatelayout_contactinfo_layout.sp_rltn.performClick() }
         updatelayout_contactinfo_layout.sp_rltn.onItemSelectedListener = this
@@ -817,12 +843,13 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         binding.layoutLeadSdQuestionare.spCityRequired.onItemSelectedListener = this
 
         updatelayout_contactinfo_layout.et_emailid.setOnFocusChangeListener { _, hasFocus ->
-            if(!hasFocus)
-            {
-                val email = updatelayout_contactinfo_layout.et_emailid.text.toString()
-                val isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                if (!isValid) {
-                    Toast.makeText(this, "Invalid Email", Toast.LENGTH_LONG).show()
+            when {
+                !hasFocus -> {
+                    val email = updatelayout_contactinfo_layout.et_emailid.text.toString()
+                    val isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                    if (!isValid) {
+                        Toast.makeText(this, "Invalid Email", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -1023,6 +1050,11 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         if(general_src=="Other"){
             specific = "Other"
         }
+        if(binding.checkbx.isChecked==true){
+            str_chkbox="1"
+        }else{
+            str_chkbox=""
+        }
 
         val installationAddress= InstallationAddress(inst_block,inst_area,inst_build,
                 inst_city_code,AppConstants.COUNTRY_CODE,inst_floor,inst_pincode,inst_buil,"0",
@@ -1039,7 +1071,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 cnt_info_cnt_person,str_customer_segmentid,general_email,
                 "3",genral_name,str_grp,"",general_chnl,general_src,topic,
                 gnl_phn_num,otherDetail,password,"",str_rltn,
-                remark,salutation,specific,gnl_sub,userName,"")
+                remark,salutation,specific,gnl_sub,userName,str_chkbox)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.createLead(createLeadRequest)
@@ -1077,7 +1109,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     }
     private fun outProgress(){
         outAnimation = AlphaAnimation(1f, 0f)
-        inAnimation?.duration = 200
+        outAnimation?.duration = 200
         binding.updateleadProgressLayout.progressOverlay.animation = outAnimation
         binding.updateleadProgressLayout.progressOverlay.visibility = View.GONE
 
@@ -1165,7 +1197,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         if(response.body()?.StatusCode==200) {
                             outProgress()
                             str_lead_Id =  response.body()?.Response?.get(0)?.LeadId
-                            // binding.updatelayoutChannelSource.updateChannel = response.body()
                             binding.updatelayoutContactinfoLayout.updateContact = response.body()
                             binding.updatelayoutLeadCompanyDetails.updateCompany = response.body()?.Response?.get(0)?.companyDetail
                             binding.updatelayoutLeadInstallationAddress.updateAdress = response.body()?.Response?.get(0)?.installationAddress
@@ -1213,12 +1244,28 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             str_inst_build_num = response.body()?.Response?.get(0)?.installationAddress?.InstallBuilding.toString()
                             str_inst_building_nm = response.body()?.Response?.get(0)?.contactAddress?.ContactBuilding.toString()
                             str_cntct_building_nm= response.body()?.Response?.get(0)?.contactAddress?.ContactBuildingName.toString()
-                            updatelayout_lead_installation_address.et_building.setText("$strBuilding($str_inst_build_num)")
+                            if(str_inst_build_num?.isNotEmpty()==true) {
+                                updatelayout_lead_installation_address.et_building.setText("$strBuilding($str_inst_build_num)")
+                                val build =  updatelayout_lead_installation_address.et_building.text.toString()
+                                if(build.startsWith("Other")||build=="Other"){
+                                    updatelayout_lead_installation_address.specfcbuilding_num.visibility=View.VISIBLE
+
+                                }
+                            }
 
                             str_inst_areaname = response.body()?.Response?.get(0)?.installationAddress?.InstallAreaName.toString()
                             str_inst_area = response.body()?.Response?.get(0)?.installationAddress?.InstallArea.toString()
-                            updatelayout_lead_installation_address.et_cntarea.setText("$strArea($str_inst_area)")
+                            if(str_inst_areaname?.isNotEmpty()==true) {
+                                updatelayout_lead_installation_address.et_cntarea.setText("$strArea($str_inst_area)")
+                                if(str_inst_areaname?.startsWith("Other")==true||str_inst_areaname.contentEquals("Other")||str_inst_areaname=="Other"){
+                                    updatelayout_lead_installation_address.et_upspefc_area.visibility=View.VISIBLE
+                                }
+                            }
                             getCompany()
+                            val chkbox = response.body()?.Response?.get(0)?.IsSameAddress
+                            if(chkbox=="1"){
+                                binding.checkbx.isChecked=true
+                            }
 
                             getOtherCity(str_othercity)
                             strCompanyName  =  response.body()?.Response?.get(0)?.CompanyNameCompany
@@ -1230,11 +1277,20 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             strcontact_stateCode =response.body()?.Response?.get(0)?.contactAddress?.ContactState
                             str_add_area  =response.body()?.Response?.get(0)?.contactAddress?.ContactArea
                             cntareaname =response.body()?.Response?.get(0)?.contactAddress?.ContactAreaName
+
                             if(cntareaname?.isNotEmpty()==true) {
                                 update_lead_contact_address.et_contacttarea.setText("$cntareaname($str_add_area)")
+                                if(cntareaname?.startsWith("Other")==true){
+                                    update_lead_contact_address.et_cntspbuilding.visibility=View.VISIBLE
+
+                                }
                             }
                             if(str_cntct_building_nm?.isNotEmpty()==true) {
                                 update_lead_contact_address.et_cnt_building.setText("$str_cntct_building_nm($strContactBuilding)")
+                                if(str_cntct_building_nm?.startsWith("Other")==true){
+                                    update_lead_contact_address.spBuilding.visibility=View.VISIBLE
+                                }
+
                             }
                             val strContactstate = response.body()?.Response?.get(0)?.contactAddress?.ContactStateName
                             var cntstatePosition = 0
@@ -1458,8 +1514,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             var salutationPosition = 0
                             try {
                                 if (sal != null || sal != "") {
-                                    SalesConstant.list_of_salutation_id.forEachIndexed { index, _ ->
-                                        if (index == sal?.toInt()) {
+                                    SalesConstant.list_of_salutation_id.forEachIndexed { index, s ->
+                                        if (s == sal) {
                                             salutationPosition = index
                                             return@forEachIndexed
                                         }
@@ -1665,16 +1721,16 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     fun back(){
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
-        builder.setMessage("Do you want to go back to the previous screen?")
+        builder.setMessage(AppConstants.PREVIOUS_SCREEN)
         builder.setPositiveButton(
-            "Yes"
+            AppConstants.YES
         ) { _, _ ->
             val intent = Intent(this, LeadTabActivity::class.java)
             startActivity(intent)
             finish()
         }
         builder.setNegativeButton(
-            "No"
+            AppConstants.NO
         ) { dialog, _ ->
             dialog.cancel()
         }
@@ -1735,12 +1791,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         //val msg = response.body()?.Response?.Message
                         val  buildingList= response.body()?.Response?.Data
                         building = ArrayList<String>()
-                        buildingCode = ArrayList<String>()
                         if (buildingList != null) {
                             for (item in buildingList) {
                                 building?.add(item.BuildingName+"("+item.BuildingCode+")")
-                              /*  item.BuildingName?.let { building?.add(it) }
-                                item.BuildingCode?.let { buildingCode?.add(it) }*/
                             }
                         }
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, building!!)
@@ -1755,7 +1808,6 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         updatelayout_lead_installation_address.et_building.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
                             str_inst_build_name = adapter12.getItem(position)
                             val buildingName =  updatelayout_lead_installation_address.et_building.text.toString()
-                            /* str_inst_build_num = buildingCode?.get(position)*/
                             val split = buildingName.split("(")
                             val buildingId = split.get(1)
                             val buildingNamee = split.get(1)
@@ -1767,20 +1819,12 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             }
                             val areaId = buildingId.split(")")
                             str_inst_build_num = areaId[0]
-                            /* strInstallBuildCode = buildingCode?.get(position)*/
 
-                            if(buildingNamee=="Other"){
-                                updatelayout_lead_installation_address.et_upspecfcbuilding_num.visibility=View.VISIBLE
+                            if(buildingName.startsWith("Other")){
+                                updatelayout_lead_installation_address.specfcbuilding_num.visibility=View.VISIBLE
                             }else{
-                                updatelayout_lead_installation_address.et_upspecfcbuilding_num.visibility=View.GONE
+                                updatelayout_lead_installation_address.specfcbuilding_num.visibility=View.GONE
                             }
-                           /* if (position != 0) str_inst_build_num =
-                                buildingCode?.get(position)
-                            if(str_inst_build_name=="Other"){
-                                updatelayout_lead_installation_address.et_upspecfcbuilding_num.visibility=View.VISIBLE
-                            }else{
-                                updatelayout_lead_installation_address.et_upspecfcbuilding_num.visibility=View.GONE
-                            }*/
                         }
 
 
@@ -1808,21 +1852,14 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         //val msg = response.body()?.Response?.Message
                         val  buildingArray= response.body()?.Response?.Data
                         cntbuilding = ArrayList<String>()
-                        cntbuildingCode = ArrayList<String>()
-                   /*     cntbuilding?.add("Select Building")
-                        cntbuildingCode?.add("")*/
                         if (buildingArray != null) {
                             for (item in buildingArray){
                                 cntbuilding?.add(item.BuildingName+"("+item.BuildingCode+")")
-
-                                /*  item.BuildingName?.let { cntbuilding?.add(it) }
-                                  item.BuildingCode?.let { cntbuildingCode?.add(it) }*/
                             }
                         }
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, cntbuilding!!)
                         update_lead_contact_address.et_cnt_building.threshold=0
                         update_lead_contact_address.et_cnt_building.setAdapter(adapter12)
-                        //adapter12.notifyDataSetChanged()
 
                         update_lead_contact_address.et_cnt_building.setOnFocusChangeListener { _, b ->
                             if (b)   update_lead_contact_address.et_cnt_building.showDropDown()
@@ -1836,26 +1873,17 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             var buildingPosition=0
                             building?.forEachIndexed { index, s ->
                                 if(s==str_cntct_building_nm)buildingPosition=index
-                                str_cntct_building_nm.let { it?.let { it1 -> Log.e("idddddddddd", it1) } }
                                 return@forEachIndexed
                             }
                             val areaId = buildingId.split(")")
                             str_inst_building_nm = areaId[0]
-                            /* strInstallBuildCode = buildingCode?.get(position)*/
-                            if(buildingName=="Other"){
-                                update_lead_contact_address.et_cntspbuilding_name.visibility=View.VISIBLE
+                            if(build.startsWith("Other")){
+                                update_lead_contact_address.spBuilding.visibility=View.VISIBLE
                             }else{
-                                update_lead_contact_address.et_cntspbuilding_name.visibility=View.GONE
+                                update_lead_contact_address.spBuilding.visibility=View.GONE
                             }
-                           /* str_cntct_building_nm=name
-                             str_inst_building_nm =
-                                cntbuildingCode?.get(position)
-                             if(str_cntct_building_nm=="Other"){
-                                update_lead_contact_address.et_cntspbuilding_name.visibility=View.VISIBLE
-                            }else{
-                                update_lead_contact_address.et_cntspbuilding_name.visibility=View.GONE
-                            }*/
                         }
+
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -1917,7 +1945,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             getRelation(str_cmp)
                             if (strCompanyName != null || strCompanyName == "Select Company") {
                                 if (strCompanyName.contentEquals("New Company (CNew)") || strCompanyName == "Select Company") {
-                                    updatelayout_contactinfo_layout.et_lead_name.setText("")
+                                   // updatelayout_contactinfo_layout.et_lead_name.setText("")
                                     updatelayout_lead_company_details.et_company_name.setText("")
                                     if (strCompanyName.contentEquals("New Company (CNew)")) {
                                         Toast.makeText(this@UpdateLeadActivity, "Please search company name from drop-down before selecting New Company", Toast.LENGTH_SHORT).show()
@@ -2041,13 +2069,9 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         img?.let { Log.e("image", it) }
                         areaList= response.body()?.Response?.Data
                         area = ArrayList<String>()
-                        areaCode = ArrayList<String>()
                         area?.add("Select Area")
-                        areaCode?.add("")
                         for (item in areaList!!){
                             area?.add(item.AreaName+"("+item.AreaCode+")")
-                            /*  item.AreaName?.let { area?.add(it) }
-                              item.AreaCode?.let { areaCode?.add(it) }*/
                         }
 
 
@@ -2073,22 +2097,12 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             }
                             val areaId = Areaid.split(")")
                             str_inst_area = areaId[0]
-                            if(Area=="Other"){
+                            if(str_inst_areaname?.startsWith("Other") == true ||str_inst_areaname=="Other"){
                                 updatelayout_lead_installation_address.et_upspefc_area.visibility=View.VISIBLE
                             }else{
                                 updatelayout_lead_installation_address.et_upspefc_area.visibility=View.GONE
                             }
                             getBuilding(str_inst_areaname,str_inst_area)
-
-                       /*     if (position != 0) str_inst_area = areaCode?.get(position)
-*/
-                           /* if(str_inst_areaname=="Other"){
-                                updatelayout_lead_installation_address.et_upspefc_area.visibility=View.VISIBLE
-                            }else{
-                                updatelayout_lead_installation_address.et_upspefc_area.visibility=View.GONE
-                            }
-                         */
-
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -2103,7 +2117,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
     }
 
 
-    private fun getCntArea(str_city: String?, str_city_code: String) {
+    private fun getCntArea(str_city: String?, str_city_code: String?) {
         val getLeadAreaRequest =   GetLeadAreaRequest(Constants.Get_AREA,Constants.AUTH_KEY,
                 str_city_code, str_city.toString() ,"",userName,password,true)
 
@@ -2118,13 +2132,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                         img?.let { Log.e("image", it) }
                         areaList= response.body()?.Response?.Data
                         cntarea = ArrayList<String>()
-                        cntareaCode = ArrayList<String>()
-                     /*   cntarea?.add("")
-                        cntareaCode?.add("")*/
                         for (item in areaList!!){
                             cntarea?.add(item.AreaName+"("+item.AreaCode+")")
-                            /*  item.AreaName?.let { cntarea?.add(it) }
-                              item.AreaCode?.let { cntareaCode?.add(it) }*/
                         }
 
                         val adapter12 = ArrayAdapter(this@UpdateLeadActivity, android.R.layout.simple_spinner_item, cntarea!!)
@@ -2150,21 +2159,14 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                             }
                             val areaId = Areaid.split(")")
                             str_add_area = areaId[0]
-                            if(Area=="Other"){
-                                update_lead_contact_address.et_cntspbuilding_num.visibility=View.VISIBLE
+                            if(cntareaname?.startsWith("Other") == true){
+                                update_lead_contact_address.et_cntspbuilding.visibility=View.VISIBLE
                             }else{
-                                update_lead_contact_address.et_cntspbuilding_num.visibility=View.GONE
+                                update_lead_contact_address.et_cntspbuilding.visibility=View.GONE
                             }
                             getContactBuilding(Area,str_add_area)
-                           /* if (position != 0) str_add_area = areaCode?.get(position)
-                            if(cntareaname=="Other"){
-                                update_lead_contact_address.et_cntspbuilding_num.visibility=View.VISIBLE
-                            }else{
-                                update_lead_contact_address.et_cntspbuilding_num.visibility=View.GONE
-                            }
-                          */
-
                         }
+
 
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -2220,7 +2222,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
         })
     }
 
-    private fun getContactCity(strcontact_stateCode: String) {
+    private fun getContactCity(strcontact_stateCode: String?) {
         val getCityRequest = GetCityRequest(Constants.GET_CITY,Constants.AUTH_KEY,password,strcontact_stateCode,userName)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
@@ -2275,15 +2277,17 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 binding.updatelayoutContactinfoLayout.vertical.visibility=View.VISIBLE
                 binding.linearqustionare.visibility=View.VISIBLE
             }else{
-               // str_rltn=""
+                // str_rltn=""
                 binding.updatelayoutContactinfoLayout.relation.visibility=View.VISIBLE
                 binding.updatelayoutContactinfoLayout.vertical.visibility=View.GONE
                 binding.linearqustionare.visibility=View.GONE
             }
-        }else if(parent?.id ==R.id.sp_vertical){
+        }
+        else if (parent?.id == R.id.sp_vertical) {
             binding.updatelayoutContactinfoLayout.etVertical.setText(vertical?.get(position))
             strVertical = verticalId?.get(position)
-        }else if(parent?.id ==R.id.sp_customerUsingIllServices){
+        }
+        else if (parent?.id == R.id.sp_customerUsingIllServices) {
             binding.layoutLeadSdQuestionare.etCustomerUsingIllServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
             strIllServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
             if(strIllServices.equals("122050000")){
@@ -2292,7 +2296,7 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 binding.layoutLeadSdQuestionare.mention.visibility=View.GONE
             }
         }
-        else if(parent?.id ==R.id.sp_broadServices){
+        else if (parent?.id == R.id.sp_broadServices) {
             binding.layoutLeadSdQuestionare.etBroadServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
             strBroadServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
             if(strBroadServices.equals("122050000")){
@@ -2301,68 +2305,52 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 binding.layoutLeadSdQuestionare.links.visibility=View.GONE
             }
         }
-        else if(parent?.id ==R.id.sp_linksManged){
+        else if (parent?.id == R.id.sp_linksManged) {
             binding.layoutLeadSdQuestionare.etLinksManged.setText(resources.getStringArray(R.array.listManagedLink)[position])
             strLinksManaged =resources.getStringArray(R.array.listMangedLinkVal)[position]
         }
-        else if(parent?.id ==R.id.sp_routingServices){
+        else if (parent?.id == R.id.sp_routingServices) {
             binding.layoutLeadSdQuestionare.etRoutingServices.setText(resources.getStringArray(R.array.listCustomerService)[position])
             strRoutingServices =resources.getStringArray(R.array.listCustomerServiceVal)[position]
         }
-        else if(parent?.id ==R.id.sp_cityRequired){
+        else if (parent?.id == R.id.sp_cityRequired) {
             binding.layoutLeadSdQuestionare.etCityRequired.setText(RequiredCity?.get(position) )
             strCityReqd =(RequiredCityCode?.get(position))
-        } else if(parent?.id ==R.id.sp_networkSecurity){
+        }
+        else if (parent?.id == R.id.sp_networkSecurity) {
             binding.layoutLeadSdQuestionare.etNetworkSecurity.setText(resources.getStringArray(R.array.listNetworkSecurity)[position])
             strNetworkSecurity =resources.getStringArray(R.array.listMangedLinkVal)[position]
-        }else if(parent?.id ==R.id.sp_hostedRequired){
+        }
+        else if (parent?.id == R.id.sp_hostedRequired) {
             binding.layoutLeadSdQuestionare.etHostedRequired.setText(resources.getStringArray(R.array.listApplicants)[position])
             strHosted =resources.getStringArray(R.array.listApplicantsVal)[position]
-        }else if(parent?.id ==R.id.sp_customerRequired){
+        }
+        else if (parent?.id == R.id.sp_customerRequired) {
             binding.layoutLeadSdQuestionare.etCustomerRequired.setText(resources.getStringArray(R.array.listInHouse)[position])
             strCustomer =resources.getStringArray(R.array.listCustomerServiceVal)[position]
-        }else if(parent?.id ==R.id.sp_backboneRequired){
+        }
+        else if (parent?.id == R.id.sp_backboneRequired) {
             binding.layoutLeadSdQuestionare.etBackboneRequired.setText(resources.getStringArray(R.array.listCustomerService)[position])
             strBackBone =resources.getStringArray(R.array.listCustomerServiceVal)[position]
-        }else if(parent?.id ==R.id.sp_contractRenewed){
+        }
+        else if (parent?.id == R.id.sp_contractRenewed) {
             binding.layoutLeadSdQuestionare.etContractRenewed.setText(resources.getStringArray(R.array.listCustomerService)[position])
             strContract =resources.getStringArray(R.array.listCustomerServiceVal)[position]
-        } else if(parent?.id == R.id.sp_salutation){
+        }
+        else if (parent?.id == R.id.sp_salutation) {
             updatelayout_contactinfo_layout.et_saluation.setText( SalesConstant.list_of_salutation[position])
             str_salutation =  SalesConstant.list_of_salutation_id[position]
-        }else if(parent?.id ==R.id.sp_leadchnl){
+        }
+        else if (parent?.id == R.id.sp_leadchnl) {
             updatelayout_channel_source.et_lead_channel.setText( SalesConstant.list_of_channel[position])
             str_lead_chnl =  SalesConstant.list_of_channel[position]
             getSource(str_lead_chnl)
-        }else if(parent?.id ==R.id.sp_lead_src){
+        }
+        else if (parent?.id == R.id.sp_lead_src) {
             updatelayout_channel_source.et_lead_source.setText(source?.get(position))
             str_lead_src = source?.get(position)
-        }/*else if(parent?.id == R.id.sp_cnarea){
-            updatelayout_lead_installation_address.et_cntarea.setText(area?.get(position))
-            str_inst_area = areaCode?.get(position )
-            str_inst_areaname= area?.get(position).toString()
-            if(str_inst_areaname=="Other"){
-                updatelayout_lead_installation_address.et_upspefc_area.visibility=View.VISIBLE
-            }else{
-                updatelayout_lead_installation_address.et_upspefc_area.visibility=View.GONE
-            }
-            if(str_inst_area!=null || str_inst_areaname!=null) {
-                getBuilding(str_inst_areaname, str_inst_area)
-            }
-        }*//*else if(parent?.id == R.id.sp_cnt_cnarea){
-            update_lead_contact_address.et_contacttarea.setText(cntarea?.get(position))
-            str_add_area = cntareaCode?.get(position )
-            cntareaname= cntarea?.get(position).toString()
-            if(cntareaname=="Other"){
-                update_lead_contact_address.et_cntspbuilding.visibility=View.VISIBLE
-            }else{
-                update_lead_contact_address.et_cntspbuilding.visibility=View.GONE
-            }
-            if(str_add_area!=null || cntareaname!=null) {
-                getContactBuilding(cntareaname, str_add_area)
-            }
-        }*/
-        else if(parent?.id == R.id.sp_city){
+        }
+        else if (parent?.id == R.id.sp_city) {
             updatelayout_lead_installation_address.et_add_city.setText(city?.get(position))
             str_city = city?.get(position).toString()
             str_city_code =  cityCode?.get(position)
@@ -2371,7 +2359,8 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
             if(city=="Select City"){
                 updatelayout_lead_installation_address.et_building.setText("")
             }
-        }else if(parent?.id == R.id.sp_cnt_city){
+        }
+        else if (parent?.id == R.id.sp_cnt_city) {
             update_lead_contact_address.et_cnt_city.setText(contactCity?.get(position))
             str_Contactcity = contactCity?.get(position).toString()
             str_ContactcityCode =  contactCityCode?.get(position)
@@ -2380,65 +2369,78 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 update_lead_contact_address.et_cnt_building.setText("")
             }
         }
-       else if(parent?.id == R.id.sp_cntry){
+        else if (parent?.id == R.id.sp_cntry) {
             updatelayout_lead_installation_address.et_country.setText( SalesConstant.country_name[position])
             str_inst_country =  SalesConstant.country_name[position]
-        }else if(parent?.id == R.id.sp_cust_seg){
+        }
+        else if (parent?.id == R.id.sp_cust_seg) {
             updatelayout_contactinfo_layout.et_customer_seg.setText( SalesConstant.list_of_cust_segment[position])
-           str_customer_segmentid =  SalesConstant.list_cust_seg_value[position]
-        }else if(parent?.id == R.id.sp_cust_wifi){
+            str_customer_segmentid =  SalesConstant.list_cust_seg_value[position]
+        }
+        else if (parent?.id == R.id.sp_cust_wifi) {
             updatelayout_lead_other_details.et_cust_wifi.setText( SalesConstant.list_of_option[position])
             str_wifi =  SalesConstant.list_of_booleanvalue[position]
-        }else if(parent?.id == R.id.sp_ex_serv){
+        }
+        else if (parent?.id == R.id.sp_ex_serv) {
             updatelayout_lead_other_details.et_ext_srv.setText( SalesConstant.ext_serv_one[position])
             str_ext_serv_pro_one =  SalesConstant.ext_serv_one_value[position]
         }
-        else if(parent?.id == R.id.sp_ext_serv_two){
+        else if (parent?.id == R.id.sp_ext_serv_two) {
             updatelayout_lead_other_details.et_ext_srv_two.setText( SalesConstant.ext_serv_one[position])
-           str_serv_pro_two =  SalesConstant.ext_serv_one_value[position]
-        }else if(parent?.id == R.id.sp_serv_pro_one){
+            str_serv_pro_two =  SalesConstant.ext_serv_one_value[position]
+        }
+        else if (parent?.id == R.id.sp_serv_pro_one) {
             updatelayout_lead_other_details.et_service_pv_one.setText( SalesConstant.ext_serv[position])
-           str_cust_serv_one =  SalesConstant.ext_serv_val[position]
-        }else if(parent?.id == R.id.sp_serv_pro_two){
+            str_cust_serv_one =  SalesConstant.ext_serv_val[position]
+        }
+        else if (parent?.id == R.id.sp_serv_pro_two) {
             updatelayout_lead_other_details.et_srv_pv_two.setText( SalesConstant.ext_serv[position])
             str_cust_serv_two =  SalesConstant.ext_serv_val[position]
-        }else if(parent?.id == R.id.sp_state){
+        }
+        else if (parent?.id == R.id.sp_state) {
             updatelayout_lead_installation_address.et_state.setText( SalesConstant.list_of_state[position])
             str_state =  SalesConstant.list_of_state[position]
             Log.e("State",str_state.toString())
             str_inst_state=  SalesConstant.list_state_code[position]
             Log.e("State",str_inst_state.toString())
             getCity(str_inst_state.toString())
-        }else if(parent?.id == R.id.sp_cnt_state){
+        }
+        else if (parent?.id == R.id.sp_cnt_state) {
             update_lead_contact_address.et_cnt_state.setText( SalesConstant.list_of_state[position])
             strcontact_state =  SalesConstant.list_of_state[position]
             strcontact_stateCode =  SalesConstant.list_state_code[position]
             getContactCity(strcontact_stateCode.toString())
         }
-        else if(parent?.id == R.id.sp_cst_voip){
+        else if (parent?.id == R.id.sp_cst_voip) {
             updatelayout_lead_other_details.et_cust_void.setText( SalesConstant.list_of_boolean[position])
             str_voip =  SalesConstant.list_of_booleanvalue[position]
-        }else if(parent?.id == R.id.sp_industype){
+        }
+        else if (parent?.id == R.id.sp_industype) {
             updatelayout_lead_company_details.et_indus_type.setText(instryname[position])
             str_industry_type = industryid[position]
-        }else if(parent?.id == R.id.sp_firm_type){
+        }
+        else if (parent?.id == R.id.sp_firm_type) {
             updatelayout_lead_company_details.et_firm_type.setText( SalesConstant.list_firm_type[position])
-         //   str_firm_type =  list_firm_type_value.get(position-1)
+            //   str_firm_type =  list_firm_type_value.get(position-1)
             str_firm_type =  SalesConstant.list_firm_type_value[position]
         }
-        else if(parent?.id == R.id.sp_media){
+        else if (parent?.id == R.id.sp_media) {
             updatelayout_lead_other_details.et_media.setText( SalesConstant.list_of_media[position])
             str_media =  SalesConstant.list_of_mediavalue[position]
-        }else if(parent?.id == R.id.sp_intrsteddata_center){
+        }
+        else if (parent?.id == R.id.sp_intrsteddata_center) {
             updatelayout_lead_other_details.et_is_cus.setText(SalesConstant.list_of_option[position])
             str_data =  SalesConstant.list_of_booleanvalue[position]
-        }else if(parent?.id == R.id.sp_intrs_frwal){
+        }
+        else if (parent?.id == R.id.sp_intrs_frwal) {
             updatelayout_lead_other_details.et_indus_firewl.setText( SalesConstant.list_of_option[position])
             str_cust_frwl =  SalesConstant.list_of_booleanvalue[position]
-        }else if(parent?.id == R.id.sp_vpn_serv){
+        }
+        else if (parent?.id == R.id.sp_vpn_serv) {
             updatelayout_lead_other_details.et_vpn_srv.setText( SalesConstant.list_of_boolean[position])
-          str_cust_vpn =  SalesConstant.list_of_booleanvalue[position]
-        }else if(parent?.id == R.id.sp_disqualify){
+            str_cust_vpn =  SalesConstant.list_of_booleanvalue[position]
+        }
+        else if (parent?.id == R.id.sp_disqualify) {
             if (position != 0) strDisqualify = "" +  SalesConstant.disqualifyCode[position - 1] else strDisqualify= " "
             if(strDisqualify.isNotEmpty()) {
                 val disqualif:String
@@ -2450,32 +2452,18 @@ class UpdateLeadActivity:AppCompatActivity(), View.OnClickListener,AdapterView.O
                 }
             }
 
-        }/*else if(parent?.id == R.id.sp_cmpny){
-            updatelayout_contactinfo_layout.et_updtcompany.setText(company?.get(position))
-            str_cmp =  companyId?.get(position )
+        }
+        else if (parent?.id == R.id.sp_upgroup) {
             updatelayout_contactinfo_layout.et_upgroup.setText(group?.get(position))
-            val strCompanyName = company?.get(position)
-            if (strCompanyName.contentEquals("New Company (CNew)")||strCompanyName=="Select Company"){
-
-            }else {
-                val name = strCompanyName?.split("(")
-                val cmpname = name?.get(0)
-                updatelayout_contactinfo_layout.et_lead_name.setText(cmpname)
-                updatelayout_lead_company_details.et_company_name.setText(cmpname)
-            }
-
             str_grp = groupId?.get(position )
-            getRelation(str_cmp)
-        }*/else if(parent?.id == R.id.sp_upgroup){
-            updatelayout_contactinfo_layout.et_upgroup.setText(group?.get(position))
-           str_grp = groupId?.get(position )
-        } else if(parent?.id == R.id.sp_rltn){
+        }
+        else if (parent?.id == R.id.sp_rltn) {
             updatelayout_contactinfo_layout.et_uprelation.setText(relation?.get(position))
             str_rltn =  relationId?.get(position )
-        }else if(parent?.id == R.id.sp_work_location){
+        }
+        else if (parent?.id == R.id.sp_work_location) {
             updatelayout_lead_other_details.et_crt_wrk.setText(othercity?.get(position))
-            //if (position != 0) str_othercity = "" + othercityCode?.get(position ) else str_othercity= " "
-             str_othercity =  othercityCode?.get(position )
+            str_othercity =  othercityCode?.get(position )
 
         }
     }

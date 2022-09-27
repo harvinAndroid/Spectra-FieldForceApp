@@ -25,6 +25,7 @@ import com.spectra.fieldforce.salesapp.model.GetAllLeadRequest
 import com.spectra.fieldforce.salesapp.model.GetAllLeadResponse
 import com.spectra.fieldforce.utils.AppConstants
 import com.spectra.fieldforce.utils.Constants
+import com.spectra.fieldforce.utils.SalesAppConstants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
 import kotlinx.android.synthetic.main.lead_count_crntmonth.*
 import kotlinx.android.synthetic.main.update_leadtoolbar.view.*
@@ -99,7 +100,7 @@ class LeadCountChartFragment : Fragment(),View.OnClickListener{
             val result = sdf1.format(calendar)
             val getAllLeadRequest = GetAllLeadRequest(
                 Constants.GET_AllLEADS, Constants.AUTH_KEY, "",
-                password, userName, "", result, currentDate)
+                password, userName, "", result, currentDate,SalesAppConstants.BUSINESS)
 
 
             val apiService = ApiClient.getClient().create(ApiInterface::class.java)

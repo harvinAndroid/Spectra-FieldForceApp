@@ -1,7 +1,6 @@
 package com.spectra.fieldforce.salesapp.fragment
 
 import GetAllContactAdapter
-import GetAllLeadAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,7 +8,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,9 +23,8 @@ import com.spectra.fieldforce.databinding.*
 import com.spectra.fieldforce.salesapp.activity.SalesDashboard
 import com.spectra.fieldforce.salesapp.model.*
 import com.spectra.fieldforce.utils.Constants
+import com.spectra.fieldforce.utils.SalesAppConstants
 import kotlinx.android.synthetic.main.fragment_all_lead_list.*
-import kotlinx.android.synthetic.main.lead_contact_info.view.*
-import kotlinx.android.synthetic.main.lead_demo_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,7 +33,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 class GetAllContactFrag : Fragment(),View.OnClickListener {
 lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
@@ -137,7 +133,7 @@ lateinit var  leadContactInfoBinding: FragmentAllLeadListBinding
         inAnimation?.duration =200
         leadContactInfoBinding.progressLayout.progressOverlay.animation = inAnimation
         leadContactInfoBinding.progressLayout.progressOverlay.visibility = View.VISIBLE
-        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCONTACT, Constants.AUTH_KEY,strSearch,password,userName,srch,"","")
+        val getAllLeadRequest = GetAllLeadRequest(Constants.GETALLCONTACT, Constants.AUTH_KEY,strSearch,password,userName,srch,"","",SalesAppConstants.BUSINESS)
 
         val apiService = ApiClient.getClient().create(ApiInterface::class.java)
         val call = apiService.getAllContact(getAllLeadRequest)

@@ -251,9 +251,13 @@ public class ProvisioningScreenActivity extends BaseActivity implements AdapterV
                         if (response.body().getStatus().equals("Success")) {
                             try {
                                 binding.setResponse(response.body().getResponse().data);
-                                onuProfile = response.body().getResponse().getData().getOnuProfile();
-                                strTowerId = response.body().getResponse().getData().getTowerDetail().get(0).getTowerId();
-                                strSplitterId = response.body().getResponse().getData().getTowerDetail().get(0).getServingDB();
+                                if(response.body().getResponse().data.onuProfile!=null||response.body().getResponse().data.onuProfile.size()!=0) {
+                                    onuProfile = response.body().getResponse().getData().getOnuProfile();
+                                }
+                                if(response.body().getResponse().data.towerDetail!=null||response.body().getResponse().data.towerDetail.size()!=0) {
+                                    strTowerId = response.body().getResponse().getData().getTowerDetail().get(0).getTowerId();
+                                    strSplitterId = response.body().getResponse().getData().getTowerDetail().get(0).getServingDB();
+                                }
                                 modelName = new ArrayList<>();
                                 modelId = new ArrayList<>();
                                 modelName.add("Select Model Name");

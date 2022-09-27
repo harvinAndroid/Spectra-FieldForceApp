@@ -6,5 +6,6 @@ data class GetProductListRequest(
     val oppid: String?,
     val password: String?,
     val userName: String?,
-    val siteId:String?
+    val siteId:String?,
+    val reason:String?
 )

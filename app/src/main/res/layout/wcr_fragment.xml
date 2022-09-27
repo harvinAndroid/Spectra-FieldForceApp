@@ -782,6 +782,32 @@
 
                 </LinearLayout>
 
+
+                <LinearLayout
+                    android:id="@+id/linear_doc"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearmisc"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableEnd="@drawable/ic_expand_down"
+                        android:text="@string/attachments"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHighlight="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+
+
                 <LinearLayout
                     android:id="@+id/linear22"
                     android:layout_width="match_parent"
@@ -792,7 +818,7 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearmisc">
+                    app:layout_constraintTop_toBottomOf="@+id/linear_doc">
 
                     <TextView
                         android:id="@+id/tv_wcr_save"

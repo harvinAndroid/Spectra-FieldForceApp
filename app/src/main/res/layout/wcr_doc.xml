@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout android:id="@+id/linear12"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textinputborder"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:padding="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="@string/attachments"
+            android:textColor="@color/colorBlack"
+
+            android:layout_height="wrap_content"/>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextAppearance="@style/AppearanceText">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_attach"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/color_light_blue"
+                android:hint="@string/capture_image_attach_from_galley"
+                android:drawableEnd="@drawable/camera"
+                 android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:lines="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHighlight="@color/colorPrimary"
+                android:textSize="@dimen/_12sdp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/rv_document"
+           android:visibility="gone"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"/>
+
+        <include layout="@layout/progress"
+            android:id="@+id/progressLayout"
+            />
+
+    </LinearLayout>
+</layout>

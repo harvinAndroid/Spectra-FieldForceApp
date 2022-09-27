@@ -78,6 +78,13 @@ public class IRServiceConsumptionListAdapter extends RecyclerView.Adapter<IRServ
             holder.binding.delete.setVisibility(View.VISIBLE);
             holder.binding.edit.setVisibility(View.VISIBLE);
         }
+        if(serviceConsumtions.get(position).getQuantity().equals("0")){
+            holder.binding.edit.setVisibility(View.VISIBLE);
+            holder.binding.delete.setVisibility(View.VISIBLE);
+        }else{
+            holder.binding.edit.setVisibility(View.GONE);
+            holder.binding.delete.setVisibility(View.GONE);
+        }
         holder.binding.delete.setOnClickListener(v -> {
             deleteItem(item.getItemID(),item.getCANID());
         });

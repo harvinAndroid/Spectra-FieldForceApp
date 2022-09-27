@@ -54,7 +54,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class LoginActivity extends AppCompatActivity implements OnLoginFormActivityListener {
     ActivityLoginBinding binding;
     public static PrefConfig prefConfig;
-    private String couponCodeString, userEmail, userEmailN, userName,message,fcmToken;
+    private String  userEmailN,message,fcmToken;
     private AppCompatActivity activity;
     public static final String PREF ="Login";
     private String strPassword,  strUserName;
@@ -156,7 +156,6 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                                 myEdit.putString("Password",strPassword);
                                 myEdit.commit();
                                 userEmailN = response.body().getResponse().getName();
-                                Log.e("ffalogin", String.valueOf(sp));
                                 Login(response.body().getResponse().getName(), response.body().getResponse().getUsername());
                                 getSaveToken();
                             } else {
@@ -186,22 +185,9 @@ public class LoginActivity extends AppCompatActivity implements OnLoginFormActiv
                         Log.w(TAG, "Fetching FCM registration token failed", task.getException());
                         return;
                     }
-
-                    // Get new FCM registration token
                     fcmToken= task.getResult();
-
                     performSaveToken();
                 });
-      /*  FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        Log.w(TAG, "getInstanceId failed", task.getException());
-                        return;
-                    }
-                    fcmToken = Objects.requireNonNull(task.getResult()).getToken();
-                    Log.d("FCMToken", fcmToken);
-                    performSaveToken();
-                });*/
     }
 
 

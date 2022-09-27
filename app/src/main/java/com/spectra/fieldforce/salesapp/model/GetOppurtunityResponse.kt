@@ -73,7 +73,8 @@ data class OppurtunityData(
     val BuildingId:String?,
     val Statuscode:String?,
     val VerticalID:String,
-    val sdwanOpp: SDOPP?
+    val sdwanOpp: SDOPP?,
+    val TurnOver:String?
 )
 
 data class SDOPP(

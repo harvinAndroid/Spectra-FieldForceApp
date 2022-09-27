@@ -1,6 +1,7 @@
 package com.spectra.fieldforce.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.spectra.fieldforce.adapter.AssignmentAdapter;
 import com.spectra.fieldforce.api.ApiClient;
 import com.spectra.fieldforce.api.ApiInterface;
 import com.spectra.fieldforce.utils.Constants;
+import com.spectra.fieldforce.utils.PrefConfig;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,7 +48,10 @@ public class WelcomeFragment extends Fragment {
     private List<Order> orderList;
     private AssignmentAdapter assignAdapter;
     ConstraintLayout empty_cart;
-
+    public static PrefConfig prefConfig;
+    // DashBoardActivity context;
+    private String emailId,password;
+    public static final String PREF ="Login";
     public WelcomeFragment() {
         orderList = new ArrayList<>();
     }
@@ -54,10 +59,14 @@ public class WelcomeFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
 
     public void getAssignment() {
+        prefConfig = new PrefConfig(getActivity());
+
+        SharedPreferences sp1=getActivity().getSharedPreferences("Login",0);
+        emailId =sp1.getString("EmailId", null);
         AssignmentRequest assignmentRequest = new AssignmentRequest();
         assignmentRequest.setAuthkey(Constants.AUTH_KEY);
         assignmentRequest.setAction(Constants.ASSIGNMENT);
-        assignmentRequest.setemailID(MainActivity.prefConfig.readName());
+        assignmentRequest.setemailID(emailId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonElement> call = apiService.performUserAssignment(assignmentRequest);

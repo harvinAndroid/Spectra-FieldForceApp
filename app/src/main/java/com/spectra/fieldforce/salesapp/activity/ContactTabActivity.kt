@@ -65,14 +65,14 @@ class ContactTabActivity : AppCompatActivity(), View.OnClickListener {
     override fun onBackPressed() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
-        builder.setMessage("Do you want to go back to the previous screen?")
+        builder.setMessage(AppConstants.PREVIOUS_SCREEN)
         builder.setPositiveButton(
-            "Yes"
+            AppConstants.YES
         ) { _, _ ->
             next()
         }
         builder.setNegativeButton(
-            "No"
+            AppConstants.NO
         ) { dialog, _ ->
             dialog.cancel()
         }
