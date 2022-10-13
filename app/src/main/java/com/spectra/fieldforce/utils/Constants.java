@@ -3,16 +3,18 @@ package com.spectra.fieldforce.utils;
 public class Constants {
 
    /* PRODUCATION URL*/
-     public static final String BASE_URL="https://ffamwapi.spectra.co";
+   /*  public static final String BASE_URL="https://ffamwapi.spectra.co";
      public static final String BASE_URL1="https://custappmw.spectra.co";
      public static final String GPON = "https://gponapp.spectra.co:9075";
      public static final String KAIZALA = "https://ffamwapiuat.spectra.co/index_kaizala.php";
+*/
 
   /*  Local URL */
-  /*  public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
+    public static final String BASE_URL="https://ffamwapiuat.spectra.co/";
     public static final String BASE_URL1="https://custappmwuat.spectra.co/";
     public static final String GPON = "https://gponuat.spectra.co:9075";
-    public static final String KAIZALA = "https://ffamwapiuat.spectra.co/home_segment.php/";*/
+    public static final String KAIZALA = "https://ffamwapiuat.spectra.co/home_segment.php/";
+
 
     public static final String AUTH_KEY ="ac7b51de9d888e1458dd53d8aJAN3ba6f";
     public static final String GET_ACTION_CODEMST  ="getActioncodeMst";
@@ -214,6 +216,5 @@ public class Constants {
     public static final String KCREATECAF = "createcaf";
     public static final String KGETCAF ="getCaf";
     public static final String KUPDATECAF="updatecaf";
-
 
 }

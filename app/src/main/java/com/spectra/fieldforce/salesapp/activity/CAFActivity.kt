@@ -71,8 +71,9 @@ import java.util.regex.Pattern
 
 
 class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemSelectedListener {
-    var strCafId : String? = null
-    var strOppId :String?=null
+    private lateinit var binding:CafDemoFragmentBinding
+    private var strCafId : String? = null
+    private var strOppId :String?=null
     private var cityList : ArrayList<BillData>? = null
     private var city : ArrayList<String>? = null
     private var cityCode : ArrayList<String>? = null
@@ -83,10 +84,8 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     private val PERMISSION_REQUEST_CODE = 200
     var strCity: String? = null
     var strProductId: String? = null
-
     var strPaymentStatus:String?=null
     var strBankName: String? = null
-
     var str_PrfCom:String? = null
     var str_grp :String ? = null
     var str_rltn:String ? = null
@@ -167,7 +166,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
     private var irList: ArrayList<IRData>? = null
     private var npList: ArrayList<NPData>? = null
     private var rfsList: ArrayList<RFSData>? = null
-    lateinit var binding:CafDemoFragmentBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,8 +179,6 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             strCafId = extras.getString("CafId")
             strOppId = extras.getString("OppId")
         }
-        // init();
-        // validateUser();
         val sp1: SharedPreferences = this.getSharedPreferences("Login", 0)
         userName = sp1.getString(AppConstants.USERNAME, null)
         password = sp1.getString(AppConstants.PASSWORD, null)
@@ -571,11 +568,7 @@ class CAFActivity:AppCompatActivity(),View.OnClickListener , AdapterView.OnItemS
             Toast.makeText(this, "Please enter CreditCard Number", Toast.LENGTH_SHORT).show()
         }else if(paymntdt.isBlank()&&(str_payslip=="4")){
             Toast.makeText(this, "Please Select Payment Date", Toast.LENGTH_SHORT).show()
-        }/*else if(approvalcode.isBlank()&&(str_payslip=="4")){
-            Toast.makeText(this, "Please enter Approval Code", Toast.LENGTH_SHORT).show()
-        }*//*else if(creditcrd.isBlank()&&(str_payslip=="4")){
-            Toast.makeText(this, "Please enter CreditCard Number", Toast.LENGTH_SHORT).show()
-        }*/else if(paymntdt.isBlank()&&(str_payslip=="8")){
+        }else if(paymntdt.isBlank()&&(str_payslip=="8")){
             Toast.makeText(this, "Please Select Payment Date", Toast.LENGTH_SHORT).show()
         }else if(approvalcode.isBlank()&&(str_payslip=="8")){
             Toast.makeText(this, "Please enter Approval Code", Toast.LENGTH_SHORT).show()

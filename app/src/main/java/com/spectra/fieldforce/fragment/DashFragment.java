@@ -35,7 +35,7 @@ public class DashFragment extends Fragment {
         list.add(new DashBoardModel(AppConstant.INSTALLATION, R.drawable.intallation_icon));
         list.add(new DashBoardModel(AppConstant.FAULT_REPAIR, R.drawable.fr_icon));
         list.add(new DashBoardModel(AppConstant.PROVISIONG_APP, R.drawable.add_circle));
-        // list.add(new DashBoardModel(AppConstant.SALES_HOME, R.drawable.sales_icon));
+         list.add(new DashBoardModel(AppConstant.SALES_HOME, R.drawable.sales_icon));
         binding.recycler.setHasFixedSize(true);
         binding.recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recycler.setAdapter(new DashBoardAdapter(getActivity(), list));

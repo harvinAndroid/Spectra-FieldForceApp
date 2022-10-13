@@ -130,7 +130,7 @@ public class DocAdapter extends RecyclerView.Adapter<DocAdapter.MyViewHolder> {
         }catch (Exception e){
             e.printStackTrace();
         }
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+         bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
         try{
             outputStream.flush();
         }catch (Exception e){

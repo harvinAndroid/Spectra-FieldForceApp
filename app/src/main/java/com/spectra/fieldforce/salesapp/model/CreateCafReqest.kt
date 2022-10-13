@@ -1,7 +1,5 @@
 package com.spectra.fieldforce.salesapp.model
 
-import android.text.Editable
-
 data class CreateCafReqest(
         val Action: String?,
         val Authkey: String?,
